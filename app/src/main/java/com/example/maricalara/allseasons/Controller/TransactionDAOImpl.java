@@ -121,7 +121,7 @@ public class TransactionDAOImpl implements TransactionDAO {
 
             case "Equipment":
                 if (object instanceof Equipment) {
-                    pack = (Packaging) object;
+                    equipment = (Equipment) object;
 
                     ContentValues values = new ContentValues();
                     values.put("TYPE", equipment.getType());

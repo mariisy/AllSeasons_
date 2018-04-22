@@ -20,6 +20,8 @@ import com.example.maricalara.allseasons.Controller.IndirectMaterialsDAO;
 import com.example.maricalara.allseasons.Controller.IndirectMaterialsDAOImpl;
 import com.example.maricalara.allseasons.Controller.RawMaterialsDAO;
 import com.example.maricalara.allseasons.Controller.RawMaterialsDAOImpl;
+import com.example.maricalara.allseasons.Controller.TransactionDAO;
+import com.example.maricalara.allseasons.Controller.TransactionDAOImpl;
 import com.example.maricalara.allseasons.Model.DBHelper;
 import com.example.maricalara.allseasons.R;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
@@ -43,6 +45,7 @@ public class TransactionAddUsed extends AppCompatActivity {
     private EquipmentDAO equipmentDAO = new EquipmentDAOImpl();
     private IndirectMaterialsDAO imDao = new IndirectMaterialsDAOImpl();
     private RawMaterialsDAO rmDAO = new RawMaterialsDAOImpl();
+    private TransactionDAO tDAO = new TransactionDAOImpl();
     private DBHelper dbHelper = new DBHelper(TransactionAddUsed.this);
     private ArrayList<String> arrList;
 
@@ -73,7 +76,7 @@ public class TransactionAddUsed extends AppCompatActivity {
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, spinnerListType);
         spinnerItem.setAdapter(arrayAdapter);
 
-        arrList = rmDAO.retrieveListSpinner(dbHelper, type);
+        arrList = tDAO.retrieveListSpinner(dbHelper, type);
         ArrayAdapter<String> arrayAdapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, arrList);
         spinnerItemName.setAdapter(arrayAdapter2);
 
@@ -91,7 +94,7 @@ public class TransactionAddUsed extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Cursor result = rmDAO.getAllData(dbHelper);
+                Cursor result = tDAO.getAllData(dbHelper);
                 StringBuffer buffer = new StringBuffer();
                 while (result.moveToNext()) {
                     buffer.append("Date: " + result.getString(0) + "\n");

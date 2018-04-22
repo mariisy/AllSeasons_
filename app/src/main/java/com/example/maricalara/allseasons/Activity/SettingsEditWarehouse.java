@@ -18,6 +18,8 @@ import com.example.maricalara.allseasons.Controller.IndirectMaterialsDAO;
 import com.example.maricalara.allseasons.Controller.IndirectMaterialsDAOImpl;
 import com.example.maricalara.allseasons.Controller.RawMaterialsDAO;
 import com.example.maricalara.allseasons.Controller.RawMaterialsDAOImpl;
+import com.example.maricalara.allseasons.Controller.TransactionDAO;
+import com.example.maricalara.allseasons.Controller.TransactionDAOImpl;
 import com.example.maricalara.allseasons.Model.DBHelper;
 import com.example.maricalara.allseasons.Model.WarehouseMaterial;
 import com.example.maricalara.allseasons.R;
@@ -28,7 +30,7 @@ public class SettingsEditWarehouse extends AppCompatActivity {
 
     private Toolbar toolbar;
 
-    ArrayList<WarehouseMaterial> arrList = new ArrayList<>();
+    ArrayList<WarehouseMaterial> materials = new ArrayList<>();
     ListView listView;
 
     private static WarehouseMaterialAdapter warehouseMaterialAdapter;
@@ -37,6 +39,7 @@ public class SettingsEditWarehouse extends AppCompatActivity {
     private EquipmentDAO equipmentDAO = new EquipmentDAOImpl();
     private IndirectMaterialsDAO imDao = new IndirectMaterialsDAOImpl();
     private RawMaterialsDAO rmDAO = new RawMaterialsDAOImpl();
+    private TransactionDAO tDAO = new TransactionDAOImpl();
     private DBHelper dbHelper = new DBHelper(SettingsEditWarehouse.this);
 
     @Override
@@ -52,18 +55,28 @@ public class SettingsEditWarehouse extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
+        listView = (ListView) findViewById(R.id.listWarehouse);
+
+        Cursor result = tDAO.getAllData(dbHelper);
+        StringBuffer buffer = new StringBuffer();
+        while (result.moveToNext()) {
+            String type = result.getString(0);
+            String name = result.getString(1);
+            double price = Double.parseDouble(result.getString(2));
+            materials.add(new WarehouseMaterial(type,name, price));
+        }
 
 
-        arrList = rmDAO.getAllDataWarehouse(dbHelper);
+        materials = tDAO.getAllDataWarehouse(dbHelper);
 
-        warehouseMaterialAdapter = new WarehouseMaterialAdapter(arrList, this.getApplicationContext());
+        warehouseMaterialAdapter = new WarehouseMaterialAdapter(materials, this.getApplicationContext());
 
         listView.setAdapter(warehouseMaterialAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                final WarehouseMaterial warehouseMaterial = arrList.get(position);
+                final WarehouseMaterial warehouseMaterial = materials.get(position);
                 // Click action
                 Intent intent = new Intent(SettingsEditWarehouse.this, EditWarehouse.class);
                 String strName = warehouseMaterial.getName().toString();

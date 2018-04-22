@@ -128,7 +128,7 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
         txtItemName.setText("");
         txtUprice.setText("");
         txtQty.setText("");
-        spinnerType1.setAdapter(null);
+
     }
 
     private void getData() {
