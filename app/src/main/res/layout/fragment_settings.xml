@@ -1,0 +1,45 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.maricalara.allseasons.Fragment.Settings">
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:id="@+id/settings_staff"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/settings_layout_boarder">
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/settings_accounting"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/settings_staff"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/settings_layout_boarder">
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/settings_expense"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/settings_liabilities"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/settings_layout_boarder">
+            </FrameLayout>
+        </LinearLayout>
+</RelativeLayout>
