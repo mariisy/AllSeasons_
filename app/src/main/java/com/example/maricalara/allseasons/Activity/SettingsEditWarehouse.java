@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.example.maricalara.allseasons.Adapter.WarehouseMaterialAdapter;
 import com.example.maricalara.allseasons.Controller.EquipmentDAO;
 import com.example.maricalara.allseasons.Controller.EquipmentDAOImpl;
 import com.example.maricalara.allseasons.Controller.IndirectMaterialsDAO;
@@ -18,6 +19,7 @@ import com.example.maricalara.allseasons.Controller.IndirectMaterialsDAOImpl;
 import com.example.maricalara.allseasons.Controller.RawMaterialsDAO;
 import com.example.maricalara.allseasons.Controller.RawMaterialsDAOImpl;
 import com.example.maricalara.allseasons.Model.DBHelper;
+import com.example.maricalara.allseasons.Model.WarehouseMaterial;
 import com.example.maricalara.allseasons.R;
 
 import java.util.ArrayList;
@@ -25,8 +27,11 @@ import java.util.ArrayList;
 public class SettingsEditWarehouse extends AppCompatActivity {
 
     private Toolbar toolbar;
-    private ListView listWarehouse;
-    ArrayList<String> warehouseList = new ArrayList<>();
+
+    ArrayList<WarehouseMaterial> arrList = new ArrayList<>();
+    ListView listView;
+
+    private static WarehouseMaterialAdapter warehouseMaterialAdapter;
 
     //DAO variables
     private EquipmentDAO equipmentDAO = new EquipmentDAOImpl();
@@ -47,19 +52,33 @@ public class SettingsEditWarehouse extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        listWarehouse = (ListView) findViewById(R.id.listWarehouse);
 
-        warehouseList = rmDAO.getAllDataWarehouse(dbHelper);
 
-        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, warehouseList);
-        listWarehouse.setAdapter(adapter);
+        arrList = rmDAO.getAllDataWarehouse(dbHelper);
 
-        listWarehouse.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        warehouseMaterialAdapter = new WarehouseMaterialAdapter(arrList, this.getApplicationContext());
+
+        listView.setAdapter(warehouseMaterialAdapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> list, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                final WarehouseMaterial warehouseMaterial = arrList.get(position);
+                // Click action
+                Intent intent = new Intent(SettingsEditWarehouse.this, EditWarehouse.class);
+                String strName = warehouseMaterial.getName().toString();
+                String strType = warehouseMaterial.getType().toString();
+                double strPrice = warehouseMaterial.getPrice();
+                intent.putExtra("itemType", strType);
+                intent.putExtra("itemName", strName);
+                intent.putExtra("itemName", strPrice);
+                startActivity(intent);
+
+
 
             }
         });
+
 
 
     }

@@ -27,7 +27,8 @@
         <activity android:name=".Activity.TransactionsAddBought" />
         <activity android:name=".Activity.SettingsEditWarehouse" />
         <activity android:name=".Activity.TransactionAddSold" />
-        <activity android:name=".Activity.TransactionAddUsed"></activity>
+        <activity android:name=".Activity.TransactionAddUsed" />
+        <activity android:name=".Activity.EditWarehouse"></activity>
     </application>
 
 </manifest>

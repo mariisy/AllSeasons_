@@ -8,17 +8,16 @@ import com.example.maricalara.allseasons.Model.Equipment;
 import java.util.ArrayList;
 
 public interface EquipmentDAO {
-    public Cursor getAllData(DBHelper dbHelper);
-    public void addEntry(DBHelper dbHelper, Equipment equipment);
-    public void addTransaction(DBHelper dbHelper, Equipment equipment);
 
-    public ArrayList<Equipment> retrieveEquipmentList (DBHelper dbHelper);
-    public ArrayList<String> retrieveListSpinner(DBHelper dbHelper, String type);
-    public Equipment retrieveOne (DBHelper dbHelper, String type, String name);
-    public boolean checkExisting (DBHelper dbHelper,String name);
 
-    public boolean checkExistingWarehouse (DBHelper dbHelper,String name);
-    public void updateEntry (DBHelper dbHelper, String name);
-    public void deleteEntry (DBHelper dbHelper, String name);
+     void addTransaction(DBHelper dbHelper, Equipment equipment);
+
+     ArrayList<Equipment> retrieveEquipmentList (DBHelper dbHelper);
+     Equipment retrieveOne (DBHelper dbHelper, String type, String name);
+     boolean checkExisting (DBHelper dbHelper,String name);
+
+     boolean checkExistingWarehouse (DBHelper dbHelper,String name);
+     void updateEntry (DBHelper dbHelper, String name);
+     void deleteEntry (DBHelper dbHelper, String name);
 
 }

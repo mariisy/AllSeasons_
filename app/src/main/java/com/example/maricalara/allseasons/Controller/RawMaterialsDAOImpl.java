@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import com.example.maricalara.allseasons.Model.DBHelper;
 import com.example.maricalara.allseasons.Model.Seedlings;
 import com.example.maricalara.allseasons.Model.Seeds;
+import com.example.maricalara.allseasons.Model.WarehouseMaterial;
 
 import java.util.ArrayList;
 
@@ -16,65 +17,6 @@ public class RawMaterialsDAOImpl implements RawMaterialsDAO {
     Seeds seeds;
 
 
-    @Override
-    public Cursor getAllData(DBHelper dbHelper) {
-        dbWrite = dbHelper.getWritableDatabase();
-        Cursor result = dbWrite.rawQuery("SELECT * FROM WAREHOUSE_EQUIPMENT", null);
-        return result;
-    }
-
-    @Override
-    public ArrayList<String> getAllDataWarehouse(DBHelper dbHelper) {
-        dbWrite = dbHelper.getWritableDatabase();
-        String queryGetAll = "SELECT * FROM WAREHOUSE_EQUIPMENT";
-        ArrayList<String> listHolder = new ArrayList<String>();
-        Cursor cursor = dbWrite.rawQuery(queryGetAll, null);
-        if (cursor.moveToFirst()) {
-            do {
-                listHolder.add(cursor.getString(cursor.getColumnIndex("NAME")));
-            } while (cursor.moveToNext());
-        }
-        return listHolder;
-    }
-
-    @Override
-    public void addEntry(DBHelper dbHelper, Object object, String type) {
-        dbWrite = dbHelper.getWritableDatabase();
-
-        switch (type) {
-            case "Seedlings":
-                if (object instanceof Seedlings) {
-                    seedlings = (Seedlings) object;
-                    double costTotal = Double.valueOf(seedlings.getQuantity()) * Double.valueOf(seedlings.getPrice());
-
-                    ContentValues values = new ContentValues();
-                    values.put("TYPE", seedlings.getType());
-                    values.put("NAME", seedlings.getName());
-                    values.put("PRICE", seedlings.getPrice());
-                    dbWrite.insert("WAREHOUSE_EQUIPMENT", null, values);
-
-                }
-
-                break;
-
-            case "Seeds":
-                if (object instanceof Seeds) {
-                    seeds = (Seeds) object;
-                    double costTotal = Double.valueOf(seeds.getQuantity()) * Double.valueOf(seeds.getPrice());
-
-                    ContentValues values = new ContentValues();
-                    values.put("TYPE", seeds.getType());
-                    values.put("NAME", seeds.getName());
-                    values.put("PRICE", seeds.getPrice());
-                    dbWrite.insert("WAREHOUSE_EQUIPMENT", null, values);
-
-
-                }
-                break;
-
-            default: //do something
-        }
-    }
 
     @Override
     public void addTransaction(DBHelper dbHelper, Object object, String type) {
@@ -122,8 +64,8 @@ public class RawMaterialsDAOImpl implements RawMaterialsDAO {
                     dbWrite.insert("RAW_MATERIALS", null, val);
 
                     ContentValues value = new ContentValues();
-                    value.put("DATE", seedlings.getDate());
-                    value.put("TYPE", seedlings.getType());
+                    value.put("DATE", seeds.getDate());
+                    value.put("TYPE", seeds.getType());
                     value.put("DEBIT", 0);
                     value.put("CREDIT", costTotal);
                     dbWrite.insert("CASH", null, value);
@@ -183,19 +125,6 @@ public class RawMaterialsDAOImpl implements RawMaterialsDAO {
         return resultList;
     }
 
-    @Override
-    public ArrayList<String> retrieveListSpinner(DBHelper dbHelper, String type) {
-        dbRead = dbHelper.getReadableDatabase();
-        String queryForRetrievalAll = "SELECT NAME FROM " + "RAW_MATERIALS WHERE TYPE = '" + type + "' ";
-        ArrayList<String> listHolder = new ArrayList<String>();
-        Cursor cursor = dbRead.rawQuery(queryForRetrievalAll, null);
-        if (cursor.moveToFirst()) {
-            do {
-                listHolder.add(cursor.getString(cursor.getColumnIndex("NAME")));
-            } while (cursor.moveToNext());
-        }
-        return listHolder;
-    }
 
     @Override
     public Object retreiveOne(DBHelper dbHelper, String type, String name) {
@@ -243,19 +172,6 @@ public class RawMaterialsDAOImpl implements RawMaterialsDAO {
     public boolean checkExisting(DBHelper dbHelper, String name) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         String queryForCheck = "SELECT NAME FROM " + "RAW_MATERIALS" + " WHERE NAME = '" + name + "' ";
-
-        Cursor result = db.rawQuery(queryForCheck, null);
-        if (result.getCount() == 0) {
-            return false;//not existing. NULL
-        }
-        return true;//existing. NOT NULL
-
-    }
-
-    @Override
-    public boolean checkExistingWarehouse(DBHelper dbHelper, String name) {
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        String queryForCheck = "SELECT NAME FROM " + "WAREHOUSE_EQUIPMENT" + " WHERE NAME = '" + name + "' ";
 
         Cursor result = db.rawQuery(queryForCheck, null);
         if (result.getCount() == 0) {

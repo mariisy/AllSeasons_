@@ -12,25 +12,9 @@ import java.util.ArrayList;
 public class EquipmentDAOImpl implements EquipmentDAO {
     SQLiteDatabase dbWrite, dbRead;
 
-    @Override
-    public Cursor getAllData(DBHelper dbHelper) {
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        Cursor result = db.rawQuery("SELECT * FROM EQUIPMENT", null);
-        return result;
-    }
-
-    @Override
-    public void addEntry(DBHelper dbHelper, Equipment equipment) {
-        dbWrite = dbHelper.getWritableDatabase();
-
-        ContentValues values = new ContentValues();
-        values.put("TYPE", equipment.getType());
-        values.put("NAME", equipment.getName());
-        values.put("PRICE", equipment.getPrice());
-        dbWrite.insert("WAREHOUSE_EQUIPMENT", null, values);
 
 
-    }
+
 
     @Override
     public boolean checkExistingWarehouse(DBHelper dbHelper, String name) {
@@ -89,19 +73,6 @@ public class EquipmentDAOImpl implements EquipmentDAO {
         return listEquip;
     }
 
-    @Override
-    public ArrayList<String> retrieveListSpinner(DBHelper dbHelper, String type) {
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-        String queryForRetrievalAll = "SELECT NAME FROM " + "EQUIPMENT WHERE TYPE = '" + type + "' ";
-        ArrayList<String> listHolder = new ArrayList<String>();
-        Cursor cursor = db.rawQuery(queryForRetrievalAll, null);
-        if (cursor.moveToFirst()) {
-            do {
-                listHolder.add(cursor.getString(cursor.getColumnIndex("NAME")));
-            } while (cursor.moveToNext());
-        }
-        return listHolder;
-    }
 
     @Override
     public Equipment retrieveOne(DBHelper dbHelper, String type, String name) {

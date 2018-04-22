@@ -17,64 +17,6 @@ public class IndirectMaterialsDAOImpl implements IndirectMaterialsDAO {
     Fertilizers fer;
     Packaging pack;
 
-    @Override
-    public Cursor getAllData(DBHelper dbHelper) {
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        Cursor result = db.rawQuery("SELECT * FROM INDIRECT_MATERIALS", null);
-        return result;
-    }
-
-    @Override
-    public void addEntry(DBHelper dbHelper, Object object, String type) {
-
-        dbWrite = dbHelper.getWritableDatabase();
-
-        switch (type) {
-            case "Insecticides":
-                if (object instanceof Insecticides) {
-                    ins = (Insecticides) object;
-
-                    ContentValues values = new ContentValues();
-                    values.put("TYPE", ins.getType());
-                    values.put("NAME", ins.getName());
-                    values.put("PRICE", ins.getPrice());
-                    dbWrite.insert("WAREHOUSE_EQUIPMENT", null, values);
-
-
-                }
-
-                break;
-
-            case "Fertilizer":
-                if (object instanceof Fertilizers) {
-                    fer = (Fertilizers) object;
-
-                    ContentValues values = new ContentValues();
-                    values.put("TYPE", fer.getType());
-                    values.put("NAME", fer.getName());
-                    values.put("PRICE", fer.getPrice());
-                    dbWrite.insert("WAREHOUSE_EQUIPMENT", null, values);
-
-                }
-                break;
-
-            case "Packaging":
-                if (object instanceof Packaging) {
-                    pack = (Packaging) object;
-
-                    ContentValues values = new ContentValues();
-                    values.put("TYPE", pack.getType());
-                    values.put("NAME", pack.getName());
-                    values.put("PRICE", pack.getPrice());
-                    dbWrite.insert("WAREHOUSE_EQUIPMENT", null, values);
-
-
-                }
-                break;
-
-            default: //do something
-        }
-    }
 
     @Override
     public void addTransaction(DBHelper dbHelper, Object object, String type) {
@@ -225,20 +167,6 @@ public class IndirectMaterialsDAOImpl implements IndirectMaterialsDAO {
     }
 
     @Override
-    public ArrayList<String> retrieveListSpinner(DBHelper dbHelper, String type) {
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-        String queryForRetrievalAll = "SELECT NAME FROM " + "INDIRECT_MATERIALS WHERE TYPE = '" + type + "' ";
-        ArrayList<String> listHolder = new ArrayList<String>();
-        Cursor cursor = db.rawQuery(queryForRetrievalAll, null);
-        if (cursor.moveToFirst()) {
-            do {
-                listHolder.add(cursor.getString(cursor.getColumnIndex("NAME")));
-            } while (cursor.moveToNext());
-        }
-        return listHolder;
-    }
-
-    @Override
     public Object retrieveOne(DBHelper dbHelper, String type, String name) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         String queryForRetrievalOne = "SELECT * FROM " + "RAW_MATERIALS WHERE NAME = '" + name + "'  AND TYPE = '" + type + "' ";
@@ -308,19 +236,6 @@ public class IndirectMaterialsDAOImpl implements IndirectMaterialsDAO {
             return false;//not existing. NULL
         }
         return true;//existing. NOT NULL
-    }
-
-    @Override
-    public boolean checkExistingWarehouse(DBHelper dbHelper, String name) {
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        String queryForCheck = "SELECT NAME FROM " + "WAREHOUSE_EQUIPMENT" + " WHERE NAME = '" + name + "' ";
-
-        Cursor result = db.rawQuery(queryForCheck, null);
-        if (result.getCount() == 0) {
-            return false;//not existing. NULL
-        }
-        return true;//existing. NOT NULL
-
     }
 
     @Override

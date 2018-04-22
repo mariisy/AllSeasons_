@@ -32,6 +32,7 @@ public class WarehouseSeeds extends Fragment {
     ArrayList<Seeds> seeds = new ArrayList<Seeds>();
     ArrayList<Object> arrList = new ArrayList<Object>();
     ListView listView;
+
     private static SeedsAdapter seedsAdapter;
 
 

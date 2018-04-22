@@ -24,6 +24,8 @@ import com.example.maricalara.allseasons.Controller.IndirectMaterialsDAO;
 import com.example.maricalara.allseasons.Controller.IndirectMaterialsDAOImpl;
 import com.example.maricalara.allseasons.Controller.RawMaterialsDAO;
 import com.example.maricalara.allseasons.Controller.RawMaterialsDAOImpl;
+import com.example.maricalara.allseasons.Controller.TransactionDAO;
+import com.example.maricalara.allseasons.Controller.TransactionDAOImpl;
 import com.example.maricalara.allseasons.Model.DBHelper;
 import com.example.maricalara.allseasons.Model.Equipment;
 import com.example.maricalara.allseasons.Model.Fertilizers;
@@ -50,6 +52,7 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
     private EquipmentDAO equipmentDAO = new EquipmentDAOImpl();
     private IndirectMaterialsDAO imDao = new IndirectMaterialsDAOImpl();
     private RawMaterialsDAO rmDAO = new RawMaterialsDAOImpl();
+    private TransactionDAO tDAO = new TransactionDAOImpl();
     private DBHelper dbHelper = new DBHelper(SettingsAddToWarehouse.this);
 
 
@@ -96,7 +99,6 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                //submitEditText();
                     if (validateType() && validateQty() && validateItemName() && validateUnitPrice()) {
                         getData();
                     }
@@ -107,7 +109,7 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
         btnView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Cursor result = rmDAO.getAllData(dbHelper);
+                Cursor result = tDAO.getAllData(dbHelper);
                 StringBuffer buffer = new StringBuffer();
                 while (result.moveToNext()) {
                     buffer.append("Type: " + result.getString(0) + "\n");
@@ -144,7 +146,7 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
                 if (!equipmentDAO.checkExistingWarehouse(dbHelper, itemName)) {
                     Equipment equip = new Equipment(type, itemName, qty, unitPrice, stringDate);
                     try {
-                        equipmentDAO.addEntry(dbHelper, equip);
+                        tDAO.addEntry(dbHelper, equip, type);
                         equipmentDAO.addTransaction(dbHelper, equip);
 
                         new AlertDialog.Builder(SettingsAddToWarehouse.this)
@@ -196,10 +198,10 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
                 break;
 
             case "Insecticides":
-                if (!imDao.checkExistingWarehouse(dbHelper, itemName)) {
+                if (!tDAO.checkExistingWarehouse(dbHelper, itemName)) {
                     Insecticides ins = new Insecticides(type, itemName, qty, unitPrice, stringDate);
                     try {
-                        imDao.addEntry(dbHelper, ins, type);
+                        tDAO.addEntry(dbHelper, ins, type);
                         imDao.addTransaction(dbHelper, ins, type);
 
                         new AlertDialog.Builder(SettingsAddToWarehouse.this)
@@ -250,10 +252,10 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
                 break;
 
             case "Fertilizer":
-                if (!imDao.checkExistingWarehouse(dbHelper, itemName)) {
+                if (!tDAO.checkExistingWarehouse(dbHelper, itemName)) {
                     Fertilizers fer = new Fertilizers(type, itemName, qty, unitPrice, stringDate);
                     try {
-                        imDao.addEntry(dbHelper, fer, type);
+                        tDAO.addEntry(dbHelper, fer, type);
                         imDao.addTransaction(dbHelper, fer, type);
 
                         new AlertDialog.Builder(SettingsAddToWarehouse.this)
@@ -304,10 +306,10 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
                 break;
 
             case "Packaging":
-                if (!imDao.checkExistingWarehouse(dbHelper, itemName)) {
+                if (!tDAO.checkExistingWarehouse(dbHelper, itemName)) {
                     Packaging packaging = new Packaging(type, itemName, qty, unitPrice, stringDate);
                     try {
-                        imDao.addEntry(dbHelper, packaging, type);
+                        tDAO.addEntry(dbHelper, packaging, type);
                         imDao.addTransaction(dbHelper, packaging, type);
 
                         new AlertDialog.Builder(SettingsAddToWarehouse.this)
@@ -358,10 +360,10 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
                 break;
 
             case "Seeds":
-                if (!rmDAO.checkExistingWarehouse(dbHelper, itemName)) {
+                if (!tDAO.checkExistingWarehouse(dbHelper, itemName)) {
                     Seeds seeds = new Seeds(type, itemName, qty, unitPrice, stringDate);
                     try {
-                        rmDAO.addEntry(dbHelper, seeds, type);
+                        tDAO.addEntry(dbHelper, seeds, type);
                         rmDAO.addTransaction(dbHelper, seeds, type);
 
                         new AlertDialog.Builder(SettingsAddToWarehouse.this)
@@ -413,10 +415,10 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
                 break;
 
             case "Seedlings":
-                if (!rmDAO.checkExistingWarehouse(dbHelper, itemName)) {
+                if (!tDAO.checkExistingWarehouse(dbHelper, itemName)) {
                     Seedlings seedlings = new Seedlings(type, itemName, qty, unitPrice, stringDate);
                     try {
-                        rmDAO.addEntry(dbHelper, seedlings, type);
+                        tDAO.addEntry(dbHelper, seedlings, type);
                         rmDAO.addTransaction(dbHelper, seedlings, type);
 
                         new AlertDialog.Builder(SettingsAddToWarehouse.this)
@@ -472,24 +474,6 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
     }
 
 
-    private void submitEditText() {
-        if (validateItemName()) {
-            return;
-        }
-
-        if (validateUnitPrice()) {
-            return;
-        }
-
-        if (validateQty()) {
-            return;
-        }
-
-        if (validateType()) {
-            return;
-        }
-
-    }
 
     private boolean validateItemName() {
         if (txtItemName.getText().toString().trim().isEmpty()) {
