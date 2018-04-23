@@ -14,7 +14,7 @@ import com.example.maricalara.allseasons.R;
 public class Settings extends Fragment {
 
     SettingsStaff settingsStaff;
-    SettingsWarehousing settingsLiab;
+    SettingsWarehousing settingsWarehousing;
     SettingsSync settingsSync;
 
     FragmentManager manager;
@@ -36,7 +36,7 @@ public class Settings extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_settings, container, false);
 
         settingsStaff = new SettingsStaff();
-        settingsLiab = new SettingsWarehousing();
+        settingsWarehousing = new SettingsWarehousing();
         settingsSync = new SettingsSync();
 
 
@@ -46,7 +46,7 @@ public class Settings extends Fragment {
         transaction = manager.beginTransaction();
 
         transaction.add(R.id.settings_staff, settingsStaff, "staffFragment");
-        transaction.add(R.id.settings_accounting, settingsLiab, "staffFragment");
+        transaction.add(R.id.settings_warehouse, settingsWarehousing, "warehouseFragment");
         transaction.add(R.id.settings_expense, settingsSync, "staffFragment");
 
         transaction.commit();

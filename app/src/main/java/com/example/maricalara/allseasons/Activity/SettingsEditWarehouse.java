@@ -84,7 +84,7 @@ public class SettingsEditWarehouse extends AppCompatActivity {
                 double strPrice = warehouseMaterial.getPrice();
                 intent.putExtra("itemType", strType);
                 intent.putExtra("itemName", strName);
-                intent.putExtra("itemName", strPrice);
+                intent.putExtra("itemPrice", strPrice);
                 startActivity(intent);
 
 

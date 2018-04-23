@@ -6,14 +6,13 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.example.maricalara.allseasons.Model.DBHelper;
 import com.example.maricalara.allseasons.Model.Equipment;
+import com.example.maricalara.allseasons.Model.Seedlings;
+import com.example.maricalara.allseasons.Model.Seeds;
 
 import java.util.ArrayList;
 
 public class EquipmentDAOImpl implements EquipmentDAO {
     SQLiteDatabase dbWrite, dbRead;
-
-
-
 
 
     @Override
@@ -91,6 +90,7 @@ public class EquipmentDAOImpl implements EquipmentDAO {
                 equipment.setDate(cursor.getString(cursor.getColumnIndex("DATE")));
             } while (cursor.moveToNext());
 
+
         }
         object = (Object) equipment;
 
@@ -110,8 +110,34 @@ public class EquipmentDAOImpl implements EquipmentDAO {
     }
 
     @Override
-    public void updateEntry(DBHelper dbHelper, String name) {
+    public void updateTransaction(DBHelper dbHelper, String type, String name, int quantity) {
+        dbRead = dbHelper.getReadableDatabase();
+        dbWrite = dbHelper.getWritableDatabase();
+        String queryUpdate = "SELECT * FROM " + "RAW_MATERIALS WHERE NAME = '" + name + "'  AND TYPE = '" + type + "' ";
+        Cursor cursor = dbRead.rawQuery(queryUpdate, null);
+        Equipment equipment = new Equipment(null, null, 0, 0, null);
+        ContentValues val = new ContentValues();
+        double costTotal = 0;
 
+        if (cursor.moveToFirst()) {
+            do {
+                equipment.setType(cursor.getString(cursor.getColumnIndex("TYPE")));
+                equipment.setName(cursor.getString(cursor.getColumnIndex("NAME")));
+                equipment.setQuantity(cursor.getInt(cursor.getColumnIndex("QUANTITY")));
+                equipment.setPrice(cursor.getDouble(cursor.getColumnIndex("PRICE")));
+                equipment.setDate(cursor.getString(cursor.getColumnIndex("DATE")));
+            } while (cursor.moveToNext());
+
+
+            val.put("DATE", equipment.getDate());
+            val.put("TYPE", equipment.getType());
+            val.put("NAME", equipment.getName());
+            val.put("QUANTITY", equipment.getQuantity());
+            val.put("PRICE", equipment.getPrice());
+            costTotal = (equipment.getQuantity() + quantity) * equipment.getPrice();
+            val.put("TOTAL_COST", costTotal);
+            dbWrite.update("RAW_MATERIALS", val, "NAME = '" + name + "'  AND TYPE = '" + type + "' ", null);
+        }
     }
 
     @Override

@@ -79,7 +79,7 @@ public class WarehouseMaterialAdapter  extends ArrayAdapter<WarehouseMaterial> i
 
 
         viewHolder.txtItem.setText(dataModel.getType() + ": " + dataModel.getName());
-        viewHolder.txtQty.setText(String.valueOf(dataModel.getPrice()) + "kg");
+        viewHolder.txtQty.setText(String.valueOf("Price: ₱ " + dataModel.getPrice()));
 
         // Return the completed view to render on screen
         return convertView;

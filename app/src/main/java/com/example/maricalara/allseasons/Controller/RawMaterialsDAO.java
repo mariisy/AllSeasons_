@@ -15,7 +15,7 @@ public interface RawMaterialsDAO {
      ArrayList<Object> retrieveList (DBHelper dbHelper, String type);
      Object retreiveOne(DBHelper dbHelper, String type, String name);
      boolean checkExisting (DBHelper dbHelper,String name);
-     void updateEntry (DBHelper dbHelper, String name);
+     void updateTransaction(DBHelper dbHelper,String type, String name, int quantity);
      void deleteEntry (DBHelper dbHelper, String name);
 
 }

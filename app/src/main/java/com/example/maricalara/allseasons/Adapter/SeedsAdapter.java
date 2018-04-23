@@ -81,8 +81,8 @@ public class SeedsAdapter extends ArrayAdapter<Seeds> implements View.OnClickLis
         }
 
 
-        viewHolder.txtItem.setText(dataModel.getName());
-        viewHolder.txtQty.setText(String.valueOf(dataModel.getQuantity()) + " Pieces");
+        viewHolder.txtItem.setText("Item Name: " + dataModel.getName());
+        viewHolder.txtQty.setText(String.valueOf("Stocks Available: " + dataModel.getQuantity()) + " Pieces");
 
         // Return the completed view to render on screen
         return convertView;

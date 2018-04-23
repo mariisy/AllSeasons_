@@ -25,7 +25,7 @@ import com.example.maricalara.allseasons.R;
 public class WarehouseDetailActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
-    String strName, strType;
+    private String strName, strType;
     TextView txtType, txtName, txtPrice, txtQty, txtPriceTotal, txtDate;
 
 

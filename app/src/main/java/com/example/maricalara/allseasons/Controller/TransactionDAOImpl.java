@@ -150,11 +150,11 @@ public class TransactionDAOImpl implements TransactionDAO {
     }
 
     @Override
-    public boolean checkExistingWarehouse(DBHelper dbHelper, String name) {
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        String queryForCheck = "SELECT NAME FROM " + "WAREHOUSE_EQUIPMENT" + " WHERE NAME = '" + name + "' ";
+    public boolean checkExistingWarehouse(DBHelper dbHelper, String type, String name) {
+        dbWrite = dbHelper.getWritableDatabase();
+        String queryForCheck = "SELECT NAME FROM " + "WAREHOUSE_EQUIPMENT" + " WHERE NAME = '" + name + "' AND TYPE = '" + type + "' ";
 
-        Cursor result = db.rawQuery(queryForCheck, null);
+        Cursor result = dbWrite.rawQuery(queryForCheck, null);
         if (result.getCount() == 0) {
             return false;//not existing. NULL
         }
@@ -162,12 +162,25 @@ public class TransactionDAOImpl implements TransactionDAO {
     }
 
     @Override
-    public void updateEntry(DBHelper dbHelper, String name) {
+    public void updateEntry(DBHelper dbHelper, String name, Double price) {
+        dbRead = dbHelper.getReadableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put("PRICE", price);
+
+        String selection = "NAME" + " LIKE ?";
+        String[] selectionArgs = { name };
+
+        dbRead.update("WAREHOUSE_EQUIPMENT", values, selection, selectionArgs);
 
     }
 
     @Override
     public void deleteEntry(DBHelper dbHelper, String name) {
+        dbRead = dbHelper.getReadableDatabase();
 
+        String selection = "NAME" + " LIKE ?";
+        String[] selectionArgs = { name };
+        dbRead.delete("WAREHOUSE_EQUIPMENT", selection, selectionArgs);
     }
 }

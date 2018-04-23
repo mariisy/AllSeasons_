@@ -23,7 +23,7 @@
             </FrameLayout>
 
             <FrameLayout
-                android:id="@+id/settings_accounting"
+                android:id="@+id/settings_warehouse"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"

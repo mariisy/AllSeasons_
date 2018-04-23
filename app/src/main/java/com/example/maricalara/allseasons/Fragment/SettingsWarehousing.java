@@ -13,6 +13,7 @@ import android.widget.ListView;
 
 import com.example.maricalara.allseasons.Activity.SettingsAddToWarehouse;
 import com.example.maricalara.allseasons.Activity.SettingsEditStaff;
+import com.example.maricalara.allseasons.Activity.SettingsEditWarehouse;
 import com.example.maricalara.allseasons.R;
 
 import java.util.ArrayList;
@@ -56,7 +57,7 @@ public class SettingsWarehousing extends Fragment {
                 if (position == 0) {
                     intent = new Intent(getActivity(), SettingsAddToWarehouse.class);
                 } else if (position == 1) {
-                    intent = new Intent(getActivity(), SettingsEditStaff.class);
+                    intent = new Intent(getActivity(), SettingsEditWarehouse.class);
                 }
 
                 startActivity(intent);

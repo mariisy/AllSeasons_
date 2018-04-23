@@ -9,6 +9,8 @@
         android:layout_height="wrap_content"
         android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft"
         android:paddingTop="10dp"
+        android:textColor="#555555"
+        android:textAppearance="?android:attr/textAppearanceSmall"
         android:paddingBottom="10dp"
         />
 

@@ -12,7 +12,7 @@ public interface TransactionDAO {
      ArrayList<WarehouseMaterial> getAllDataWarehouse(DBHelper dbHelper);
      void addEntry(DBHelper dbHelper, Object object, String type);
      ArrayList<String> retrieveListSpinner (DBHelper dbHelper, String type);
-     boolean checkExistingWarehouse (DBHelper dbHelper,String name);
-     void updateEntry (DBHelper dbHelper, String name);
+     boolean checkExistingWarehouse (DBHelper dbHelper, String type, String name);
+     void updateEntry (DBHelper dbHelper, String name, Double price);
      void deleteEntry (DBHelper dbHelper, String name);
 }

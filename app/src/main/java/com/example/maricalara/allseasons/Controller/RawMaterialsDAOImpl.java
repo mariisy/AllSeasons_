@@ -7,7 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 import com.example.maricalara.allseasons.Model.DBHelper;
 import com.example.maricalara.allseasons.Model.Seedlings;
 import com.example.maricalara.allseasons.Model.Seeds;
-import com.example.maricalara.allseasons.Model.WarehouseMaterial;
 
 import java.util.ArrayList;
 
@@ -15,7 +14,6 @@ public class RawMaterialsDAOImpl implements RawMaterialsDAO {
     SQLiteDatabase dbWrite, dbRead;
     Seedlings seedlings;
     Seeds seeds;
-
 
 
     @Override
@@ -82,9 +80,9 @@ public class RawMaterialsDAOImpl implements RawMaterialsDAO {
         ArrayList<Seeds> listSeed = new ArrayList<Seeds>();
         ArrayList<Object> resultList = new ArrayList<Object>();
 
-        SQLiteDatabase dbReads = dbHelper.getReadableDatabase();
+        dbRead = dbHelper.getReadableDatabase();
         String queryRetrieve = "SELECT * FROM " + "RAW_MATERIALS WHERE TYPE = '" + type + "' ";
-        Cursor cursor = dbReads.rawQuery(queryRetrieve, null);
+        Cursor cursor = dbRead.rawQuery(queryRetrieve, null);
 
         switch (type) {
             case "Seedlings":
@@ -128,9 +126,9 @@ public class RawMaterialsDAOImpl implements RawMaterialsDAO {
 
     @Override
     public Object retreiveOne(DBHelper dbHelper, String type, String name) {
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        dbRead = dbHelper.getReadableDatabase();
         String queryForRetrievalOne = "SELECT * FROM " + "RAW_MATERIALS WHERE NAME = '" + name + "'  AND TYPE = '" + type + "' ";
-        Cursor cursor = db.rawQuery(queryForRetrievalOne, null);
+        Cursor cursor = dbRead.rawQuery(queryForRetrievalOne, null);
         Seeds seed = new Seeds(null, null, 0, 0, null);
         Seedlings seedling = new Seedlings(null, null, 0, 0, null);
         Object object = null;
@@ -182,8 +180,62 @@ public class RawMaterialsDAOImpl implements RawMaterialsDAO {
     }
 
     @Override
-    public void updateEntry(DBHelper dbHelper, String name) {
+    public void updateTransaction(DBHelper dbHelper, String type, String name, int quantity) {
+        dbRead = dbHelper.getReadableDatabase();
+        dbWrite = dbHelper.getWritableDatabase();
+        String queryUpdate = "SELECT * FROM " + "RAW_MATERIALS WHERE NAME = '" + name + "'  AND TYPE = '" + type + "' ";
+        Cursor cursor = dbRead.rawQuery(queryUpdate, null);
+        Seeds seed = new Seeds(null, null, 0, 0, null);
+        Seedlings seedling = new Seedlings(null, null, 0, 0, null);
+        ContentValues val = new ContentValues();
+        double costTotal = 0;
 
+
+        switch (type) {
+            case "Seedlings":
+                if (cursor.moveToFirst()) {
+                    do {
+                        seedling.setType(cursor.getString(cursor.getColumnIndex("TYPE")));
+                        seedling.setName(cursor.getString(cursor.getColumnIndex("NAME")));
+                        seedling.setQuantity(cursor.getInt(cursor.getColumnIndex("QUANTITY")));
+                        seedling.setPrice(cursor.getDouble(cursor.getColumnIndex("PRICE")));
+                        seedling.setDate(cursor.getString(cursor.getColumnIndex("DATE")));
+                    } while (cursor.moveToNext());
+                }
+
+                val.put("DATE", seedling.getDate());
+                val.put("TYPE", seedling.getType());
+                val.put("NAME", seedling.getName());
+                val.put("QUANTITY", seedling.getQuantity() + quantity);
+                val.put("PRICE", seedling.getPrice());
+                costTotal = (seedling.getQuantity() + quantity) * seedling.getPrice();
+                val.put("TOTAL_COST", costTotal);
+                dbWrite.update("RAW_MATERIALS", val, "NAME = '" + name + "'  AND TYPE = '" + type + "' ", null);
+                break;
+
+            case "Seeds":
+                if (cursor.moveToFirst()) {
+                    do {
+                        seed.setType(cursor.getString(cursor.getColumnIndex("TYPE")));
+                        seed.setName(cursor.getString(cursor.getColumnIndex("NAME")));
+                        seed.setQuantity(cursor.getInt(cursor.getColumnIndex("QUANTITY")));
+                        seed.setPrice(cursor.getDouble(cursor.getColumnIndex("PRICE")));
+                        seed.setDate(cursor.getString(cursor.getColumnIndex("DATE")));
+                    } while (cursor.moveToNext());
+                }
+                val.put("DATE", seed.getDate());
+                val.put("TYPE", seed.getType());
+                val.put("NAME", seed.getName());
+                val.put("QUANTITY", seed.getQuantity() + quantity);
+                val.put("PRICE", seed.getPrice());
+                costTotal = (seed.getQuantity() + quantity) * seed.getPrice();
+                val.put("TOTAL_COST", costTotal);
+                dbWrite.update("RAW_MATERIALS", val, "NAME = '" + name + "'  AND TYPE = '" + type + "' ", null);
+                break;
+
+            default:
+                ;//do something
+        }
     }
 
     @Override

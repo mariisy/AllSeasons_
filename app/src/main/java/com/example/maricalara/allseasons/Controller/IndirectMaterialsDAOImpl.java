@@ -101,13 +101,13 @@ public class IndirectMaterialsDAOImpl implements IndirectMaterialsDAO {
 
     @Override
     public ArrayList<Object> retrieveList(DBHelper dbHelper, String type) {
-        SQLiteDatabase dbReads = dbHelper.getReadableDatabase();
+        dbRead = dbHelper.getReadableDatabase();
         String queryRetrieve = "SELECT * FROM " + "INDIRECT_MATERIALS WHERE TYPE = '" + type + "' ";
         ArrayList<Insecticides> listIns = new ArrayList<Insecticides>();
         ArrayList<Fertilizers> listFer = new ArrayList<Fertilizers>();
         ArrayList<Packaging> listPack = new ArrayList<Packaging>();
         ArrayList<Object> resultList = new ArrayList<Object>();
-        Cursor cursor = dbReads.rawQuery(queryRetrieve, null);
+        Cursor cursor = dbRead.rawQuery(queryRetrieve, null);
 
         switch (type) {
             case "Insecticides":
@@ -228,10 +228,10 @@ public class IndirectMaterialsDAOImpl implements IndirectMaterialsDAO {
 
     @Override
     public boolean checkExisting(DBHelper dbHelper, String name) {
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        dbRead = dbHelper.getReadableDatabase();
         String queryForCheck = "SELECT NAME FROM " + "INDIRECT_MATERIALS" + " WHERE NAME = '" + name + "' ";
 
-        Cursor result = db.rawQuery(queryForCheck, null);
+        Cursor result = dbRead.rawQuery(queryForCheck, null);
         if (result.getCount() == 0) {
             return false;//not existing. NULL
         }
@@ -239,8 +239,83 @@ public class IndirectMaterialsDAOImpl implements IndirectMaterialsDAO {
     }
 
     @Override
-    public void updateEntry(DBHelper dbHelper, String name) {
+    public void updateTransaction(DBHelper dbHelper, String type, String name, int quantity) {
+        dbRead = dbHelper.getReadableDatabase();
+        dbWrite = dbHelper.getWritableDatabase();
+        String queryUpdate = "SELECT * FROM " + "RAW_MATERIALS WHERE NAME = '" + name + "'  AND TYPE = '" + type + "' ";
+        Cursor cursor = dbRead.rawQuery(queryUpdate, null);
+        Insecticides in = new Insecticides(null, null, 0, 0, null);
+        Fertilizers fe = new Fertilizers(null, null, 0, 0, null);
+        Packaging pa = new Packaging(null, null, 0, 0, null);
+        ContentValues val = new ContentValues();
+        double costTotal = 0;
 
+        switch (type) {
+            case "Insecticides":
+                if (cursor.moveToFirst()) {
+                    do {
+                        in.setType(cursor.getString(cursor.getColumnIndex("TYPE")));
+                        in.setName(cursor.getString(cursor.getColumnIndex("NAME")));
+                        in.setQuantity(cursor.getInt(cursor.getColumnIndex("QUANTITY")));
+                        in.setPrice(cursor.getDouble(cursor.getColumnIndex("PRICE")));
+                        in.setDate(cursor.getString(cursor.getColumnIndex("DATE")));
+                    } while (cursor.moveToNext());
+
+                    val.put("DATE", ins.getDate());
+                    val.put("TYPE", ins.getType());
+                    val.put("NAME", ins.getName());
+                    val.put("QUANTITY", ins.getQuantity());
+                    val.put("PRICE", ins.getPrice());
+                    costTotal = (ins.getQuantity() + quantity) * ins.getPrice();
+                    val.put("TOTAL_COST", costTotal);
+                    dbWrite.update("RAW_MATERIALS", val, "NAME = '" + name + "'  AND TYPE = '" + type + "' ", null);
+                }
+                break;
+
+            case "Fertilizer":
+                if (cursor.moveToFirst()) {
+                    do {
+                        fe.setType(cursor.getString(cursor.getColumnIndex("TYPE")));
+                        fe.setName(cursor.getString(cursor.getColumnIndex("NAME")));
+                        fe.setQuantity(cursor.getInt(cursor.getColumnIndex("QUANTITY")));
+                        fe.setPrice(cursor.getDouble(cursor.getColumnIndex("PRICE")));
+                        fe.setDate(cursor.getString(cursor.getColumnIndex("DATE")));
+                    } while (cursor.moveToNext());
+
+                    val.put("DATE", fer.getDate());
+                    val.put("TYPE", fer.getType());
+                    val.put("NAME", fer.getName());
+                    val.put("QUANTITY", fer.getQuantity());
+                    val.put("PRICE", fer.getPrice());
+                    costTotal = (fer.getQuantity() + quantity) * fer.getPrice();
+                    val.put("TOTAL_COST", costTotal);
+                    dbWrite.update("RAW_MATERIALS", val, "NAME = '" + name + "'  AND TYPE = '" + type + "' ", null);
+                }
+                break;
+
+            case "Packaging":
+                if (cursor.moveToFirst()) {
+                    do {
+                        pa.setType(cursor.getString(cursor.getColumnIndex("TYPE")));
+                        pa.setName(cursor.getString(cursor.getColumnIndex("NAME")));
+                        pa.setQuantity(cursor.getInt(cursor.getColumnIndex("QUANTITY")));
+                        pa.setPrice(cursor.getDouble(cursor.getColumnIndex("PRICE")));
+                        pa.setDate(cursor.getString(cursor.getColumnIndex("DATE")));
+                    } while (cursor.moveToNext());
+
+                    val.put("DATE", pack.getDate());
+                    val.put("TYPE", pack.getType());
+                    val.put("NAME", pack.getName());
+                    val.put("QUANTITY", pack.getQuantity());
+                    val.put("PRICE", pack.getPrice());
+                    costTotal = (pack.getQuantity() + quantity) * pack.getPrice();
+                    val.put("TOTAL_COST", costTotal);
+                    dbWrite.update("RAW_MATERIALS", val, "NAME = '" + name + "'  AND TYPE = '" + type + "' ", null);
+                }
+                break;
+
+            default: //do something
+        }
     }
 
     @Override
