@@ -30,7 +30,7 @@ import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class TransactionAddUsed extends AppCompatActivity {
+public class TransactionAddUsedMaterials extends AppCompatActivity {
 
     //for UI
     private String type, itemName;
@@ -46,7 +46,7 @@ public class TransactionAddUsed extends AppCompatActivity {
     private IndirectMaterialsDAO imDao = new IndirectMaterialsDAOImpl();
     private RawMaterialsDAO rmDAO = new RawMaterialsDAOImpl();
     private TransactionDAO tDAO = new TransactionDAOImpl();
-    private DBHelper dbHelper = new DBHelper(TransactionAddUsed.this);
+    private DBHelper dbHelper = new DBHelper(TransactionAddUsedMaterials.this);
     private ArrayList<String> arrList;
 
     //Sample for List for Spinner type 1
@@ -104,7 +104,7 @@ public class TransactionAddUsed extends AppCompatActivity {
                     buffer.append("Price: " + result.getString(4) + "\n");
                     buffer.append("TotalCost: " + result.getString(5) + "\n");
                 }
-                android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(TransactionAddUsed.this);
+                android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(TransactionAddUsedMaterials.this);
                 builder.setMessage(buffer.toString());
                 builder.show();
             }

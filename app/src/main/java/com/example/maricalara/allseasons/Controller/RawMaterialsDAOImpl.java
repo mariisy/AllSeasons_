@@ -180,7 +180,7 @@ public class RawMaterialsDAOImpl implements RawMaterialsDAO {
     }
 
     @Override
-    public void updateTransaction(DBHelper dbHelper, String type, String name, int quantity) {
+    public void updateTransaction(DBHelper dbHelper, String Date, String type, String name, int quantity) {
         dbRead = dbHelper.getReadableDatabase();
         dbWrite = dbHelper.getWritableDatabase();
         String queryUpdate = "SELECT * FROM " + "RAW_MATERIALS WHERE NAME = '" + name + "'  AND TYPE = '" + type + "' ";
@@ -195,6 +195,7 @@ public class RawMaterialsDAOImpl implements RawMaterialsDAO {
             case "Seedlings":
                 if (cursor.moveToFirst()) {
                     do {
+                        seedling.setType(cursor.getString(cursor.getColumnIndex("DATE")));
                         seedling.setType(cursor.getString(cursor.getColumnIndex("TYPE")));
                         seedling.setName(cursor.getString(cursor.getColumnIndex("NAME")));
                         seedling.setQuantity(cursor.getInt(cursor.getColumnIndex("QUANTITY")));
@@ -216,6 +217,7 @@ public class RawMaterialsDAOImpl implements RawMaterialsDAO {
             case "Seeds":
                 if (cursor.moveToFirst()) {
                     do {
+                        seed.setType(cursor.getString(cursor.getColumnIndex("DATE")));
                         seed.setType(cursor.getString(cursor.getColumnIndex("TYPE")));
                         seed.setName(cursor.getString(cursor.getColumnIndex("NAME")));
                         seed.setQuantity(cursor.getInt(cursor.getColumnIndex("QUANTITY")));

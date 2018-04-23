@@ -1,6 +1,5 @@
 package com.example.maricalara.allseasons.Activity;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -16,7 +15,6 @@ import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.example.maricalara.allseasons.Controller.EquipmentDAO;
 import com.example.maricalara.allseasons.Controller.EquipmentDAOImpl;
@@ -37,6 +35,7 @@ import com.example.maricalara.allseasons.R;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class SettingsAddToWarehouse extends AppCompatActivity {
@@ -45,7 +44,7 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
 
     private EditText txtItemName, txtUprice, txtQty;
     private TextInputLayout inputLayoutItemname, inputLayoutUnitPrice, inputLayoutQty;
-    private Button btnAddItem,btnView;
+    private Button btnAddItem, btnView;
     private MaterialBetterSpinner spinnerType1;
 
     //DAO variables
@@ -56,14 +55,20 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
     private DBHelper dbHelper = new DBHelper(SettingsAddToWarehouse.this);
 
 
-    //Sample for List for Spinner type 1
+    //Data variables
     String[] spinnerListType = {"Seeds", "Seedlings", "Packaging", "Fertilizer", "Insecticides", "Equipment"};
 
-
-    //data holder
-    private String itemName, type, stringDate;
+    private String itemName, type;
     private Double unitPrice;
     private int qty;
+
+    //get Date String
+    Date date = new Date();
+    SimpleDateFormat sdf = new SimpleDateFormat("EEEE");
+    Date d = new Date();
+    String dayOfTheWeek = sdf.format(d);
+    String dateForTheDay = DateFormat.getDateInstance().format(date);
+    String strDate = dayOfTheWeek + ", " + dateForTheDay;
 
 
     @Override
@@ -79,7 +84,7 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
         txtUprice = (EditText) findViewById(R.id.txtUnitPrice);
         txtQty = (EditText) findViewById(R.id.txtQty);
         spinnerType1 = (MaterialBetterSpinner) findViewById(R.id.spinnerType);
-        btnView = (Button)findViewById(R.id.btnView);
+        btnView = (Button) findViewById(R.id.btnView);
 
         //inflate toolbar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -93,16 +98,15 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
         spinnerType1.setAdapter(arrayAdapter);
 
 
-
         btnAddItem = (Button) findViewById(R.id.btnAdd);
         btnAddItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                    if (validateType() && validateQty() && validateItemName() && validateUnitPrice()) {
-                        getData();
-                    }
-             }
+                if (validateType() && validateQty() && validateItemName() && validateUnitPrice()) {
+                    getData();
+                }
+            }
         });
 
 
@@ -124,7 +128,7 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
 
     }
 
-    private void clearField(){
+    private void clearField() {
         txtItemName.setText("");
         txtUprice.setText("");
         txtQty.setText("");
@@ -138,13 +142,12 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
         type = spinnerType1.getText().toString();
 
 
-        Date date = new Date();
-        stringDate = DateFormat.getDateTimeInstance().format(date);
+
 
         switch (type) {
             case "Equipment":
                 if (!equipmentDAO.checkExistingWarehouse(dbHelper, itemName)) {
-                    Equipment equip = new Equipment(type, itemName, qty, unitPrice, stringDate);
+                    Equipment equip = new Equipment(type, itemName, qty, unitPrice, strDate);
                     try {
                         tDAO.addEntry(dbHelper, equip, type);
                         equipmentDAO.addTransaction(dbHelper, equip);
@@ -176,8 +179,7 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
                                 })
                                 .show();
                     }
-                }
-                else{
+                } else {
                     new AlertDialog.Builder(SettingsAddToWarehouse.this)
                             .setTitle("Adding Entry")
                             .setMessage("Entry already exists! \n Would you like to add another entry?")
@@ -198,8 +200,8 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
                 break;
 
             case "Insecticides":
-                if (!tDAO.checkExistingWarehouse(dbHelper, itemName)) {
-                    Insecticides ins = new Insecticides(type, itemName, qty, unitPrice, stringDate);
+                if (!tDAO.checkExistingWarehouse(dbHelper, type, itemName)) {
+                    Insecticides ins = new Insecticides(type, itemName, qty, unitPrice, strDate);
                     try {
                         tDAO.addEntry(dbHelper, ins, type);
                         imDao.addTransaction(dbHelper, ins, type);
@@ -230,8 +232,7 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
                                 })
                                 .show();
                     }
-                }
-                else{
+                } else {
                     new AlertDialog.Builder(SettingsAddToWarehouse.this)
                             .setTitle("Adding Entry")
                             .setMessage("Entry already exists! \n Would you like to add another entry?")
@@ -252,8 +253,8 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
                 break;
 
             case "Fertilizer":
-                if (!tDAO.checkExistingWarehouse(dbHelper, itemName)) {
-                    Fertilizers fer = new Fertilizers(type, itemName, qty, unitPrice, stringDate);
+                if (!tDAO.checkExistingWarehouse(dbHelper, type, itemName)) {
+                    Fertilizers fer = new Fertilizers(type, itemName, qty, unitPrice, strDate);
                     try {
                         tDAO.addEntry(dbHelper, fer, type);
                         imDao.addTransaction(dbHelper, fer, type);
@@ -284,8 +285,7 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
                                 })
                                 .show();
                     }
-                }
-                else{
+                } else {
                     new AlertDialog.Builder(SettingsAddToWarehouse.this)
                             .setTitle("Adding Entry")
                             .setMessage("Entry already exists! \n Would you like to add another entry?")
@@ -306,8 +306,8 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
                 break;
 
             case "Packaging":
-                if (!tDAO.checkExistingWarehouse(dbHelper, itemName)) {
-                    Packaging packaging = new Packaging(type, itemName, qty, unitPrice, stringDate);
+                if (!tDAO.checkExistingWarehouse(dbHelper, type, itemName)) {
+                    Packaging packaging = new Packaging(type, itemName, qty, unitPrice, strDate);
                     try {
                         tDAO.addEntry(dbHelper, packaging, type);
                         imDao.addTransaction(dbHelper, packaging, type);
@@ -338,8 +338,7 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
                                 })
                                 .show();
                     }
-                }
-                else{
+                } else {
                     new AlertDialog.Builder(SettingsAddToWarehouse.this)
                             .setTitle("Adding Entry")
                             .setMessage("Entry already exists! \n Would you like to add another entry?")
@@ -360,8 +359,8 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
                 break;
 
             case "Seeds":
-                if (!tDAO.checkExistingWarehouse(dbHelper, itemName)) {
-                    Seeds seeds = new Seeds(type, itemName, qty, unitPrice, stringDate);
+                if (!tDAO.checkExistingWarehouse(dbHelper, type, itemName)) {
+                    Seeds seeds = new Seeds(type, itemName, qty, unitPrice, strDate);
                     try {
                         tDAO.addEntry(dbHelper, seeds, type);
                         rmDAO.addTransaction(dbHelper, seeds, type);
@@ -393,8 +392,7 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
                                 .show();
                     }
 
-                }
-                else {
+                } else {
                     new AlertDialog.Builder(SettingsAddToWarehouse.this)
                             .setTitle("Adding Entry")
                             .setMessage("Entry already exists! \n Would you like to add another entry?")
@@ -415,8 +413,8 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
                 break;
 
             case "Seedlings":
-                if (!tDAO.checkExistingWarehouse(dbHelper, itemName)) {
-                    Seedlings seedlings = new Seedlings(type, itemName, qty, unitPrice, stringDate);
+                if (!tDAO.checkExistingWarehouse(dbHelper, type, itemName)) {
+                    Seedlings seedlings = new Seedlings(type, itemName, qty, unitPrice, strDate);
                     try {
                         tDAO.addEntry(dbHelper, seedlings, type);
                         rmDAO.addTransaction(dbHelper, seedlings, type);
@@ -447,8 +445,7 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
                                 })
                                 .show();
                     }
-                }
-                else{
+                } else {
                     new AlertDialog.Builder(SettingsAddToWarehouse.this)
                             .setTitle("Adding Entry")
                             .setMessage("Entry already exists! \n Would you like to add another entry?")
@@ -472,7 +469,6 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
         }
 
     }
-
 
 
     private boolean validateItemName() {

@@ -110,7 +110,7 @@ public class EquipmentDAOImpl implements EquipmentDAO {
     }
 
     @Override
-    public void updateTransaction(DBHelper dbHelper, String type, String name, int quantity) {
+    public void updateTransaction(DBHelper dbHelper, String Date, String type, String name, int quantity) {
         dbRead = dbHelper.getReadableDatabase();
         dbWrite = dbHelper.getWritableDatabase();
         String queryUpdate = "SELECT * FROM " + "RAW_MATERIALS WHERE NAME = '" + name + "'  AND TYPE = '" + type + "' ";

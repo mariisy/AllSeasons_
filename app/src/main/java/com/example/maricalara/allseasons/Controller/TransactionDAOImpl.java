@@ -14,6 +14,8 @@ import com.example.maricalara.allseasons.Model.Seeds;
 import com.example.maricalara.allseasons.Model.WarehouseMaterial;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class TransactionDAOImpl implements TransactionDAO {
     SQLiteDatabase dbWrite, dbRead;
@@ -136,6 +138,34 @@ public class TransactionDAOImpl implements TransactionDAO {
     }
 
     @Override
+    public void addTransactionBought(DBHelper dbHelper, Object object, String type) {
+
+    }
+
+    @Override
+    public void addTranasctionSold(DBHelper dbHelper, Object object, String type) {
+
+    }
+
+    @Override
+    public HashMap<String, List<String>> retrieveBoughtList() {
+        HashMap<String, List<String>> listDate = new HashMap<String, List<String>>();
+        List<String> listTransacion = new ArrayList<String>();
+
+
+        return listDate;
+    }
+
+    @Override
+    public HashMap<String, List<String>> retrieveSoldList() {
+        HashMap<String, List<String>> listDate = new HashMap<String, List<String>>();
+        List<String> listTransaction = new ArrayList<String>();
+
+
+        return listDate;
+    }
+
+    @Override
     public ArrayList<String> retrieveListSpinner(DBHelper dbHelper, String type) {
         dbRead = dbHelper.getReadableDatabase();
         String queryForRetrievalAll = "SELECT NAME FROM " + "RAW_MATERIALS WHERE TYPE = '" + type + "' ";
@@ -169,7 +199,7 @@ public class TransactionDAOImpl implements TransactionDAO {
         values.put("PRICE", price);
 
         String selection = "NAME" + " LIKE ?";
-        String[] selectionArgs = { name };
+        String[] selectionArgs = {name};
 
         dbRead.update("WAREHOUSE_EQUIPMENT", values, selection, selectionArgs);
 
@@ -180,7 +210,7 @@ public class TransactionDAOImpl implements TransactionDAO {
         dbRead = dbHelper.getReadableDatabase();
 
         String selection = "NAME" + " LIKE ?";
-        String[] selectionArgs = { name };
+        String[] selectionArgs = {name};
         dbRead.delete("WAREHOUSE_EQUIPMENT", selection, selectionArgs);
     }
 }

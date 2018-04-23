@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 
 import com.example.maricalara.allseasons.Adapter.WarehouseMaterialAdapter;
@@ -36,9 +37,6 @@ public class SettingsEditWarehouse extends AppCompatActivity {
     private static WarehouseMaterialAdapter warehouseMaterialAdapter;
 
     //DAO variables
-    private EquipmentDAO equipmentDAO = new EquipmentDAOImpl();
-    private IndirectMaterialsDAO imDao = new IndirectMaterialsDAOImpl();
-    private RawMaterialsDAO rmDAO = new RawMaterialsDAOImpl();
     private TransactionDAO tDAO = new TransactionDAOImpl();
     private DBHelper dbHelper = new DBHelper(SettingsEditWarehouse.this);
 
@@ -87,8 +85,15 @@ public class SettingsEditWarehouse extends AppCompatActivity {
                 intent.putExtra("itemPrice", strPrice);
                 startActivity(intent);
 
+            }
+        });
 
-
+        Button btnReload = (Button) findViewById(R.id.btnReload);
+        btnReload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+                startActivity(getIntent());
             }
         });
 

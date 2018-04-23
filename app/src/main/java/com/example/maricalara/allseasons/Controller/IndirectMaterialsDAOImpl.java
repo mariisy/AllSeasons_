@@ -239,7 +239,7 @@ public class IndirectMaterialsDAOImpl implements IndirectMaterialsDAO {
     }
 
     @Override
-    public void updateTransaction(DBHelper dbHelper, String type, String name, int quantity) {
+    public void updateTransaction(DBHelper dbHelper, String Date, String type, String name, int quantity) {
         dbRead = dbHelper.getReadableDatabase();
         dbWrite = dbHelper.getWritableDatabase();
         String queryUpdate = "SELECT * FROM " + "RAW_MATERIALS WHERE NAME = '" + name + "'  AND TYPE = '" + type + "' ";
@@ -254,6 +254,7 @@ public class IndirectMaterialsDAOImpl implements IndirectMaterialsDAO {
             case "Insecticides":
                 if (cursor.moveToFirst()) {
                     do {
+                        in.setType(cursor.getString(cursor.getColumnIndex("DATE")));
                         in.setType(cursor.getString(cursor.getColumnIndex("TYPE")));
                         in.setName(cursor.getString(cursor.getColumnIndex("NAME")));
                         in.setQuantity(cursor.getInt(cursor.getColumnIndex("QUANTITY")));
@@ -275,6 +276,7 @@ public class IndirectMaterialsDAOImpl implements IndirectMaterialsDAO {
             case "Fertilizer":
                 if (cursor.moveToFirst()) {
                     do {
+                        fe.setType(cursor.getString(cursor.getColumnIndex("DATE")));
                         fe.setType(cursor.getString(cursor.getColumnIndex("TYPE")));
                         fe.setName(cursor.getString(cursor.getColumnIndex("NAME")));
                         fe.setQuantity(cursor.getInt(cursor.getColumnIndex("QUANTITY")));
@@ -296,6 +298,7 @@ public class IndirectMaterialsDAOImpl implements IndirectMaterialsDAO {
             case "Packaging":
                 if (cursor.moveToFirst()) {
                     do {
+                        pa.setType(cursor.getString(cursor.getColumnIndex("DATE")));
                         pa.setType(cursor.getString(cursor.getColumnIndex("TYPE")));
                         pa.setName(cursor.getString(cursor.getColumnIndex("NAME")));
                         pa.setQuantity(cursor.getInt(cursor.getColumnIndex("QUANTITY")));

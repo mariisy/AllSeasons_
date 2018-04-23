@@ -15,8 +15,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.maricalara.allseasons.Controller.RawMaterialsDAO;
-import com.example.maricalara.allseasons.Controller.RawMaterialsDAOImpl;
 import com.example.maricalara.allseasons.Controller.TransactionDAO;
 import com.example.maricalara.allseasons.Controller.TransactionDAOImpl;
 import com.example.maricalara.allseasons.Model.DBHelper;
@@ -75,7 +73,7 @@ public class EditWarehouse extends AppCompatActivity {
             public void onClick(View v) {
 
                 if (validateUnitPrice()) {
-
+                    updateData();
                 }
             }
         });
@@ -85,7 +83,7 @@ public class EditWarehouse extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-
+                deleteData();
             }
         });
 
@@ -94,7 +92,8 @@ public class EditWarehouse extends AppCompatActivity {
 
     private void updateData() {
         try {
-            tDAO.updateEntry(dbHelper, strName, strPrice);
+            double uPrice = Double.valueOf(txtUprice.getText().toString());
+            tDAO.updateEntry(dbHelper, strName, uPrice);
             new AlertDialog.Builder(EditWarehouse.this)
                     .setTitle("Updating Entry")
                     .setMessage("Entry Update Successful!.")
@@ -104,7 +103,7 @@ public class EditWarehouse extends AppCompatActivity {
                         }
                     })
                     .show();
-        }catch (Exception e){
+        } catch (Exception e) {
             new AlertDialog.Builder(EditWarehouse.this)
                     .setTitle("Updating Entry")
                     .setMessage("Updating entry unsuccesful! \n Please try again.")
@@ -128,7 +127,7 @@ public class EditWarehouse extends AppCompatActivity {
                         }
                     })
                     .show();
-        }catch (Exception e){
+        } catch (Exception e) {
             new AlertDialog.Builder(EditWarehouse.this)
                     .setTitle("Deleting Entry")
                     .setMessage("Deleting entry unsuccesful! \n Please try again.")
@@ -187,7 +186,6 @@ public class EditWarehouse extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-
 
                 this.finish();
                 return true;

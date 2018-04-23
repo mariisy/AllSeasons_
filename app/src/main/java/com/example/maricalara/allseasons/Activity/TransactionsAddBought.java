@@ -15,6 +15,7 @@ import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.maricalara.allseasons.Controller.EquipmentDAO;
 import com.example.maricalara.allseasons.Controller.EquipmentDAOImpl;
@@ -29,6 +30,7 @@ import com.example.maricalara.allseasons.R;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -44,12 +46,11 @@ public class TransactionsAddBought extends AppCompatActivity {
 
 
     //for UI
-    private String type, itemName;
-    private int qty;
     private Button btnAddTransaction, btnView;
     private EditText txtSupplierName, txtContactNum, txtQty;
     private TextInputLayout inputLayoutSupplierName, inputLayoutContactNum, inputLayoutQty;
     private MaterialBetterSpinner spinnerItem, spinnerItemName;
+    private TextView txtDate, txtTransaction;
 
     //DAO
     private EquipmentDAO equipmentDAO = new EquipmentDAOImpl();
@@ -59,8 +60,18 @@ public class TransactionsAddBought extends AppCompatActivity {
     private DBHelper dbHelper = new DBHelper(TransactionsAddBought.this);
     private ArrayList<String> arrList;
 
-    //Sample for List for Spinner type 1
+    //Data variables
     String[] spinnerListType = {"Seeds", "Seedlings", "Packaging", "Fertilizer", "Insecticides", "Equipment"};
+    private String type, itemName, transactionID;
+    private int qty;
+
+    //get Date String
+    Date date = new Date();
+    SimpleDateFormat sdf = new SimpleDateFormat("EEEE");
+    Date d = new Date();
+    String dayOfTheWeek = sdf.format(d);
+    String dateForTheDay = DateFormat.getDateInstance().format(date);
+    String strDate = dayOfTheWeek + ", " + dateForTheDay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +86,7 @@ public class TransactionsAddBought extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
+        //UI inflater
         inputLayoutSupplierName = (TextInputLayout) findViewById(R.id.input_layout_supplier);
         inputLayoutContactNum = (TextInputLayout) findViewById(R.id.input_layout_contactNum);
         inputLayoutQty = (TextInputLayout) findViewById(R.id.input_layout_qty);
@@ -84,6 +96,10 @@ public class TransactionsAddBought extends AppCompatActivity {
         btnView = (Button) findViewById(R.id.btnView);
         spinnerItem = (MaterialBetterSpinner) findViewById(R.id.spinnerItem);
         spinnerItemName = (MaterialBetterSpinner) findViewById(R.id.spinnerItemName);
+        txtDate = (TextView) findViewById(R.id.txtDate);
+        txtTransaction = (TextView) findViewById(R.id.txtTransactionID);
+
+        txtDate.setText(strDate);
 
         //set array for spinner type 1 and type 2
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, spinnerListType);
@@ -272,14 +288,15 @@ public class TransactionsAddBought extends AppCompatActivity {
         type = spinnerItem.getText().toString();
         itemName = spinnerItemName.getText().toString();
         qty = Integer.parseInt(txtQty.getText().toString());
+
         Date date = new Date();
         String stringDate = DateFormat.getDateTimeInstance().format(date);
         double unitPrice = 0;
         switch (type) {
             case "Equipment":
-                if (tDAO.checkExistingWarehouse(dbHelper,type, itemName)) {
+                if (tDAO.checkExistingWarehouse(dbHelper, type, itemName)) {
                     try {
-                        equipmentDAO.updateTransaction(dbHelper,type,itemName,qty);
+                        equipmentDAO.updateTransaction(dbHelper, strDate, type, itemName, qty);
 
                         new AlertDialog.Builder(TransactionsAddBought.this)
                                 .setTitle("Adding Entry")
@@ -307,8 +324,7 @@ public class TransactionsAddBought extends AppCompatActivity {
                                 })
                                 .show();
                     }
-                }
-                else{
+                } else {
                     new AlertDialog.Builder(TransactionsAddBought.this)
                             .setTitle("Adding Entry")
                             .setMessage("Entry already exists! /n Would you like to add another entry?")
@@ -328,9 +344,9 @@ public class TransactionsAddBought extends AppCompatActivity {
                 break;
 
             case "Insecticides":
-                if (tDAO.checkExistingWarehouse(dbHelper,type, itemName)) {
+                if (tDAO.checkExistingWarehouse(dbHelper, type, itemName)) {
                     try {
-                        imDao.updateTransaction(dbHelper,type,itemName,qty);
+                        imDao.updateTransaction(dbHelper, strDate, type, itemName, qty);
 
                         new AlertDialog.Builder(TransactionsAddBought.this)
                                 .setTitle("Adding Entry")
@@ -357,8 +373,7 @@ public class TransactionsAddBought extends AppCompatActivity {
                                 })
                                 .show();
                     }
-                }
-                else{
+                } else {
                     new AlertDialog.Builder(TransactionsAddBought.this)
                             .setTitle("Adding Entry")
                             .setMessage("Entry already exists! /n Would you like to add another entry?")
@@ -378,9 +393,9 @@ public class TransactionsAddBought extends AppCompatActivity {
                 break;
 
             case "Fertilizer":
-                if (tDAO.checkExistingWarehouse(dbHelper,type, itemName)) {
+                if (tDAO.checkExistingWarehouse(dbHelper, type, itemName)) {
                     try {
-                        imDao.updateTransaction(dbHelper,type,itemName,qty);
+                        imDao.updateTransaction(dbHelper, strDate, type, itemName, qty);
 
                         new AlertDialog.Builder(TransactionsAddBought.this)
                                 .setTitle("Adding Entry")
@@ -407,8 +422,7 @@ public class TransactionsAddBought extends AppCompatActivity {
                                 })
                                 .show();
                     }
-                }
-                else{
+                } else {
                     new AlertDialog.Builder(TransactionsAddBought.this)
                             .setTitle("Adding Entry")
                             .setMessage("Entry already exists! /n Would you like to add another entry?")
@@ -428,9 +442,9 @@ public class TransactionsAddBought extends AppCompatActivity {
                 break;
 
             case "Packaging":
-                if (tDAO.checkExistingWarehouse(dbHelper,type, itemName)) {
+                if (tDAO.checkExistingWarehouse(dbHelper, type, itemName)) {
                     try {
-                        imDao.updateTransaction(dbHelper,type,itemName,qty);
+                        imDao.updateTransaction(dbHelper, strDate, type, itemName, qty);
 
                         new AlertDialog.Builder(TransactionsAddBought.this)
                                 .setTitle("Adding Entry")
@@ -457,8 +471,7 @@ public class TransactionsAddBought extends AppCompatActivity {
                                 })
                                 .show();
                     }
-                }
-                else{
+                } else {
                     new AlertDialog.Builder(TransactionsAddBought.this)
                             .setTitle("Adding Entry")
                             .setMessage("Entry already exists! /n Would you like to add another entry?")
@@ -480,7 +493,7 @@ public class TransactionsAddBought extends AppCompatActivity {
             case "Seeds":
                 if (tDAO.checkExistingWarehouse(dbHelper, type, itemName)) {
                     try {
-                        rmDAO.updateTransaction(dbHelper,type,itemName,qty);
+                        rmDAO.updateTransaction(dbHelper, strDate, type, itemName, qty);
 
                         new AlertDialog.Builder(TransactionsAddBought.this)
                                 .setTitle("Adding Entry")
@@ -508,8 +521,7 @@ public class TransactionsAddBought extends AppCompatActivity {
                                 .show();
                     }
 
-                }
-                else {
+                } else {
                     new AlertDialog.Builder(TransactionsAddBought.this)
                             .setTitle("Adding Entry")
                             .setMessage("Entry already exists! /n Would you like to add another entry?")
@@ -529,9 +541,9 @@ public class TransactionsAddBought extends AppCompatActivity {
                 break;
 
             case "Seedlings":
-                if (tDAO.checkExistingWarehouse(dbHelper,type, itemName)) {
+                if (tDAO.checkExistingWarehouse(dbHelper, type, itemName)) {
                     try {
-                        rmDAO.updateTransaction(dbHelper,type,itemName,qty);
+                        rmDAO.updateTransaction(dbHelper, strDate, type, itemName, qty);
 
                         new AlertDialog.Builder(TransactionsAddBought.this)
                                 .setTitle("Adding Entry")
@@ -558,8 +570,7 @@ public class TransactionsAddBought extends AppCompatActivity {
                                 })
                                 .show();
                     }
-                }
-                else{
+                } else {
                     new AlertDialog.Builder(TransactionsAddBought.this)
                             .setTitle("Adding Entry")
                             .setMessage("Entry already exists! /n Would you like to add another entry?")

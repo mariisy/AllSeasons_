@@ -17,7 +17,7 @@ public interface EquipmentDAO {
      boolean checkExisting (DBHelper dbHelper,String name);
 
      boolean checkExistingWarehouse (DBHelper dbHelper,String name);
-     void updateTransaction(DBHelper dbHelper, String type, String name, int quantity);
+     void updateTransaction(DBHelper dbHelper,String Date, String type, String name, int quantity);
      void deleteEntry (DBHelper dbHelper, String name);
 
 }

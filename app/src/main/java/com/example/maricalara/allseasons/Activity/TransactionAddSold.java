@@ -1,10 +1,12 @@
 package com.example.maricalara.allseasons.Activity;
 
+import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
@@ -25,13 +27,23 @@ public class TransactionAddSold extends AppCompatActivity {
     //for UI
     private Button btnAddTransaction;
     private EditText txtCustomerName, txtContactNum, txtQty, txtAddress;
-    private TextInputLayout inputLayoutCustomerName, inputLayoutContactNum, inputLayoutQuantity,inputLayoutAddress;
+    private TextInputLayout inputLayoutCustomerName, inputLayoutContactNum, inputLayoutQuantity, inputLayoutAddress;
     private CheckBox chckDelivery;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transaction_add_sold);
+
+        //inflate toolbar
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        //inflate back arrow button
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
 
         inputLayoutCustomerName = (TextInputLayout) findViewById(R.id.input_layout_customerName);
         inputLayoutContactNum = (TextInputLayout) findViewById(R.id.input_layout_contactNum);
@@ -42,7 +54,6 @@ public class TransactionAddSold extends AppCompatActivity {
         txtQty = (EditText) findViewById(R.id.txtQty);
         txtAddress = (EditText) findViewById(R.id.txtAddress);
         chckDelivery = (CheckBox) findViewById(R.id.delivery);
-
 
 
         //layout for spinnerCrop
@@ -64,13 +75,10 @@ public class TransactionAddSold extends AppCompatActivity {
         });
 
 
-
-
     }
 
 
-
-    private void submitEditText(){
+    private void submitEditText() {
         if (!validateCustomerName()) {
             return;
         }
@@ -88,27 +96,26 @@ public class TransactionAddSold extends AppCompatActivity {
         Toast.makeText(this.getApplicationContext(), "Thank You!", Toast.LENGTH_SHORT).show();
     }
 
-    private boolean validateAddress(){
+    private boolean validateAddress() {
 
-        if(chckDelivery.isChecked()){
-            if (txtAddress.getText().toString().trim().isEmpty()){
+        if (chckDelivery.isChecked()) {
+            if (txtAddress.getText().toString().trim().isEmpty()) {
                 inputLayoutAddress.setError("Enter Customer Address!");
                 requestFocus(txtAddress);
                 return false;
             } else {
                 inputLayoutAddress.setErrorEnabled(false);
             }
-        }else{
+        } else {
             inputLayoutAddress.setErrorEnabled(false);
         }
-
 
 
         return true;
     }
 
-    private boolean validateQuantity(){
-        if (txtQty.getText().toString().trim().isEmpty()){
+    private boolean validateQuantity() {
+        if (txtQty.getText().toString().trim().isEmpty()) {
             inputLayoutQuantity.setError("Enter Item Quantity!");
             requestFocus(txtQty);
             return false;
@@ -118,8 +125,8 @@ public class TransactionAddSold extends AppCompatActivity {
         return true;
     }
 
-    private boolean validateCustomerName(){
-        if (txtCustomerName.getText().toString().trim().isEmpty()){
+    private boolean validateCustomerName() {
+        if (txtCustomerName.getText().toString().trim().isEmpty()) {
             inputLayoutCustomerName.setError("Enter Customer Name");
             requestFocus(txtCustomerName);
             return false;
@@ -129,8 +136,8 @@ public class TransactionAddSold extends AppCompatActivity {
         return true;
     }
 
-    private boolean validateContact(){
-        if (txtContactNum.getText().toString().trim().isEmpty()){
+    private boolean validateContact() {
+        if (txtContactNum.getText().toString().trim().isEmpty()) {
             inputLayoutContactNum.setError("Enter Contact Number");
             requestFocus(txtContactNum);
             return false;
@@ -175,6 +182,20 @@ public class TransactionAddSold extends AppCompatActivity {
                     validateAddress();
                     break;
             }
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                // todo: goto back activity from here
+
+                this.finish();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 
