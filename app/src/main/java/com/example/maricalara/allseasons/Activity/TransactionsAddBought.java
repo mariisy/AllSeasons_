@@ -71,7 +71,7 @@ public class TransactionsAddBought extends AppCompatActivity {
     Date d = new Date();
     String dayOfTheWeek = sdf.format(d);
     String dateForTheDay = DateFormat.getDateInstance().format(date);
-    String strDate = dayOfTheWeek + ", " + dateForTheDay;
+    String strDate ="Date: " + dayOfTheWeek + ", " + dateForTheDay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,6 +109,23 @@ public class TransactionsAddBought extends AppCompatActivity {
         ArrayAdapter<String> arrayAdapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, arrList);
         spinnerItemName.setAdapter(arrayAdapter2);
 
+
+        spinnerItem.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                populateSpinnerName();
+            }
+        });
 
         btnAddTransaction = (Button) findViewById(R.id.btnAdd);
         btnAddTransaction.setOnClickListener(new View.OnClickListener() {
@@ -592,6 +609,52 @@ public class TransactionsAddBought extends AppCompatActivity {
             default: //do something
         }
 
+    }
+
+    private void populateSpinnerName ()
+    {
+        type = spinnerItem.getText().toString();
+        ArrayAdapter<String> arrayAdapter2;
+        switch (type) {
+            case "Equipment":
+                arrList = tDAO.retrieveListSpinner(dbHelper, type);
+                arrayAdapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, arrList);
+                spinnerItemName.setAdapter(arrayAdapter2);
+                break;
+
+            case "Insecticides":
+                arrList = tDAO.retrieveListSpinner(dbHelper, type);
+                arrayAdapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, arrList);
+                spinnerItemName.setAdapter(arrayAdapter2);
+                break;
+
+            case "Fertilizer":
+                arrList = tDAO.retrieveListSpinner(dbHelper, type);
+                arrayAdapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, arrList);
+                spinnerItemName.setAdapter(arrayAdapter2);
+
+                break;
+
+            case "Packaging":
+                arrList = tDAO.retrieveListSpinner(dbHelper, type);
+                arrayAdapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, arrList);
+                spinnerItemName.setAdapter(arrayAdapter2);
+                break;
+
+            case "Seeds":
+                arrList = tDAO.retrieveListSpinner(dbHelper, type);
+                arrayAdapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, arrList);
+                spinnerItemName.setAdapter(arrayAdapter2);
+                break;
+
+            case "Seedlings":
+                arrList = tDAO.retrieveListSpinner(dbHelper, type);
+                arrayAdapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, arrList);
+                spinnerItemName.setAdapter(arrayAdapter2);
+                break;
+
+            default: //do something
+        }
     }
 
 

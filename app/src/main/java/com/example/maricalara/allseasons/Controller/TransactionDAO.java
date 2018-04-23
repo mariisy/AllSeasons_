@@ -20,9 +20,9 @@ public interface TransactionDAO {
 
     void addTranasctionSold(DBHelper dbHelper, Object object, String type);
 
-    HashMap<String, List<String>> retrieveBoughtList();
+    HashMap<String, List<String>> retrieveBoughtList(DBHelper dbHelper);
 
-    HashMap<String, List<String>> retrieveSoldList();
+    HashMap<String, List<String>> retrieveSoldList(DBHelper dbHelper);
 
     ArrayList<String> retrieveListSpinner(DBHelper dbHelper, String type);
 

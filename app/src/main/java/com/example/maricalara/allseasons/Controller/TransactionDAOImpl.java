@@ -148,16 +148,22 @@ public class TransactionDAOImpl implements TransactionDAO {
     }
 
     @Override
-    public HashMap<String, List<String>> retrieveBoughtList() {
+    public HashMap<String, List<String>> retrieveBoughtList(DBHelper dbHelper) {
+        dbWrite = dbHelper.getWritableDatabase();
+        String queryGetDate = "SELECT DATE FROM TRANSACTIONS";
+        Cursor cursor = dbWrite.rawQuery(queryGetDate, null);
+
         HashMap<String, List<String>> listDate = new HashMap<String, List<String>>();
         List<String> listTransacion = new ArrayList<String>();
+
+        listDate.put("",listTransacion);
 
 
         return listDate;
     }
 
     @Override
-    public HashMap<String, List<String>> retrieveSoldList() {
+    public HashMap<String, List<String>> retrieveSoldList(DBHelper dbHelper) {
         HashMap<String, List<String>> listDate = new HashMap<String, List<String>>();
         List<String> listTransaction = new ArrayList<String>();
 

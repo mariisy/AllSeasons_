@@ -1,8 +1,7 @@
 package com.example.maricalara.allseasons.Activity;
 
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -43,7 +42,6 @@ public class WarehouseDetailActivity extends AppCompatActivity {
     Equipment equipment;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,11 +56,10 @@ public class WarehouseDetailActivity extends AppCompatActivity {
 
         txtType = (TextView) findViewById(R.id.txtType);
         txtName = (TextView) findViewById(R.id.txtName);
-        txtPrice =(TextView) findViewById(R.id.txtPrice);
+        txtPrice = (TextView) findViewById(R.id.txtPrice);
         txtQty = (TextView) findViewById(R.id.txtQty);
         txtPriceTotal = (TextView) findViewById(R.id.txtPriceTotal);
         txtDate = (TextView) findViewById(R.id.txtDate);
-
 
 
         Bundle extras = getIntent().getExtras();
@@ -76,7 +73,7 @@ public class WarehouseDetailActivity extends AppCompatActivity {
 
     }
 
-    private void setData(){
+    private void setData() {
         switch (strType) {
             case "Equipment":
                 object = imDao.retrieveOne(dbHelper, strType, strName);

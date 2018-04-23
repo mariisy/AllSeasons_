@@ -44,8 +44,8 @@ public class MainActivity extends AppCompatActivity {
 
     // urls to load navigation header background image
     // and profile image
-    private static final String urlNavHeaderBg = "https://ssl.c.photoshelter.com/img-get2/I0000aCgoE3a5zgo/fit=1000x750/rice-paddy-phil-00384.jpg";
-    private static final String urlProfileImg = "https://scontent.fmnl3-2.fna.fbcdn.net/v/t1.0-9/19424025_1500439273311616_1169667763987267857_n.jpg?oh=07b6114dfcad7af698baa0151df81d84&oe=5AE29524";
+    private static final String urlNavHeaderBg = "https://drive.google.com/file/d/1GW1sSOxQzI7hzDYiXww6AREaV3qzFPCN/view?usp=sharing";
+    private static final String urlProfileImg = "https://drive.google.com/file/d/19Jn0Dvyhsz2jxhFlDbMnWLvMzfaKYWpJ/view?usp=sharing";
 
     // index to identify current nav menu item
     public static int navItemIndex = 0;

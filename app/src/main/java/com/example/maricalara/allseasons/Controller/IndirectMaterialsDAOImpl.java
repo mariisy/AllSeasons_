@@ -188,7 +188,7 @@ public class IndirectMaterialsDAOImpl implements IndirectMaterialsDAO {
                     } while (cursor.moveToNext());
 
                 }
-                object = (Object) in;
+                object =  in;
 
                 break;
 
@@ -217,11 +217,10 @@ public class IndirectMaterialsDAOImpl implements IndirectMaterialsDAO {
                     } while (cursor.moveToNext());
 
                 }
-                object = (Object) pa;
+                object =  pa;
                 break;
 
-
-            default: //do something
+            default: return object; //do something
         }
         return object;
     }

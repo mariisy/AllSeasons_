@@ -41,7 +41,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     android:text="Transaction ID:"
-                    android:layout_below="@id/date_today"
+                    android:layout_below="@id/txtDate"
                     android:textColor="#555555"
                     android:textAppearance="?android:attr/textAppearanceMedium"/>
 
