@@ -40,18 +40,16 @@ public class TransactionDAOImpl implements TransactionDAO {
         Cursor result = dbWrite.rawQuery("SELECT * FROM EMPLOYEE", null);
         return result;
     }
-
     @Override
-    public void addEmployee(DBHelper dbHelper, Object object) {
-        dbWrite = dbHelper.getWritableDatabase();
-        Cursor result = dbWrite.rawQuery("SELECT * FROM EMPLOYEE", null);
-        employees = (Employees) object;
-        ContentValues values = new ContentValues();
-        values.put("EMPLOYEE_Full_ID", "HALLO");
-        values.put("NAME",employees.getName());
-        values.put("ACCOUNT_TYPE", employees.getAccountype());
-        values.put("SALARY", employees.getSalary());
-        dbWrite.insert("EMPLOYEE", null, values);
+    public boolean checkExistingEmployee(DBHelper dbHelper, String type, String name) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        String queryForCheck = "SELECT NAME FROM " + "EMPLOYEE" + " WHERE NAME = '" + name + "' AND ACCOUNT_TYPE = '"+type+"'";
+
+        Cursor result = db.rawQuery(queryForCheck, null);
+        if (result.getCount() == 0) {
+            return false;//not existing. NULL
+        }
+        return true;//existing. NOT NULL
 
     }
 
@@ -154,8 +152,29 @@ public class TransactionDAOImpl implements TransactionDAO {
                     dbWrite.insert("WAREHOUSE_EQUIPMENT", null, values);
                 }
                 break;
+            case "Employee":
+                if (object instanceof Employees) {
+                    employees = (Employees) object;
+                    ContentValues values = new ContentValues();
+                    values.put("EMPLOYEE_ID", employees.getEmployeeID());
+                    if(employees.getAccountype().equals("Farmer")){
+                        values.put("EMPLOYEE_FULL_ID", "EMPFRM" + employees.getEmployeeID());
+                    }
+                    if(employees.getAccountype().equals("Staff")){
+                        values.put("EMPLOYEE_FULL_ID", "EMPSTF" + employees.getEmployeeID());
+                    }
+                    if(employees.getAccountype().equals("Supervisor")){
+                        values.put("EMPLOYEE_FULL_ID", "EMPSRV" + employees.getEmployeeID());
+                    }
+                    values.put("NAME", employees.getName());
+                    values.put("ACCOUNT_TYPE", employees.getAccountype());
+                    values.put("SALARY", employees.getSalary());
+                    dbWrite.insert("EMPLOYEE", null, values);
+                }
 
-            default: //do something
+                break;
+
+           default: //do something
         }
     }
 

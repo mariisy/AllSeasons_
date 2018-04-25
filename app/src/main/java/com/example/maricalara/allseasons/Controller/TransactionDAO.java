@@ -11,7 +11,9 @@ import java.util.List;
 
 public interface TransactionDAO {
     Cursor getAllData(DBHelper dbHelper);
-    public void addEmployee(DBHelper dbHelper, Object object);
+
+    public boolean checkExistingEmployee(DBHelper dbHelper, String type, String name);
+
     public Cursor getAllEmployee(DBHelper dbHelper);
     ArrayList<WarehouseMaterial> getAllDataWarehouse(DBHelper dbHelper);
 
