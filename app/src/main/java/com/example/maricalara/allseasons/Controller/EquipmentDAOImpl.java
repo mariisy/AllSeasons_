@@ -76,7 +76,7 @@ public class EquipmentDAOImpl implements EquipmentDAO {
     @Override
     public Equipment retrieveOne(DBHelper dbHelper, String type, String name) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        String queryForRetrievalOne = "SELECT * FROM " + "RAW_MATERIALS WHERE NAME = '" + name + "'  AND TYPE = '" + type + "' ";
+        String queryForRetrievalOne = "SELECT * FROM " + "EQUIPMENT WHERE NAME = '" + name + "'  AND TYPE = '" + type + "' ";
         Cursor cursor = db.rawQuery(queryForRetrievalOne, null);
         Equipment equipment = new Equipment(null, null, 0, 0, null);
         Object object = null;
@@ -113,7 +113,7 @@ public class EquipmentDAOImpl implements EquipmentDAO {
     public void updateTransaction(DBHelper dbHelper, String Date, String type, String name, int quantity) {
         dbRead = dbHelper.getReadableDatabase();
         dbWrite = dbHelper.getWritableDatabase();
-        String queryUpdate = "SELECT * FROM " + "RAW_MATERIALS WHERE NAME = '" + name + "'  AND TYPE = '" + type + "' ";
+        String queryUpdate = "SELECT * FROM " + "EQUIPMENT WHERE NAME = '" + name + "'  AND TYPE = '" + type + "' ";
         Cursor cursor = dbRead.rawQuery(queryUpdate, null);
         Equipment equipment = new Equipment(null, null, 0, 0, null);
         ContentValues val = new ContentValues();
@@ -136,7 +136,7 @@ public class EquipmentDAOImpl implements EquipmentDAO {
             val.put("PRICE", equipment.getPrice());
             costTotal = (equipment.getQuantity() + quantity) * equipment.getPrice();
             val.put("TOTAL_COST", costTotal);
-            dbWrite.update("RAW_MATERIALS", val, "NAME = '" + name + "'  AND TYPE = '" + type + "' ", null);
+            dbWrite.update("EQUIPMENT", val, "NAME = '" + name + "'  AND TYPE = '" + type + "' ", null);
         }
     }
 

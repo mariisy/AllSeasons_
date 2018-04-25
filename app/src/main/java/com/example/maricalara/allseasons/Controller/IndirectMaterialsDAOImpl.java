@@ -169,7 +169,7 @@ public class IndirectMaterialsDAOImpl implements IndirectMaterialsDAO {
     @Override
     public Object retrieveOne(DBHelper dbHelper, String type, String name) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        String queryForRetrievalOne = "SELECT * FROM " + "RAW_MATERIALS WHERE NAME = '" + name + "'  AND TYPE = '" + type + "' ";
+        String queryForRetrievalOne = "SELECT * FROM " + "INDIRECT_MATERIALS WHERE NAME = '" + name + "'  AND TYPE = '" + type + "' ";
         Cursor cursor = db.rawQuery(queryForRetrievalOne, null);
         Insecticides in = new Insecticides(null, null, 0, 0, null);
         Fertilizers fe = new Fertilizers(null, null, 0, 0, null);
