@@ -7,14 +7,16 @@ package com.example.maricalara.allseasons.Model;
 public class Employees {
 
     private String employeeID;
+    private String employeeFullID;
     private String name;
     private String accountype;
     private String date;
     private int salary;
 
 
-    public Employees(String employeeID, String name, String accountype, String date, int salary) {
+    public Employees(String employeeID,String employeeFullID,String name, String accountype, String date, int salary) {
         this.employeeID = employeeID;
+        this.employeeFullID = employeeFullID;
         this.name = name;
         this.accountype = accountype;
         this.date = date;
@@ -23,6 +25,14 @@ public class Employees {
 
     public String getEmployeeID() {
         return employeeID;
+    }
+
+    public String getEmployeeFullID() {
+        return employeeFullID;
+    }
+
+    public void setEmployeeFullID(String employeeFullID) {
+        this.employeeFullID = employeeFullID;
     }
 
     public void setEmployeeID(String employeeID) {

@@ -241,6 +241,20 @@ public class RawMaterialsDAOImpl implements RawMaterialsDAO {
     }
 
     @Override
+    public ArrayList<String> retrieveListSpinner(DBHelper dbHelper, String type) {
+        dbRead = dbHelper.getReadableDatabase();
+        String queryForRetrievalAll = "SELECT NAME FROM " + "RAW_MATERIALS WHERE TYPE = '" + type + "' ";
+        ArrayList<String> listHolder = new ArrayList<String>();
+        Cursor cursor = dbRead.rawQuery(queryForRetrievalAll, null);
+        if (cursor.moveToFirst()) {
+            do {
+                listHolder.add(cursor.getString(cursor.getColumnIndex("NAME")));
+            } while (cursor.moveToNext());
+        }
+        return listHolder;
+    }
+
+    @Override
     public void deleteEntry(DBHelper dbHelper, String name) {
         dbWrite = dbHelper.getWritableDatabase();
 

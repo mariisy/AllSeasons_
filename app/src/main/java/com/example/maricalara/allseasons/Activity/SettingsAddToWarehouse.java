@@ -146,7 +146,7 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
 
         switch (type) {
             case "Equipment":
-                if (!equipmentDAO.checkExistingWarehouse(dbHelper, itemName)) {
+                if (!equipmentDAO.checkExistingWarehouse(dbHelper,type, itemName)) {
                     Equipment equip = new Equipment(type, itemName, qty, unitPrice, strDate);
                     try {
                         tDAO.addEntry(dbHelper, equip, type);

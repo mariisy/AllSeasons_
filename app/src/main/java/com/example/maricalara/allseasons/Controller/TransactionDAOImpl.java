@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.example.maricalara.allseasons.Model.DBHelper;
+import com.example.maricalara.allseasons.Model.Employees;
 import com.example.maricalara.allseasons.Model.Equipment;
 import com.example.maricalara.allseasons.Model.Fertilizers;
 import com.example.maricalara.allseasons.Model.Insecticides;
@@ -25,12 +26,33 @@ public class TransactionDAOImpl implements TransactionDAO {
     private Seedlings seedlings;
     private Seeds seeds;
     private Equipment equipment;
+    private Employees employees;
 
     @Override
     public Cursor getAllData(DBHelper dbHelper) {
         dbWrite = dbHelper.getWritableDatabase();
         Cursor result = dbWrite.rawQuery("SELECT * FROM WAREHOUSE_EQUIPMENT", null);
         return result;
+    }
+    @Override
+    public Cursor getAllEmployee(DBHelper dbHelper) {
+        dbWrite = dbHelper.getWritableDatabase();
+        Cursor result = dbWrite.rawQuery("SELECT * FROM EMPLOYEE", null);
+        return result;
+    }
+
+    @Override
+    public void addEmployee(DBHelper dbHelper, Object object) {
+        dbWrite = dbHelper.getWritableDatabase();
+        Cursor result = dbWrite.rawQuery("SELECT * FROM EMPLOYEE", null);
+        employees = (Employees) object;
+        ContentValues values = new ContentValues();
+        values.put("EMPLOYEE_Full_ID", "HALLO");
+        values.put("NAME",employees.getName());
+        values.put("ACCOUNT_TYPE", employees.getAccountype());
+        values.put("SALARY", employees.getSalary());
+        dbWrite.insert("EMPLOYEE", null, values);
+
     }
 
     @Override
@@ -137,15 +159,6 @@ public class TransactionDAOImpl implements TransactionDAO {
         }
     }
 
-    @Override
-    public void addTransactionBought(DBHelper dbHelper, Object object, String type) {
-
-    }
-
-    @Override
-    public void addTranasctionSold(DBHelper dbHelper, Object object, String type) {
-
-    }
 
     @Override
     public HashMap<String, List<String>> retrieveBoughtList(DBHelper dbHelper) {
@@ -171,19 +184,7 @@ public class TransactionDAOImpl implements TransactionDAO {
         return listDate;
     }
 
-    @Override
-    public ArrayList<String> retrieveListSpinner(DBHelper dbHelper, String type) {
-        dbRead = dbHelper.getReadableDatabase();
-        String queryForRetrievalAll = "SELECT NAME FROM " + "RAW_MATERIALS WHERE TYPE = '" + type + "' ";
-        ArrayList<String> listHolder = new ArrayList<String>();
-        Cursor cursor = dbRead.rawQuery(queryForRetrievalAll, null);
-        if (cursor.moveToFirst()) {
-            do {
-                listHolder.add(cursor.getString(cursor.getColumnIndex("NAME")));
-            } while (cursor.moveToNext());
-        }
-        return listHolder;
-    }
+
 
     @Override
     public boolean checkExistingWarehouse(DBHelper dbHelper, String type, String name) {

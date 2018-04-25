@@ -76,9 +76,7 @@ public class TransactionAddUsedMaterials extends AppCompatActivity {
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, spinnerListType);
         spinnerItem.setAdapter(arrayAdapter);
 
-        arrList = tDAO.retrieveListSpinner(dbHelper, type);
-        ArrayAdapter<String> arrayAdapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, arrList);
-        spinnerItemName.setAdapter(arrayAdapter2);
+
 
         btnAddTransaction = (Button) findViewById(R.id.btnAdd);
         btnAddTransaction.setOnClickListener(new View.OnClickListener() {

@@ -7,7 +7,7 @@ import com.example.maricalara.allseasons.Model.DBHelper;
 import java.util.ArrayList;
 
 public interface IndirectMaterialsDAO {
-
+     ArrayList<String> retrieveListSpinner(DBHelper dbHelper, String type);
 
      void addTransaction(DBHelper dbHelper, Object object, String type);
      ArrayList<Object> retrieveList (DBHelper dbHelper, String type);

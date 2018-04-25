@@ -105,9 +105,6 @@ public class TransactionsAddBought extends AppCompatActivity {
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, spinnerListType);
         spinnerItem.setAdapter(arrayAdapter);
 
-        arrList = tDAO.retrieveListSpinner(dbHelper, type);
-        ArrayAdapter<String> arrayAdapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, arrList);
-        spinnerItemName.setAdapter(arrayAdapter2);
 
 
         spinnerItem.addTextChangedListener(new TextWatcher() {
@@ -617,38 +614,38 @@ public class TransactionsAddBought extends AppCompatActivity {
         ArrayAdapter<String> arrayAdapter2;
         switch (type) {
             case "Equipment":
-                arrList = tDAO.retrieveListSpinner(dbHelper, type);
+                arrList = equipmentDAO.retrieveListSpinner(dbHelper, type);
                 arrayAdapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, arrList);
                 spinnerItemName.setAdapter(arrayAdapter2);
                 break;
 
             case "Insecticides":
-                arrList = tDAO.retrieveListSpinner(dbHelper, type);
+                arrList = imDao.retrieveListSpinner(dbHelper, type);
                 arrayAdapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, arrList);
                 spinnerItemName.setAdapter(arrayAdapter2);
                 break;
 
             case "Fertilizer":
-                arrList = tDAO.retrieveListSpinner(dbHelper, type);
+                arrList = imDao.retrieveListSpinner(dbHelper, type);
                 arrayAdapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, arrList);
                 spinnerItemName.setAdapter(arrayAdapter2);
 
                 break;
 
             case "Packaging":
-                arrList = tDAO.retrieveListSpinner(dbHelper, type);
+                arrList = imDao.retrieveListSpinner(dbHelper, type);
                 arrayAdapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, arrList);
                 spinnerItemName.setAdapter(arrayAdapter2);
                 break;
 
             case "Seeds":
-                arrList = tDAO.retrieveListSpinner(dbHelper, type);
+                arrList = rmDAO.retrieveListSpinner(dbHelper,type);
                 arrayAdapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, arrList);
                 spinnerItemName.setAdapter(arrayAdapter2);
                 break;
 
             case "Seedlings":
-                arrList = tDAO.retrieveListSpinner(dbHelper, type);
+                arrList = rmDAO.retrieveListSpinner(dbHelper,type);
                 arrayAdapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, arrList);
                 spinnerItemName.setAdapter(arrayAdapter2);
                 break;

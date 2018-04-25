@@ -15,8 +15,8 @@ public interface EquipmentDAO {
      ArrayList<Equipment> retrieveEquipmentList (DBHelper dbHelper);
      Equipment retrieveOne (DBHelper dbHelper, String type, String name);
      boolean checkExisting (DBHelper dbHelper,String name);
-
-     boolean checkExistingWarehouse (DBHelper dbHelper,String name);
+     ArrayList<String> retrieveListSpinner(DBHelper dbHelper, String type);
+     boolean checkExistingWarehouse (DBHelper dbHelper,String type,String name);
      void updateTransaction(DBHelper dbHelper,String Date, String type, String name, int quantity);
      void deleteEntry (DBHelper dbHelper, String name);
 

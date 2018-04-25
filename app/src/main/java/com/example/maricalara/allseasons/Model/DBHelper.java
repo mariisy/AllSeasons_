@@ -20,6 +20,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public String dbTableRawMaterials = "RAW_MATERIALS";
     public String dbTableIndirectMaterials = "INDIRECT_MATERIALS";
     public String dbTableEquipment = "EQUIPMENT";
+
     public String dbTableWarehouseEquip = "WAREHOUSE_EQUIPMENT";
     public String dbTableWPI = "WPI";
     public String dbTableFGI = "FGI";
@@ -52,6 +53,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public String dbColumnCustomerID = "CUSTOMER_ID";
 
     public String dbColumnEmployeeID = "EMPLOYEE_ID";
+    public String dbColumnEmployeeFullID = "EMPLOYEE_FULL_ID";
     public String dbColumnAccountType = "ACCOUNT_TYPE";
     public String dbColumnSalary = "SALARY";
     public String dbColumnTransactionID = "TRANSACTIONID";
@@ -135,10 +137,11 @@ public class DBHelper extends SQLiteOpenHelper {
             dbColumnAddress + " TEXT )";
 
     private String dbBuildQuery10 = "CREATE TABLE " + dbTableEmployee + " ( " +
-            dbColumnEmployeeID + " TEXT PRIMARY KEY, " +
+            dbColumnEmployeeID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            dbColumnEmployeeFullID + " TEXT , " +
             dBColumnName + " TEXT, " +
             dbColumnAccountType + " TEXT, " +
-            dbColumnSalary + " TEXT )";
+            dbColumnSalary + " REAL )";
 
     private String dbBuildQuery11 = "CREATE TABLE " + dbTableTransation + " ( " +
             dbColumnTransactionID + " TEXT PRIMARY KEY, " +
@@ -226,6 +229,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(dbBuildQuery3);
         db.execSQL(dbBuildQuery15);
         db.execSQL(dbBuildQuery8);
+        db.execSQL(dbBuildQuery10);
     }
 
     @Override

@@ -94,6 +94,13 @@
             android:text="Add Employee"
             style="@style/Widget.AppCompat.Button.Colored"/>
 
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btnViewEmployee"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            android:text="View Employee"
+            style="@style/Widget.AppCompat.Button.Colored"/>
 
     </LinearLayout>
 

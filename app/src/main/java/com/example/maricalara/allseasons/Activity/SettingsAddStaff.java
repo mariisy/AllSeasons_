@@ -2,6 +2,7 @@ package com.example.maricalara.allseasons.Activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,6 +18,10 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.maricalara.allseasons.Controller.TransactionDAO;
+import com.example.maricalara.allseasons.Controller.TransactionDAOImpl;
+import com.example.maricalara.allseasons.Fragment.Settings;
+import com.example.maricalara.allseasons.Model.DBHelper;
 import com.example.maricalara.allseasons.R;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
@@ -27,15 +32,15 @@ public class SettingsAddStaff extends AppCompatActivity {
 
     private EditText txtFname, txtLname, txtSalary;
     private TextInputLayout inputLayoutFname, inputLayoutLname, inputLayoutSalary;
-    private Button btnAddEmployee;
+    private Button btnAddEmployee,btnViewEmployee;
     private CheckBox chckSalary;
-
+    private DBHelper dbHelper = new DBHelper(SettingsAddStaff.this);
 
     //for getting values
     private String employeeName;
     private int salary;
-    private final int defaultSalary = 4395;
-
+    private final int defaultSalary = 13000;
+    private TransactionDAO transactionDAO = new TransactionDAOImpl();
     //Sample for List for Spinner
     String[] SPINNERLIST = {"Farmer", "Staff", "Supervisor"};
 
@@ -51,19 +56,38 @@ public class SettingsAddStaff extends AppCompatActivity {
         txtLname  = (EditText) findViewById(R.id.txtLname);
         txtSalary  = (EditText) findViewById(R.id.txtSalary);
         chckSalary = (CheckBox) findViewById(R.id.defaultSalary);
+        btnViewEmployee = (Button)findViewById(R.id.btnViewEmployee);
 
         employeeName = txtFname.getText().toString() + " " + txtLname.getText().toString();
-        /*if (chckSalary.isChecked()){
+        if (chckSalary.isChecked()){
             salary = defaultSalary;
         }else{
             salary = Integer.parseInt(txtSalary.getText().toString());
-        }*/
+        }
 
+        btnViewEmployee.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Cursor result = transactionDAO.getAllEmployee(dbHelper);
+                StringBuffer buffer = new StringBuffer();
+                while (result.moveToNext()) {
+                    buffer.append("ID: " + result.getString(0) + "\n");
+                    buffer.append("Full ID: " + result.getString(1) + "\n");
+                    buffer.append("NAME: " + result.getString(2) + "\n");
+                    buffer.append("ACCOUNT TYPE: " + result.getString(3) + "\n");
+                    buffer.append("SALARY: " + result.getString(4) + "\n");
+                }
+                android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(SettingsAddStaff.this);
+                builder.setMessage(buffer.toString());
+                builder.show();
+            }
+        });
         btnAddEmployee = (Button) findViewById(R.id.btnAddEmployee);
         btnAddEmployee.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 submitEditText();
+             //   transactionDAO.addEmployee(dbHelper);
             }
         });
 

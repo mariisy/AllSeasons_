@@ -16,7 +16,7 @@ public class EquipmentDAOImpl implements EquipmentDAO {
 
 
     @Override
-    public boolean checkExistingWarehouse(DBHelper dbHelper, String name) {
+    public boolean checkExistingWarehouse(DBHelper dbHelper, String type, String name) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         String queryForCheck = "SELECT NAME FROM " + "WAREHOUSE_EQUIPMENT" + " WHERE NAME = '" + name + "' ";
 
@@ -27,7 +27,19 @@ public class EquipmentDAOImpl implements EquipmentDAO {
         return true;//existing. NOT NULL
 
     }
-
+    @Override
+    public ArrayList<String> retrieveListSpinner(DBHelper dbHelper, String type) {
+        dbRead = dbHelper.getReadableDatabase();
+        String queryForRetrievalAll = "SELECT NAME FROM " + "EQUIPMENT WHERE TYPE = '" + type + "' ";
+        ArrayList<String> listHolder = new ArrayList<String>();
+        Cursor cursor = dbRead.rawQuery(queryForRetrievalAll, null);
+        if (cursor.moveToFirst()) {
+            do {
+                listHolder.add(cursor.getString(cursor.getColumnIndex("NAME")));
+            } while (cursor.moveToNext());
+        }
+        return listHolder;
+    }
     @Override
     public void addTransaction(DBHelper dbHelper, Equipment equipment) {
         dbWrite = dbHelper.getWritableDatabase();
