@@ -59,11 +59,20 @@ public class SettingsAddStaff extends AppCompatActivity {
         btnViewEmployee = (Button)findViewById(R.id.btnViewEmployee);
 
         employeeName = txtFname.getText().toString() + " " + txtLname.getText().toString();
-        if (chckSalary.isChecked()){
-            salary = defaultSalary;
-        }else{
-            salary = Integer.parseInt(txtSalary.getText().toString());
-        }
+        chckSalary.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (chckSalary.isChecked()){
+                    salary = defaultSalary;
+                    txtSalary.setText(String.valueOf(salary));
+                    txtSalary.setEnabled(false);
+                }else{
+                    txtSalary.setText("0");
+                    txtSalary.setEnabled(true);
+                    salary = Integer.valueOf(txtSalary.getText().toString());
+                }
+            }
+        });
 
         btnViewEmployee.setOnClickListener(new View.OnClickListener() {
             @Override
