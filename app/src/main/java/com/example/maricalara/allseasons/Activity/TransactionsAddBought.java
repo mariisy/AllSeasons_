@@ -195,6 +195,7 @@ public class TransactionsAddBought extends AppCompatActivity {
                                //action delete
                                 stringArrayAdapter.remove(strName.toString());
                                 dialog.dismiss();
+
                             }
                         });
                         builderInner.setNegativeButton("Close", new DialogInterface.OnClickListener() {
@@ -386,7 +387,7 @@ public class TransactionsAddBought extends AppCompatActivity {
                         //equipmentDAO.updateTransaction(dbHelper, strDate, type, itemName, qty);
                         object = equipmentDAO.retrieveOne(dbHelper, type, itemName);
                         equipment = (Equipment) object;
-                        totalPrice = equipment.getPrice() * equipment.getQuantity();
+                        totalPrice = equipment.getPrice()  * qty;
                         arrTransact.add(new Seeds(type, itemName, qty, totalPrice, strDate));
 
                         new AlertDialog.Builder(TransactionsAddBought.this)
@@ -440,7 +441,7 @@ public class TransactionsAddBought extends AppCompatActivity {
                         //imDao.updateTransaction(dbHelper, strDate, type, itemName, qty);
                         object = imDao.retrieveOne(dbHelper, type, itemName);
                         insecticides = (Insecticides) object;
-                        totalPrice = insecticides.getPrice() * insecticides.getQuantity();
+                        totalPrice = insecticides.getPrice()  * qty;
                         arrTransact.add(new Seeds(type, itemName, qty, totalPrice, strDate));
 
                         new AlertDialog.Builder(TransactionsAddBought.this)
@@ -493,7 +494,7 @@ public class TransactionsAddBought extends AppCompatActivity {
                         //imDao.updateTransaction(dbHelper, strDate, type, itemName, qty);
                         object = imDao.retrieveOne(dbHelper, type, itemName);
                         fertilizers = (Fertilizers) object;
-                        totalPrice = fertilizers.getPrice() * fertilizers.getQuantity();
+                        totalPrice = fertilizers.getPrice()  * qty;
                         arrTransact.add(new Seeds(type, itemName, qty, totalPrice, strDate));
 
                         new AlertDialog.Builder(TransactionsAddBought.this)
@@ -546,7 +547,7 @@ public class TransactionsAddBought extends AppCompatActivity {
                         //imDao.updateTransaction(dbHelper, strDate, type, itemName, qty);
                         object = imDao.retrieveOne(dbHelper, type, itemName);
                         packaging = (Packaging) object;
-                        totalPrice = packaging.getPrice() * packaging.getQuantity();
+                        totalPrice = packaging.getPrice()  * qty;
                         arrTransact.add(new Seeds(type, itemName, qty, totalPrice, strDate));
 
                         new AlertDialog.Builder(TransactionsAddBought.this)
@@ -599,7 +600,7 @@ public class TransactionsAddBought extends AppCompatActivity {
                         //rmDAO.updateTransaction(dbHelper, strDate, type, itemName, qty);
                         object = rmDAO.retreiveOne(dbHelper, type, itemName);
                         seeds = (Seeds) object;
-                        totalPrice = seeds.getPrice() * seeds.getQuantity();
+                        totalPrice = seeds.getPrice()  * qty;
                         arrTransact.add(new Seeds(type, itemName, qty, totalPrice, strDate));
 
                         new AlertDialog.Builder(TransactionsAddBought.this)
@@ -653,7 +654,7 @@ public class TransactionsAddBought extends AppCompatActivity {
                         //rmDAO.updateTransaction(dbHelper, strDate, type, itemName, qty);
                         object = rmDAO.retreiveOne(dbHelper, type, itemName);
                         seedlings = (Seedlings) object;
-                        totalPrice = seedlings.getPrice() * seedlings.getQuantity();
+                        totalPrice = seedlings.getPrice() * qty;
                         arrTransact.add(new Seedlings(type, itemName, qty, totalPrice, strDate));
 
                         new AlertDialog.Builder(TransactionsAddBought.this)
