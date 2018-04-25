@@ -49,4 +49,12 @@ public class Crops {
     public void setDate(String date) {
         this.date = date;
     }
+
+    @Override
+    public String toString() {
+        return
+                "Type: " + type + "\n" +
+                        "Quantity: " + weight + "\n" +
+                        "Total Price: " + price + "\n \n";
+    }
 }

@@ -70,4 +70,6 @@ public class Employees {
     public void setSalary(int salary) {
         this.salary = salary;
     }
+
+
 }
