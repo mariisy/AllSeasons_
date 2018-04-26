@@ -1,7 +1,6 @@
 package com.example.maricalara.allseasons.Activity;
 
 import android.content.DialogInterface;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
@@ -73,7 +72,7 @@ public class TransactionsAddBought extends AppCompatActivity {
     private int qty;
     ArrayAdapter<String> stringArrayAdapter;
     private ArrayList<String> arrList;
-    private ArrayList<Object> arrTransact  = new ArrayList<>();
+    private ArrayList<Object> arrTransact = new ArrayList<>();
     Object object = null;
     Seeds seeds;
     Seedlings seedlings;
@@ -125,7 +124,6 @@ public class TransactionsAddBought extends AppCompatActivity {
         spinnerItem.setAdapter(arrayAdapter);
 
 
-
         spinnerItem.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -163,7 +161,7 @@ public class TransactionsAddBought extends AppCompatActivity {
                 builderView.setTitle("Cart Items");
 
                 ArrayList<String> strings = new ArrayList<>(arrTransact.size());
-                for (Object obj : arrTransact){
+                for (Object obj : arrTransact) {
                     strings.add(Objects.toString(obj, null));
                 }
 
@@ -192,7 +190,7 @@ public class TransactionsAddBought extends AppCompatActivity {
                         builderInner.setPositiveButton("Continue ", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                               //action delete
+                                //action delete
                                 stringArrayAdapter.remove(strName.toString());
                                 stringArrayAdapter.notifyDataSetChanged();
                                 dialog.dismiss();
@@ -369,7 +367,7 @@ public class TransactionsAddBought extends AppCompatActivity {
                     try {
                         object = equipmentDAO.retrieveOne(dbHelper, type, itemName);
                         equipment = (Equipment) object;
-                        totalPrice = equipment.getPrice()  * qty;
+                        totalPrice = equipment.getPrice() * qty;
                         arrTransact.add(new Equipment(type, itemName, qty, totalPrice, strDate));
 
                         new AlertDialog.Builder(TransactionsAddBought.this)
@@ -424,7 +422,7 @@ public class TransactionsAddBought extends AppCompatActivity {
 
                         object = imDao.retrieveOne(dbHelper, type, itemName);
                         insecticides = (Insecticides) object;
-                        totalPrice = insecticides.getPrice()  * qty;
+                        totalPrice = insecticides.getPrice() * qty;
                         arrTransact.add(new Insecticides(type, itemName, qty, totalPrice, strDate));
 
                         new AlertDialog.Builder(TransactionsAddBought.this)
@@ -478,7 +476,7 @@ public class TransactionsAddBought extends AppCompatActivity {
 
                         object = imDao.retrieveOne(dbHelper, type, itemName);
                         fertilizers = (Fertilizers) object;
-                        totalPrice = fertilizers.getPrice()  * qty;
+                        totalPrice = fertilizers.getPrice() * qty;
                         arrTransact.add(new Fertilizers(type, itemName, qty, totalPrice, strDate));
 
                         new AlertDialog.Builder(TransactionsAddBought.this)
@@ -532,7 +530,7 @@ public class TransactionsAddBought extends AppCompatActivity {
 
                         object = imDao.retrieveOne(dbHelper, type, itemName);
                         packaging = (Packaging) object;
-                        totalPrice = packaging.getPrice()  * qty;
+                        totalPrice = packaging.getPrice() * qty;
                         arrTransact.add(new Packaging(type, itemName, qty, totalPrice, strDate));
 
                         new AlertDialog.Builder(TransactionsAddBought.this)
@@ -586,7 +584,7 @@ public class TransactionsAddBought extends AppCompatActivity {
 
                         object = rmDAO.retreiveOne(dbHelper, type, itemName);
                         seeds = (Seeds) object;
-                        totalPrice = seeds.getPrice()  * qty;
+                        totalPrice = seeds.getPrice() * qty;
                         arrTransact.add(new Seeds(type, itemName, qty, totalPrice, strDate));
 
                         new AlertDialog.Builder(TransactionsAddBought.this)
@@ -694,7 +692,7 @@ public class TransactionsAddBought extends AppCompatActivity {
 
     }
 
-    private void addCart(){
+    private void addCart() {
 
         type = spinnerItem.getText().toString();
         itemName = spinnerItemName.getText().toString();
@@ -758,7 +756,7 @@ public class TransactionsAddBought extends AppCompatActivity {
             case "Insecticides":
                 if (tDAO.checkExistingWarehouse(dbHelper, type, itemName)) {
                     try {
-                        //imDao.updateTransaction(dbHelper, strDate, type, itemName, qty);
+                        imDao.updateTransaction(dbHelper, arrTransact);
 
 
                         new AlertDialog.Builder(TransactionsAddBought.this)
@@ -808,7 +806,7 @@ public class TransactionsAddBought extends AppCompatActivity {
             case "Fertilizer":
                 if (tDAO.checkExistingWarehouse(dbHelper, type, itemName)) {
                     try {
-                        //imDao.updateTransaction(dbHelper, strDate, type, itemName, qty);
+                        imDao.updateTransaction(dbHelper, arrTransact);
 
 
                         new AlertDialog.Builder(TransactionsAddBought.this)
@@ -858,7 +856,7 @@ public class TransactionsAddBought extends AppCompatActivity {
             case "Packaging":
                 if (tDAO.checkExistingWarehouse(dbHelper, type, itemName)) {
                     try {
-                        //imDao.updateTransaction(dbHelper, strDate, type, itemName, qty);
+                        imDao.updateTransaction(dbHelper, arrTransact);
 
 
                         new AlertDialog.Builder(TransactionsAddBought.this)
@@ -908,7 +906,7 @@ public class TransactionsAddBought extends AppCompatActivity {
             case "Seeds":
                 if (tDAO.checkExistingWarehouse(dbHelper, type, itemName)) {
                     try {
-                        //rmDAO.updateTransaction(dbHelper, strDate, type, itemName, qty);
+                        rmDAO.updateTransaction(dbHelper, arrTransact);
 
 
                         new AlertDialog.Builder(TransactionsAddBought.this)
@@ -959,7 +957,7 @@ public class TransactionsAddBought extends AppCompatActivity {
             case "Seedlings":
                 if (tDAO.checkExistingWarehouse(dbHelper, type, itemName)) {
                     try {
-                        //rmDAO.updateTransaction(dbHelper, strDate, type, itemName, qty);
+                        rmDAO.updateTransaction(dbHelper, arrTransact);
 
 
                         new AlertDialog.Builder(TransactionsAddBought.this)
@@ -1041,13 +1039,13 @@ public class TransactionsAddBought extends AppCompatActivity {
                 break;
 
             case "Seeds":
-                arrList = rmDAO.retrieveListSpinner(dbHelper,type);
+                arrList = rmDAO.retrieveListSpinner(dbHelper, type);
                 arrayAdapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, arrList);
                 spinnerItemName.setAdapter(arrayAdapter2);
                 break;
 
             case "Seedlings":
-                arrList = rmDAO.retrieveListSpinner(dbHelper,type);
+                arrList = rmDAO.retrieveListSpinner(dbHelper, type);
                 arrayAdapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, arrList);
                 spinnerItemName.setAdapter(arrayAdapter2);
                 break;
