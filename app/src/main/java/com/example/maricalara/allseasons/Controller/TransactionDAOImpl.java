@@ -34,16 +34,19 @@ public class TransactionDAOImpl implements TransactionDAO {
         Cursor result = dbWrite.rawQuery("SELECT * FROM WAREHOUSE_EQUIPMENT", null);
         return result;
     }
+
+
     @Override
     public Cursor getAllEmployee(DBHelper dbHelper) {
         dbWrite = dbHelper.getWritableDatabase();
         Cursor result = dbWrite.rawQuery("SELECT * FROM EMPLOYEE", null);
         return result;
     }
+
     @Override
     public boolean checkExistingEmployee(DBHelper dbHelper, String type, String name) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        String queryForCheck = "SELECT NAME FROM " + "EMPLOYEE" + " WHERE NAME = '" + name + "' AND ACCOUNT_TYPE = '"+type+"'";
+        String queryForCheck = "SELECT NAME FROM " + "EMPLOYEE" + " WHERE NAME = '" + name + "' AND ACCOUNT_TYPE = '" + type + "'";
 
         Cursor result = db.rawQuery(queryForCheck, null);
         if (result.getCount() == 0) {
@@ -157,13 +160,13 @@ public class TransactionDAOImpl implements TransactionDAO {
                     employees = (Employees) object;
                     ContentValues values = new ContentValues();
                     values.put("EMPLOYEE_ID", employees.getEmployeeID());
-                    if(employees.getAccountype().equals("Farmer")){
+                    if (employees.getAccountype().equals("Farmer")) {
                         values.put("EMPLOYEE_FULL_ID", "EMPFRM" + employees.getEmployeeID());
                     }
-                    if(employees.getAccountype().equals("Staff")){
+                    if (employees.getAccountype().equals("Staff")) {
                         values.put("EMPLOYEE_FULL_ID", "EMPSTF" + employees.getEmployeeID());
                     }
-                    if(employees.getAccountype().equals("Supervisor")){
+                    if (employees.getAccountype().equals("Supervisor")) {
                         values.put("EMPLOYEE_FULL_ID", "EMPSRV" + employees.getEmployeeID());
                     }
                     values.put("NAME", employees.getName());
@@ -174,7 +177,7 @@ public class TransactionDAOImpl implements TransactionDAO {
 
                 break;
 
-           default: //do something
+            default: //do something
         }
     }
 
@@ -264,7 +267,7 @@ public class TransactionDAOImpl implements TransactionDAO {
     }
 
     @Override
-    public void addSoldList(DBHelper dbHelper, Object object) {
+    public void addSoldList(DBHelper dbHelper, Object object, String type) {
 
     }
 
@@ -278,7 +281,7 @@ public class TransactionDAOImpl implements TransactionDAO {
         HashMap<String, List<String>> listDate = new HashMap<String, List<String>>();
         List<String> listTransacion = new ArrayList<String>();
 
-        listDate.put("",listTransacion);
+        listDate.put("", listTransacion);
 
 
         return listDate;
@@ -292,7 +295,6 @@ public class TransactionDAOImpl implements TransactionDAO {
 
         return listDate;
     }
-
 
 
     @Override
