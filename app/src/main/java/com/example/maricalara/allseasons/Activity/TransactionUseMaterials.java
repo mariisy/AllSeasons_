@@ -30,7 +30,7 @@ import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class TransactionAddUsedMaterials extends AppCompatActivity {
+public class TransactionUseMaterials extends AppCompatActivity {
 
     //for UI
     private String type, itemName;
@@ -46,7 +46,7 @@ public class TransactionAddUsedMaterials extends AppCompatActivity {
     private IndirectMaterialsDAO imDao = new IndirectMaterialsDAOImpl();
     private RawMaterialsDAO rmDAO = new RawMaterialsDAOImpl();
     private TransactionDAO tDAO = new TransactionDAOImpl();
-    private DBHelper dbHelper = new DBHelper(TransactionAddUsedMaterials.this);
+    private DBHelper dbHelper = new DBHelper(TransactionUseMaterials.this);
     private ArrayList<String> arrList;
 
     //Sample for List for Spinner type 1
@@ -55,7 +55,7 @@ public class TransactionAddUsedMaterials extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_transaction_add_used);
+        setContentView(R.layout.activity_transaction_use_materials);
 
         //inflate toolbar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -102,7 +102,7 @@ public class TransactionAddUsedMaterials extends AppCompatActivity {
                     buffer.append("Price: " + result.getString(4) + "\n");
                     buffer.append("TotalCost: " + result.getString(5) + "\n");
                 }
-                android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(TransactionAddUsedMaterials.this);
+                android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(TransactionUseMaterials.this);
                 builder.setMessage(buffer.toString());
                 builder.show();
             }

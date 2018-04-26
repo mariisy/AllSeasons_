@@ -155,6 +155,13 @@ public class EquipmentDAOImpl implements EquipmentDAO {
                 String[] selectionArgs = {equip.getName()};
                 dbRead.update("EQUIPMENT", val, selection, selectionArgs);
 
+                ContentValues value = new ContentValues();
+                value.put("DATE", equip.getDate());
+                value.put("TYPE", equip.getType());
+                value.put("DEBIT", 0);
+                value.put("CREDIT", costTotal);
+                dbWrite.insert("CASH", null, value);
+
             }
         }
     }
