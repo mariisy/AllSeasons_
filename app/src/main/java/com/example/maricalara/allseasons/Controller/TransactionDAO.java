@@ -11,19 +11,11 @@ import java.util.List;
 
 public interface TransactionDAO {
     Cursor getAllData(DBHelper dbHelper);
-
     public void addEmployee(DBHelper dbHelper, Object object);
-
     public Cursor getAllEmployee(DBHelper dbHelper);
-
     ArrayList<WarehouseMaterial> getAllDataWarehouse(DBHelper dbHelper);
 
     void addEntry(DBHelper dbHelper, Object object, String type);
-
-    void addBoughtList(DBHelper dbHelper, Object object, String type);
-
-    void addSoldList(DBHelper dbHelper, Object object);
-
 
     HashMap<String, List<String>> retrieveBoughtList(DBHelper dbHelper);
 

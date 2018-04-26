@@ -1,9 +1,11 @@
 package com.example.maricalara.allseasons.Activity;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.support.design.widget.TextInputLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -22,28 +24,38 @@ import com.example.maricalara.allseasons.Controller.TransactionDAO;
 import com.example.maricalara.allseasons.Controller.TransactionDAOImpl;
 import com.example.maricalara.allseasons.Fragment.Settings;
 import com.example.maricalara.allseasons.Model.DBHelper;
+import com.example.maricalara.allseasons.Model.Employees;
 import com.example.maricalara.allseasons.R;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class SettingsAddStaff extends AppCompatActivity {
 
     //UI
     private Toolbar toolbar;
-
+    private MaterialBetterSpinner spinnerPosition;
     private EditText txtFname, txtLname, txtSalary;
     private TextInputLayout inputLayoutFname, inputLayoutLname, inputLayoutSalary;
     private Button btnAddEmployee,btnViewEmployee;
     private CheckBox chckSalary;
     private DBHelper dbHelper = new DBHelper(SettingsAddStaff.this);
-
     //for getting values
-    private String employeeName;
-    private int salary;
+
+    private String type,employeeName;
+    private int salary = 0;
     private final int defaultSalary = 13000;
     private TransactionDAO transactionDAO = new TransactionDAOImpl();
     //Sample for List for Spinner
     String[] SPINNERLIST = {"Farmer", "Staff", "Supervisor"};
-
+    Date date = new Date();
+    SimpleDateFormat sdf = new SimpleDateFormat("EEEE");
+    Date d = new Date();
+    String dayOfTheWeek = sdf.format(d);
+    String dateForTheDay = DateFormat.getDateInstance().format(date);
+    String strDate = dayOfTheWeek + ", " + dateForTheDay;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,7 +69,7 @@ public class SettingsAddStaff extends AppCompatActivity {
         txtSalary  = (EditText) findViewById(R.id.txtSalary);
         chckSalary = (CheckBox) findViewById(R.id.defaultSalary);
         btnViewEmployee = (Button)findViewById(R.id.btnViewEmployee);
-
+        spinnerPosition = (MaterialBetterSpinner)findViewById(R.id.spinnerPosition);
         employeeName = txtFname.getText().toString() + " " + txtLname.getText().toString();
         chckSalary.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,7 +108,7 @@ public class SettingsAddStaff extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 submitEditText();
-             //   transactionDAO.addEmployee(dbHelper);
+                getData();
             }
         });
 
@@ -219,5 +231,176 @@ public class SettingsAddStaff extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+    private void getData() {
+        employeeName = txtFname.getText().toString() + " " + txtLname.getText().toString();
+        type = spinnerPosition.getText().toString();
+
+
+
+
+        switch (type) {
+            case "Farmer":
+                if (!transactionDAO.checkExistingEmployee(dbHelper,type, employeeName)) {
+                    Employees employees = new Employees(null,null,employeeName, type,strDate,salary);
+                    try {
+                        transactionDAO.addEntry(dbHelper, employees, "Employee");
+
+                        new AlertDialog.Builder(SettingsAddStaff.this)
+                                .setTitle("Adding Entry")
+                                .setMessage(employeeName + " Added! \n Would you like to add another entry?")
+                                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                      //  clearField();
+                                    }
+                                })
+                                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        finish();
+                                    }
+                                })
+                                .show();
+
+                    } catch (Exception e) {
+                        new AlertDialog.Builder(SettingsAddStaff.this)
+                                .setTitle("Adding Entry")
+                                .setMessage("Adding entry unsuccesful! \n Please try again.")
+                                .setNeutralButton("Ok", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                    }
+                                })
+                                .show();
+                    }
+                } else {
+                    new AlertDialog.Builder(SettingsAddStaff.this)
+                            .setTitle("Adding Entry")
+                            .setMessage("Entry already exists! \n Would you like to add another entry?")
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    //clearField();
+                                }
+                            })
+                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    finish();
+                                }
+                            })
+                            .show();
+                }
+                break;
+            case "Staff":
+                if (!transactionDAO.checkExistingEmployee(dbHelper,type, employeeName)) {
+                    Employees employees = new Employees(null,null,employeeName, type,strDate,salary);
+                    try {
+                        transactionDAO.addEntry(dbHelper, employees, "Employee");
+
+                        new AlertDialog.Builder(SettingsAddStaff.this)
+                                .setTitle("Adding Entry")
+                                .setMessage(employeeName + " Added! \n Would you like to add another entry?")
+                                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        //clearField();
+                                    }
+                                })
+                                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        finish();
+                                    }
+                                })
+                                .show();
+
+                    } catch (Exception e) {
+                        new AlertDialog.Builder(SettingsAddStaff.this)
+                                .setTitle("Adding Entry")
+                                .setMessage("Adding entry unsuccesful! \n Please try again.")
+                                .setNeutralButton("Ok", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                    }
+                                })
+                                .show();
+                    }
+                } else {
+                    new AlertDialog.Builder(SettingsAddStaff.this)
+                            .setTitle("Adding Entry")
+                            .setMessage("Entry already exists! \n Would you like to add another entry?")
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    //clearField();
+                                }
+                            })
+                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    finish();
+                                }
+                            })
+                            .show();
+                }
+                break;
+
+            case "Supervisor":
+                if (!transactionDAO.checkExistingEmployee(dbHelper,type, employeeName)) {
+                    Employees employees = new Employees(null,null,employeeName, type,strDate,salary);
+                    try {
+                        transactionDAO.addEntry(dbHelper, employees, "Employee");
+
+                        new AlertDialog.Builder(SettingsAddStaff.this)
+                                .setTitle("Adding Entry")
+                                .setMessage(employeeName + " Added! \n Would you like to add another entry?")
+                                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        //clearField();
+                                    }
+                                })
+                                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        finish();
+                                    }
+                                })
+                                .show();
+
+                    } catch (Exception e) {
+                        new AlertDialog.Builder(SettingsAddStaff.this)
+                                .setTitle("Adding Entry")
+                                .setMessage("Adding entry unsuccesful! \n Please try again.")
+                                .setNeutralButton("Ok", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                    }
+                                })
+                                .show();
+                    }
+                } else {
+                    new AlertDialog.Builder(SettingsAddStaff.this)
+                            .setTitle("Adding Entry")
+                            .setMessage("Entry already exists! \n Would you like to add another entry?")
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    //clearField();
+                                }
+                            })
+                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    finish();
+                                }
+                            })
+                            .show();
+                }
+                break;
+
+
+            default: //do something
+        }
+
     }
 }
