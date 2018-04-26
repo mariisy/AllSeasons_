@@ -13,9 +13,9 @@ import java.util.ArrayList;
 
 public class IndirectMaterialsDAOImpl implements IndirectMaterialsDAO {
     SQLiteDatabase dbWrite, dbRead;
-    Insecticides ins;
-    Fertilizers fer;
-    Packaging pack;
+    Insecticides insecticides;
+    Fertilizers fertilizers;
+    Packaging packaging;
 
 
     @Override
@@ -25,21 +25,21 @@ public class IndirectMaterialsDAOImpl implements IndirectMaterialsDAO {
         switch (type) {
             case "Insecticides":
                 if (object instanceof Insecticides) {
-                    ins = (Insecticides) object;
-                    double costTotal = Double.valueOf(ins.getQuantity()) * Double.valueOf(ins.getPrice());
+                    insecticides = (Insecticides) object;
+                    double costTotal = Double.valueOf(insecticides.getQuantity()) * Double.valueOf(insecticides.getPrice());
 
                     ContentValues val = new ContentValues();
-                    val.put("DATE", ins.getDate());
-                    val.put("TYPE", ins.getType());
-                    val.put("NAME", ins.getName());
-                    val.put("QUANTITY", ins.getQuantity());
-                    val.put("PRICE", ins.getPrice());
+                    val.put("DATE", insecticides.getDate());
+                    val.put("TYPE", insecticides.getType());
+                    val.put("NAME", insecticides.getName());
+                    val.put("QUANTITY", insecticides.getQuantity());
+                    val.put("PRICE", insecticides.getPrice());
                     val.put("TOTAL_COST", costTotal);
                     dbWrite.insert("INDIRECT_MATERIALS", null, val);
 
                     ContentValues value = new ContentValues();
-                    value.put("DATE", ins.getDate());
-                    value.put("TYPE", ins.getType());
+                    value.put("DATE", insecticides.getDate());
+                    value.put("TYPE", insecticides.getType());
                     value.put("DEBIT", 0);
                     value.put("CREDIT", costTotal);
                     dbWrite.insert("CASH", null, value);
@@ -49,21 +49,21 @@ public class IndirectMaterialsDAOImpl implements IndirectMaterialsDAO {
 
             case "Fertilizer":
                 if (object instanceof Fertilizers) {
-                    fer = (Fertilizers) object;
-                    double costTotal = Double.valueOf(fer.getQuantity()) * Double.valueOf(fer.getPrice());
+                    fertilizers = (Fertilizers) object;
+                    double costTotal = Double.valueOf(fertilizers.getQuantity()) * Double.valueOf(fertilizers.getPrice());
 
                     ContentValues val = new ContentValues();
-                    val.put("DATE", fer.getDate());
-                    val.put("TYPE", fer.getType());
-                    val.put("NAME", fer.getName());
-                    val.put("QUANTITY", fer.getQuantity());
-                    val.put("PRICE", fer.getPrice());
+                    val.put("DATE", fertilizers.getDate());
+                    val.put("TYPE", fertilizers.getType());
+                    val.put("NAME", fertilizers.getName());
+                    val.put("QUANTITY", fertilizers.getQuantity());
+                    val.put("PRICE", fertilizers.getPrice());
                     val.put("TOTAL_COST", costTotal);
                     dbWrite.insert("INDIRECT_MATERIALS", null, val);
 
                     ContentValues value = new ContentValues();
-                    value.put("DATE", fer.getDate());
-                    value.put("TYPE", fer.getType());
+                    value.put("DATE", fertilizers.getDate());
+                    value.put("TYPE", fertilizers.getType());
                     value.put("DEBIT", 0);
                     value.put("CREDIT", costTotal);
                     dbWrite.insert("CASH", null, value);
@@ -72,21 +72,21 @@ public class IndirectMaterialsDAOImpl implements IndirectMaterialsDAO {
 
             case "Packaging":
                 if (object instanceof Packaging) {
-                    pack = (Packaging) object;
-                    double costTotal = Double.valueOf(pack.getQuantity()) * Double.valueOf(pack.getPrice());
+                    packaging = (Packaging) object;
+                    double costTotal = Double.valueOf(packaging.getQuantity()) * Double.valueOf(packaging.getPrice());
 
                     ContentValues val = new ContentValues();
-                    val.put("DATE", pack.getDate());
-                    val.put("TYPE", pack.getType());
-                    val.put("NAME", pack.getName());
-                    val.put("QUANTITY", pack.getQuantity());
-                    val.put("PRICE", pack.getPrice());
+                    val.put("DATE", packaging.getDate());
+                    val.put("TYPE", packaging.getType());
+                    val.put("NAME", packaging.getName());
+                    val.put("QUANTITY", packaging.getQuantity());
+                    val.put("PRICE", packaging.getPrice());
                     val.put("TOTAL_COST", costTotal);
                     dbWrite.insert("INDIRECT_MATERIALS", null, val);
 
                     ContentValues value = new ContentValues();
-                    value.put("DATE", pack.getDate());
-                    value.put("TYPE", pack.getType());
+                    value.put("DATE", packaging.getDate());
+                    value.put("TYPE", packaging.getType());
                     value.put("DEBIT", 0);
                     value.put("CREDIT", costTotal);
                     dbWrite.insert("CASH", null, value);
@@ -166,7 +166,6 @@ public class IndirectMaterialsDAOImpl implements IndirectMaterialsDAO {
 
     }
 
-
     @Override
     public ArrayList<String> retrieveListSpinner(DBHelper dbHelper, String type) {
         dbRead = dbHelper.getReadableDatabase();
@@ -180,6 +179,7 @@ public class IndirectMaterialsDAOImpl implements IndirectMaterialsDAO {
         }
         return listHolder;
     }
+
     @Override
     public Object retrieveOne(DBHelper dbHelper, String type, String name) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
@@ -202,7 +202,7 @@ public class IndirectMaterialsDAOImpl implements IndirectMaterialsDAO {
                     } while (cursor.moveToNext());
 
                 }
-                object =  in;
+                object = in;
 
                 break;
 
@@ -231,10 +231,11 @@ public class IndirectMaterialsDAOImpl implements IndirectMaterialsDAO {
                     } while (cursor.moveToNext());
 
                 }
-                object =  pa;
+                object = pa;
                 break;
 
-            default: return object; //do something
+            default:
+                return object; //do something
         }
         return object;
     }
@@ -252,85 +253,90 @@ public class IndirectMaterialsDAOImpl implements IndirectMaterialsDAO {
     }
 
     @Override
-    public void updateTransaction(DBHelper dbHelper, String Date, String type, String name, int quantity) {
+    public void updateTransaction(DBHelper dbHelper, ArrayList<Object> objArray) {
         dbRead = dbHelper.getReadableDatabase();
         dbWrite = dbHelper.getWritableDatabase();
-        String queryUpdate = "SELECT * FROM " + "RAW_MATERIALS WHERE NAME = '" + name + "'  AND TYPE = '" + type + "' ";
-        Cursor cursor = dbRead.rawQuery(queryUpdate, null);
         Insecticides in = new Insecticides(null, null, 0, 0, null);
         Fertilizers fe = new Fertilizers(null, null, 0, 0, null);
         Packaging pa = new Packaging(null, null, 0, 0, null);
         ContentValues val = new ContentValues();
         double costTotal = 0;
 
-        switch (type) {
-            case "Insecticides":
+        for (Object obj : objArray) {
+            insecticides = (Insecticides) obj;
+            if (obj instanceof Insecticides) {
+                String queryUpdate = "SELECT * FROM " + "EQUIPMENT WHERE NAME = '" + insecticides.getName() + "'  AND TYPE = '" + insecticides.getType() + "' ";
+                Cursor cursor = dbRead.rawQuery(queryUpdate, null);
+
                 if (cursor.moveToFirst()) {
                     do {
-                        in.setType(cursor.getString(cursor.getColumnIndex("DATE")));
-                        in.setType(cursor.getString(cursor.getColumnIndex("TYPE")));
-                        in.setName(cursor.getString(cursor.getColumnIndex("NAME")));
-                        in.setQuantity(cursor.getInt(cursor.getColumnIndex("QUANTITY")));
-                        in.setPrice(cursor.getDouble(cursor.getColumnIndex("PRICE")));
-                        in.setDate(cursor.getString(cursor.getColumnIndex("DATE")));
+                        insecticides.setPrice(cursor.getInt(cursor.getColumnIndex("PRICE")));
+                        insecticides.setQuantity(cursor.getInt(cursor.getColumnIndex("QUANTITY")));
                     } while (cursor.moveToNext());
 
-                    val.put("DATE", ins.getDate());
-                    val.put("TYPE", ins.getType());
-                    val.put("NAME", ins.getName());
-                    val.put("QUANTITY", ins.getQuantity());
-                    val.put("PRICE", ins.getPrice());
-                    costTotal = (ins.getQuantity() + quantity) * ins.getPrice();
+                    val.put("DATE", insecticides.getDate());
+                    val.put("TYPE", insecticides.getType());
+                    val.put("NAME", insecticides.getName());
+                    val.put("QUANTITY", in.getQuantity() + insecticides.getQuantity());
+                    val.put("PRICE", insecticides.getPrice());
+                    costTotal = (in.getQuantity() + insecticides.getQuantity()) * insecticides.getPrice();
                     val.put("TOTAL_COST", costTotal);
-                    dbWrite.update("RAW_MATERIALS", val, "NAME = '" + name + "'  AND TYPE = '" + type + "' ", null);
-                }
-                break;
 
-            case "Fertilizer":
+                    String selection = "NAME" + " LIKE ?";
+                    String[] selectionArgs = {insecticides.getName()};
+                    dbRead.update("RAW_MATERIAL", val, selection, selectionArgs);
+                }
+            }
+
+            if (obj instanceof Fertilizers) {
+                String queryUpdate = "SELECT * FROM " + "EQUIPMENT WHERE NAME = '" + insecticides.getName() + "'  AND TYPE = '" + insecticides.getType() + "' ";
+                Cursor cursor = dbRead.rawQuery(queryUpdate, null);
+
                 if (cursor.moveToFirst()) {
                     do {
-                        fe.setType(cursor.getString(cursor.getColumnIndex("DATE")));
-                        fe.setType(cursor.getString(cursor.getColumnIndex("TYPE")));
-                        fe.setName(cursor.getString(cursor.getColumnIndex("NAME")));
-                        fe.setQuantity(cursor.getInt(cursor.getColumnIndex("QUANTITY")));
-                        fe.setPrice(cursor.getDouble(cursor.getColumnIndex("PRICE")));
-                        fe.setDate(cursor.getString(cursor.getColumnIndex("DATE")));
+                        insecticides.setPrice(cursor.getInt(cursor.getColumnIndex("PRICE")));
+                        insecticides.setQuantity(cursor.getInt(cursor.getColumnIndex("QUANTITY")));
                     } while (cursor.moveToNext());
 
-                    val.put("DATE", fer.getDate());
-                    val.put("TYPE", fer.getType());
-                    val.put("NAME", fer.getName());
-                    val.put("QUANTITY", fer.getQuantity());
-                    val.put("PRICE", fer.getPrice());
-                    costTotal = (fer.getQuantity() + quantity) * fer.getPrice();
+                    val.put("DATE", insecticides.getDate());
+                    val.put("TYPE", insecticides.getType());
+                    val.put("NAME", insecticides.getName());
+                    val.put("QUANTITY", in.getQuantity() + insecticides.getQuantity());
+                    val.put("PRICE", insecticides.getPrice());
+                    costTotal = (in.getQuantity() + insecticides.getQuantity()) * insecticides.getPrice();
                     val.put("TOTAL_COST", costTotal);
-                    dbWrite.update("RAW_MATERIALS", val, "NAME = '" + name + "'  AND TYPE = '" + type + "' ", null);
-                }
-                break;
 
-            case "Packaging":
+                    String selection = "NAME" + " LIKE ?";
+                    String[] selectionArgs = {insecticides.getName()};
+                    dbRead.update("RAW_MATERIAL", val, selection, selectionArgs);
+                }
+            }
+
+            if (obj instanceof Packaging) {
+                String queryUpdate = "SELECT * FROM " + "EQUIPMENT WHERE NAME = '" + packaging.getName() + "'  AND TYPE = '" + packaging.getType() + "' ";
+                Cursor cursor = dbRead.rawQuery(queryUpdate, null);
+
                 if (cursor.moveToFirst()) {
                     do {
-                        pa.setType(cursor.getString(cursor.getColumnIndex("DATE")));
-                        pa.setType(cursor.getString(cursor.getColumnIndex("TYPE")));
-                        pa.setName(cursor.getString(cursor.getColumnIndex("NAME")));
-                        pa.setQuantity(cursor.getInt(cursor.getColumnIndex("QUANTITY")));
-                        pa.setPrice(cursor.getDouble(cursor.getColumnIndex("PRICE")));
-                        pa.setDate(cursor.getString(cursor.getColumnIndex("DATE")));
+                        packaging.setPrice(cursor.getInt(cursor.getColumnIndex("PRICE")));
+                        packaging.setQuantity(cursor.getInt(cursor.getColumnIndex("QUANTITY")));
                     } while (cursor.moveToNext());
 
-                    val.put("DATE", pack.getDate());
-                    val.put("TYPE", pack.getType());
-                    val.put("NAME", pack.getName());
-                    val.put("QUANTITY", pack.getQuantity());
-                    val.put("PRICE", pack.getPrice());
-                    costTotal = (pack.getQuantity() + quantity) * pack.getPrice();
+                    val.put("DATE", packaging.getDate());
+                    val.put("TYPE", packaging.getType());
+                    val.put("NAME", packaging.getName());
+                    val.put("QUANTITY", pa.getQuantity() + packaging.getQuantity());
+                    val.put("PRICE", packaging.getPrice());
+                    costTotal = (pa.getQuantity() + packaging.getQuantity()) * packaging.getPrice();
                     val.put("TOTAL_COST", costTotal);
-                    dbWrite.update("RAW_MATERIALS", val, "NAME = '" + name + "'  AND TYPE = '" + type + "' ", null);
-                }
-                break;
 
-            default: //do something
+                    String selection = "NAME" + " LIKE ?";
+                    String[] selectionArgs = {packaging.getName()};
+                    dbRead.update("RAW_MATERIAL", val, selection, selectionArgs);
+                }
+            }
+
+
         }
     }
 

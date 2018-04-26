@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.example.maricalara.allseasons.Model.DBHelper;
+import com.example.maricalara.allseasons.Model.Equipment;
 import com.example.maricalara.allseasons.Model.Seedlings;
 import com.example.maricalara.allseasons.Model.Seeds;
 
@@ -123,7 +124,6 @@ public class RawMaterialsDAOImpl implements RawMaterialsDAO {
         return resultList;
     }
 
-
     @Override
     public Object retreiveOne(DBHelper dbHelper, String type, String name) {
         dbRead = dbHelper.getReadableDatabase();
@@ -180,63 +180,65 @@ public class RawMaterialsDAOImpl implements RawMaterialsDAO {
     }
 
     @Override
-    public void updateTransaction(DBHelper dbHelper, String Date, String type, String name, int quantity) {
+    public void updateTransaction(DBHelper dbHelper, ArrayList<Object> objArray) {
         dbRead = dbHelper.getReadableDatabase();
         dbWrite = dbHelper.getWritableDatabase();
-        String queryUpdate = "SELECT * FROM " + "RAW_MATERIALS WHERE NAME = '" + name + "'  AND TYPE = '" + type + "' ";
-        Cursor cursor = dbRead.rawQuery(queryUpdate, null);
         Seeds seed = new Seeds(null, null, 0, 0, null);
         Seedlings seedling = new Seedlings(null, null, 0, 0, null);
         ContentValues val = new ContentValues();
-        double costTotal = 0;
+        double costTotal = 0.0;
 
 
-        switch (type) {
-            case "Seedlings":
+        for (Object obj : objArray) {
+            seedlings = (Seedlings) obj;
+            if (obj instanceof Seedlings) {
+                String queryUpdate = "SELECT * FROM " + "RAW_MATERIALS WHERE NAME = '" + seedlings.getName() + "'  AND TYPE = '" + seedlings.getType() + "' ";
+                Cursor cursor = dbRead.rawQuery(queryUpdate, null);
+
                 if (cursor.moveToFirst()) {
                     do {
-                        seedling.setType(cursor.getString(cursor.getColumnIndex("DATE")));
-                        seedling.setType(cursor.getString(cursor.getColumnIndex("TYPE")));
-                        seedling.setName(cursor.getString(cursor.getColumnIndex("NAME")));
-                        seedling.setQuantity(cursor.getInt(cursor.getColumnIndex("QUANTITY")));
-                        seedling.setPrice(cursor.getDouble(cursor.getColumnIndex("PRICE")));
-                        seedling.setDate(cursor.getString(cursor.getColumnIndex("DATE")));
+                        seedlings.setPrice(cursor.getInt(cursor.getColumnIndex("PRICE")));
+                        seedlings.setQuantity(cursor.getInt(cursor.getColumnIndex("QUANTITY")));
                     } while (cursor.moveToNext());
+
+                    val.put("DATE", seedlings.getDate());
+                    val.put("TYPE", seedlings.getType());
+                    val.put("NAME", seedlings.getName());
+                    val.put("QUANTITY", seedling.getQuantity() + seedlings.getQuantity());
+                    val.put("PRICE", seedlings.getPrice());
+                    costTotal = (seedling.getQuantity() + seedlings.getQuantity()) * seedlings.getPrice();
+                    val.put("TOTAL_COST", costTotal);
+
+                    String selection = "NAME" + " LIKE ?";
+                    String[] selectionArgs = {seedlings.getName()};
+                    dbRead.update("RAW_MATERIAL", val, selection, selectionArgs);
                 }
+            }
 
-                val.put("DATE", seedling.getDate());
-                val.put("TYPE", seedling.getType());
-                val.put("NAME", seedling.getName());
-                val.put("QUANTITY", seedling.getQuantity() + quantity);
-                val.put("PRICE", seedling.getPrice());
-                costTotal = (seedling.getQuantity() + quantity) * seedling.getPrice();
-                val.put("TOTAL_COST", costTotal);
-                dbWrite.update("RAW_MATERIALS", val, "NAME = '" + name + "'  AND TYPE = '" + type + "' ", null);
-                break;
+            if (obj instanceof Seeds) {
+                seeds = (Seeds) obj;
+                String queryUpdate = "SELECT * FROM " + "RAW_MATERIALS WHERE NAME = '" + seeds.getName() + "'  AND TYPE = '" + seeds.getType() + "' ";
+                Cursor cursor = dbRead.rawQuery(queryUpdate, null);
 
-            case "Seeds":
                 if (cursor.moveToFirst()) {
                     do {
-                        seed.setType(cursor.getString(cursor.getColumnIndex("DATE")));
-                        seed.setType(cursor.getString(cursor.getColumnIndex("TYPE")));
-                        seed.setName(cursor.getString(cursor.getColumnIndex("NAME")));
-                        seed.setQuantity(cursor.getInt(cursor.getColumnIndex("QUANTITY")));
-                        seed.setPrice(cursor.getDouble(cursor.getColumnIndex("PRICE")));
-                        seed.setDate(cursor.getString(cursor.getColumnIndex("DATE")));
+                        seedlings.setPrice(cursor.getInt(cursor.getColumnIndex("PRICE")));
+                        seedlings.setQuantity(cursor.getInt(cursor.getColumnIndex("QUANTITY")));
                     } while (cursor.moveToNext());
-                }
-                val.put("DATE", seed.getDate());
-                val.put("TYPE", seed.getType());
-                val.put("NAME", seed.getName());
-                val.put("QUANTITY", seed.getQuantity() + quantity);
-                val.put("PRICE", seed.getPrice());
-                costTotal = (seed.getQuantity() + quantity) * seed.getPrice();
-                val.put("TOTAL_COST", costTotal);
-                dbWrite.update("RAW_MATERIALS", val, "NAME = '" + name + "'  AND TYPE = '" + type + "' ", null);
-                break;
 
-            default:
-                ;//do something
+                    val.put("DATE", seeds.getDate());
+                    val.put("TYPE", seeds.getType());
+                    val.put("NAME", seeds.getName());
+                    val.put("QUANTITY", seed.getQuantity() + seeds.getQuantity());
+                    val.put("PRICE", seeds.getPrice());
+                    costTotal = (seed.getQuantity() + seeds.getQuantity()) * seeds.getPrice();
+                    val.put("TOTAL_COST", costTotal);
+
+                    String selection = "NAME" + " LIKE ?";
+                    String[] selectionArgs = {seeds.getName()};
+                    dbRead.update("RAW_MATERIAL", val, selection, selectionArgs);
+                }
+            }
         }
     }
 

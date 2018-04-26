@@ -210,24 +210,6 @@ public class TransactionsAddBought extends AppCompatActivity {
                     }
                 });
                 builderView.show();
-
-
-
-
-                /*
-                Cursor result = tDAO.getAllData(dbHelper);
-                StringBuffer buffer = new StringBuffer();
-                while (result.moveToNext()) {
-                    buffer.append("Date: " + result.getString(0) + "\n");
-                    buffer.append("Type: " + result.getString(1) + "\n");
-                    buffer.append("Name: " + result.getString(2) + "\n");
-                    buffer.append("Quantity: " + result.getString(3) + "\n");
-                    buffer.append("Price: " + result.getString(4) + "\n");
-                    buffer.append("TotalCost: " + result.getString(5) + "\n");
-                }
-                android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(TransactionsAddBought.this);
-                builder.setMessage(buffer.toString());
-                builder.show();*/
             }
         });
     }
@@ -401,6 +383,7 @@ public class TransactionsAddBought extends AppCompatActivity {
                                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
+                                        addCart();
                                         finish();
                                     }
                                 })
@@ -455,6 +438,7 @@ public class TransactionsAddBought extends AppCompatActivity {
                                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
+                                        addCart();
                                         finish();
                                     }
                                 })
@@ -508,6 +492,7 @@ public class TransactionsAddBought extends AppCompatActivity {
                                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
+                                        addCart();
                                         finish();
                                     }
                                 })
@@ -561,6 +546,7 @@ public class TransactionsAddBought extends AppCompatActivity {
                                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
+                                        addCart();
                                         finish();
                                     }
                                 })
@@ -614,6 +600,7 @@ public class TransactionsAddBought extends AppCompatActivity {
                                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
+                                        addCart();
                                         finish();
                                     }
                                 })
@@ -668,6 +655,7 @@ public class TransactionsAddBought extends AppCompatActivity {
                                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
+                                        addCart();
                                         finish();
                                     }
                                 })
@@ -720,6 +708,7 @@ public class TransactionsAddBought extends AppCompatActivity {
                 if (tDAO.checkExistingWarehouse(dbHelper, type, itemName)) {
                     try {
                         equipmentDAO.updateTransaction(dbHelper, arrTransact);
+
 
                         new AlertDialog.Builder(TransactionsAddBought.this)
                                 .setTitle("Adding Entry")

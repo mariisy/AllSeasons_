@@ -13,7 +13,7 @@ public interface IndirectMaterialsDAO {
      ArrayList<Object> retrieveList (DBHelper dbHelper, String type);
      Object retrieveOne (DBHelper dbHelper, String type, String name);
      boolean checkExisting (DBHelper dbHelper,String name);
-     public void updateTransaction(DBHelper dbHelper,String Date, String type, String name, int quantity);
+     public void updateTransaction(DBHelper dbHelper, ArrayList<Object> objArray);
      void deleteEntry (DBHelper dbHelper, String name);
 
 }

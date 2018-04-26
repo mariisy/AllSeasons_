@@ -150,6 +150,7 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
                     Equipment equip = new Equipment(type, itemName, qty, unitPrice, strDate);
                     try {
                         tDAO.addEntry(dbHelper, equip, type);
+                        tDAO.addBoughtList(dbHelper, equip, type);
                         equipmentDAO.addTransaction(dbHelper, equip);
 
                         new AlertDialog.Builder(SettingsAddToWarehouse.this)
@@ -204,6 +205,7 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
                     Insecticides ins = new Insecticides(type, itemName, qty, unitPrice, strDate);
                     try {
                         tDAO.addEntry(dbHelper, ins, type);
+                        tDAO.addBoughtList(dbHelper, ins, type);
                         imDao.addTransaction(dbHelper, ins, type);
 
                         new AlertDialog.Builder(SettingsAddToWarehouse.this)
@@ -257,6 +259,7 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
                     Fertilizers fer = new Fertilizers(type, itemName, qty, unitPrice, strDate);
                     try {
                         tDAO.addEntry(dbHelper, fer, type);
+                        tDAO.addBoughtList(dbHelper, fer, type);
                         imDao.addTransaction(dbHelper, fer, type);
 
                         new AlertDialog.Builder(SettingsAddToWarehouse.this)
@@ -310,6 +313,7 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
                     Packaging packaging = new Packaging(type, itemName, qty, unitPrice, strDate);
                     try {
                         tDAO.addEntry(dbHelper, packaging, type);
+                        tDAO.addBoughtList(dbHelper, packaging, type);
                         imDao.addTransaction(dbHelper, packaging, type);
 
                         new AlertDialog.Builder(SettingsAddToWarehouse.this)
@@ -363,6 +367,7 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
                     Seeds seeds = new Seeds(type, itemName, qty, unitPrice, strDate);
                     try {
                         tDAO.addEntry(dbHelper, seeds, type);
+                        tDAO.addBoughtList(dbHelper, seeds, type);
                         rmDAO.addTransaction(dbHelper, seeds, type);
 
                         new AlertDialog.Builder(SettingsAddToWarehouse.this)
@@ -417,6 +422,7 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
                     Seedlings seedlings = new Seedlings(type, itemName, qty, unitPrice, strDate);
                     try {
                         tDAO.addEntry(dbHelper, seedlings, type);
+                        tDAO.addBoughtList(dbHelper, seedlings, type);
                         rmDAO.addTransaction(dbHelper, seedlings, type);
 
                         new AlertDialog.Builder(SettingsAddToWarehouse.this)
