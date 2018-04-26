@@ -190,15 +190,16 @@ public class RawMaterialsDAOImpl implements RawMaterialsDAO {
 
 
         for (Object obj : objArray) {
-            seedlings = (Seedlings) obj;
+
             if (obj instanceof Seedlings) {
+                seedlings = (Seedlings) obj;
                 String queryUpdate = "SELECT * FROM " + "RAW_MATERIALS WHERE NAME = '" + seedlings.getName() + "'  AND TYPE = '" + seedlings.getType() + "' ";
                 Cursor cursor = dbRead.rawQuery(queryUpdate, null);
 
                 if (cursor.moveToFirst()) {
                     do {
-                        seedlings.setPrice(cursor.getInt(cursor.getColumnIndex("PRICE")));
-                        seedlings.setQuantity(cursor.getInt(cursor.getColumnIndex("QUANTITY")));
+                        seedling.setPrice(cursor.getInt(cursor.getColumnIndex("PRICE")));
+                        seedling.setQuantity(cursor.getInt(cursor.getColumnIndex("QUANTITY")));
                     } while (cursor.moveToNext());
 
                     val.put("DATE", seedlings.getDate());
@@ -211,7 +212,7 @@ public class RawMaterialsDAOImpl implements RawMaterialsDAO {
 
                     String selection = "NAME" + " LIKE ?";
                     String[] selectionArgs = {seedlings.getName()};
-                    dbRead.update("RAW_MATERIAL", val, selection, selectionArgs);
+                    dbRead.update("RAW_MATERIALS", val, selection, selectionArgs);
                 }
             }
 
@@ -222,8 +223,8 @@ public class RawMaterialsDAOImpl implements RawMaterialsDAO {
 
                 if (cursor.moveToFirst()) {
                     do {
-                        seedlings.setPrice(cursor.getInt(cursor.getColumnIndex("PRICE")));
-                        seedlings.setQuantity(cursor.getInt(cursor.getColumnIndex("QUANTITY")));
+                        seed.setPrice(cursor.getInt(cursor.getColumnIndex("PRICE")));
+                        seed.setQuantity(cursor.getInt(cursor.getColumnIndex("QUANTITY")));
                     } while (cursor.moveToNext());
 
                     val.put("DATE", seeds.getDate());
@@ -236,7 +237,7 @@ public class RawMaterialsDAOImpl implements RawMaterialsDAO {
 
                     String selection = "NAME" + " LIKE ?";
                     String[] selectionArgs = {seeds.getName()};
-                    dbRead.update("RAW_MATERIAL", val, selection, selectionArgs);
+                    dbRead.update("RAW_MATERIALS", val, selection, selectionArgs);
                 }
             }
         }

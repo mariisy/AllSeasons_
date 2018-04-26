@@ -263,15 +263,16 @@ public class IndirectMaterialsDAOImpl implements IndirectMaterialsDAO {
         double costTotal = 0;
 
         for (Object obj : objArray) {
-            insecticides = (Insecticides) obj;
+
             if (obj instanceof Insecticides) {
-                String queryUpdate = "SELECT * FROM " + "EQUIPMENT WHERE NAME = '" + insecticides.getName() + "'  AND TYPE = '" + insecticides.getType() + "' ";
+                insecticides = (Insecticides) obj;
+                String queryUpdate = "SELECT * FROM " + "INDIRECT_MATERIALS WHERE NAME = '" + insecticides.getName() + "'  AND TYPE = '" + insecticides.getType() + "' ";
                 Cursor cursor = dbRead.rawQuery(queryUpdate, null);
 
                 if (cursor.moveToFirst()) {
                     do {
-                        insecticides.setPrice(cursor.getInt(cursor.getColumnIndex("PRICE")));
-                        insecticides.setQuantity(cursor.getInt(cursor.getColumnIndex("QUANTITY")));
+                        in.setPrice(cursor.getInt(cursor.getColumnIndex("PRICE")));
+                        in.setQuantity(cursor.getInt(cursor.getColumnIndex("QUANTITY")));
                     } while (cursor.moveToNext());
 
                     val.put("DATE", insecticides.getDate());
@@ -284,42 +285,44 @@ public class IndirectMaterialsDAOImpl implements IndirectMaterialsDAO {
 
                     String selection = "NAME" + " LIKE ?";
                     String[] selectionArgs = {insecticides.getName()};
-                    dbRead.update("RAW_MATERIAL", val, selection, selectionArgs);
+                    dbRead.update("INDIRECT_MATERIALS", val, selection, selectionArgs);
                 }
             }
 
             if (obj instanceof Fertilizers) {
-                String queryUpdate = "SELECT * FROM " + "EQUIPMENT WHERE NAME = '" + insecticides.getName() + "'  AND TYPE = '" + insecticides.getType() + "' ";
+                fertilizers = (Fertilizers) obj;
+                String queryUpdate = "SELECT * FROM " + "INDIRECT_MATERIALS WHERE NAME = '" + fertilizers.getName() + "'  AND TYPE = '" + fertilizers.getType() + "' ";
                 Cursor cursor = dbRead.rawQuery(queryUpdate, null);
 
                 if (cursor.moveToFirst()) {
                     do {
-                        insecticides.setPrice(cursor.getInt(cursor.getColumnIndex("PRICE")));
-                        insecticides.setQuantity(cursor.getInt(cursor.getColumnIndex("QUANTITY")));
+                        fe.setPrice(cursor.getInt(cursor.getColumnIndex("PRICE")));
+                        fe.setQuantity(cursor.getInt(cursor.getColumnIndex("QUANTITY")));
                     } while (cursor.moveToNext());
 
-                    val.put("DATE", insecticides.getDate());
-                    val.put("TYPE", insecticides.getType());
-                    val.put("NAME", insecticides.getName());
-                    val.put("QUANTITY", in.getQuantity() + insecticides.getQuantity());
-                    val.put("PRICE", insecticides.getPrice());
-                    costTotal = (in.getQuantity() + insecticides.getQuantity()) * insecticides.getPrice();
+                    val.put("DATE", fertilizers.getDate());
+                    val.put("TYPE", fertilizers.getType());
+                    val.put("NAME", fertilizers.getName());
+                    val.put("QUANTITY", fe.getQuantity() + fertilizers.getQuantity());
+                    val.put("PRICE", fertilizers.getPrice());
+                    costTotal = (fe.getQuantity() + fertilizers.getQuantity()) * fertilizers.getPrice();
                     val.put("TOTAL_COST", costTotal);
 
                     String selection = "NAME" + " LIKE ?";
-                    String[] selectionArgs = {insecticides.getName()};
-                    dbRead.update("RAW_MATERIAL", val, selection, selectionArgs);
+                    String[] selectionArgs = {fertilizers.getName()};
+                    dbRead.update("INDIRECT_MATERIALS", val, selection, selectionArgs);
                 }
             }
 
             if (obj instanceof Packaging) {
-                String queryUpdate = "SELECT * FROM " + "EQUIPMENT WHERE NAME = '" + packaging.getName() + "'  AND TYPE = '" + packaging.getType() + "' ";
+                packaging = (Packaging) obj;
+                String queryUpdate = "SELECT * FROM " + "INDIRECT_MATERIALS WHERE NAME = '" + packaging.getName() + "'  AND TYPE = '" + packaging.getType() + "' ";
                 Cursor cursor = dbRead.rawQuery(queryUpdate, null);
 
                 if (cursor.moveToFirst()) {
                     do {
-                        packaging.setPrice(cursor.getInt(cursor.getColumnIndex("PRICE")));
-                        packaging.setQuantity(cursor.getInt(cursor.getColumnIndex("QUANTITY")));
+                        pa.setPrice(cursor.getInt(cursor.getColumnIndex("PRICE")));
+                        pa.setQuantity(cursor.getInt(cursor.getColumnIndex("QUANTITY")));
                     } while (cursor.moveToNext());
 
                     val.put("DATE", packaging.getDate());
@@ -332,7 +335,7 @@ public class IndirectMaterialsDAOImpl implements IndirectMaterialsDAO {
 
                     String selection = "NAME" + " LIKE ?";
                     String[] selectionArgs = {packaging.getName()};
-                    dbRead.update("RAW_MATERIAL", val, selection, selectionArgs);
+                    dbRead.update("INDIRECT_MATERIALS", val, selection, selectionArgs);
                 }
             }
 
