@@ -20,9 +20,9 @@ import java.util.List;
 
 public class TransactionDAOImpl implements TransactionDAO {
     SQLiteDatabase dbWrite, dbRead;
-    private Insecticides insecticides;
-    private Fertilizers fertilizers;
-    private Packaging packaging;
+    private Insecticides ins;
+    private Fertilizers fer;
+    private Packaging pack;
     private Seedlings seedlings;
     private Seeds seeds;
     private Equipment equipment;
@@ -34,19 +34,16 @@ public class TransactionDAOImpl implements TransactionDAO {
         Cursor result = dbWrite.rawQuery("SELECT * FROM WAREHOUSE_EQUIPMENT", null);
         return result;
     }
-
-
     @Override
     public Cursor getAllEmployee(DBHelper dbHelper) {
         dbWrite = dbHelper.getWritableDatabase();
         Cursor result = dbWrite.rawQuery("SELECT * FROM EMPLOYEE", null);
         return result;
     }
-
     @Override
     public boolean checkExistingEmployee(DBHelper dbHelper, String type, String name) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        String queryForCheck = "SELECT NAME FROM " + "EMPLOYEE" + " WHERE NAME = '" + name + "' AND ACCOUNT_TYPE = '" + type + "'";
+        String queryForCheck = "SELECT NAME FROM " + "EMPLOYEE" + " WHERE NAME = '" + name + "' AND ACCOUNT_TYPE = '"+type+"'";
 
         Cursor result = db.rawQuery(queryForCheck, null);
         if (result.getCount() == 0) {
@@ -78,7 +75,7 @@ public class TransactionDAOImpl implements TransactionDAO {
     @Override
     public void addEntry(DBHelper dbHelper, Object object, String type) {
         dbWrite = dbHelper.getWritableDatabase();
-
+        dbRead = dbHelper.getReadableDatabase();
         switch (type) {
             case "Seedlings":
                 if (object instanceof Seedlings) {
@@ -109,12 +106,12 @@ public class TransactionDAOImpl implements TransactionDAO {
 
             case "Insecticides":
                 if (object instanceof Insecticides) {
-                    insecticides = (Insecticides) object;
+                    ins = (Insecticides) object;
 
                     ContentValues values = new ContentValues();
-                    values.put("TYPE", insecticides.getType());
-                    values.put("NAME", insecticides.getName());
-                    values.put("PRICE", insecticides.getPrice());
+                    values.put("TYPE", ins.getType());
+                    values.put("NAME", ins.getName());
+                    values.put("PRICE", ins.getPrice());
                     dbWrite.insert("WAREHOUSE_EQUIPMENT", null, values);
                 }
 
@@ -122,24 +119,24 @@ public class TransactionDAOImpl implements TransactionDAO {
 
             case "Fertilizer":
                 if (object instanceof Fertilizers) {
-                    fertilizers = (Fertilizers) object;
+                    fer = (Fertilizers) object;
 
                     ContentValues values = new ContentValues();
-                    values.put("TYPE", fertilizers.getType());
-                    values.put("NAME", fertilizers.getName());
-                    values.put("PRICE", fertilizers.getPrice());
+                    values.put("TYPE", fer.getType());
+                    values.put("NAME", fer.getName());
+                    values.put("PRICE", fer.getPrice());
                     dbWrite.insert("WAREHOUSE_EQUIPMENT", null, values);
                 }
                 break;
 
             case "Packaging":
                 if (object instanceof Packaging) {
-                    packaging = (Packaging) object;
+                    pack = (Packaging) object;
 
                     ContentValues values = new ContentValues();
-                    values.put("TYPE", packaging.getType());
-                    values.put("NAME", packaging.getName());
-                    values.put("PRICE", packaging.getPrice());
+                    values.put("TYPE", pack.getType());
+                    values.put("NAME", pack.getName());
+                    values.put("PRICE", pack.getPrice());
                     dbWrite.insert("WAREHOUSE_EQUIPMENT", null, values);
                 }
                 break;
@@ -156,114 +153,59 @@ public class TransactionDAOImpl implements TransactionDAO {
                 }
                 break;
             case "Employee":
+                Employees employee = new Employees(0, null, null, null, null, 0);
                 if (object instanceof Employees) {
                     employees = (Employees) object;
                     ContentValues values = new ContentValues();
-                    values.put("EMPLOYEE_ID", employees.getEmployeeID());
-                    if (employees.getAccountype().equals("Farmer")) {
-                        values.put("EMPLOYEE_FULL_ID", "EMPFRM" + employees.getEmployeeID());
-                    }
-                    if (employees.getAccountype().equals("Staff")) {
-                        values.put("EMPLOYEE_FULL_ID", "EMPSTF" + employees.getEmployeeID());
-                    }
-                    if (employees.getAccountype().equals("Supervisor")) {
-                        values.put("EMPLOYEE_FULL_ID", "EMPSRV" + employees.getEmployeeID());
-                    }
+                    values.put("EMPLOYEE_FULL_ID", employees.getEmployeeFullID());
                     values.put("NAME", employees.getName());
                     values.put("ACCOUNT_TYPE", employees.getAccountype());
                     values.put("SALARY", employees.getSalary());
                     dbWrite.insert("EMPLOYEE", null, values);
+
+                    String queryUpdate = "SELECT * FROM " + "EMPLOYEE WHERE NAME = '" + employees.getName() + "'  ";
+                    Cursor cursor = dbRead.rawQuery(queryUpdate, null);
+                    ContentValues values2 = new ContentValues();
+
+                    if (cursor.moveToFirst()) {
+                        do {
+                            employee.setEmployeeID(cursor.getInt(cursor.getColumnIndex("EMPLOYEE_ID")));
+                            employee.setAccountype(cursor.getString(cursor.getColumnIndex("ACCOUNT_TYPE")));
+                        } while (cursor.moveToNext());
+                        String selection = "NAME" + " LIKE ?";
+                        String[] selectionArgs = {employees.getName()};
+
+                        switch (employee.getAccountype()){
+                            case "Farmer":
+                                values2.put("EMPLOYEE_FULL_ID", "EMPFRM" + String.format("%03d", employee.getEmployeeID()));
+                                dbRead.update("EMPLOYEE", values2, selection, selectionArgs);
+                            break;
+
+                            case "Staff":
+                                values2.put("EMPLOYEE_FULL_ID", "EMPSTF" +  String.format("%03d", employee.getEmployeeID()));
+                                dbRead.update("EMPLOYEE", values2, selection, selectionArgs);
+                                break;
+                            case "Supervisor":
+                                values2.put("EMPLOYEE_FULL_ID", "EMPSPV" + String.format("%03d", employee.getEmployeeID()));
+                                dbRead.update("EMPLOYEE", values2, selection, selectionArgs);
+                                break;
+
+                                default:
+                                    break;
+                        }
+                       }
                 }
+
 
                 break;
 
-            default: //do something
+           default: //do something
         }
     }
 
     @Override
     public void addBoughtList(DBHelper dbHelper, Object object, String type) {
-        dbWrite = dbHelper.getWritableDatabase();
 
-        switch (type) {
-            case "Seedlings":
-                if (object instanceof Seedlings) {
-                    seedlings = (Seedlings) object;
-                    double costTotal = Double.valueOf(seedlings.getQuantity()) * Double.valueOf(seedlings.getPrice());
-
-                    ContentValues values = new ContentValues();
-                    values.put("TYPE", seedlings.getType());
-                    values.put("NAME", seedlings.getName());
-                    values.put("PRICE", seedlings.getPrice());
-                    dbWrite.insert("WAREHOUSE_EQUIPMENT", null, values);
-                }
-
-                break;
-
-            case "Seeds":
-                if (object instanceof Seeds) {
-                    seeds = (Seeds) object;
-                    double costTotal = Double.valueOf(seeds.getQuantity()) * Double.valueOf(seeds.getPrice());
-
-                    ContentValues values = new ContentValues();
-                    values.put("TYPE", seeds.getType());
-                    values.put("NAME", seeds.getName());
-                    values.put("PRICE", seeds.getPrice());
-                    dbWrite.insert("WAREHOUSE_EQUIPMENT", null, values);
-                }
-                break;
-
-            case "Insecticides":
-                if (object instanceof Insecticides) {
-                    insecticides = (Insecticides) object;
-
-                    ContentValues values = new ContentValues();
-                    values.put("TYPE", insecticides.getType());
-                    values.put("NAME", insecticides.getName());
-                    values.put("PRICE", insecticides.getPrice());
-                    dbWrite.insert("WAREHOUSE_EQUIPMENT", null, values);
-                }
-
-                break;
-
-            case "Fertilizer":
-                if (object instanceof Fertilizers) {
-                    fertilizers = (Fertilizers) object;
-
-                    ContentValues values = new ContentValues();
-                    values.put("TYPE", fertilizers.getType());
-                    values.put("NAME", fertilizers.getName());
-                    values.put("PRICE", fertilizers.getPrice());
-                    dbWrite.insert("WAREHOUSE_EQUIPMENT", null, values);
-                }
-                break;
-
-            case "Packaging":
-                if (object instanceof Packaging) {
-                    packaging = (Packaging) object;
-
-                    ContentValues values = new ContentValues();
-                    values.put("TYPE", packaging.getType());
-                    values.put("NAME", packaging.getName());
-                    values.put("PRICE", packaging.getPrice());
-                    dbWrite.insert("WAREHOUSE_EQUIPMENT", null, values);
-                }
-                break;
-
-            case "Equipment":
-                if (object instanceof Equipment) {
-                    equipment = (Equipment) object;
-
-                    ContentValues values = new ContentValues();
-                    values.put("TYPE", equipment.getType());
-                    values.put("NAME", equipment.getName());
-                    values.put("PRICE", equipment.getPrice());
-                    dbWrite.insert("WAREHOUSE_EQUIPMENT", null, values);
-                }
-                break;
-
-            default: //do something
-        }
     }
 
     @Override
@@ -281,7 +223,7 @@ public class TransactionDAOImpl implements TransactionDAO {
         HashMap<String, List<String>> listDate = new HashMap<String, List<String>>();
         List<String> listTransacion = new ArrayList<String>();
 
-        listDate.put("", listTransacion);
+        listDate.put("",listTransacion);
 
 
         return listDate;
@@ -295,6 +237,7 @@ public class TransactionDAOImpl implements TransactionDAO {
 
         return listDate;
     }
+
 
 
     @Override

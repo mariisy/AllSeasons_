@@ -79,9 +79,9 @@ public class SettingsAddStaff extends AppCompatActivity {
                     txtSalary.setText(String.valueOf(salary));
                     txtSalary.setEnabled(false);
                 }else{
-                    txtSalary.setText("0");
+                    txtSalary.setText("");
                     txtSalary.setEnabled(true);
-                    salary = Integer.valueOf(txtSalary.getText().toString());
+
                 }
             }
         });
@@ -96,7 +96,7 @@ public class SettingsAddStaff extends AppCompatActivity {
                     buffer.append("Full ID: " + result.getString(1) + "\n");
                     buffer.append("NAME: " + result.getString(2) + "\n");
                     buffer.append("ACCOUNT TYPE: " + result.getString(3) + "\n");
-                    buffer.append("SALARY: " + result.getString(4) + "\n");
+                    buffer.append("SALARY: " + result.getString(4) + "\n\n");
                 }
                 android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(SettingsAddStaff.this);
                 builder.setMessage(buffer.toString());
@@ -235,14 +235,14 @@ public class SettingsAddStaff extends AppCompatActivity {
     private void getData() {
         employeeName = txtFname.getText().toString() + " " + txtLname.getText().toString();
         type = spinnerPosition.getText().toString();
-
+        salary = Integer.valueOf(txtSalary.getText().toString());
 
 
 
         switch (type) {
             case "Farmer":
                 if (!transactionDAO.checkExistingEmployee(dbHelper,type, employeeName)) {
-                    Employees employees = new Employees(null,null,employeeName, type,strDate,salary);
+                    Employees employees = new Employees(0,null,employeeName, type,strDate,salary);
                     try {
                         transactionDAO.addEntry(dbHelper, employees, "Employee");
 
@@ -266,7 +266,7 @@ public class SettingsAddStaff extends AppCompatActivity {
                     } catch (Exception e) {
                         new AlertDialog.Builder(SettingsAddStaff.this)
                                 .setTitle("Adding Entry")
-                                .setMessage("Adding entry unsuccesful! \n Please try again.")
+                                .setMessage(e.toString())
                                 .setNeutralButton("Ok", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
                                     }
@@ -294,7 +294,7 @@ public class SettingsAddStaff extends AppCompatActivity {
                 break;
             case "Staff":
                 if (!transactionDAO.checkExistingEmployee(dbHelper,type, employeeName)) {
-                    Employees employees = new Employees(null,null,employeeName, type,strDate,salary);
+                    Employees employees = new Employees(0,null,employeeName, type,strDate,salary);
                     try {
                         transactionDAO.addEntry(dbHelper, employees, "Employee");
 
@@ -347,7 +347,7 @@ public class SettingsAddStaff extends AppCompatActivity {
 
             case "Supervisor":
                 if (!transactionDAO.checkExistingEmployee(dbHelper,type, employeeName)) {
-                    Employees employees = new Employees(null,null,employeeName, type,strDate,salary);
+                    Employees employees = new Employees(0,null,employeeName, type,strDate,salary);
                     try {
                         transactionDAO.addEntry(dbHelper, employees, "Employee");
 
@@ -371,7 +371,7 @@ public class SettingsAddStaff extends AppCompatActivity {
                     } catch (Exception e) {
                         new AlertDialog.Builder(SettingsAddStaff.this)
                                 .setTitle("Adding Entry")
-                                .setMessage("Adding entry unsuccesful! \n Please try again.")
+                                .setMessage(e.toString())
                                 .setNeutralButton("Ok", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
                                     }
