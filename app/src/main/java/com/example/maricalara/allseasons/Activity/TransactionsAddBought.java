@@ -159,59 +159,63 @@ public class TransactionsAddBought extends AppCompatActivity {
         btnView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builderView = new AlertDialog.Builder(TransactionsAddBought.this);
-                builderView.setTitle("Cart Items");
+                viewButton();
+            }
+        });
+    }
 
-                ArrayList<String> strings = new ArrayList<>(arrTransact.size());
-                for (Object obj : arrTransact){
-                    strings.add(Objects.toString(obj, null));
-                }
+    private void viewButton(){
+        AlertDialog.Builder builderView = new AlertDialog.Builder(TransactionsAddBought.this);
+        builderView.setTitle("Cart Items");
 
-                stringArrayAdapter = new ArrayAdapter<String>(TransactionsAddBought.this, android.R.layout.simple_list_item_1, strings);
+        ArrayList<String> strings = new ArrayList<>(arrTransact.size());
+        for (Object obj : arrTransact){
+            strings.add(Objects.toString(obj, null));
+        }
 
-                builderView.setPositiveButton("Add Transactions", new DialogInterface.OnClickListener() {
+        stringArrayAdapter = new ArrayAdapter<String>(TransactionsAddBought.this, android.R.layout.simple_list_item_1, strings);
+
+        builderView.setPositiveButton("Add Transactions", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                addCart();
+            }
+        });
+        builderView.setNegativeButton("Close View", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        builderView.setAdapter(stringArrayAdapter, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                strName = stringArrayAdapter.getItem(which);
+                AlertDialog.Builder builderInner = new AlertDialog.Builder(TransactionsAddBought.this);
+                builderInner.setMessage(strName.toString());
+                builderInner.setTitle("Delete item?");
+                builderInner.setPositiveButton("Continue ", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        addCart();
+                        //action delete
+                        stringArrayAdapter.remove(strName.toString());
+                        stringArrayAdapter.notifyDataSetChanged();
+                        dialog.dismiss();
+
                     }
                 });
-                builderView.setNegativeButton("Close View", new DialogInterface.OnClickListener() {
+                builderInner.setNegativeButton("Close", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                     }
                 });
+                builderInner.show();
 
-                builderView.setAdapter(stringArrayAdapter, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        strName = stringArrayAdapter.getItem(which);
-                        AlertDialog.Builder builderInner = new AlertDialog.Builder(TransactionsAddBought.this);
-                        builderInner.setMessage(strName.toString());
-                        builderInner.setTitle("Delete item?");
-                        builderInner.setPositiveButton("Continue ", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                               //action delete
-                                stringArrayAdapter.remove(strName.toString());
-                                stringArrayAdapter.notifyDataSetChanged();
-                                dialog.dismiss();
-
-                            }
-                        });
-                        builderInner.setNegativeButton("Close", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        });
-                        builderInner.show();
-
-                    }
-                });
-                builderView.show();
             }
         });
+        builderView.show();
     }
 
 
@@ -695,14 +699,6 @@ public class TransactionsAddBought extends AppCompatActivity {
     }
 
     private void addCart(){
-
-        type = spinnerItem.getText().toString();
-        itemName = spinnerItemName.getText().toString();
-        qty = Integer.parseInt(txtQty.getText().toString());
-
-        Date date = new Date();
-        double unitPrice = 0;
-
         switch (type) {
             case "Equipment":
                 if (tDAO.checkExistingWarehouse(dbHelper, type, itemName)) {
@@ -721,7 +717,8 @@ public class TransactionsAddBought extends AppCompatActivity {
                                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        finish();
+                                        dialog.dismiss();
+                                        viewButton();
                                     }
                                 })
                                 .show();
@@ -748,7 +745,8 @@ public class TransactionsAddBought extends AppCompatActivity {
                             .setNegativeButton("No", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    finish();
+                                    dialog.dismiss();
+                                    viewButton();
                                 }
                             })
                             .show();
@@ -772,7 +770,8 @@ public class TransactionsAddBought extends AppCompatActivity {
                                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        finish();
+                                        dialog.dismiss();
+                                        viewButton();
                                     }
                                 })
                                 .show();
@@ -798,7 +797,8 @@ public class TransactionsAddBought extends AppCompatActivity {
                             .setNegativeButton("No", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    finish();
+                                    dialog.dismiss();
+                                    viewButton();
                                 }
                             })
                             .show();
@@ -822,7 +822,8 @@ public class TransactionsAddBought extends AppCompatActivity {
                                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        finish();
+                                        dialog.dismiss();
+                                        viewButton();
                                     }
                                 })
                                 .show();
@@ -848,7 +849,8 @@ public class TransactionsAddBought extends AppCompatActivity {
                             .setNegativeButton("No", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    finish();
+                                    dialog.dismiss();
+                                    viewButton();
                                 }
                             })
                             .show();
@@ -872,7 +874,8 @@ public class TransactionsAddBought extends AppCompatActivity {
                                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        finish();
+                                        dialog.dismiss();
+                                        viewButton();
                                     }
                                 })
                                 .show();
@@ -898,7 +901,8 @@ public class TransactionsAddBought extends AppCompatActivity {
                             .setNegativeButton("No", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    finish();
+                                    dialog.dismiss();
+                                    viewButton();
                                 }
                             })
                             .show();
@@ -922,7 +926,8 @@ public class TransactionsAddBought extends AppCompatActivity {
                                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        finish();
+                                        dialog.dismiss();
+                                        viewButton();
                                     }
                                 })
                                 .show();
@@ -949,7 +954,8 @@ public class TransactionsAddBought extends AppCompatActivity {
                             .setNegativeButton("No", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    finish();
+                                    dialog.dismiss();
+                                    viewButton();
                                 }
                             })
                             .show();
@@ -973,7 +979,8 @@ public class TransactionsAddBought extends AppCompatActivity {
                                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        finish();
+                                        dialog.dismiss();
+                                        viewButton();
                                     }
                                 })
                                 .show();
@@ -999,7 +1006,8 @@ public class TransactionsAddBought extends AppCompatActivity {
                             .setNegativeButton("No", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    finish();
+                                    dialog.dismiss();
+                                    viewButton();
                                 }
                             })
                             .show();

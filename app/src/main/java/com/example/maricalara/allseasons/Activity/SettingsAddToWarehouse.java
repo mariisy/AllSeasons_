@@ -16,6 +16,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.example.maricalara.allseasons.Controller.AccountingDAO;
+import com.example.maricalara.allseasons.Controller.AccountingDAOImpl;
 import com.example.maricalara.allseasons.Controller.EquipmentDAO;
 import com.example.maricalara.allseasons.Controller.EquipmentDAOImpl;
 import com.example.maricalara.allseasons.Controller.IndirectMaterialsDAO;
@@ -24,6 +26,7 @@ import com.example.maricalara.allseasons.Controller.RawMaterialsDAO;
 import com.example.maricalara.allseasons.Controller.RawMaterialsDAOImpl;
 import com.example.maricalara.allseasons.Controller.TransactionDAO;
 import com.example.maricalara.allseasons.Controller.TransactionDAOImpl;
+import com.example.maricalara.allseasons.Model.Crops;
 import com.example.maricalara.allseasons.Model.DBHelper;
 import com.example.maricalara.allseasons.Model.Equipment;
 import com.example.maricalara.allseasons.Model.Fertilizers;
@@ -52,6 +55,7 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
     private IndirectMaterialsDAO imDao = new IndirectMaterialsDAOImpl();
     private RawMaterialsDAO rmDAO = new RawMaterialsDAOImpl();
     private TransactionDAO tDAO = new TransactionDAOImpl();
+    private AccountingDAO aDAO = new AccountingDAOImpl();
     private DBHelper dbHelper = new DBHelper(SettingsAddToWarehouse.this);
 
 
@@ -423,10 +427,13 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
             case "Seedlings":
                 if (!tDAO.checkExistingWarehouse(dbHelper, type, itemName)) {
                     Seedlings seedlings = new Seedlings(type, itemName, qty, unitPrice, strDate);
+                    Crops crop = new Crops("Crops", itemName, 0, 0, strDate);
                     try {
                         tDAO.addEntry(dbHelper, seedlings, type);
+                        tDAO.addEntry(dbHelper, crop, "Crops");
                         tDAO.addBoughtList(dbHelper, seedlings, type);
                         rmDAO.addTransaction(dbHelper, seedlings, type);
+                        //aDAO.addTransaction(dbHelper, crop);
 
                         new AlertDialog.Builder(SettingsAddToWarehouse.this)
                                 .setTitle("Adding Entry")
