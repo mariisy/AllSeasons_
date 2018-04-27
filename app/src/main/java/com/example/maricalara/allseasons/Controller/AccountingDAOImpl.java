@@ -34,5 +34,22 @@ public class AccountingDAOImpl implements AccountingDAO {
         Seedlings seedling = new Seedlings(null, null, 0, 0, null);
         ContentValues val = new ContentValues();
         double costTotal = 0;
+
+        for (Object obj : objArray) {
+            if (obj instanceof Seedlings) {
+
+            } else if (obj instanceof Seeds) {
+
+            } else if (obj instanceof Insecticides) {
+
+            } else if (obj instanceof Fertilizers) {
+
+            } else if (obj instanceof Packaging) {
+
+            } else {
+                break;
+            }
+        }
+
     }
 }

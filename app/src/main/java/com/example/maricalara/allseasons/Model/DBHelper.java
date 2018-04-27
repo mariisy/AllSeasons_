@@ -215,8 +215,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
         db.execSQL(dbBuildQuery3);
-        db.execSQL(dbBuildQuery4);
-        db.execSQL(dbBuildQuery5);
+
         db.execSQL(dbBuildQuery6);
         db.execSQL(dbBuildQuery7);
         db.execSQL(dbBuildQuery8);
@@ -239,6 +238,8 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(dbBuildQuery8);
         db.execSQL(dbBuildQuery10);
         db.execSQL(dbBuildQuery11);
+        db.execSQL(dbBuildQuery4);
+        db.execSQL(dbBuildQuery5);
     }
 
     @Override
