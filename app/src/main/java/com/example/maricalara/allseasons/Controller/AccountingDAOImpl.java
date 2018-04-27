@@ -106,18 +106,112 @@ public class AccountingDAOImpl implements AccountingDAO {
                     dbRead.update("RAW_MATERIALS", val, selection, selectionArgs);
                     dbRead.update("WPI", values, selection, selectionArgs);
 
-                }
 
-            }else if (obj instanceof Insecticides) {
+                }
+            } else if (obj instanceof Insecticides) {
+                insecticides = (Insecticides) obj;
+                String queryUpdate = "SELECT * FROM " + "INDIRECT_MATERIALS WHERE NAME = '" + insecticides.getName() + "'  AND TYPE = '" + insecticides.getType() + "' ";
+                Cursor cursor = dbRead.rawQuery(queryUpdate, null);
+
+                if (cursor.moveToFirst()) {
+                    do {
+                        in.setPrice(cursor.getInt(cursor.getColumnIndex("PRICE")));
+                        in.setQuantity(cursor.getInt(cursor.getColumnIndex("QUANTITY")));
+                    } while (cursor.moveToNext());
+
+                    val.put("DATE", insecticides.getDate());
+                    val.put("TYPE", insecticides.getType());
+                    val.put("NAME", insecticides.getName());
+                    val.put("QUANTITY", in.getQuantity() - insecticides.getQuantity());
+                    val.put("PRICE", insecticides.getPrice());
+                    costTotal = (in.getQuantity() - insecticides.getQuantity()) * insecticides.getPrice();
+                    val.put("TOTAL_COST", costTotal);
+
+                    values.put("DATE", insecticides.getDate());
+                    values.put("TYPE", insecticides.getType());
+                    values.put("NAME", insecticides.getName());
+                    values.put("QUANTITY", in.getQuantity() + insecticides.getQuantity());
+                    values.put("PRICE", insecticides.getPrice());
+                    costTotal = (in.getQuantity() + insecticides.getQuantity()) * insecticides.getPrice();
+                    values.put("TOTAL_COST", costTotal);
+
+                    String selection = "NAME" + " LIKE ?";
+                    String[] selectionArgs = {insecticides.getName()};
+                    dbRead.update("RAW_MATERIALS", val, selection, selectionArgs);
+                    dbRead.update("WPI", values, selection, selectionArgs);
+                }
 
             } else if (obj instanceof Fertilizers) {
 
+                fertilizers = (Fertilizers) obj;
+                String queryUpdate = "SELECT * FROM " + "INDIRECT_MATERIALS WHERE NAME = '" + fertilizers.getName() + "'  AND TYPE = '" + fertilizers.getType() + "' ";
+                Cursor cursor = dbRead.rawQuery(queryUpdate, null);
+
+                if (cursor.moveToFirst()) {
+                    do {
+                        in.setPrice(cursor.getInt(cursor.getColumnIndex("PRICE")));
+                        in.setQuantity(cursor.getInt(cursor.getColumnIndex("QUANTITY")));
+                    } while (cursor.moveToNext());
+
+                    val.put("DATE", fertilizers.getDate());
+                    val.put("TYPE", fertilizers.getType());
+                    val.put("NAME", fertilizers.getName());
+                    val.put("QUANTITY", fe.getQuantity() - fertilizers.getQuantity());
+                    val.put("PRICE", fertilizers.getPrice());
+                    costTotal = (fe.getQuantity() - fertilizers.getQuantity()) * fertilizers.getPrice();
+                    val.put("TOTAL_COST", costTotal);
+
+                    values.put("DATE", fertilizers.getDate());
+                    values.put("TYPE", fertilizers.getType());
+                    values.put("NAME", fertilizers.getName());
+                    values.put("QUANTITY", fe.getQuantity() + fertilizers.getQuantity());
+                    values.put("PRICE", fertilizers.getPrice());
+                    costTotal = (fe.getQuantity() + fertilizers.getQuantity()) * fertilizers.getPrice();
+                    values.put("TOTAL_COST", costTotal);
+
+                    String selection = "NAME" + " LIKE ?";
+                    String[] selectionArgs = {fertilizers.getName()};
+                    dbRead.update("RAW_MATERIALS", val, selection, selectionArgs);
+                    dbRead.update("WPI", values, selection, selectionArgs);
+                }
+
             } else if (obj instanceof Packaging) {
 
+                packaging = (Packaging) obj;
+                String queryUpdate = "SELECT * FROM " + "INDIRECT_MATERIALS WHERE NAME = '" + packaging.getName() + "'  AND TYPE = '" + packaging.getType() + "' ";
+                Cursor cursor = dbRead.rawQuery(queryUpdate, null);
+
+                if (cursor.moveToFirst()) {
+                    do {
+                        in.setPrice(cursor.getInt(cursor.getColumnIndex("PRICE")));
+                        in.setQuantity(cursor.getInt(cursor.getColumnIndex("QUANTITY")));
+                    } while (cursor.moveToNext());
+
+                    val.put("DATE", packaging.getDate());
+                    val.put("TYPE", packaging.getType());
+                    val.put("NAME", packaging.getName());
+                    val.put("QUANTITY", pa.getQuantity() - packaging.getQuantity());
+                    val.put("PRICE", packaging.getPrice());
+                    costTotal = (pa.getQuantity() - packaging.getQuantity()) * packaging.getPrice();
+                    val.put("TOTAL_COST", costTotal);
+
+                    values.put("DATE", packaging.getDate());
+                    values.put("TYPE", packaging.getType());
+                    values.put("NAME", packaging.getName());
+                    values.put("QUANTITY", pa.getQuantity() + packaging.getQuantity());
+                    values.put("PRICE", packaging.getPrice());
+                    costTotal = (pa.getQuantity() + packaging.getQuantity()) * packaging.getPrice();
+                    values.put("TOTAL_COST", costTotal);
+
+                    String selection = "NAME" + " LIKE ?";
+                    String[] selectionArgs = {packaging.getName()};
+                    dbRead.update("RAW_MATERIALS", val, selection, selectionArgs);
+                    dbRead.update("WPI", values, selection, selectionArgs);
+                }
             } else {
                 break;
             }
-
         }
+
     }
 }
