@@ -439,38 +439,307 @@ public class TransactionUseMaterials extends AppCompatActivity {
     }
 
     private void addData() {
-        type = spinnerItem.getText().toString();
-        itemName = spinnerItemName.getText().toString();
-        qty = Integer.parseInt(txtQty.getText().toString());
-        Date date = new Date();
-        String stringDate = DateFormat.getDateTimeInstance().format(date);
-        int unitPrice = 0;
-
         switch (type) {
             case "Equipment":
+                if (tDAO.checkExistingWarehouse(dbHelper, type, itemName)) {
+                    try {
+                        equipmentDAO.updateTransaction(dbHelper, arrTransact);
 
+
+                        new AlertDialog.Builder(TransactionUseMaterials.this)
+                                .setTitle("Adding Entry")
+                                .setMessage(itemName + " Added! /n Would you like to add another entry?")
+                                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                    }
+                                })
+                                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        finish();
+                                    }
+                                })
+                                .show();
+
+                    } catch (Exception e) {
+                        new AlertDialog.Builder(TransactionUseMaterials.this)
+                                .setTitle("Adding Entry")
+                                .setMessage(e.toString())
+                                .setNeutralButton("Ok", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                    }
+                                })
+                                .show();
+                    }
+                } else {
+                    new AlertDialog.Builder(TransactionUseMaterials.this)
+                            .setTitle("Adding Entry")
+                            .setMessage("Entry already exists! /n Would you like to add another entry?")
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                }
+                            })
+                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    finish();
+                                }
+                            })
+                            .show();
+                }
                 break;
 
             case "Insecticides":
+                if (tDAO.checkExistingWarehouse(dbHelper, type, itemName)) {
+                    try {
+                        //imDao.updateTransaction(dbHelper, strDate, type, itemName, qty);
 
 
+                        new AlertDialog.Builder(TransactionUseMaterials.this)
+                                .setTitle("Adding Entry")
+                                .setMessage(itemName + " Added! /n Would you like to add another entry?")
+                                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                    }
+                                })
+                                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        finish();
+                                    }
+                                })
+                                .show();
+                    } catch (Exception e) {
+                        new AlertDialog.Builder(TransactionUseMaterials.this)
+                                .setTitle("Adding Entry")
+                                .setMessage("Adding entry unsuccesful! /n Please try again.")
+                                .setNeutralButton("Ok", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                    }
+                                })
+                                .show();
+                    }
+                } else {
+                    new AlertDialog.Builder(TransactionUseMaterials.this)
+                            .setTitle("Adding Entry")
+                            .setMessage("Entry already exists! /n Would you like to add another entry?")
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                }
+                            })
+                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    finish();
+                                }
+                            })
+                            .show();
+                }
                 break;
 
             case "Fertilizer":
+                if (tDAO.checkExistingWarehouse(dbHelper, type, itemName)) {
+                    try {
+                        //imDao.updateTransaction(dbHelper, strDate, type, itemName, qty);
 
 
+                        new AlertDialog.Builder(TransactionUseMaterials.this)
+                                .setTitle("Adding Entry")
+                                .setMessage(itemName + " Added! /n Would you like to add another entry?")
+                                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                    }
+                                })
+                                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        finish();
+                                    }
+                                })
+                                .show();
+                    } catch (Exception e) {
+                        new AlertDialog.Builder(TransactionUseMaterials.this)
+                                .setTitle("Adding Entry")
+                                .setMessage("Adding entry unsuccesful! /n Please try again.")
+                                .setNeutralButton("Ok", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                    }
+                                })
+                                .show();
+                    }
+                } else {
+                    new AlertDialog.Builder(TransactionUseMaterials.this)
+                            .setTitle("Adding Entry")
+                            .setMessage("Entry already exists! /n Would you like to add another entry?")
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                }
+                            })
+                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    finish();
+                                }
+                            })
+                            .show();
+                }
                 break;
 
             case "Packaging":
+                if (tDAO.checkExistingWarehouse(dbHelper, type, itemName)) {
+                    try {
+                        //imDao.updateTransaction(dbHelper, strDate, type, itemName, qty);
 
+
+                        new AlertDialog.Builder(TransactionUseMaterials.this)
+                                .setTitle("Adding Entry")
+                                .setMessage(itemName + " Added! /n Would you like to add another entry?")
+                                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                    }
+                                })
+                                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        finish();
+                                    }
+                                })
+                                .show();
+                    } catch (Exception e) {
+                        new AlertDialog.Builder(TransactionUseMaterials.this)
+                                .setTitle("Adding Entry")
+                                .setMessage("Adding entry unsuccesful! /n Please try again.")
+                                .setNeutralButton("Ok", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                    }
+                                })
+                                .show();
+                    }
+                } else {
+                    new AlertDialog.Builder(TransactionUseMaterials.this)
+                            .setTitle("Adding Entry")
+                            .setMessage("Entry already exists! /n Would you like to add another entry?")
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                }
+                            })
+                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    finish();
+                                }
+                            })
+                            .show();
+                }
                 break;
 
             case "Seeds":
+                if (tDAO.checkExistingWarehouse(dbHelper, type, itemName)) {
+                    try {
+                        //rmDAO.updateTransaction(dbHelper, strDate, type, itemName, qty);
 
+
+                        new AlertDialog.Builder(TransactionUseMaterials.this)
+                                .setTitle("Adding Entry")
+                                .setMessage(itemName + " Added! /n Would you like to add another entry?")
+                                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                    }
+                                })
+                                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        finish();
+                                    }
+                                })
+                                .show();
+                    } catch (Exception e) {
+                        new AlertDialog.Builder(TransactionUseMaterials.this)
+                                .setTitle("Adding Entry")
+                                .setMessage(e.toString())
+                                .setNeutralButton("Ok", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                    }
+                                })
+                                .show();
+                    }
+
+                } else {
+                    new AlertDialog.Builder(TransactionUseMaterials.this)
+                            .setTitle("Adding Entry")
+                            .setMessage("Entry already exists! /n Would you like to add another entry?")
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                }
+                            })
+                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    finish();
+                                }
+                            })
+                            .show();
+                }
                 break;
 
             case "Seedlings":
+                if (tDAO.checkExistingWarehouse(dbHelper, type, itemName)) {
+                    try {
+                        //rmDAO.updateTransaction(dbHelper, strDate, type, itemName, qty);
 
+
+                        new AlertDialog.Builder(TransactionUseMaterials.this)
+                                .setTitle("Adding Entry")
+                                .setMessage(itemName + " Added! /n Would you like to add another entry?")
+                                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                    }
+                                })
+                                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        finish();
+                                    }
+                                })
+                                .show();
+                    } catch (Exception e) {
+                        new AlertDialog.Builder(TransactionUseMaterials.this)
+                                .setTitle("Adding Entry")
+                                .setMessage("Adding entry unsuccesful! /n Please try again.")
+                                .setNeutralButton("Ok", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                    }
+                                })
+                                .show();
+                    }
+                } else {
+                    new AlertDialog.Builder(TransactionUseMaterials.this)
+                            .setTitle("Adding Entry")
+                            .setMessage("Entry already exists! /n Would you like to add another entry?")
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                }
+                            })
+                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    finish();
+                                }
+                            })
+                            .show();
+                }
                 break;
 
             default: //do something
