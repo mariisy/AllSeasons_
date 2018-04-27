@@ -16,6 +16,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.example.maricalara.allseasons.Controller.AccountingDAO;
+import com.example.maricalara.allseasons.Controller.AccountingDAOImpl;
 import com.example.maricalara.allseasons.Controller.EquipmentDAO;
 import com.example.maricalara.allseasons.Controller.EquipmentDAOImpl;
 import com.example.maricalara.allseasons.Controller.IndirectMaterialsDAO;
@@ -38,6 +40,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Objects;
 
 public class TransactionUseMaterials extends AppCompatActivity {
 
@@ -51,7 +54,7 @@ public class TransactionUseMaterials extends AppCompatActivity {
     private EditText txtQty;
 
     //DAO
-    private EquipmentDAO equipmentDAO = new EquipmentDAOImpl();
+    private AccountingDAO aDAO = new AccountingDAOImpl();
     private IndirectMaterialsDAO imDao = new IndirectMaterialsDAOImpl();
     private RawMaterialsDAO rmDAO = new RawMaterialsDAOImpl();
     private TransactionDAO tDAO = new TransactionDAOImpl();
@@ -67,6 +70,8 @@ public class TransactionUseMaterials extends AppCompatActivity {
     double totalPrice = 0;
     private ArrayList<String> arrList;
     private ArrayList<Object> arrTransact = new ArrayList<>();
+    private ArrayAdapter<String> stringArrayAdapter;
+    Object strName = null;
 
     //get Date String
     Date date = new Date();
@@ -135,7 +140,59 @@ public class TransactionUseMaterials extends AppCompatActivity {
         });
 
     }
+    private void viewButton(){
+        AlertDialog.Builder builderView = new AlertDialog.Builder(TransactionUseMaterials.this);
+        builderView.setTitle("Cart Items");
 
+        ArrayList<String> strings = new ArrayList<>(arrTransact.size());
+        for (Object obj : arrTransact){
+            strings.add(Objects.toString(obj, null));
+        }
+
+        stringArrayAdapter = new ArrayAdapter<String>(TransactionUseMaterials.this, android.R.layout.simple_list_item_1, strings);
+
+        builderView.setPositiveButton("Add Transactions", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                setData();
+            }
+        });
+        builderView.setNegativeButton("Close View", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        builderView.setAdapter(stringArrayAdapter, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                strName = stringArrayAdapter.getItem(which);
+                AlertDialog.Builder builderInner = new AlertDialog.Builder(TransactionUseMaterials.this);
+                builderInner.setMessage(strName.toString());
+                builderInner.setTitle("Delete item?");
+                builderInner.setPositiveButton("Continue ", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //action delete
+                        stringArrayAdapter.remove(strName.toString());
+                        stringArrayAdapter.notifyDataSetChanged();
+                        dialog.dismiss();
+
+                    }
+                });
+                builderInner.setNegativeButton("Close", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                builderInner.show();
+
+            }
+        });
+        builderView.show();
+    }
 
     private void submitForm() {
         if (validateQty()) {
@@ -443,7 +500,7 @@ public class TransactionUseMaterials extends AppCompatActivity {
             case "Equipment":
                 if (tDAO.checkExistingWarehouse(dbHelper, type, itemName)) {
                     try {
-                        equipmentDAO.updateTransaction(dbHelper, arrTransact);
+                        aDAO.updateWPI(dbHelper, arrTransact);
 
 
                         new AlertDialog.Builder(TransactionUseMaterials.this)
@@ -544,7 +601,7 @@ public class TransactionUseMaterials extends AppCompatActivity {
             case "Fertilizer":
                 if (tDAO.checkExistingWarehouse(dbHelper, type, itemName)) {
                     try {
-                        //imDao.updateTransaction(dbHelper, strDate, type, itemName, qty);
+                        aDAO.updateWPI(dbHelper, arrTransact);
 
 
                         new AlertDialog.Builder(TransactionUseMaterials.this)
@@ -594,7 +651,7 @@ public class TransactionUseMaterials extends AppCompatActivity {
             case "Packaging":
                 if (tDAO.checkExistingWarehouse(dbHelper, type, itemName)) {
                     try {
-                        //imDao.updateTransaction(dbHelper, strDate, type, itemName, qty);
+                        aDAO.updateWPI(dbHelper, arrTransact);
 
 
                         new AlertDialog.Builder(TransactionUseMaterials.this)
@@ -644,7 +701,7 @@ public class TransactionUseMaterials extends AppCompatActivity {
             case "Seeds":
                 if (tDAO.checkExistingWarehouse(dbHelper, type, itemName)) {
                     try {
-                        //rmDAO.updateTransaction(dbHelper, strDate, type, itemName, qty);
+                        aDAO.updateWPI(dbHelper, arrTransact);
 
 
                         new AlertDialog.Builder(TransactionUseMaterials.this)
@@ -695,7 +752,7 @@ public class TransactionUseMaterials extends AppCompatActivity {
             case "Seedlings":
                 if (tDAO.checkExistingWarehouse(dbHelper, type, itemName)) {
                     try {
-                        //rmDAO.updateTransaction(dbHelper, strDate, type, itemName, qty);
+                        aDAO.updateWPI(dbHelper, arrTransact);
 
 
                         new AlertDialog.Builder(TransactionUseMaterials.this)

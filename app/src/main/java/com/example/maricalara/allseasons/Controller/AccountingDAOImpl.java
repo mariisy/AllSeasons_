@@ -6,18 +6,15 @@ import android.database.sqlite.SQLiteDatabase;
 import com.example.maricalara.allseasons.Model.Crops;
 import com.example.maricalara.allseasons.Model.DBHelper;
 
+import java.util.ArrayList;
+
 public class AccountingDAOImpl implements AccountingDAO {
     SQLiteDatabase dbWrite, dbRead;
     Crops crop;
+
+
     @Override
-    public void addTransaction(DBHelper dbHelper, Crops crops) {
-        dbWrite = dbHelper.getWritableDatabase();
+    public void updateWPI(DBHelper dbHelper, ArrayList<Object> objArray) {
 
-        ContentValues values = new ContentValues();
-        values.put("TYPE", crops.getType());
-        values.put("NAME", crops.getName());
-        values.put("PRICE", crops.getPrice());
-        dbWrite.insert("WAREHOUSE_EQUIPMENT", null, values);
-
-        }
+    }
 }
