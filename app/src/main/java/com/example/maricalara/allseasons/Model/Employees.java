@@ -6,7 +6,7 @@ package com.example.maricalara.allseasons.Model;
 
 public class Employees {
 
-    private String employeeID;
+    private int employeeID;
     private String employeeFullID;
     private String name;
     private String accountype;
@@ -14,7 +14,7 @@ public class Employees {
     private int salary;
 
 
-    public Employees(String employeeID,String employeeFullID,String name, String accountype, String date, int salary) {
+    public Employees(int employeeID,String employeeFullID,String name, String accountype, String date, int salary) {
         this.employeeID = employeeID;
         this.employeeFullID = employeeFullID;
         this.name = name;
@@ -23,7 +23,7 @@ public class Employees {
         this.salary = salary;
     }
 
-    public String getEmployeeID() {
+    public int getEmployeeID() {
         return employeeID;
     }
 
@@ -35,7 +35,7 @@ public class Employees {
         this.employeeFullID = employeeFullID;
     }
 
-    public void setEmployeeID(String employeeID) {
+    public void setEmployeeID(int employeeID) {
         this.employeeID = employeeID;
     }
 
