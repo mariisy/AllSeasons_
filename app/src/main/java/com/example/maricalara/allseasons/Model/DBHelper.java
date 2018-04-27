@@ -33,6 +33,9 @@ public class DBHelper extends SQLiteOpenHelper {
     public String dbTableDL = "DIRECT_LABOR";
     public String dbTableIL = "INDIRECT_LABOR";
     public String dbTableSE = "SALARIES_EXPENSE";
+    public String dbTableSupplier ="SUPPLIER";
+
+
 
 
 
@@ -58,14 +61,12 @@ public class DBHelper extends SQLiteOpenHelper {
     public String dbColumnSalary = "SALARY";
     public String dbColumnTransactionID = "TRANSACTIONID";
     public String dbColumnDelivery = "DELIVERY";
+    public String dBColumnSupplierName = "SUPPLIER_NAME";
 
 
     //db Query
 
-    private String dbBuildQuery15 = "CREATE TABLE " + dbTableWarehouseEquip + " ( " +
-            dBColumnType + " TEXT, " +
-            dBColumnName + " TEXT, " +
-            dBColumnPrice + " REAL )";
+
 
     private String dbBuildQuery1 = "CREATE TABLE " + dbTableRawMaterials + " ( " +
             dBColumnDate + " TEXT, " +
@@ -168,6 +169,13 @@ public class DBHelper extends SQLiteOpenHelper {
             dbColumnSalary + " REAL, " +
             dBColumnDate + " TEXT, " +
             "FOREIGN KEY (dbColumnEmployeeID) REFERENCES " + dbTableEmployee + "(" + dbColumnEmployeeID + "));";
+
+    private String dbBuildQuery15 = "CREATE TABLE " + dbTableWarehouseEquip + " ( " +
+            dBColumnSupplierName + " TEXT, " +
+            dbColumnContactNum + " TEXT, " +
+            dBColumnType + " TEXT, " +
+            dBColumnName + " TEXT, " +
+            dBColumnPrice + " REAL )";
 
 
     private String dbDestroyQuery1 = "DROP TABLE IF EXISTS " + dbTableRawMaterials;

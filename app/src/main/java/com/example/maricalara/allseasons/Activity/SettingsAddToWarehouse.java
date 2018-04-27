@@ -42,7 +42,7 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
 
     private Toolbar toolbar;
 
-    private EditText txtItemName, txtUprice, txtQty;
+    private EditText txtItemName, txtUprice, txtQty, txtSupplierName, txtSupplierContact;
     private TextInputLayout inputLayoutItemname, inputLayoutUnitPrice, inputLayoutQty;
     private Button btnAddItem, btnView;
     private MaterialBetterSpinner spinnerType1;
@@ -85,7 +85,8 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
         txtQty = (EditText) findViewById(R.id.txtQty);
         spinnerType1 = (MaterialBetterSpinner) findViewById(R.id.spinnerType);
         btnView = (Button) findViewById(R.id.btnView);
-
+        txtSupplierName = (EditText)findViewById(R.id.txtSupplierName);
+        txtSupplierContact = (EditText)findViewById(R.id.txtSupplierContact);
         //inflate toolbar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -116,9 +117,11 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
                 Cursor result = tDAO.getAllData(dbHelper);
                 StringBuffer buffer = new StringBuffer();
                 while (result.moveToNext()) {
-                    buffer.append("Type: " + result.getString(0) + "\n");
-                    buffer.append("Name: " + result.getString(1) + "\n");
-                    buffer.append("Price: " + result.getString(2) + "\n \n");
+                    buffer.append("Supplier Name: " + result.getString(0) + "\n");
+                    buffer.append("Supplier Contact: " + result.getString(1) + "\n \n");
+                    buffer.append("Type: " + result.getString(2) + "\n");
+                    buffer.append("Name: " + result.getString(3) + "\n");
+                    buffer.append("Price: " + result.getString(4) + "\n \n");
                 }
                 android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(SettingsAddToWarehouse.this);
                 builder.setMessage(buffer.toString());
