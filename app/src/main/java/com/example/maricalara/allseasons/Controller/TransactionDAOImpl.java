@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.example.maricalara.allseasons.Model.Crops;
 import com.example.maricalara.allseasons.Model.DBHelper;
 import com.example.maricalara.allseasons.Model.Employees;
 import com.example.maricalara.allseasons.Model.Equipment;
@@ -25,6 +26,7 @@ public class TransactionDAOImpl implements TransactionDAO {
     private Packaging packaging;
     private Seedlings seedlings;
     private Seeds seeds;
+    Crops crop;
     private Equipment equipment;
     private Employees employees;
 
@@ -83,26 +85,46 @@ public class TransactionDAOImpl implements TransactionDAO {
             case "Seedlings":
                 if (object instanceof Seedlings) {
                     seedlings = (Seedlings) object;
-                    double costTotal = Double.valueOf(seedlings.getQuantity()) * Double.valueOf(seedlings.getPrice());
 
                     ContentValues values = new ContentValues();
                     values.put("TYPE", seedlings.getType());
                     values.put("NAME", seedlings.getName());
                     values.put("PRICE", seedlings.getPrice());
                     dbWrite.insert("WAREHOUSE_EQUIPMENT", null, values);
-                }
+        }
 
                 break;
 
             case "Seeds":
                 if (object instanceof Seeds) {
                     seeds = (Seeds) object;
-                    double costTotal = Double.valueOf(seeds.getQuantity()) * Double.valueOf(seeds.getPrice());
 
                     ContentValues values = new ContentValues();
                     values.put("TYPE", seeds.getType());
                     values.put("NAME", seeds.getName());
                     values.put("PRICE", seeds.getPrice());
+                    dbWrite.insert("WAREHOUSE_EQUIPMENT", null, values);
+
+
+                    ContentValues val = new ContentValues();
+                    val.put("DATE", seeds.getDate());
+                    val.put("TYPE", seeds.getType());
+                    val.put("NAME", seeds.getName());
+                    val.put("QUANTITY", seeds.getQuantity());
+                    val.put("PRICE", seeds.getPrice());
+                    val.put("TOTAL_COST", 0);
+                    dbWrite.insert("FGI", null, val);
+                }
+                break;
+
+            case "Crops":
+                if (object instanceof Seeds) {
+                    crop = (Crops) object;
+
+                    ContentValues values = new ContentValues();
+                    values.put("TYPE", crop.getType());
+                    values.put("NAME", crop.getName());
+                    values.put("PRICE", crop.getPrice());
                     dbWrite.insert("WAREHOUSE_EQUIPMENT", null, values);
                 }
                 break;
@@ -155,6 +177,7 @@ public class TransactionDAOImpl implements TransactionDAO {
                     dbWrite.insert("WAREHOUSE_EQUIPMENT", null, values);
                 }
                 break;
+
             case "Employee":
                 if (object instanceof Employees) {
                     employees = (Employees) object;

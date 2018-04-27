@@ -7,12 +7,14 @@ package com.example.maricalara.allseasons.Model;
 public class Crops {
 
     private String type;
-    private int weight;
-    private int price;
+    private String name;
+    private double weight;
+    private double price;
     private String date;
 
-    public Crops(String type, int weight, int price, String date) {
+    public Crops(String type, String name, double weight, double price, String date) {
         this.type = type;
+        this.name = name;
         this.weight = weight;
         this.price = price;
         this.date = date;
@@ -26,19 +28,27 @@ public class Crops {
         this.type = type;
     }
 
-    public int getWeight() {
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public double getWeight() {
         return weight;
     }
 
-    public void setWeight(int weight) {
+    public void setWeight(double weight) {
         this.weight = weight;
     }
 
-    public int getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
@@ -53,7 +63,7 @@ public class Crops {
     @Override
     public String toString() {
         return
-                "Type: " + type + "\n" +
+                " " + name + "\n" +
                         "Quantity: " + weight + "\n" +
                         "Total Price: " + price + "\n \n";
     }

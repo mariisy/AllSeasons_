@@ -78,7 +78,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentTop="true"
-                    android:hint="Select Item"
+                    android:hint="Select Item Type"
                     android:textColorHint="#bdbdbd"
                     app:met_floatingLabel="normal" />
 
