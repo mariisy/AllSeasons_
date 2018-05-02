@@ -270,12 +270,7 @@ public class IndirectMaterialsDAOImpl implements IndirectMaterialsDAO {
                     String[] selectionArgs = {insecticides.getName()};
                     dbRead.update("INDIRECT_MATERIALS", val, selection, selectionArgs);
 
-                    ContentValues value = new ContentValues();
-                    value.put("DATE", insecticides.getDate());
-                    value.put("TYPE", insecticides.getType());
-                    value.put("DEBIT", 0);
-                    value.put("CREDIT", costTotal);
-                    dbWrite.insert("CASH", null, value);
+
                 }
             }
 
@@ -302,12 +297,6 @@ public class IndirectMaterialsDAOImpl implements IndirectMaterialsDAO {
                     String[] selectionArgs = {fertilizers.getName()};
                     dbRead.update("INDIRECT_MATERIALS", val, selection, selectionArgs);
 
-                    ContentValues value = new ContentValues();
-                    value.put("DATE", fertilizers.getDate());
-                    value.put("TYPE", fertilizers.getType());
-                    value.put("DEBIT", 0);
-                    value.put("CREDIT", costTotal);
-                    dbWrite.insert("CASH", null, value);
                 }
             }
 
@@ -334,12 +323,7 @@ public class IndirectMaterialsDAOImpl implements IndirectMaterialsDAO {
                     String[] selectionArgs = {packaging.getName()};
                     dbRead.update("INDIRECT_MATERIALS", val, selection, selectionArgs);
 
-                    ContentValues value = new ContentValues();
-                    value.put("DATE", packaging.getDate());
-                    value.put("TYPE", packaging.getType());
-                    value.put("DEBIT", 0);
-                    value.put("CREDIT", costTotal);
-                    dbWrite.insert("CASH", null, value);
+
                 }
             }
 

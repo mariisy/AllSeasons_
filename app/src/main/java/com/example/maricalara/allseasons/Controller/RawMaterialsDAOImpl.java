@@ -202,12 +202,6 @@ public class RawMaterialsDAOImpl implements RawMaterialsDAO {
                     dbRead.update("RAW_MATERIALS", val, selection, selectionArgs);
 
 
-                    ContentValues value = new ContentValues();
-                    value.put("DATE", seedlings.getDate());
-                    value.put("TYPE", seedlings.getType());
-                    value.put("DEBIT", 0);
-                    value.put("CREDIT", costTotal);
-                    dbWrite.insert("CASH", null, value);
                 }
             }
 
@@ -234,12 +228,7 @@ public class RawMaterialsDAOImpl implements RawMaterialsDAO {
                     String[] selectionArgs = {seeds.getName()};
                     dbRead.update("RAW_MATERIALS", val, selection, selectionArgs);
 
-                    ContentValues value = new ContentValues();
-                    value.put("DATE", seeds.getDate());
-                    value.put("TYPE", seeds.getType());
-                    value.put("DEBIT", 0);
-                    value.put("CREDIT", costTotal);
-                    dbWrite.insert("CASH", null, value);
+
                 }
             }
         }

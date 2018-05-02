@@ -16,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.maricalara.allseasons.Controller.EquipmentDAO;
 import com.example.maricalara.allseasons.Controller.EquipmentDAOImpl;
@@ -719,41 +720,9 @@ public class TransactionsAddBought extends AppCompatActivity {
     }
 
     private void addCart() {
-        switch (type) {
-            case "Equipment":
-                        equipmentDAO.updateTransaction(dbHelper, arrTransact);
-            break;
-
-            case "Insecticides":
-                        //imDao.updateTransaction(dbHelper, strDate, type, itemName, qty);
-
-                break;
-
-            case "Fertilizer":
-                         //imDao.updateTransaction(dbHelper, strDate, type, itemName, qty);
-
-
-                break;
-
-            case "Packaging":
-                        //imDao.updateTransaction(dbHelper, strDate, type, itemName, qty);
-
-                break;
-
-            case "Seeds":
-                         //rmDAO.updateTransaction(dbHelper, strDate, type, itemName, qty);
-
-                break;
-
-            case "Seedlings":
-                         //rmDAO.updateTransaction(dbHelper, strDate, type, itemName, qty);
-
-
-                break;
-
-            default: //do something
-        }
-
+        equipmentDAO.updateTransaction(dbHelper, arrTransact);
+        imDao.updateTransaction(dbHelper, arrTransact);
+        rmDAO.updateTransaction(dbHelper, arrTransact);
     }
 
     private void populateSpinnerType() {
@@ -764,8 +733,8 @@ public class TransactionsAddBought extends AppCompatActivity {
     }
 
     private void populateSpinnerName() {
-        type = spinnerSupplierName.getText().toString();
-        arrListName = tDAO.retrieveListSpinnerColumn(dbHelper, "NAME", "SUPPLIER_NAME", type);
+        type = spinnerItem.getText().toString();
+        arrListName = tDAO.retrieveListSpinnerColumn(dbHelper, "NAME", "TYPE", type);
         arrayAdapter3 = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, arrListName);
         spinnerItemName.setAdapter(arrayAdapter3);
     }
