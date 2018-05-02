@@ -244,7 +244,7 @@ public class SettingsAddStaff extends AppCompatActivity {
                 if (!transactionDAO.checkExistingEmployee(dbHelper,type, employeeName)) {
                     Employees employees = new Employees(0,null,employeeName, type,strDate,salary);
                     try {
-                        transactionDAO.addEntry(dbHelper, employees, "Employee");
+                        transactionDAO.addEntry(dbHelper, employees, "Employee","","");
 
                         new AlertDialog.Builder(SettingsAddStaff.this)
                                 .setTitle("Adding Entry")
@@ -296,7 +296,7 @@ public class SettingsAddStaff extends AppCompatActivity {
                 if (!transactionDAO.checkExistingEmployee(dbHelper,type, employeeName)) {
                     Employees employees = new Employees(0,null,employeeName, type,strDate,salary);
                     try {
-                        transactionDAO.addEntry(dbHelper, employees, "Employee");
+                        transactionDAO.addEntry(dbHelper, employees, "Employee","","");
 
                         new AlertDialog.Builder(SettingsAddStaff.this)
                                 .setTitle("Adding Entry")
@@ -349,7 +349,7 @@ public class SettingsAddStaff extends AppCompatActivity {
                 if (!transactionDAO.checkExistingEmployee(dbHelper,type, employeeName)) {
                     Employees employees = new Employees(0,null,employeeName, type,strDate,salary);
                     try {
-                        transactionDAO.addEntry(dbHelper, employees, "Employee");
+                        transactionDAO.addEntry(dbHelper, employees, "Employee","","");
 
                         new AlertDialog.Builder(SettingsAddStaff.this)
                                 .setTitle("Adding Entry")

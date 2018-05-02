@@ -56,8 +56,8 @@ public class WarehouseCrops extends Fragment {
          listView=(ListView)rootView.findViewById(R.id.list);
 
         crops= new ArrayList<>();
-        crops.add(new Crops("Chili", 100, 15, "July 10"));
-        crops.add(new Crops("Pechay", 100, 15, "July 10"));
+        crops.add(new Crops("Crops","Chili", 100, 15, "July 10"));
+        crops.add(new Crops("Crops","Pechay", 100, 15, "July 10"));
 
         cropsAdapter = new CropsAdapter(crops, getActivity().getApplicationContext());
 

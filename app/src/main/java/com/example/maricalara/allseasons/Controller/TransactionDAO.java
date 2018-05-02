@@ -18,7 +18,7 @@ public interface TransactionDAO {
 
     boolean checkExistingEmployee(DBHelper dbHelper, String type, String name);
 
-    void addEntry(DBHelper dbHelper, Object object, String type);
+    public void addEntry(DBHelper dbHelper, Object object, String type, String name, String contact);
 
     public void addBoughtList(DBHelper dbHelper, Object object, String type);
 
@@ -33,4 +33,6 @@ public interface TransactionDAO {
     void updateEntry(DBHelper dbHelper, String name, Double price);
 
     void deleteEntry(DBHelper dbHelper, String name);
+    ArrayList<String> retrieveListSpinner(DBHelper dbHelper);
+    public ArrayList<String> retrieveListSpinnerColumn(DBHelper dbHelper, String spinnerCategory, String columnName, String value);
 }

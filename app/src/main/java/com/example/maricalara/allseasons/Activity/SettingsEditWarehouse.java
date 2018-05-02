@@ -58,10 +58,10 @@ public class SettingsEditWarehouse extends AppCompatActivity {
         Cursor result = tDAO.getAllData(dbHelper);
         StringBuffer buffer = new StringBuffer();
         while (result.moveToNext()) {
-            String type = result.getString(0);
-            String name = result.getString(1);
-            double price = Double.parseDouble(result.getString(2));
-            materials.add(new WarehouseMaterial(type,name, price));
+            String type = result.getString(2);
+            String name = result.getString(3);
+            double price = Double.parseDouble(result.getString(4));
+            materials.add(new WarehouseMaterial("","",type,name, price));
         }
 
 

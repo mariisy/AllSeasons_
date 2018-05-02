@@ -54,9 +54,9 @@ public class TransactionsAddBought extends AppCompatActivity {
 
     //for UI
     private Button btnAddTransaction, btnView;
-    private EditText txtSupplierName, txtContactNum, txtQty;
+    private EditText txtQty, txtContactNum;
     private TextInputLayout inputLayoutSupplierName, inputLayoutContactNum, inputLayoutQty;
-    private MaterialBetterSpinner spinnerItem, spinnerItemName;
+    private MaterialBetterSpinner spinnerItem, spinnerItemName,spinnerSupplierName;
     private TextView txtDate, txtTransaction;
 
     //DAO
@@ -68,11 +68,12 @@ public class TransactionsAddBought extends AppCompatActivity {
 
 
     //Data variables
-    String[] spinnerListType = {"Seeds", "Seedlings", "Packaging", "Fertilizer", "Insecticides", "Equipment"};
-    private String type, itemName, transactionID;
+
+    private String type, itemName, transactionID,supplierName;
     private int qty;
-    ArrayAdapter<String> stringArrayAdapter;
-    private ArrayList<String> arrList;
+    private ArrayAdapter<String> stringArrayAdapter, arrayAdapter2, arrayAdapter3;
+    private ArrayList<String>  arrListSupplierName, arrListType, arrListName;
+
     private ArrayList<Object> arrTransact  = new ArrayList<>();
     Object object = null;
     Seeds seeds;
@@ -106,25 +107,43 @@ public class TransactionsAddBought extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         //UI inflater
-        inputLayoutSupplierName = (TextInputLayout) findViewById(R.id.input_layout_supplier);
+        inputLayoutSupplierName = (TextInputLayout) findViewById(R.id.input_layout_supplierName);
         inputLayoutContactNum = (TextInputLayout) findViewById(R.id.input_layout_contactNum);
         inputLayoutQty = (TextInputLayout) findViewById(R.id.input_layout_qty);
-        txtSupplierName = (EditText) findViewById(R.id.txtSupplier);
-        txtContactNum = (EditText) findViewById(R.id.txtContactNum);
+
         txtQty = (EditText) findViewById(R.id.txtQty);
         btnView = (Button) findViewById(R.id.btnView);
         spinnerItem = (MaterialBetterSpinner) findViewById(R.id.spinnerItem);
         spinnerItemName = (MaterialBetterSpinner) findViewById(R.id.spinnerItemName);
+        spinnerSupplierName = (MaterialBetterSpinner)findViewById(R.id.spinnerSupplierName);
+        txtContactNum = (EditText) findViewById(R.id.txtContactNum);
         txtDate = (TextView) findViewById(R.id.txtDate);
         txtTransaction = (TextView) findViewById(R.id.txtTransactionID);
 
         txtDate.setText(strDate);
 
         //set array for spinner type 1 and type 2
-        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, spinnerListType);
-        spinnerItem.setAdapter(arrayAdapter);
 
+        arrListSupplierName = tDAO.retrieveListSpinner(dbHelper);
+        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, arrListSupplierName);
+        spinnerSupplierName.setAdapter(arrayAdapter);
 
+        spinnerSupplierName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                populateSpinnerType();
+            }
+        });
 
         spinnerItem.addTextChangedListener(new TextWatcher() {
             @Override
@@ -243,25 +262,26 @@ public class TransactionsAddBought extends AppCompatActivity {
     }
 
     private boolean validateSuplierName() {
-        if (txtSupplierName.getText().toString().trim().isEmpty()) {
-            inputLayoutSupplierName.setError("Enter Supplier Name");
-            requestFocus(txtSupplierName);
+        if (spinnerSupplierName.getText().toString().trim().isEmpty()) {
+            spinnerSupplierName.setError("Pick Item Type!");
+            //inputLayoutUnitPrice.setError("Enter Last Name!");
+            requestFocus(spinnerSupplierName);
             return false;
         } else {
-            inputLayoutSupplierName.setErrorEnabled(false);
+
+            return true;
         }
-        return true;
     }
 
     private boolean validateContact() {
         if (txtContactNum.getText().toString().trim().isEmpty()) {
-            inputLayoutContactNum.setError("Enter Contact Number");
+            inputLayoutQty.setError("Enter contact number!");
             requestFocus(txtContactNum);
             return false;
         } else {
             inputLayoutContactNum.setErrorEnabled(false);
+            return true;
         }
-        return true;
     }
 
     private boolean validateQty() {
@@ -325,7 +345,7 @@ public class TransactionsAddBought extends AppCompatActivity {
 
         public void afterTextChanged(Editable editable) {
             switch (view.getId()) {
-                case R.id.txtSupplier:
+                case R.id.spinnerSupplierName:
                     validateSuplierName();
                     break;
                 case R.id.txtContactNum:
@@ -1019,49 +1039,18 @@ public class TransactionsAddBought extends AppCompatActivity {
 
     }
 
+    private void populateSpinnerType() {
+        type = spinnerSupplierName.getText().toString();
+        arrListType = tDAO.retrieveListSpinnerColumn(dbHelper,"TYPE","SUPPLIER_NAME" ,type);
+        arrayAdapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, arrListType);
+        spinnerItem.setAdapter(arrayAdapter2);
+    }
+
     private void populateSpinnerName() {
-        type = spinnerItem.getText().toString();
-        ArrayAdapter<String> arrayAdapter2;
-        switch (type) {
-            case "Equipment":
-                arrList = equipmentDAO.retrieveListSpinner(dbHelper, type);
-                arrayAdapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, arrList);
-                spinnerItemName.setAdapter(arrayAdapter2);
-                break;
-
-            case "Insecticides":
-                arrList = imDao.retrieveListSpinner(dbHelper, type);
-                arrayAdapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, arrList);
-                spinnerItemName.setAdapter(arrayAdapter2);
-                break;
-
-            case "Fertilizer":
-                arrList = imDao.retrieveListSpinner(dbHelper, type);
-                arrayAdapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, arrList);
-                spinnerItemName.setAdapter(arrayAdapter2);
-
-                break;
-
-            case "Packaging":
-                arrList = imDao.retrieveListSpinner(dbHelper, type);
-                arrayAdapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, arrList);
-                spinnerItemName.setAdapter(arrayAdapter2);
-                break;
-
-            case "Seeds":
-                arrList = rmDAO.retrieveListSpinner(dbHelper,type);
-                arrayAdapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, arrList);
-                spinnerItemName.setAdapter(arrayAdapter2);
-                break;
-
-            case "Seedlings":
-                arrList = rmDAO.retrieveListSpinner(dbHelper,type);
-                arrayAdapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, arrList);
-                spinnerItemName.setAdapter(arrayAdapter2);
-                break;
-
-            default: //do something
-        }
+        type = spinnerSupplierName.getText().toString();
+        arrListName = tDAO.retrieveListSpinnerColumn(dbHelper,"NAME","SUPPLIER_NAME" ,type);
+        arrayAdapter3 = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, arrListName);
+        spinnerItemName.setAdapter(arrayAdapter3);
     }
 
 

@@ -36,18 +36,16 @@ public class TransactionDAOImpl implements TransactionDAO {
         Cursor result = dbWrite.rawQuery("SELECT * FROM WAREHOUSE_EQUIPMENT", null);
         return result;
     }
-
     @Override
     public Cursor getAllEmployee(DBHelper dbHelper) {
         dbWrite = dbHelper.getWritableDatabase();
         Cursor result = dbWrite.rawQuery("SELECT * FROM EMPLOYEE", null);
         return result;
     }
-
     @Override
     public boolean checkExistingEmployee(DBHelper dbHelper, String type, String name) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        String queryForCheck = "SELECT NAME FROM " + "EMPLOYEE" + " WHERE NAME = '" + name + "' AND ACCOUNT_TYPE = '" + type + "'";
+        String queryForCheck = "SELECT NAME FROM " + "EMPLOYEE" + " WHERE NAME = '" + name + "' AND ACCOUNT_TYPE = '"+type+"'";
 
         Cursor result = db.rawQuery(queryForCheck, null);
         if (result.getCount() == 0) {
@@ -70,14 +68,14 @@ public class TransactionDAOImpl implements TransactionDAO {
                 String typ = cursor.getString(cursor.getColumnIndex("TYPE"));
                 String name = cursor.getString(cursor.getColumnIndex("NAME"));
                 double price = cursor.getDouble(cursor.getColumnIndex("PRICE"));
-                listHolder.add(new WarehouseMaterial("", "", typ, name, price));
+                listHolder.add(new WarehouseMaterial(null,null,typ, name, price));
             } while (cursor.moveToNext());
         }
         return listHolder;
     }
 
     @Override
-    public void addEntry(DBHelper dbHelper, Object object, String type) {
+    public void addEntry(DBHelper dbHelper, Object object, String type, String name, String contact) {
         dbWrite = dbHelper.getWritableDatabase();
         dbRead = dbHelper.getReadableDatabase();
         switch (type) {
@@ -86,21 +84,13 @@ public class TransactionDAOImpl implements TransactionDAO {
                     seedlings = (Seedlings) object;
 
                     ContentValues values = new ContentValues();
+                    values.put("SUPPLIER_NAME",name);
+                    values.put("CONTACT_NUMBER",contact);
                     values.put("TYPE", seedlings.getType());
                     values.put("NAME", seedlings.getName());
                     values.put("PRICE", seedlings.getPrice());
                     dbWrite.insert("WAREHOUSE_EQUIPMENT", null, values);
-
-
-                    ContentValues val = new ContentValues();
-                    val.put("DATE", seedlings.getDate());
-                    val.put("TYPE", seedlings.getType());
-                    val.put("NAME", seedlings.getName());
-                    val.put("QUANTITY", 0);
-                    val.put("PRICE", seedlings.getPrice());
-                    val.put("TOTAL_COST", 0);
-                    dbWrite.insert("FGI", null, val);
-                }
+        }
 
                 break;
 
@@ -109,11 +99,22 @@ public class TransactionDAOImpl implements TransactionDAO {
                     seeds = (Seeds) object;
 
                     ContentValues values = new ContentValues();
+                    values.put("SUPPLIER_NAME",name);
+                    values.put("CONTACT_NUMBER",contact);
                     values.put("TYPE", seeds.getType());
                     values.put("NAME", seeds.getName());
                     values.put("PRICE", seeds.getPrice());
                     dbWrite.insert("WAREHOUSE_EQUIPMENT", null, values);
 
+
+                    ContentValues val = new ContentValues();
+                    val.put("DATE", seeds.getDate());
+                    val.put("TYPE", seeds.getType());
+                    val.put("NAME", seeds.getName());
+                    val.put("QUANTITY", seeds.getQuantity());
+                    val.put("PRICE", seeds.getPrice());
+                    val.put("TOTAL_COST", 0);
+                    dbWrite.insert("FGI", null, val);
                 }
                 break;
 
@@ -122,19 +123,12 @@ public class TransactionDAOImpl implements TransactionDAO {
                     crop = (Crops) object;
 
                     ContentValues values = new ContentValues();
+                    values.put("SUPPLIER_NAME",name);
+                    values.put("CONTACT_NUMBER",contact);
                     values.put("TYPE", crop.getType());
                     values.put("NAME", crop.getName());
                     values.put("PRICE", crop.getPrice());
                     dbWrite.insert("WAREHOUSE_EQUIPMENT", null, values);
-
-                    ContentValues val = new ContentValues();
-                    val.put("DATE", crop.getDate());
-                    val.put("TYPE", crop.getType());
-                    val.put("NAME", crop.getName());
-                    val.put("QUANTITY", 0);
-                    val.put("PRICE", 0);
-                    val.put("TOTAL_COST", 0);
-                    dbWrite.insert("FGI", null, val);
                 }
                 break;
 
@@ -143,19 +137,12 @@ public class TransactionDAOImpl implements TransactionDAO {
                     ins = (Insecticides) object;
 
                     ContentValues values = new ContentValues();
+                    values.put("SUPPLIER_NAME",name);
+                    values.put("CONTACT_NUMBER",contact);
                     values.put("TYPE", ins.getType());
                     values.put("NAME", ins.getName());
                     values.put("PRICE", ins.getPrice());
                     dbWrite.insert("WAREHOUSE_EQUIPMENT", null, values);
-
-                    ContentValues val = new ContentValues();
-                    val.put("DATE", ins.getDate());
-                    val.put("TYPE", ins.getType());
-                    val.put("NAME", ins.getName());
-                    val.put("QUANTITY", 0);
-                    val.put("PRICE", ins.getPrice());
-                    val.put("TOTAL_COST", 0);
-                    dbWrite.insert("WPI", null, val);
                 }
 
                 break;
@@ -165,19 +152,12 @@ public class TransactionDAOImpl implements TransactionDAO {
                     fer = (Fertilizers) object;
 
                     ContentValues values = new ContentValues();
+                    values.put("SUPPLIER_NAME",name);
+                    values.put("CONTACT_NUMBER",contact);
                     values.put("TYPE", fer.getType());
                     values.put("NAME", fer.getName());
                     values.put("PRICE", fer.getPrice());
                     dbWrite.insert("WAREHOUSE_EQUIPMENT", null, values);
-
-                    ContentValues val = new ContentValues();
-                    val.put("DATE", fer.getDate());
-                    val.put("TYPE", fer.getType());
-                    val.put("NAME", fer.getName());
-                    val.put("QUANTITY", 0);
-                    val.put("PRICE", fer.getPrice());
-                    val.put("TOTAL_COST", 0);
-                    dbWrite.insert("FGI", null, val);
                 }
                 break;
 
@@ -186,19 +166,12 @@ public class TransactionDAOImpl implements TransactionDAO {
                     pack = (Packaging) object;
 
                     ContentValues values = new ContentValues();
+                    values.put("SUPPLIER_NAME",name);
+                    values.put("CONTACT_NUMBER",contact);
                     values.put("TYPE", pack.getType());
                     values.put("NAME", pack.getName());
                     values.put("PRICE", pack.getPrice());
                     dbWrite.insert("WAREHOUSE_EQUIPMENT", null, values);
-
-                    ContentValues val = new ContentValues();
-                    val.put("DATE", pack.getDate());
-                    val.put("TYPE", pack.getType());
-                    val.put("NAME", pack.getName());
-                    val.put("QUANTITY", 0);
-                    val.put("PRICE", pack.getPrice());
-                    val.put("TOTAL_COST", 0);
-                    dbWrite.insert("FGI", null, val);
                 }
                 break;
 
@@ -207,6 +180,8 @@ public class TransactionDAOImpl implements TransactionDAO {
                     equipment = (Equipment) object;
 
                     ContentValues values = new ContentValues();
+                    values.put("SUPPLIER_NAME",name);
+                    values.put("CONTACT_NUMBER",contact);
                     values.put("TYPE", equipment.getType());
                     values.put("NAME", equipment.getName());
                     values.put("PRICE", equipment.getPrice());
@@ -237,14 +212,14 @@ public class TransactionDAOImpl implements TransactionDAO {
                         String selection = "NAME" + " LIKE ?";
                         String[] selectionArgs = {employees.getName()};
 
-                        switch (employee.getAccountype()) {
+                        switch (employee.getAccountype()){
                             case "Farmer":
                                 values2.put("EMPLOYEE_FULL_ID", "EMPFRM" + String.format("%03d", employee.getEmployeeID()));
                                 dbRead.update("EMPLOYEE", values2, selection, selectionArgs);
-                                break;
+                            break;
 
                             case "Staff":
-                                values2.put("EMPLOYEE_FULL_ID", "EMPSTF" + String.format("%03d", employee.getEmployeeID()));
+                                values2.put("EMPLOYEE_FULL_ID", "EMPSTF" +  String.format("%03d", employee.getEmployeeID()));
                                 dbRead.update("EMPLOYEE", values2, selection, selectionArgs);
                                 break;
                             case "Supervisor":
@@ -252,15 +227,16 @@ public class TransactionDAOImpl implements TransactionDAO {
                                 dbRead.update("EMPLOYEE", values2, selection, selectionArgs);
                                 break;
 
-                            default:
-                                break;
+                                default:
+                                    break;
                         }
-                    }
+                       }
                 }
+
 
                 break;
 
-            default: //do something
+           default: //do something
         }
     }
 
@@ -284,7 +260,7 @@ public class TransactionDAOImpl implements TransactionDAO {
         HashMap<String, List<String>> listDate = new HashMap<String, List<String>>();
         List<String> listTransacion = new ArrayList<String>();
 
-        listDate.put("", listTransacion);
+        listDate.put("",listTransacion);
 
 
         return listDate;
@@ -298,6 +274,7 @@ public class TransactionDAOImpl implements TransactionDAO {
 
         return listDate;
     }
+
 
 
     @Override
@@ -333,5 +310,33 @@ public class TransactionDAOImpl implements TransactionDAO {
         String selection = "NAME" + " LIKE ?";
         String[] selectionArgs = {name};
         dbRead.delete("WAREHOUSE_EQUIPMENT", selection, selectionArgs);
+    }
+
+    @Override
+    public ArrayList<String> retrieveListSpinner(DBHelper dbHelper) {
+        dbRead = dbHelper.getReadableDatabase();
+        String queryForRetrievalAll = "SELECT SUPPLIER_NAME FROM " + "WAREHOUSE_EQUIPMENT GROUP BY SUPPLIER_NAME  ";
+        ArrayList<String> listHolder = new ArrayList<String>();
+        Cursor cursor = dbRead.rawQuery(queryForRetrievalAll, null);
+        if (cursor.moveToFirst()) {
+            do {
+                listHolder.add(cursor.getString(cursor.getColumnIndex("SUPPLIER_NAME")));
+            } while (cursor.moveToNext());;
+        }
+        return listHolder;
+    }
+
+    @Override
+    public ArrayList<String> retrieveListSpinnerColumn(DBHelper dbHelper, String spinnerCategory, String columnName, String value) {
+        dbRead = dbHelper.getReadableDatabase();
+        String queryForRetrievalAll = "SELECT " +spinnerCategory+ " FROM " + "WAREHOUSE_EQUIPMENT WHERE " + columnName + " = '"+value+"'  GROUP BY " + spinnerCategory  ;
+        ArrayList<String> listHolder = new ArrayList<String>();
+        Cursor cursor = dbRead.rawQuery(queryForRetrievalAll, null);
+        if (cursor.moveToFirst()) {
+            do {
+                listHolder.add(cursor.getString(cursor.getColumnIndex(spinnerCategory)));
+            } while (cursor.moveToNext());;
+        }
+        return listHolder;
     }
 }

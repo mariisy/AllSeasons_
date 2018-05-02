@@ -36,7 +36,7 @@ public class EquipmentDAOImpl implements EquipmentDAO {
         if (cursor.moveToFirst()) {
             do {
                 listHolder.add(cursor.getString(cursor.getColumnIndex("NAME")));
-            } while (cursor.moveToNext());
+            } while (cursor.moveToNext());;
         }
         return listHolder;
     }
