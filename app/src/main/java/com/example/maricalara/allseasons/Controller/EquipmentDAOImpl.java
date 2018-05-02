@@ -57,12 +57,6 @@ public class EquipmentDAOImpl implements EquipmentDAO {
         dbWrite.insert("EQUIPMENT", null, val);
 
 
-        ContentValues value = new ContentValues();
-        value.put("DATE", equipment.getDate());
-        value.put("TYPE", equipment.getType());
-        value.put("DEBIT", 0);
-        value.put("CREDIT", costTotal);
-        dbWrite.insert("CASH", null, value);
     }
 
     @Override

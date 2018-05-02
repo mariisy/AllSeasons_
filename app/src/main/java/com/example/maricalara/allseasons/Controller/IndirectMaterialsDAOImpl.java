@@ -37,12 +37,6 @@ public class IndirectMaterialsDAOImpl implements IndirectMaterialsDAO {
                     val.put("TOTAL_COST", costTotal);
                     dbWrite.insert("INDIRECT_MATERIALS", null, val);
 
-                    ContentValues value = new ContentValues();
-                    value.put("DATE", insecticides.getDate());
-                    value.put("TYPE", insecticides.getType());
-                    value.put("DEBIT", 0);
-                    value.put("CREDIT", costTotal);
-                    dbWrite.insert("CASH", null, value);
                 }
 
                 break;
@@ -61,12 +55,7 @@ public class IndirectMaterialsDAOImpl implements IndirectMaterialsDAO {
                     val.put("TOTAL_COST", costTotal);
                     dbWrite.insert("INDIRECT_MATERIALS", null, val);
 
-                    ContentValues value = new ContentValues();
-                    value.put("DATE", fertilizers.getDate());
-                    value.put("TYPE", fertilizers.getType());
-                    value.put("DEBIT", 0);
-                    value.put("CREDIT", costTotal);
-                    dbWrite.insert("CASH", null, value);
+
                 }
                 break;
 
@@ -84,12 +73,6 @@ public class IndirectMaterialsDAOImpl implements IndirectMaterialsDAO {
                     val.put("TOTAL_COST", costTotal);
                     dbWrite.insert("INDIRECT_MATERIALS", null, val);
 
-                    ContentValues value = new ContentValues();
-                    value.put("DATE", packaging.getDate());
-                    value.put("TYPE", packaging.getType());
-                    value.put("DEBIT", 0);
-                    value.put("CREDIT", costTotal);
-                    dbWrite.insert("CASH", null, value);
 
                 }
                 break;

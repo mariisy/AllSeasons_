@@ -36,12 +36,20 @@ public class TransactionDAOImpl implements TransactionDAO {
         Cursor result = dbWrite.rawQuery("SELECT * FROM WAREHOUSE_EQUIPMENT", null);
         return result;
     }
+
     @Override
     public Cursor getAllEmployee(DBHelper dbHelper) {
         dbWrite = dbHelper.getWritableDatabase();
         Cursor result = dbWrite.rawQuery("SELECT * FROM EMPLOYEE", null);
         return result;
     }
+    @Override
+    public Cursor getAllCash(DBHelper dbHelper) {
+        dbWrite = dbHelper.getWritableDatabase();
+        Cursor result = dbWrite.rawQuery("SELECT * FROM CASH", null);
+        return result;
+    }
+
     @Override
     public boolean checkExistingEmployee(DBHelper dbHelper, String type, String name) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -78,6 +86,7 @@ public class TransactionDAOImpl implements TransactionDAO {
     public void addEntry(DBHelper dbHelper, Object object, String type, String name, String contact) {
         dbWrite = dbHelper.getWritableDatabase();
         dbRead = dbHelper.getReadableDatabase();
+
         switch (type) {
             case "Seedlings":
                 if (object instanceof Seedlings) {
@@ -90,7 +99,16 @@ public class TransactionDAOImpl implements TransactionDAO {
                     values.put("NAME", seedlings.getName());
                     values.put("PRICE", seedlings.getPrice());
                     dbWrite.insert("WAREHOUSE_EQUIPMENT", null, values);
-        }
+                    double costTotal = Double.valueOf(seedlings.getQuantity()) * Double.valueOf(seedlings.getPrice());
+
+                    ContentValues val = new ContentValues();
+                    val.put("DATE",seedlings.getDate());
+                    val.put("TYPE", seedlings.getType());
+                    val.put("NAME", seedlings.getName());
+                    val.put("DEBIT", 0);
+                    val.put("CREDIT", costTotal);
+                    dbWrite.insert("CASH", null, val);
+                }
 
                 break;
 
@@ -106,20 +124,20 @@ public class TransactionDAOImpl implements TransactionDAO {
                     values.put("PRICE", seeds.getPrice());
                     dbWrite.insert("WAREHOUSE_EQUIPMENT", null, values);
 
+                    double costTotal = Double.valueOf(seeds.getQuantity()) * Double.valueOf(seeds.getPrice());
 
                     ContentValues val = new ContentValues();
-                    val.put("DATE", seeds.getDate());
+                    val.put("DATE",seeds.getDate());
                     val.put("TYPE", seeds.getType());
                     val.put("NAME", seeds.getName());
-                    val.put("QUANTITY", seeds.getQuantity());
-                    val.put("PRICE", seeds.getPrice());
-                    val.put("TOTAL_COST", 0);
-                    dbWrite.insert("FGI", null, val);
+                    val.put("DEBIT", 0);
+                    val.put("CREDIT", costTotal);
+                    dbWrite.insert("CASH", null, val);
                 }
                 break;
 
             case "Crops":
-                if (object instanceof Seeds) {
+                if (object instanceof Crops) {
                     crop = (Crops) object;
 
                     ContentValues values = new ContentValues();
@@ -143,6 +161,15 @@ public class TransactionDAOImpl implements TransactionDAO {
                     values.put("NAME", ins.getName());
                     values.put("PRICE", ins.getPrice());
                     dbWrite.insert("WAREHOUSE_EQUIPMENT", null, values);
+                    double costTotal = Double.valueOf(ins.getQuantity()) * Double.valueOf(ins.getPrice());
+
+                    ContentValues val = new ContentValues();
+                    val.put("DATE",ins.getDate());
+                    val.put("TYPE", ins.getType());
+                    val.put("NAME", ins.getName());
+                    val.put("DEBIT", 0);
+                    val.put("CREDIT", costTotal);
+                    dbWrite.insert("CASH", null, val);
                 }
 
                 break;
@@ -158,7 +185,17 @@ public class TransactionDAOImpl implements TransactionDAO {
                     values.put("NAME", fer.getName());
                     values.put("PRICE", fer.getPrice());
                     dbWrite.insert("WAREHOUSE_EQUIPMENT", null, values);
+                    double costTotal = Double.valueOf(fer.getQuantity()) * Double.valueOf(fer.getPrice());
+
+                    ContentValues val = new ContentValues();
+                    val.put("DATE",fer.getDate());
+                    val.put("TYPE", fer.getType());
+                    val.put("NAME", fer.getName());
+                    val.put("DEBIT", 0);
+                    val.put("CREDIT", costTotal);
+                    dbWrite.insert("CASH", null, val);
                 }
+
                 break;
 
             case "Packaging":
@@ -172,6 +209,15 @@ public class TransactionDAOImpl implements TransactionDAO {
                     values.put("NAME", pack.getName());
                     values.put("PRICE", pack.getPrice());
                     dbWrite.insert("WAREHOUSE_EQUIPMENT", null, values);
+                    double costTotal = Double.valueOf(pack.getQuantity()) * Double.valueOf(pack.getPrice());
+
+                    ContentValues val = new ContentValues();
+                    val.put("DATE",pack.getDate());
+                    val.put("TYPE", pack.getType());
+                    val.put("NAME", pack.getName());
+                    val.put("DEBIT", 0);
+                    val.put("CREDIT", costTotal);
+                    dbWrite.insert("CASH", null, val);
                 }
                 break;
 
@@ -186,6 +232,15 @@ public class TransactionDAOImpl implements TransactionDAO {
                     values.put("NAME", equipment.getName());
                     values.put("PRICE", equipment.getPrice());
                     dbWrite.insert("WAREHOUSE_EQUIPMENT", null, values);
+                    double costTotal = Double.valueOf(equipment.getQuantity()) * Double.valueOf(equipment.getPrice());
+
+                    ContentValues val = new ContentValues();
+                    val.put("DATE",equipment.getDate());
+                    val.put("TYPE", equipment.getType());
+                    val.put("NAME", equipment.getName());
+                    val.put("DEBIT", 0);
+                    val.put("CREDIT", costTotal);
+                    dbWrite.insert("CASH", null, val);
                 }
                 break;
 

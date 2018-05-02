@@ -128,6 +128,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private String dbBuildQuery8 = "CREATE TABLE " + dbTableCash + " ( " +
             dBColumnDate + " TEXT, " +
             dBColumnType + " TEXT, " +
+            dBColumnName + " TEXT, " +
             dbColumnDebit + " REAL, " +
             dbColumnCredit + " REAL )";
 

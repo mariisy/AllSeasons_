@@ -14,6 +14,8 @@ public interface TransactionDAO {
 
     public Cursor getAllEmployee(DBHelper dbHelper);
 
+    public Cursor getAllCash(DBHelper dbHelper);
+
     ArrayList<WarehouseMaterial> getAllDataWarehouse(DBHelper dbHelper);
 
     boolean checkExistingEmployee(DBHelper dbHelper, String type, String name);

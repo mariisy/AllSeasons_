@@ -62,7 +62,7 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
     //Data variables
     String[] spinnerListType = {"Seeds", "Seedlings", "Packaging", "Fertilizer", "Insecticides", "Equipment"};
 
-    private String itemName, type,supplierName, supplierContact;
+    private String itemName, type, supplierName, supplierContact;
     private Double unitPrice;
     private int qty;
 
@@ -89,8 +89,8 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
         txtQty = (EditText) findViewById(R.id.txtQty);
         spinnerType1 = (MaterialBetterSpinner) findViewById(R.id.spinnerType);
         btnView = (Button) findViewById(R.id.btnView);
-        txtSupplierName = (EditText)findViewById(R.id.txtSupplierName);
-        txtSupplierContact = (EditText)findViewById(R.id.txtSupplierContact);
+        txtSupplierName = (EditText) findViewById(R.id.txtSupplierName);
+        txtSupplierContact = (EditText) findViewById(R.id.txtSupplierContact);
         //inflate toolbar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -127,8 +127,17 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
                     buffer.append("Name: " + result.getString(3) + "\n");
                     buffer.append("Price: " + result.getString(4) + "\n\n");
                 }
+                Cursor result2 = tDAO.getAllCash(dbHelper);
+                StringBuffer buffer2 = new StringBuffer();
+                while (result2.moveToNext()) {
+                    buffer2.append("Date: " + result2.getString(0) + "\n");
+                    buffer2.append("Type: " + result2.getString(1) + "\n");
+                    buffer2.append("Name: " + result2.getString(2) + "\n");
+                    buffer2.append("Debit: " + result2.getString(3) + "\n");
+                    buffer2.append("Credit: " + result2.getString(4) + "\n\n");
+                }
                 android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(SettingsAddToWarehouse.this);
-                builder.setMessage(buffer.toString());
+                builder.setMessage(buffer.toString()+"\n"+ buffer2.toString());
                 builder.show();
             }
         });
@@ -151,14 +160,13 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
         supplierContact = txtSupplierContact.getText().toString();
 
 
-
         switch (type) {
             case "Equipment":
-                if (!equipmentDAO.checkExistingWarehouse(dbHelper,type, itemName)) {
+                if (!equipmentDAO.checkExistingWarehouse(dbHelper, type, itemName)) {
                     Equipment equip = new Equipment(type, itemName, qty, unitPrice, strDate);
                     try {
-                        tDAO.addEntry(dbHelper, equip, type , supplierName , supplierContact);
-                        tDAO.addBoughtList(dbHelper, equip, type);
+                        tDAO.addEntry(dbHelper, equip, type, supplierName, supplierContact);
+                        //tDAO.addBoughtList(dbHelper, equip, type);
                         equipmentDAO.addTransaction(dbHelper, equip);
 
                         new AlertDialog.Builder(SettingsAddToWarehouse.this)
@@ -212,8 +220,8 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
                 if (!tDAO.checkExistingWarehouse(dbHelper, type, itemName)) {
                     Insecticides ins = new Insecticides(type, itemName, qty, unitPrice, strDate);
                     try {
-                        tDAO.addEntry(dbHelper, ins, type, supplierName , supplierContact);
-                        tDAO.addBoughtList(dbHelper, ins, type);
+                        tDAO.addEntry(dbHelper, ins, type, supplierName, supplierContact);
+                        // tDAO.addBoughtList(dbHelper, ins, type);
                         imDao.addTransaction(dbHelper, ins, type);
 
                         new AlertDialog.Builder(SettingsAddToWarehouse.this)
@@ -266,8 +274,8 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
                 if (!tDAO.checkExistingWarehouse(dbHelper, type, itemName)) {
                     Fertilizers fer = new Fertilizers(type, itemName, qty, unitPrice, strDate);
                     try {
-                        tDAO.addEntry(dbHelper, fer, type, supplierName , supplierContact);
-                        tDAO.addBoughtList(dbHelper, fer, type);
+                        tDAO.addEntry(dbHelper, fer, type, supplierName, supplierContact);
+                        //  tDAO.addBoughtList(dbHelper, fer, type);
                         imDao.addTransaction(dbHelper, fer, type);
 
                         new AlertDialog.Builder(SettingsAddToWarehouse.this)
@@ -320,8 +328,8 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
                 if (!tDAO.checkExistingWarehouse(dbHelper, type, itemName)) {
                     Packaging packaging = new Packaging(type, itemName, qty, unitPrice, strDate);
                     try {
-                        tDAO.addEntry(dbHelper, packaging, type, supplierName , supplierContact);
-                        tDAO.addBoughtList(dbHelper, packaging, type);
+                        tDAO.addEntry(dbHelper, packaging, type, supplierName, supplierContact);
+                        //tDAO.addBoughtList(dbHelper, packaging, type);
                         imDao.addTransaction(dbHelper, packaging, type);
 
                         new AlertDialog.Builder(SettingsAddToWarehouse.this)
@@ -374,8 +382,8 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
                 if (!tDAO.checkExistingWarehouse(dbHelper, type, itemName)) {
                     Seeds seeds = new Seeds(type, itemName, qty, unitPrice, strDate);
                     try {
-                        tDAO.addEntry(dbHelper, seeds, type, supplierName , supplierContact);
-                        tDAO.addBoughtList(dbHelper, seeds, type);
+                        tDAO.addEntry(dbHelper, seeds, type, supplierName, supplierContact);
+                        //tDAO.addBoughtList(dbHelper, seeds, type);
                         rmDAO.addTransaction(dbHelper, seeds, type);
 
                         new AlertDialog.Builder(SettingsAddToWarehouse.this)
@@ -430,9 +438,9 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
                     Seedlings seedlings = new Seedlings(type, itemName, qty, unitPrice, strDate);
                     Crops crop = new Crops("Crops", itemName, 0, 0, strDate);
                     try {
-                        tDAO.addEntry(dbHelper, seedlings, type, supplierName , supplierContact);
-                        tDAO.addEntry(dbHelper, crop, "Crops", "" , "");
-                        tDAO.addBoughtList(dbHelper, seedlings, type);
+                        tDAO.addEntry(dbHelper, seedlings, type, supplierName, supplierContact);
+                        tDAO.addEntry(dbHelper, crop, "Crops", "", "");
+                        // tDAO.addBoughtList(dbHelper, seedlings, type);
                         rmDAO.addTransaction(dbHelper, seedlings, type);
                         //aDAO.addTransaction(dbHelper, crop);
 

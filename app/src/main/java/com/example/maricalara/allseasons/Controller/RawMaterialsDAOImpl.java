@@ -37,13 +37,6 @@ public class RawMaterialsDAOImpl implements RawMaterialsDAO {
                     dbWrite.insert("RAW_MATERIALS", null, val);
 
 
-                    ContentValues value = new ContentValues();
-                    value.put("DATE", seedlings.getDate());
-                    value.put("TYPE", seedlings.getType());
-                    value.put("DEBIT", 0);
-                    value.put("CREDIT", costTotal);
-                    dbWrite.insert("CASH", null, value);
-
                 }
 
                 break;
@@ -62,12 +55,6 @@ public class RawMaterialsDAOImpl implements RawMaterialsDAO {
                     val.put("TOTAL_COST", costTotal);
                     dbWrite.insert("RAW_MATERIALS", null, val);
 
-                    ContentValues value = new ContentValues();
-                    value.put("DATE", seeds.getDate());
-                    value.put("TYPE", seeds.getType());
-                    value.put("DEBIT", 0);
-                    value.put("CREDIT", costTotal);
-                    dbWrite.insert("CASH", null, value);
                 }
                 break;
 
