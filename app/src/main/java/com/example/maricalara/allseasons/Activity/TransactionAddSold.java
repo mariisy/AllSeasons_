@@ -39,7 +39,7 @@ public class TransactionAddSold extends AppCompatActivity {
         //inflate toolbar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        getSupportActionBar().setTitle("Add Sold Items");
         //inflate back arrow button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);

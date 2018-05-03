@@ -28,7 +28,8 @@
         <activity android:name=".Activity.SettingsEditWarehouse" />
         <activity android:name=".Activity.TransactionAddSold" />
         <activity android:name=".Activity.TransactionUseMaterials" />
-        <activity android:name=".Activity.EditWarehouse"></activity>
+        <activity android:name=".Activity.EditWarehouse" />
+        <activity android:name=".Activity.TransactionHarvest"></activity>
     </application>
 
 </manifest>

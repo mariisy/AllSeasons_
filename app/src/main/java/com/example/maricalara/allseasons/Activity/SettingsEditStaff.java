@@ -21,7 +21,7 @@ public class SettingsEditStaff extends AppCompatActivity {
         //inflate toolbar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+         getSupportActionBar().setTitle("Edit Staffing");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
