@@ -25,7 +25,6 @@ public class RawMaterialsDAOImpl implements RawMaterialsDAO {
             case "Seedlings":
                 if (object instanceof Seedlings) {
                     seedlings = (Seedlings) object;
-                    double costTotal = Double.valueOf(seedlings.getQuantity()) * Double.valueOf(seedlings.getPrice());
 
                     ContentValues val = new ContentValues();
                     val.put("DATE", seedlings.getDate());
@@ -33,18 +32,14 @@ public class RawMaterialsDAOImpl implements RawMaterialsDAO {
                     val.put("NAME", seedlings.getName());
                     val.put("QUANTITY", seedlings.getQuantity());
                     val.put("PRICE", seedlings.getPrice());
-                    val.put("TOTAL_COST", costTotal);
+                    val.put("TOTAL_COST", seedlings.getTotalPrice());
                     dbWrite.insert("RAW_MATERIALS", null, val);
-
-
                 }
-
                 break;
 
             case "Seeds":
                 if (object instanceof Seeds) {
                     seeds = (Seeds) object;
-                    double costTotal = Double.valueOf(seeds.getQuantity()) * Double.valueOf(seeds.getPrice());
 
                     ContentValues val = new ContentValues();
                     val.put("DATE", seeds.getDate());
@@ -52,13 +47,11 @@ public class RawMaterialsDAOImpl implements RawMaterialsDAO {
                     val.put("NAME", seeds.getName());
                     val.put("QUANTITY", seeds.getQuantity());
                     val.put("PRICE", seeds.getPrice());
-                    val.put("TOTAL_COST", costTotal);
+                    val.put("TOTAL_COST", seeds.getTotalPrice());
                     dbWrite.insert("RAW_MATERIALS", null, val);
-
                 }
                 break;
-
-            default: //do something
+            default: //do nothing
         }
     }
 
@@ -76,14 +69,13 @@ public class RawMaterialsDAOImpl implements RawMaterialsDAO {
             case "Seedlings":
                 if (cursor.moveToFirst()) {
                     do {
-
                         String typ = cursor.getString(cursor.getColumnIndex("TYPE"));
                         String name = cursor.getString(cursor.getColumnIndex("NAME"));
                         int qty = cursor.getInt(cursor.getColumnIndex("QUANTITY"));
                         double price = cursor.getDouble(cursor.getColumnIndex("PRICE"));
+                        double totalPrice = cursor.getDouble(cursor.getColumnIndex("TOTAL_COST"));
                         String date = cursor.getString(cursor.getColumnIndex("DATE"));
-                        listSeedling.add(new Seedlings(typ, name, qty, price, date));
-
+                        listSeedling.add(new Seedlings(typ, name, qty, price, totalPrice, date));
                     } while (cursor.moveToNext());
                 }
                 break;
@@ -96,9 +88,9 @@ public class RawMaterialsDAOImpl implements RawMaterialsDAO {
                         String name = cursor.getString(cursor.getColumnIndex("NAME"));
                         int qty = cursor.getInt(cursor.getColumnIndex("QUANTITY"));
                         double price = cursor.getDouble(cursor.getColumnIndex("PRICE"));
+                        double totalPrice = cursor.getDouble(cursor.getColumnIndex("TOTAL_COST"));
                         String date = cursor.getString(cursor.getColumnIndex("DATE"));
-                        listSeed.add(new Seeds(typ, name, qty, price, date));
-
+                        listSeed.add(new Seeds(typ, name, qty, price, totalPrice, date));
                     } while (cursor.moveToNext());
                 }
                 break;
@@ -116,8 +108,8 @@ public class RawMaterialsDAOImpl implements RawMaterialsDAO {
         dbRead = dbHelper.getReadableDatabase();
         String queryForRetrievalOne = "SELECT * FROM " + "RAW_MATERIALS WHERE NAME = '" + name + "'  AND TYPE = '" + type + "' ";
         Cursor cursor = dbRead.rawQuery(queryForRetrievalOne, null);
-        Seeds seed = new Seeds(null, null, 0, 0, null);
-        Seedlings seedling = new Seedlings(null, null, 0, 0, null);
+        Seeds seed = new Seeds(null, null, 0, 0, 0, null);
+        Seedlings seedling = new Seedlings(null, null, 0, 0, 0, null);
         Object object = null;
         switch (type) {
             case "Seedlings":
@@ -127,6 +119,7 @@ public class RawMaterialsDAOImpl implements RawMaterialsDAO {
                         seedling.setName(cursor.getString(cursor.getColumnIndex("NAME")));
                         seedling.setQuantity(cursor.getInt(cursor.getColumnIndex("QUANTITY")));
                         seedling.setPrice(cursor.getDouble(cursor.getColumnIndex("PRICE")));
+                        seedling.setTotalPrice(cursor.getDouble(cursor.getColumnIndex("TOTAL_COST")));
                         seedling.setDate(cursor.getString(cursor.getColumnIndex("DATE")));
                     } while (cursor.moveToNext());
 
@@ -141,6 +134,7 @@ public class RawMaterialsDAOImpl implements RawMaterialsDAO {
                         seed.setName(cursor.getString(cursor.getColumnIndex("NAME")));
                         seed.setQuantity(cursor.getInt(cursor.getColumnIndex("QUANTITY")));
                         seed.setPrice(cursor.getDouble(cursor.getColumnIndex("PRICE")));
+                        seed.setTotalPrice(cursor.getDouble(cursor.getColumnIndex("TOTAL_COST")));
                         seed.setDate(cursor.getString(cursor.getColumnIndex("DATE")));
                     } while (cursor.moveToNext());
                 }
@@ -170,14 +164,12 @@ public class RawMaterialsDAOImpl implements RawMaterialsDAO {
     public void updateTransaction(DBHelper dbHelper, ArrayList<Object> objArray) {
         dbRead = dbHelper.getReadableDatabase();
         dbWrite = dbHelper.getWritableDatabase();
-        Seeds seed = new Seeds(null, null, 0, 0, null);
-        Seedlings seedling = new Seedlings(null, null, 0, 0, null);
+        Seeds seed = new Seeds(null, null, 0, 0, 0, null);
+        Seedlings seedling = new Seedlings(null, null, 0, 0, 0, null);
         ContentValues val = new ContentValues();
         double costTotal = 0.0;
-
-
+        
         for (Object obj : objArray) {
-
             if (obj instanceof Seedlings) {
                 seedlings = (Seedlings) obj;
                 String queryUpdate = "SELECT * FROM " + "RAW_MATERIALS WHERE NAME = '" + seedlings.getName() + "'  AND TYPE = '" + seedlings.getType() + "' ";
@@ -185,8 +177,9 @@ public class RawMaterialsDAOImpl implements RawMaterialsDAO {
 
                 if (cursor.moveToFirst()) {
                     do {
-                        seedling.setPrice(cursor.getInt(cursor.getColumnIndex("PRICE")));
+                        seedling.setPrice(cursor.getDouble(cursor.getColumnIndex("PRICE")));
                         seedling.setQuantity(cursor.getInt(cursor.getColumnIndex("QUANTITY")));
+                        seedling.setTotalPrice(cursor.getDouble(cursor.getColumnIndex("TOTAL_COST")));
                     } while (cursor.moveToNext());
 
                     val.put("DATE", seedlings.getDate());
@@ -194,14 +187,11 @@ public class RawMaterialsDAOImpl implements RawMaterialsDAO {
                     val.put("NAME", seedlings.getName());
                     val.put("QUANTITY", seedling.getQuantity() + seedlings.getQuantity());
                     val.put("PRICE", seedlings.getPrice());
-                    costTotal = (seedling.getQuantity() + seedlings.getQuantity()) * seedlings.getPrice();
-                    val.put("TOTAL_COST", costTotal);
+                    val.put("TOTAL_COST", seedling.getTotalPrice() + seedlings.getTotalPrice());
 
                     String selection = "NAME" + " LIKE ?";
                     String[] selectionArgs = {seedlings.getName()};
                     dbRead.update("RAW_MATERIALS", val, selection, selectionArgs);
-
-
                 }
             }
 
@@ -212,7 +202,8 @@ public class RawMaterialsDAOImpl implements RawMaterialsDAO {
 
                 if (cursor.moveToFirst()) {
                     do {
-                        seed.setPrice(cursor.getInt(cursor.getColumnIndex("PRICE")));
+                        seed.setPrice(cursor.getDouble(cursor.getColumnIndex("PRICE")));
+                        seed.setTotalPrice(cursor.getDouble(cursor.getColumnIndex("TOTAL_COST")));
                         seed.setQuantity(cursor.getInt(cursor.getColumnIndex("QUANTITY")));
                     } while (cursor.moveToNext());
 
@@ -221,14 +212,11 @@ public class RawMaterialsDAOImpl implements RawMaterialsDAO {
                     val.put("NAME", seeds.getName());
                     val.put("QUANTITY", seed.getQuantity() + seeds.getQuantity());
                     val.put("PRICE", seeds.getPrice());
-                    costTotal = (seed.getQuantity() + seeds.getQuantity()) * seeds.getPrice();
-                    val.put("TOTAL_COST", costTotal);
+                    val.put("TOTAL_COST", seed.getTotalPrice() + seeds.getTotalPrice());
 
                     String selection = "NAME" + " LIKE ?";
                     String[] selectionArgs = {seeds.getName()};
                     dbRead.update("RAW_MATERIALS", val, selection, selectionArgs);
-
-
                 }
             }
         }
@@ -256,6 +244,4 @@ public class RawMaterialsDAOImpl implements RawMaterialsDAO {
         String[] selectionArgs = {name};
         dbWrite.delete("WAREHOUSE_EQUIPMENT", selection, selectionArgs);
     }
-
-
 }

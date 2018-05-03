@@ -44,7 +44,6 @@ public class EquipmentDAOImpl implements EquipmentDAO {
     @Override
     public void addTransaction(DBHelper dbHelper, Equipment equipment) {
         dbWrite = dbHelper.getWritableDatabase();
-        double costTotal = Double.valueOf(equipment.getQuantity()) * Double.valueOf(equipment.getPrice());
 
         ContentValues val = new ContentValues();
         val.put("DATE", equipment.getDate());
@@ -52,7 +51,7 @@ public class EquipmentDAOImpl implements EquipmentDAO {
         val.put("NAME", equipment.getName());
         val.put("QUANTITY", equipment.getQuantity());
         val.put("PRICE", equipment.getPrice());
-        val.put("TOTAL_COST", costTotal);
+        val.put("TOTAL_COST", equipment.getTotalPrice());
 
         dbWrite.insert("EQUIPMENT", null, val);
 
@@ -71,8 +70,9 @@ public class EquipmentDAOImpl implements EquipmentDAO {
                 String name = cursor.getString(cursor.getColumnIndex("NAME"));
                 int qty = cursor.getInt(cursor.getColumnIndex("QUANTITY"));
                 double price = cursor.getDouble(cursor.getColumnIndex("PRICE"));
+                double totalPrice = cursor.getDouble(cursor.getColumnIndex("TOTAL_COST"));
                 String date = cursor.getString(cursor.getColumnIndex("DATE"));
-                listEquip.add(new Equipment(typ, name, qty, price, date));
+                listEquip.add(new Equipment(typ, name, qty, price, totalPrice, date));
 
             } while (cursor.moveToNext());
         }
@@ -84,7 +84,7 @@ public class EquipmentDAOImpl implements EquipmentDAO {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         String queryForRetrievalOne = "SELECT * FROM " + "EQUIPMENT WHERE NAME = '" + name + "'  AND TYPE = '" + type + "' ";
         Cursor cursor = db.rawQuery(queryForRetrievalOne, null);
-        Equipment equipment = new Equipment(null, null, 0, 0, null);
+        Equipment equipment = new Equipment(null, null, 0, 0, 0,null);
         Object object = null;
 
         if (cursor.moveToFirst()) {
@@ -93,6 +93,7 @@ public class EquipmentDAOImpl implements EquipmentDAO {
                 equipment.setName(cursor.getString(cursor.getColumnIndex("NAME")));
                 equipment.setQuantity(cursor.getInt(cursor.getColumnIndex("QUANTITY")));
                 equipment.setPrice(cursor.getDouble(cursor.getColumnIndex("PRICE")));
+                equipment.setTotalPrice(cursor.getDouble(cursor.getColumnIndex("TOTAL_COST")));
                 equipment.setDate(cursor.getString(cursor.getColumnIndex("DATE")));
             } while (cursor.moveToNext());
 
@@ -118,10 +119,10 @@ public class EquipmentDAOImpl implements EquipmentDAO {
     @Override
     public void updateTransaction(DBHelper dbHelper, ArrayList<Object> objArray) {
         dbRead = dbHelper.getReadableDatabase();
-        Equipment equipment = new Equipment(null, null, 0, 0, null);
+        Equipment equipment = new Equipment(null, null, 0, 0, 0,null);
         ContentValues val = new ContentValues();
         double costTotal = 0.0;
-
+        ContentValues values = new ContentValues();
         for (Object obj : objArray) {
             if (obj instanceof Equipment) {
                 equip = (Equipment) obj;
@@ -130,30 +131,40 @@ public class EquipmentDAOImpl implements EquipmentDAO {
 
                 if (cursor.moveToFirst()) {
                     do {
-                        equipment.setPrice(cursor.getInt(cursor.getColumnIndex("PRICE")));
+                        equipment.setPrice(cursor.getDouble(cursor.getColumnIndex("PRICE")));
+                        equipment.setTotalPrice(cursor.getDouble(cursor.getColumnIndex("TOTAL_COST")));
                         equipment.setQuantity(cursor.getInt(cursor.getColumnIndex("QUANTITY")));
                     } while (cursor.moveToNext());
                 }
-
-
 
                 val.put("DATE", equip.getDate());
                 val.put("TYPE", equip.getType());
                 val.put("NAME", equip.getName());
                 val.put("QUANTITY", equipment.getQuantity() + equip.getQuantity());
                 val.put("PRICE", equip.getPrice());
-                costTotal = (equipment.getQuantity() + equip.getQuantity()) * equip.getPrice();
-                val.put("TOTAL_COST", costTotal);
+                val.put("TOTAL_COST", equip.getTotalPrice() + equipment.getTotalPrice());
 
                 String selection = "NAME" + " LIKE ?";
                 String[] selectionArgs = {equip.getName()};
                 dbRead.update("EQUIPMENT", val, selection, selectionArgs);
 
+                String queryUpdate2 = "SELECT * FROM " + "CASH WHERE NAME = '" + equip.getName() + "'  AND TYPE = '" + equip.getType() + "' ";
+                Cursor cursor2 = dbRead.rawQuery(queryUpdate2, null);
+                double credit=0;
+                if (cursor2.moveToFirst()) {
+                    do {
+                       credit = cursor2.getDouble(cursor2.getColumnIndex("CREDIT"));
+                     } while (cursor2.moveToNext());
+                }
+                double totalCredit = credit + equip.getTotalPrice();
+                values.put("CREDIT",totalCredit);
+                dbRead.update("CASH", values, selection, selectionArgs);
+
+
 
             }
         }
     }
-
 
 
     @Override

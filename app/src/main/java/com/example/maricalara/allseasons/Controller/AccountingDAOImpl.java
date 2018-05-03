@@ -28,11 +28,11 @@ public class AccountingDAOImpl implements AccountingDAO {
     public void updateWPI(DBHelper dbHelper, ArrayList<Object> objArray) {
         dbRead = dbHelper.getReadableDatabase();
         dbWrite = dbHelper.getWritableDatabase();
-        Insecticides in = new Insecticides(null, null, 0, 0, null);
-        Fertilizers fe = new Fertilizers(null, null, 0, 0, null);
-        Packaging pa = new Packaging(null, null, 0, 0, null);
-        Seeds seed = new Seeds(null, null, 0, 0, null);
-        Seedlings seedling = new Seedlings(null, null, 0, 0, null);
+        Insecticides in = new Insecticides(null, null, 0, 0, 0,null);
+        Fertilizers fe = new Fertilizers(null, null, 0, 0, 0,null);
+        Packaging pa = new Packaging(null, null, 0, 0, 0,null);
+        Seeds seed = new Seeds(null, null, 0, 0, 0,null);
+        Seedlings seedling = new Seedlings(null, null, 0, 0, 0,null);
         ContentValues val = new ContentValues();
         ContentValues values = new ContentValues();
         double costTotal = 0;

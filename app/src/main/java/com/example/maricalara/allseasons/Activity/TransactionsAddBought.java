@@ -83,7 +83,7 @@ public class TransactionsAddBought extends AppCompatActivity {
     Fertilizers fertilizers;
     Insecticides insecticides;
     Equipment equipment;
-    double totalPrice = 0;
+    double price = 0, totalPrice = 0;
     Object strName = null;
 
     //get Date String
@@ -170,7 +170,7 @@ public class TransactionsAddBought extends AppCompatActivity {
             public void onClick(View view) {
                 submitForm();
                 setData();
-                //getData();
+
 
             }
         });
@@ -187,7 +187,6 @@ public class TransactionsAddBought extends AppCompatActivity {
     private void viewButton() {
         AlertDialog.Builder builderView = new AlertDialog.Builder(TransactionsAddBought.this);
         builderView.setTitle("Cart Items");
-
         ArrayList<String> strings = new ArrayList<>(arrTransact.size());
         for (Object obj : arrTransact) {
             strings.add(Objects.toString(obj, null));
@@ -394,8 +393,9 @@ public class TransactionsAddBought extends AppCompatActivity {
                     try {
                         object = equipmentDAO.retrieveOne(dbHelper, type, itemName);
                         equipment = (Equipment) object;
-                        totalPrice = equipment.getPrice() * qty;
-                        arrTransact.add(new Equipment(type, itemName, qty, totalPrice, strDate));
+                        price = equipment.getPrice();
+                        totalPrice =  equipment.getPrice() * qty;
+                        arrTransact.add(new Equipment(type, itemName, qty, price, totalPrice, strDate));
 
                         new AlertDialog.Builder(TransactionsAddBought.this)
                                 .setTitle("Adding Entry")
@@ -449,8 +449,9 @@ public class TransactionsAddBought extends AppCompatActivity {
 
                         object = imDao.retrieveOne(dbHelper, type, itemName);
                         insecticides = (Insecticides) object;
-                        totalPrice = insecticides.getPrice() * qty;
-                        arrTransact.add(new Insecticides(type, itemName, qty, totalPrice, strDate));
+                        price = insecticides.getPrice();
+                        totalPrice= insecticides.getPrice() * qty;
+                        arrTransact.add(new Insecticides(type, itemName, qty, price, totalPrice, strDate));
 
                         new AlertDialog.Builder(TransactionsAddBought.this)
                                 .setTitle("Adding Entry")
@@ -503,8 +504,9 @@ public class TransactionsAddBought extends AppCompatActivity {
 
                         object = imDao.retrieveOne(dbHelper, type, itemName);
                         fertilizers = (Fertilizers) object;
+                        price = fertilizers.getPrice();
                         totalPrice = fertilizers.getPrice() * qty;
-                        arrTransact.add(new Fertilizers(type, itemName, qty, totalPrice, strDate));
+                        arrTransact.add(new Fertilizers(type, itemName, qty, price, totalPrice, strDate));
 
                         new AlertDialog.Builder(TransactionsAddBought.this)
                                 .setTitle("Adding Entry")
@@ -557,8 +559,9 @@ public class TransactionsAddBought extends AppCompatActivity {
 
                         object = imDao.retrieveOne(dbHelper, type, itemName);
                         packaging = (Packaging) object;
+                        price = packaging.getPrice();
                         totalPrice = packaging.getPrice() * qty;
-                        arrTransact.add(new Packaging(type, itemName, qty, totalPrice, strDate));
+                        arrTransact.add(new Packaging(type, itemName, qty, price, totalPrice, strDate));
 
                         new AlertDialog.Builder(TransactionsAddBought.this)
                                 .setTitle("Adding Entry")
@@ -611,8 +614,9 @@ public class TransactionsAddBought extends AppCompatActivity {
 
                         object = rmDAO.retreiveOne(dbHelper, type, itemName);
                         seeds = (Seeds) object;
+                        price = seeds.getPrice();
                         totalPrice = seeds.getPrice() * qty;
-                        arrTransact.add(new Seeds(type, itemName, qty, totalPrice, strDate));
+                        arrTransact.add(new Seeds(type, itemName, qty, price, totalPrice, strDate));
 
                         new AlertDialog.Builder(TransactionsAddBought.this)
                                 .setTitle("Adding Entry")
@@ -666,8 +670,9 @@ public class TransactionsAddBought extends AppCompatActivity {
 
                         object = rmDAO.retreiveOne(dbHelper, type, itemName);
                         seedlings = (Seedlings) object;
+                        price = seedlings.getPrice();
                         totalPrice = seedlings.getPrice() * qty;
-                        arrTransact.add(new Seedlings(type, itemName, qty, totalPrice, strDate));
+                        arrTransact.add(new Seedlings(type, itemName, qty, price, totalPrice, strDate));
 
                         new AlertDialog.Builder(TransactionsAddBought.this)
                                 .setTitle("Adding Entry")
@@ -720,9 +725,14 @@ public class TransactionsAddBought extends AppCompatActivity {
     }
 
     private void addCart() {
-        equipmentDAO.updateTransaction(dbHelper, arrTransact);
-        imDao.updateTransaction(dbHelper, arrTransact);
-        rmDAO.updateTransaction(dbHelper, arrTransact);
+        try {
+            equipmentDAO.updateTransaction(dbHelper, arrTransact);
+            imDao.updateTransaction(dbHelper, arrTransact);
+            rmDAO.updateTransaction(dbHelper, arrTransact);
+        }
+        catch (Exception e){
+            Toast.makeText(this,e.toString(),Toast.LENGTH_SHORT);
+        }
     }
 
     private void populateSpinnerType() {

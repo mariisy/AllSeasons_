@@ -11,17 +11,8 @@ public class Seeds {
     private String type;
     private String name;
     private int quantity;
-    private double price;
+    private double price,totalPrice;
     private String date;
-
-
-    public Seeds(String type, String name, int quantity, double price, String date) {
-        this.type = type;
-        this.name = name;
-        this.quantity = quantity;
-        this.price = price;
-        this.date = date;
-    }
 
     public String getType() {
         return type;
@@ -55,11 +46,29 @@ public class Seeds {
         this.price = price;
     }
 
+    public double getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(double totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
     public String getDate() {
         return date;
     }
 
     public void setDate(String date) {
+        this.date = date;
+    }
+
+    public Seeds(String type, String name, int quantity, double price, double totalPrice, String date) {
+
+        this.type = type;
+        this.name = name;
+        this.quantity = quantity;
+        this.price = price;
+        this.totalPrice = totalPrice;
         this.date = date;
     }
 
@@ -69,6 +78,7 @@ public class Seeds {
                 "Type: " + type + "\n" +
                         "Item Name: " + name + "\n" +
                         "Quantity: " + quantity + "\n" +
-                        "Total Price: " + price + "\n \n";
+                        "Price: " + price + "\n" +
+                        "Total Price: " + totalPrice + "\n \n";
     }
 }

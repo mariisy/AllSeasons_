@@ -215,7 +215,6 @@ public class TransactionUseMaterials extends AppCompatActivity {
         itemName = spinnerItemName.getText().toString();
         qty = Integer.parseInt(txtQty.getText().toString());
 
-        Date date = new Date();
         double unitPrice = 0;
 
         switch (type) {
@@ -225,8 +224,9 @@ public class TransactionUseMaterials extends AppCompatActivity {
 
                         object = imDao.retrieveOne(dbHelper, type, itemName);
                         insecticides = (Insecticides) object;
+                        unitPrice = insecticides.getPrice();
                         totalPrice = insecticides.getPrice() * qty;
-                        arrTransact.add(new Insecticides(type, itemName, qty, totalPrice, strDate));
+                        arrTransact.add(new Insecticides(type, itemName, qty, unitPrice, totalPrice, strDate));
 
                         new AlertDialog.Builder(TransactionUseMaterials.this)
                                 .setTitle("Adding Entry")
@@ -279,8 +279,9 @@ public class TransactionUseMaterials extends AppCompatActivity {
 
                         object = imDao.retrieveOne(dbHelper, type, itemName);
                         fertilizers = (Fertilizers) object;
+                        unitPrice = fertilizers.getPrice();
                         totalPrice = fertilizers.getPrice() * qty;
-                        arrTransact.add(new Fertilizers(type, itemName, qty, totalPrice, strDate));
+                        arrTransact.add(new Fertilizers(type, itemName, qty, unitPrice, totalPrice, strDate));
 
                         new AlertDialog.Builder(TransactionUseMaterials.this)
                                 .setTitle("Adding Entry")
@@ -333,8 +334,9 @@ public class TransactionUseMaterials extends AppCompatActivity {
 
                         object = imDao.retrieveOne(dbHelper, type, itemName);
                         packaging = (Packaging) object;
+                        unitPrice = packaging.getPrice();
                         totalPrice = packaging.getPrice() * qty;
-                        arrTransact.add(new Packaging(type, itemName, qty, totalPrice, strDate));
+                        arrTransact.add(new Packaging(type, itemName, qty, unitPrice, totalPrice, strDate));
 
                         new AlertDialog.Builder(TransactionUseMaterials.this)
                                 .setTitle("Adding Entry")
@@ -387,8 +389,9 @@ public class TransactionUseMaterials extends AppCompatActivity {
 
                         object = rmDAO.retreiveOne(dbHelper, type, itemName);
                         seeds = (Seeds) object;
+                        unitPrice = seeds.getPrice();
                         totalPrice = seeds.getPrice() * qty;
-                        arrTransact.add(new Seeds(type, itemName, qty, totalPrice, strDate));
+                        arrTransact.add(new Seeds(type, itemName, qty, unitPrice, totalPrice, strDate));
 
                         new AlertDialog.Builder(TransactionUseMaterials.this)
                                 .setTitle("Adding Entry")
@@ -442,8 +445,9 @@ public class TransactionUseMaterials extends AppCompatActivity {
 
                         object = rmDAO.retreiveOne(dbHelper, type, itemName);
                         seedlings = (Seedlings) object;
+                        unitPrice = seedlings.getPrice();
                         totalPrice = seedlings.getPrice() * qty;
-                        arrTransact.add(new Seedlings(type, itemName, qty, totalPrice, strDate));
+                        arrTransact.add(new Seedlings(type, itemName, qty, unitPrice, totalPrice, strDate));
 
                         new AlertDialog.Builder(TransactionUseMaterials.this)
                                 .setTitle("Adding Entry")

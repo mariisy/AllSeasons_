@@ -26,7 +26,6 @@ public class IndirectMaterialsDAOImpl implements IndirectMaterialsDAO {
             case "Insecticides":
                 if (object instanceof Insecticides) {
                     insecticides = (Insecticides) object;
-                    double costTotal = Double.valueOf(insecticides.getQuantity()) * Double.valueOf(insecticides.getPrice());
 
                     ContentValues val = new ContentValues();
                     val.put("DATE", insecticides.getDate());
@@ -34,17 +33,14 @@ public class IndirectMaterialsDAOImpl implements IndirectMaterialsDAO {
                     val.put("NAME", insecticides.getName());
                     val.put("QUANTITY", insecticides.getQuantity());
                     val.put("PRICE", insecticides.getPrice());
-                    val.put("TOTAL_COST", costTotal);
+                    val.put("TOTAL_COST", insecticides.getTotalPrice());
                     dbWrite.insert("INDIRECT_MATERIALS", null, val);
-
                 }
-
                 break;
 
             case "Fertilizer":
                 if (object instanceof Fertilizers) {
                     fertilizers = (Fertilizers) object;
-                    double costTotal = Double.valueOf(fertilizers.getQuantity()) * Double.valueOf(fertilizers.getPrice());
 
                     ContentValues val = new ContentValues();
                     val.put("DATE", fertilizers.getDate());
@@ -52,17 +48,14 @@ public class IndirectMaterialsDAOImpl implements IndirectMaterialsDAO {
                     val.put("NAME", fertilizers.getName());
                     val.put("QUANTITY", fertilizers.getQuantity());
                     val.put("PRICE", fertilizers.getPrice());
-                    val.put("TOTAL_COST", costTotal);
+                    val.put("TOTAL_COST", fertilizers.getTotalPrice());
                     dbWrite.insert("INDIRECT_MATERIALS", null, val);
-
-
                 }
                 break;
 
             case "Packaging":
                 if (object instanceof Packaging) {
                     packaging = (Packaging) object;
-                    double costTotal = Double.valueOf(packaging.getQuantity()) * Double.valueOf(packaging.getPrice());
 
                     ContentValues val = new ContentValues();
                     val.put("DATE", packaging.getDate());
@@ -70,15 +63,11 @@ public class IndirectMaterialsDAOImpl implements IndirectMaterialsDAO {
                     val.put("NAME", packaging.getName());
                     val.put("QUANTITY", packaging.getQuantity());
                     val.put("PRICE", packaging.getPrice());
-                    val.put("TOTAL_COST", costTotal);
+                    val.put("TOTAL_COST", packaging.getTotalPrice());
                     dbWrite.insert("INDIRECT_MATERIALS", null, val);
-
-
                 }
                 break;
-
-
-            default: //do something
+            default: //do nothing
         }
     }
 
@@ -100,8 +89,9 @@ public class IndirectMaterialsDAOImpl implements IndirectMaterialsDAO {
                         String name = cursor.getString(cursor.getColumnIndex("NAME"));
                         int qty = cursor.getInt(cursor.getColumnIndex("QUANTITY"));
                         double price = cursor.getDouble(cursor.getColumnIndex("PRICE"));
+                        double totalPrice = cursor.getDouble(cursor.getColumnIndex("TOTAL_COST"));
                         String date = cursor.getString(cursor.getColumnIndex("DATE"));
-                        listIns.add(new Insecticides(typ, name, qty, price, date));
+                        listIns.add(new Insecticides(typ, name, qty, price, totalPrice, date));
 
                     } while (cursor.moveToNext());
                 }
@@ -115,8 +105,9 @@ public class IndirectMaterialsDAOImpl implements IndirectMaterialsDAO {
                         String name = cursor.getString(cursor.getColumnIndex("NAME"));
                         int qty = cursor.getInt(cursor.getColumnIndex("QUANTITY"));
                         double price = cursor.getDouble(cursor.getColumnIndex("PRICE"));
+                        double totalPrice = cursor.getDouble(cursor.getColumnIndex("TOTAL_COST"));
                         String date = cursor.getString(cursor.getColumnIndex("DATE"));
-                        listFer.add(new Fertilizers(typ, name, qty, price, date));
+                        listFer.add(new Fertilizers(typ, name, qty, price, totalPrice, date));
 
                     } while (cursor.moveToNext());
                 }
@@ -130,23 +121,19 @@ public class IndirectMaterialsDAOImpl implements IndirectMaterialsDAO {
                         String name = cursor.getString(cursor.getColumnIndex("NAME"));
                         int qty = cursor.getInt(cursor.getColumnIndex("QUANTITY"));
                         double price = cursor.getDouble(cursor.getColumnIndex("PRICE"));
+                        double totalPrice = cursor.getDouble(cursor.getColumnIndex("TOTAL_COST"));
                         String date = cursor.getString(cursor.getColumnIndex("DATE"));
-                        listPack.add(new Packaging(typ, name, qty, price, date));
-
+                        listPack.add(new Packaging(typ, name, qty, price, totalPrice, date));
                     } while (cursor.moveToNext());
                 }
-
                 break;
-            default: //do something
+            default: //do nothing
         }
-
-
         resultList.add(listIns);
         resultList.add(listFer);
         resultList.add(listPack);
 
         return resultList;
-
     }
 
     @Override
@@ -168,9 +155,9 @@ public class IndirectMaterialsDAOImpl implements IndirectMaterialsDAO {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         String queryForRetrievalOne = "SELECT * FROM " + "INDIRECT_MATERIALS WHERE NAME = '" + name + "'  AND TYPE = '" + type + "' ";
         Cursor cursor = db.rawQuery(queryForRetrievalOne, null);
-        Insecticides in = new Insecticides(null, null, 0, 0, null);
-        Fertilizers fe = new Fertilizers(null, null, 0, 0, null);
-        Packaging pa = new Packaging(null, null, 0, 0, null);
+        Insecticides in = new Insecticides(null, null, 0, 0, 0, null);
+        Fertilizers fe = new Fertilizers(null, null, 0, 0, 0, null);
+        Packaging pa = new Packaging(null, null, 0, 0, 0, null);
         Object object = null;
 
         switch (type) {
@@ -181,12 +168,11 @@ public class IndirectMaterialsDAOImpl implements IndirectMaterialsDAO {
                         in.setName(cursor.getString(cursor.getColumnIndex("NAME")));
                         in.setQuantity(cursor.getInt(cursor.getColumnIndex("QUANTITY")));
                         in.setPrice(cursor.getDouble(cursor.getColumnIndex("PRICE")));
+                        in.setTotalPrice(cursor.getDouble(cursor.getColumnIndex("TOTAL_COST")));
                         in.setDate(cursor.getString(cursor.getColumnIndex("DATE")));
                     } while (cursor.moveToNext());
-
                 }
                 object = in;
-
                 break;
 
             case "Fertilizer":
@@ -196,9 +182,9 @@ public class IndirectMaterialsDAOImpl implements IndirectMaterialsDAO {
                         fe.setName(cursor.getString(cursor.getColumnIndex("NAME")));
                         fe.setQuantity(cursor.getInt(cursor.getColumnIndex("QUANTITY")));
                         fe.setPrice(cursor.getDouble(cursor.getColumnIndex("PRICE")));
+                        fe.setTotalPrice(cursor.getDouble(cursor.getColumnIndex("TOTAL_COST")));
                         fe.setDate(cursor.getString(cursor.getColumnIndex("DATE")));
                     } while (cursor.moveToNext());
-
                 }
                 object = (Object) fe;
                 break;
@@ -210,9 +196,9 @@ public class IndirectMaterialsDAOImpl implements IndirectMaterialsDAO {
                         pa.setName(cursor.getString(cursor.getColumnIndex("NAME")));
                         pa.setQuantity(cursor.getInt(cursor.getColumnIndex("QUANTITY")));
                         pa.setPrice(cursor.getDouble(cursor.getColumnIndex("PRICE")));
+                        pa.setTotalPrice(cursor.getDouble(cursor.getColumnIndex("TOTAL_COST")));
                         pa.setDate(cursor.getString(cursor.getColumnIndex("DATE")));
                     } while (cursor.moveToNext());
-
                 }
                 object = pa;
                 break;
@@ -239,9 +225,9 @@ public class IndirectMaterialsDAOImpl implements IndirectMaterialsDAO {
     public void updateTransaction(DBHelper dbHelper, ArrayList<Object> objArray) {
         dbRead = dbHelper.getReadableDatabase();
         dbWrite = dbHelper.getWritableDatabase();
-        Insecticides in = new Insecticides(null, null, 0, 0, null);
-        Fertilizers fe = new Fertilizers(null, null, 0, 0, null);
-        Packaging pa = new Packaging(null, null, 0, 0, null);
+        Insecticides in = new Insecticides(null, null, 0, 0, 0, null);
+        Fertilizers fe = new Fertilizers(null, null, 0, 0, 0, null);
+        Packaging pa = new Packaging(null, null, 0, 0, 0, null);
         ContentValues val = new ContentValues();
         double costTotal = 0;
 
@@ -254,7 +240,8 @@ public class IndirectMaterialsDAOImpl implements IndirectMaterialsDAO {
 
                 if (cursor.moveToFirst()) {
                     do {
-                        in.setPrice(cursor.getInt(cursor.getColumnIndex("PRICE")));
+                        in.setPrice(cursor.getDouble(cursor.getColumnIndex("PRICE")));
+                        in.setTotalPrice(cursor.getDouble(cursor.getColumnIndex("TOTAL_COST")));
                         in.setQuantity(cursor.getInt(cursor.getColumnIndex("QUANTITY")));
                     } while (cursor.moveToNext());
 
@@ -263,8 +250,7 @@ public class IndirectMaterialsDAOImpl implements IndirectMaterialsDAO {
                     val.put("NAME", insecticides.getName());
                     val.put("QUANTITY", in.getQuantity() + insecticides.getQuantity());
                     val.put("PRICE", insecticides.getPrice());
-                    costTotal = (in.getQuantity() + insecticides.getQuantity()) * insecticides.getPrice();
-                    val.put("TOTAL_COST", costTotal);
+                    val.put("TOTAL_COST", in.getTotalPrice() + insecticides.getTotalPrice());
 
                     String selection = "NAME" + " LIKE ?";
                     String[] selectionArgs = {insecticides.getName()};
@@ -282,6 +268,7 @@ public class IndirectMaterialsDAOImpl implements IndirectMaterialsDAO {
                 if (cursor.moveToFirst()) {
                     do {
                         fe.setPrice(cursor.getInt(cursor.getColumnIndex("PRICE")));
+                        fe.setTotalPrice(cursor.getDouble(cursor.getColumnIndex("TOTAL_COST")));
                         fe.setQuantity(cursor.getInt(cursor.getColumnIndex("QUANTITY")));
                     } while (cursor.moveToNext());
 
@@ -290,8 +277,7 @@ public class IndirectMaterialsDAOImpl implements IndirectMaterialsDAO {
                     val.put("NAME", fertilizers.getName());
                     val.put("QUANTITY", fe.getQuantity() + fertilizers.getQuantity());
                     val.put("PRICE", fertilizers.getPrice());
-                    costTotal = (fe.getQuantity() + fertilizers.getQuantity()) * fertilizers.getPrice();
-                    val.put("TOTAL_COST", costTotal);
+                    val.put("TOTAL_COST", fe.getTotalPrice() + fertilizers.getTotalPrice());
 
                     String selection = "NAME" + " LIKE ?";
                     String[] selectionArgs = {fertilizers.getName()};
@@ -308,6 +294,7 @@ public class IndirectMaterialsDAOImpl implements IndirectMaterialsDAO {
                 if (cursor.moveToFirst()) {
                     do {
                         pa.setPrice(cursor.getInt(cursor.getColumnIndex("PRICE")));
+                        pa.setTotalPrice(cursor.getDouble(cursor.getColumnIndex("TOTAL_COST")));
                         pa.setQuantity(cursor.getInt(cursor.getColumnIndex("QUANTITY")));
                     } while (cursor.moveToNext());
 
@@ -316,18 +303,13 @@ public class IndirectMaterialsDAOImpl implements IndirectMaterialsDAO {
                     val.put("NAME", packaging.getName());
                     val.put("QUANTITY", pa.getQuantity() + packaging.getQuantity());
                     val.put("PRICE", packaging.getPrice());
-                    costTotal = (pa.getQuantity() + packaging.getQuantity()) * packaging.getPrice();
-                    val.put("TOTAL_COST", costTotal);
+                    val.put("TOTAL_COST", pa.getTotalPrice() + packaging.getTotalPrice());
 
                     String selection = "NAME" + " LIKE ?";
                     String[] selectionArgs = {packaging.getName()};
                     dbRead.update("INDIRECT_MATERIALS", val, selection, selectionArgs);
-
-
                 }
             }
-
-
         }
     }
 
@@ -339,6 +321,4 @@ public class IndirectMaterialsDAOImpl implements IndirectMaterialsDAO {
         String[] selectionArgs = {name};
         dbWrite.delete("WAREHOUSE_EQUIPMENT", selection, selectionArgs);
     }
-
-
 }

@@ -9,14 +9,15 @@ public class Equipment {
     private String type;
     private String name;
     private int quantity;
-    private double price;
+    private double price,totalPrice;
     private String date;
 
-    public Equipment(String type, String name, int quantity, double price, String date) {
+    public Equipment(String type, String name, int quantity, double price, double totalPrice, String date) {
         this.type = type;
         this.name = name;
         this.quantity = quantity;
         this.price = price;
+        this.totalPrice = totalPrice;
         this.date = date;
     }
 
@@ -52,6 +53,14 @@ public class Equipment {
         this.price = price;
     }
 
+    public double getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(double totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
     public String getDate() {
         return date;
     }
@@ -66,6 +75,7 @@ public class Equipment {
                 "Type: " + type + "\n" +
                         "Item Name: " + name + "\n" +
                         "Quantity: " + quantity + "\n" +
-                        "Total Price: " + price + "\n \n";
+                        "Price: " + price + "\n" +
+                        "Total Price: " + totalPrice + "\n \n";
     }
 }

@@ -63,7 +63,7 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
     String[] spinnerListType = {"Seeds", "Seedlings", "Packaging", "Fertilizer", "Insecticides", "Equipment"};
 
     private String itemName, type, supplierName, supplierContact;
-    private Double unitPrice;
+    private Double unitPrice, totalPrice;
     private int qty;
 
     //    //get Date String
@@ -155,6 +155,7 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
         itemName = txtItemName.getText().toString();
         unitPrice = Double.valueOf(txtUprice.getText().toString());
         qty = Integer.valueOf(txtQty.getText().toString());
+        totalPrice = qty * unitPrice;
         type = spinnerType1.getText().toString();
         supplierName = txtSupplierName.getText().toString();
         supplierContact = txtSupplierContact.getText().toString();
@@ -163,7 +164,7 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
         switch (type) {
             case "Equipment":
                 if (!equipmentDAO.checkExistingWarehouse(dbHelper, type, itemName)) {
-                    Equipment equip = new Equipment(type, itemName, qty, unitPrice, strDate);
+                    Equipment equip = new Equipment(type, itemName, qty, unitPrice, totalPrice, strDate);
                     try {
                         tDAO.addEntry(dbHelper, equip, type, supplierName, supplierContact);
                         //tDAO.addBoughtList(dbHelper, equip, type);
@@ -218,7 +219,7 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
 
             case "Insecticides":
                 if (!tDAO.checkExistingWarehouse(dbHelper, type, itemName)) {
-                    Insecticides ins = new Insecticides(type, itemName, qty, unitPrice, strDate);
+                    Insecticides ins = new Insecticides(type, itemName, qty, unitPrice, totalPrice, strDate);
                     try {
                         tDAO.addEntry(dbHelper, ins, type, supplierName, supplierContact);
                         // tDAO.addBoughtList(dbHelper, ins, type);
@@ -272,7 +273,7 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
 
             case "Fertilizer":
                 if (!tDAO.checkExistingWarehouse(dbHelper, type, itemName)) {
-                    Fertilizers fer = new Fertilizers(type, itemName, qty, unitPrice, strDate);
+                    Fertilizers fer = new Fertilizers(type, itemName, qty, unitPrice, totalPrice, strDate);
                     try {
                         tDAO.addEntry(dbHelper, fer, type, supplierName, supplierContact);
                         //  tDAO.addBoughtList(dbHelper, fer, type);
@@ -326,7 +327,7 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
 
             case "Packaging":
                 if (!tDAO.checkExistingWarehouse(dbHelper, type, itemName)) {
-                    Packaging packaging = new Packaging(type, itemName, qty, unitPrice, strDate);
+                    Packaging packaging = new Packaging(type, itemName, qty, unitPrice, totalPrice, strDate);
                     try {
                         tDAO.addEntry(dbHelper, packaging, type, supplierName, supplierContact);
                         //tDAO.addBoughtList(dbHelper, packaging, type);
@@ -380,10 +381,11 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
 
             case "Seeds":
                 if (!tDAO.checkExistingWarehouse(dbHelper, type, itemName)) {
-                    Seeds seeds = new Seeds(type, itemName, qty, unitPrice, strDate);
+                    Seeds seeds = new Seeds(type, itemName, qty, unitPrice, totalPrice, strDate);
+                    Crops crop = new Crops("Crops", itemName, 0, 0, strDate);
                     try {
                         tDAO.addEntry(dbHelper, seeds, type, supplierName, supplierContact);
-                        //tDAO.addBoughtList(dbHelper, seeds, type);
+                        tDAO.addEntry(dbHelper, crop, "Crops", "", "");
                         rmDAO.addTransaction(dbHelper, seeds, type);
 
                         new AlertDialog.Builder(SettingsAddToWarehouse.this)
@@ -435,7 +437,7 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
 
             case "Seedlings":
                 if (!tDAO.checkExistingWarehouse(dbHelper, type, itemName)) {
-                    Seedlings seedlings = new Seedlings(type, itemName, qty, unitPrice, strDate);
+                    Seedlings seedlings = new Seedlings(type, itemName, qty, unitPrice, totalPrice, strDate);
                     Crops crop = new Crops("Crops", itemName, 0, 0, strDate);
                     try {
                         tDAO.addEntry(dbHelper, seedlings, type, supplierName, supplierContact);
