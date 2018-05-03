@@ -69,7 +69,6 @@ public class TransactionsAddBought extends AppCompatActivity {
 
 
     //Data variables
-
     private String type, itemName, transactionID, supplierName;
     private int qty;
     private ArrayAdapter<String> stringArrayAdapter, arrayAdapter2, arrayAdapter3;
@@ -102,6 +101,7 @@ public class TransactionsAddBought extends AppCompatActivity {
         //inflate toolbar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Add Items to Warehouse");
 
         //inflate back arrow button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -165,7 +165,6 @@ public class TransactionsAddBought extends AppCompatActivity {
 
         btnAddTransaction = (Button) findViewById(R.id.btnAdd);
         btnAddTransaction.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View view) {
                 submitForm();
