@@ -67,8 +67,8 @@ public class Insecticides {
     public String toString() {
         return
                 "Type: " + type + "\n" +
-                        "Item Name: " + name + "\n" +
-                        "Quantity: " + quantity + "\n" +
-                        "Total Price: " + price + "\n \n";
+                "Item Name: " + name + "\n" +
+                "Quantity: " + quantity + "\n" +
+                "Total Price: " + price + "\n \n";
     }
 }

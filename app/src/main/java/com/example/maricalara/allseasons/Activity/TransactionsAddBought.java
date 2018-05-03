@@ -1,7 +1,6 @@
 package com.example.maricalara.allseasons.Activity;
 
 import android.content.DialogInterface;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
@@ -16,7 +15,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.maricalara.allseasons.Controller.EquipmentDAO;
 import com.example.maricalara.allseasons.Controller.EquipmentDAOImpl;
@@ -169,7 +167,6 @@ public class TransactionsAddBought extends AppCompatActivity {
             public void onClick(View view) {
                 submitForm();
                 setData();
-                //getData();
 
             }
         });

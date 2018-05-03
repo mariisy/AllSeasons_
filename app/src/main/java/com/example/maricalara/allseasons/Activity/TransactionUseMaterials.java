@@ -103,17 +103,18 @@ public class TransactionUseMaterials extends AppCompatActivity {
         inputLayoutQty = (TextInputLayout) findViewById(R.id.input_layout_qty);
         txtQty = (EditText) findViewById(R.id.txtQty);
 
-        btnView = (Button) findViewById(R.id.btnView);
         spinnerItem = (MaterialBetterSpinner) findViewById(R.id.spinnerItem);
         spinnerItemName = (MaterialBetterSpinner) findViewById(R.id.spinnerItemName);
         txtDate = (TextView) findViewById(R.id.txtDate);
         txtTransaction = (TextView) findViewById(R.id.txtTransactionID);
 
+        txtDate.setText(strDate);
+
         //set array for spinner type 1 and type 2
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, spinnerListType);
         spinnerItem.setAdapter(arrayAdapter);
 
-        txtDate.setText(strDate);
+
         btnAddTransaction = (Button) findViewById(R.id.btnAdd);
         btnAddTransaction.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,7 +125,7 @@ public class TransactionUseMaterials extends AppCompatActivity {
         });
 
 
-
+        btnView = (Button) findViewById(R.id.btnView);
         btnView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
