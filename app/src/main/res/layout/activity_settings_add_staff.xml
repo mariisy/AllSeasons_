@@ -9,99 +9,108 @@
     <include
         layout="@layout/app_bar_main" />
 
-    <LinearLayout
-        android:orientation="vertical"
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:paddingTop="56dp"
-        android:paddingLeft="24dp"
-        android:paddingRight="24dp">
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
-
-        <!-- first name Label -->
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/input_layout_fName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <EditText
-                android:id="@+id/txtFname"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="First Name" />
-        </android.support.design.widget.TextInputLayout>
-
-        <!-- last name Label -->
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/input_layout_lfName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <EditText
-                android:id="@+id/txtLname"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Last Name" />
-        </android.support.design.widget.TextInputLayout>
-
-        <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
-            android:id="@+id/spinnerPosition"
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Position"
-            android:textColorHint="#bdbdbd"
-            app:met_floatingLabel="normal" />
+            android:layout_marginTop="40dp"
+            android:paddingTop="56dp"
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
 
-            <CheckBox
-                android:text="Default Minimum Wage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="#bdbdbd"
-                android:layout_marginTop="20dp"
-                android:id="@+id/defaultSalary"
-                android:theme="@style/CheckBoxTheme"/>
-
-            <!-- salary Label -->
+            <!-- first name Label -->
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/input_layout_salary"
+                android:id="@+id/input_layout_fName"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/defaultSalary"
-                android:layout_marginStart="10dp">
+                android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/txtSalary"
+                    android:id="@+id/txtFname"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Salary"
-                    android:inputType="numberDecimal"/>
+                    android:hint="First Name" />
             </android.support.design.widget.TextInputLayout>
 
-        </RelativeLayout>
+            <!-- last name Label -->
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_lfName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/btnAddEmployee"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="24dp"
-            android:padding="12dp"
-            android:text="Add Employee"
-            style="@style/Widget.AppCompat.Button.Colored"/>
+                <EditText
+                    android:id="@+id/txtLname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Last Name" />
+            </android.support.design.widget.TextInputLayout>
 
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/btnViewEmployee"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:padding="12dp"
-            android:text="View Employee"
-            style="@style/Widget.AppCompat.Button.Colored"/>
+            <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+                android:id="@+id/spinnerPosition"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Position"
+                android:textColorHint="#bdbdbd"
+                app:met_floatingLabel="normal" />
 
-    </LinearLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <CheckBox
+                    android:text="Default Minimum Wage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#bdbdbd"
+                    android:layout_marginTop="20dp"
+                    android:id="@+id/defaultSalary"
+                    android:theme="@style/CheckBoxTheme"/>
+
+                <!-- salary Label -->
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_layout_salary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/defaultSalary"
+                    android:layout_marginStart="10dp">
+
+                    <EditText
+                        android:id="@+id/txtSalary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Salary"
+                        android:inputType="numberDecimal"/>
+                </android.support.design.widget.TextInputLayout>
+
+            </RelativeLayout>
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/btnAddEmployee"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="24dp"
+                android:padding="12dp"
+                android:text="Add Employee"
+                style="@style/Widget.AppCompat.Button.Colored"/>
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/btnViewEmployee"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:text="View Employee"
+                style="@style/Widget.AppCompat.Button.Colored"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
 
 </RelativeLayout>
