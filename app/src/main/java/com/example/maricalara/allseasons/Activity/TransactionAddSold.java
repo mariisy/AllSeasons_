@@ -18,6 +18,10 @@ import android.widget.Toast;
 import com.example.maricalara.allseasons.R;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class TransactionAddSold extends AppCompatActivity {
 
     //Sample for List for Spinner
@@ -30,6 +34,14 @@ public class TransactionAddSold extends AppCompatActivity {
     private TextInputLayout inputLayoutCustomerName, inputLayoutContactNum, inputLayoutQuantity, inputLayoutAddress;
     private CheckBox chckDelivery;
     private Toolbar toolbar;
+
+    //get Date String
+    Date date = new Date();
+    SimpleDateFormat sdf = new SimpleDateFormat("EEEE");
+    Date d = new Date();
+    String dayOfTheWeek = sdf.format(d);
+    String dateForTheDay = DateFormat.getDateInstance().format(date);
+    String strDate = "Date: " + dayOfTheWeek + ", " + dateForTheDay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

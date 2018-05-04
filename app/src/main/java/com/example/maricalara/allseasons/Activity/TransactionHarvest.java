@@ -41,7 +41,7 @@ public class TransactionHarvest extends AppCompatActivity {
     //for UI
     private String type, itemName;
     private int qty;
-    private Button btnAddTransaction, btnView;
+    private Button btnAddTransaction;
     private MaterialBetterSpinner spinnerItem, spinnerItemName;
     private Toolbar toolbar;
     private TextInputLayout inputLayoutQty;
@@ -115,15 +115,6 @@ public class TransactionHarvest extends AppCompatActivity {
             }
         });
 
-
-        btnView = (Button) findViewById(R.id.btnView);
-        btnView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                //viewButton();
-            }
-        });
     }
 
     private void submitForm() {

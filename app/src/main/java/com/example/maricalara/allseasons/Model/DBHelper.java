@@ -62,6 +62,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public String dbColumnTransactionID = "TRANSACTIONID";
     public String dbColumnDelivery = "DELIVERY";
     public String dBColumnSupplierName = "SUPPLIER_NAME";
+    public String getdBColumnTransID = "TRANSID";
 
 
     //db Query
@@ -146,15 +147,16 @@ public class DBHelper extends SQLiteOpenHelper {
             dbColumnSalary + " REAL )";
 
     private String dbBuildQuery11 = "CREATE TABLE " + dbTableTransation + " ( " +
-            dbColumnTransactionID + " TEXT PRIMARY KEY, " +
+            getdBColumnTransID+ " int PRIMARY KEY, " +
+            dbColumnTransactionID + " TEXT, " +
             dBColumnDate + " TEXT, " +
             dBColumnType + " TEXT, " +
             dBColumnQuantity + " INTEGER, " +
             dBColumnPrice + " REAL, " +
             dBColumnTotalCost + " REAL, " +
             dbColumnDelivery + " TEXT , " +
-            "FOREIGN KEY (" + dbColumnEmployeeID + ") REFERENCES " + dbTableEmployee + "(" + dbColumnEmployeeID + "), " +
-            "FOREIGN KEY (" + dbColumnCustomerID + ") REFERENCES " + dbTableCustomer + "(" + dbColumnCustomerID + "));";
+            dbColumnEmployeeID + " TEXT, " +
+            dbColumnCustomerID + " TEXT )";
 
     private String dbBuildQuery12 = "CREATE TABLE " + dbTableDL + " ( " +
             dbColumnSalary + " REAL, " +

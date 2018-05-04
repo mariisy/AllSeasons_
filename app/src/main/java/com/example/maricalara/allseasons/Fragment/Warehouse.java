@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.example.maricalara.allseasons.Activity.TransactionHarvest;
 import com.example.maricalara.allseasons.Activity.TransactionUseMaterials;
 import com.github.clans.fab.FloatingActionButton;
 import android.support.design.widget.TabLayout;
@@ -80,7 +81,8 @@ public class Warehouse extends Fragment {
         fabHarvest.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Click action
-
+                Intent intent = new Intent(getActivity(), TransactionHarvest.class);
+                getActivity().startActivity(intent);
 
             }
         });

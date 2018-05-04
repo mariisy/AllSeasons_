@@ -48,14 +48,19 @@ public class SettingsAddStaff extends AppCompatActivity {
     private int salary = 0;
     private final int defaultSalary = 13000;
     private TransactionDAO transactionDAO = new TransactionDAOImpl();
+
     //Sample for List for Spinner
     String[] SPINNERLIST = {"Farmer", "Staff", "Supervisor"};
+
+    //date get string
     Date date = new Date();
     SimpleDateFormat sdf = new SimpleDateFormat("EEEE");
     Date d = new Date();
     String dayOfTheWeek = sdf.format(d);
     String dateForTheDay = DateFormat.getDateInstance().format(date);
     String strDate = dayOfTheWeek + ", " + dateForTheDay;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
