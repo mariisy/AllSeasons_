@@ -43,6 +43,7 @@ public class TransactionDAOImpl implements TransactionDAO {
         Cursor result = dbWrite.rawQuery("SELECT * FROM EMPLOYEE", null);
         return result;
     }
+
     @Override
     public Cursor getAllCash(DBHelper dbHelper) {
         dbWrite = dbHelper.getWritableDatabase();
@@ -237,11 +238,20 @@ public class TransactionDAOImpl implements TransactionDAO {
                 break;
 
             case "Employee":
-                Employees employee = new Employees(0, null, null, null, null, 0);
+                Employees employee = new Employees(0, null, null,null,null, null, 0);
+                String fLetter ="";
+                String lName ="";
+                String userName="";
                 if (object instanceof Employees) {
                     employees = (Employees) object;
                     ContentValues values = new ContentValues();
                     values.put("EMPLOYEE_FULL_ID", employees.getEmployeeFullID());
+                    fLetter = String.valueOf(employees.getName().charAt(0));
+                    lName = employees.getName().substring(employees.getName().lastIndexOf(" ")+1);
+                    userName= fLetter+lName;
+                    values.put("USERNAME", userName);
+                    values.put("PASSWORD", employees.getPassword());
+                    values.put("ACCOUNT_TYPE", employees.getAccountype());
                     values.put("NAME", employees.getName());
                     values.put("ACCOUNT_TYPE", employees.getAccountype());
                     values.put("SALARY", employees.getSalary());
@@ -262,15 +272,18 @@ public class TransactionDAOImpl implements TransactionDAO {
                         switch (employee.getAccountype()){
                             case "Farmer":
                                 values2.put("EMPLOYEE_FULL_ID", "EMPFRM" + String.format("%03d", employee.getEmployeeID()));
+                                values2.put("PASSWORD", "FRM" + String.format("%03d", employee.getEmployeeID()));
                                 dbRead.update("EMPLOYEE", values2, selection, selectionArgs);
                             break;
 
                             case "Staff":
                                 values2.put("EMPLOYEE_FULL_ID", "EMPSTF" +  String.format("%03d", employee.getEmployeeID()));
+                                values2.put("PASSWORD", "STF" + String.format("%03d", employee.getEmployeeID()));
                                 dbRead.update("EMPLOYEE", values2, selection, selectionArgs);
                                 break;
                             case "Supervisor":
                                 values2.put("EMPLOYEE_FULL_ID", "EMPSPV" + String.format("%03d", employee.getEmployeeID()));
+                                values2.put("PASSWORD", "SPV" + String.format("%03d", employee.getEmployeeID()));
                                 dbRead.update("EMPLOYEE", values2, selection, selectionArgs);
                                 break;
 
