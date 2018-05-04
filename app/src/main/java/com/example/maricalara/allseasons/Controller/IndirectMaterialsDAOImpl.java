@@ -230,7 +230,7 @@ public class IndirectMaterialsDAOImpl implements IndirectMaterialsDAO {
         Packaging pa = new Packaging(null, null, 0, 0, 0, null);
         ContentValues val = new ContentValues();
         double costTotal = 0;
-
+        ContentValues values = new ContentValues();
         for (Object obj : objArray) {
 
             if (obj instanceof Insecticides) {
@@ -256,6 +256,18 @@ public class IndirectMaterialsDAOImpl implements IndirectMaterialsDAO {
                     String[] selectionArgs = {insecticides.getName()};
                     dbRead.update("INDIRECT_MATERIALS", val, selection, selectionArgs);
 
+
+                    String queryUpdate2 = "SELECT * FROM " + "CASH WHERE NAME = '" + insecticides.getName() + "'  AND TYPE = '" + insecticides.getType() + "' ";
+                    Cursor cursor2 = dbRead.rawQuery(queryUpdate2, null);
+                    double credit=0;
+                    if (cursor2.moveToFirst()) {
+                        do {
+                            credit = cursor2.getDouble(cursor2.getColumnIndex("CREDIT"));
+                        } while (cursor2.moveToNext());
+                    }
+                    double totalCredit = credit + insecticides.getTotalPrice();
+                    values.put("CREDIT",totalCredit);
+                    dbRead.update("CASH", values, selection, selectionArgs);
 
                 }
             }
@@ -283,6 +295,18 @@ public class IndirectMaterialsDAOImpl implements IndirectMaterialsDAO {
                     String[] selectionArgs = {fertilizers.getName()};
                     dbRead.update("INDIRECT_MATERIALS", val, selection, selectionArgs);
 
+                    String queryUpdate2 = "SELECT * FROM " + "CASH WHERE NAME = '" + fertilizers.getName() + "'  AND TYPE = '" + fertilizers.getType() + "' ";
+                    Cursor cursor2 = dbRead.rawQuery(queryUpdate2, null);
+                    double credit=0;
+                    if (cursor2.moveToFirst()) {
+                        do {
+                            credit = cursor2.getDouble(cursor2.getColumnIndex("CREDIT"));
+                        } while (cursor2.moveToNext());
+                    }
+                    double totalCredit = credit + fertilizers.getTotalPrice();
+                    values.put("CREDIT",totalCredit);
+                    dbRead.update("CASH", values, selection, selectionArgs);
+
                 }
             }
 
@@ -308,6 +332,17 @@ public class IndirectMaterialsDAOImpl implements IndirectMaterialsDAO {
                     String selection = "NAME" + " LIKE ?";
                     String[] selectionArgs = {packaging.getName()};
                     dbRead.update("INDIRECT_MATERIALS", val, selection, selectionArgs);
+                    String queryUpdate2 = "SELECT * FROM " + "CASH WHERE NAME = '" + packaging.getName() + "'  AND TYPE = '" + packaging.getType() + "' ";
+                    Cursor cursor2 = dbRead.rawQuery(queryUpdate2, null);
+                    double credit=0;
+                    if (cursor2.moveToFirst()) {
+                        do {
+                            credit = cursor2.getDouble(cursor2.getColumnIndex("CREDIT"));
+                        } while (cursor2.moveToNext());
+                    }
+                    double totalCredit = credit + packaging.getTotalPrice();
+                    values.put("CREDIT",totalCredit);
+                    dbRead.update("CASH", values, selection, selectionArgs);
                 }
             }
         }
