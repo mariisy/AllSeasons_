@@ -8,23 +8,30 @@ public class Employees {
 
     private int employeeID;
     private String employeeFullID;
+    private String userName;
+    private String password;
     private String name;
     private String accountype;
-    private String date;
     private int salary;
 
 
-    public Employees(int employeeID,String employeeFullID,String name, String accountype, String date, int salary) {
+    public Employees(int employeeID, String employeeFullID, String userName, String password, String name, String accountype, int salary) {
+
         this.employeeID = employeeID;
         this.employeeFullID = employeeFullID;
+        this.userName = userName;
+        this.password = password;
         this.name = name;
         this.accountype = accountype;
-        this.date = date;
         this.salary = salary;
     }
 
     public int getEmployeeID() {
         return employeeID;
+    }
+
+    public void setEmployeeID(int employeeID) {
+        this.employeeID = employeeID;
     }
 
     public String getEmployeeFullID() {
@@ -35,8 +42,20 @@ public class Employees {
         this.employeeFullID = employeeFullID;
     }
 
-    public void setEmployeeID(int employeeID) {
-        this.employeeID = employeeID;
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getName() {
@@ -53,15 +72,7 @@ public class Employees {
 
     public void setAccountype(String accountype) {
         this.accountype = accountype;
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
+}
 
     public int getSalary() {
         return salary;

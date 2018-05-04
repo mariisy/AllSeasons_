@@ -99,9 +99,11 @@ public class SettingsAddStaff extends AppCompatActivity {
                 while (result.moveToNext()) {
                     buffer.append("ID: " + result.getString(0) + "\n");
                     buffer.append("Full ID: " + result.getString(1) + "\n");
-                    buffer.append("NAME: " + result.getString(2) + "\n");
-                    buffer.append("ACCOUNT TYPE: " + result.getString(3) + "\n");
-                    buffer.append("SALARY: " + result.getString(4) + "\n\n");
+                    buffer.append("Username: " + result.getString(2) + "\n");
+                    buffer.append("Password: " + result.getString(3) + "\n");
+                    buffer.append("NAME: " + result.getString(4) + "\n");
+                    buffer.append("ACCOUNT TYPE: " + result.getString(5) + "\n");
+                    buffer.append("SALARY: " + result.getString(6) + "\n\n");
                 }
                 android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(SettingsAddStaff.this);
                 builder.setMessage(buffer.toString());
@@ -248,7 +250,7 @@ public class SettingsAddStaff extends AppCompatActivity {
         switch (type) {
             case "Farmer":
                 if (!transactionDAO.checkExistingEmployee(dbHelper,type, employeeName)) {
-                    Employees employees = new Employees(0,null,employeeName, type,strDate,salary);
+                    Employees employees = new Employees(0,null,null,null,employeeName, type,salary);
                     try {
                         transactionDAO.addEntry(dbHelper, employees, "Employee","","");
 
@@ -300,7 +302,7 @@ public class SettingsAddStaff extends AppCompatActivity {
                 break;
             case "Staff":
                 if (!transactionDAO.checkExistingEmployee(dbHelper,type, employeeName)) {
-                    Employees employees = new Employees(0,null,employeeName, type,strDate,salary);
+                    Employees employees = new Employees(0,null,null,null,employeeName, type,salary);
                     try {
                         transactionDAO.addEntry(dbHelper, employees, "Employee","","");
 
@@ -353,7 +355,7 @@ public class SettingsAddStaff extends AppCompatActivity {
 
             case "Supervisor":
                 if (!transactionDAO.checkExistingEmployee(dbHelper,type, employeeName)) {
-                    Employees employees = new Employees(0,null,employeeName, type,strDate,salary);
+                    Employees employees = new Employees(0,null,null,null,employeeName, type,salary);
                     try {
                         transactionDAO.addEntry(dbHelper, employees, "Employee","","");
 

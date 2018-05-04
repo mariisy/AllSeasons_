@@ -62,9 +62,9 @@ public class DBHelper extends SQLiteOpenHelper {
     public String dbColumnTransactionID = "TRANSACTIONID";
     public String dbColumnDelivery = "DELIVERY";
     public String dBColumnSupplierName = "SUPPLIER_NAME";
-    public String getdBColumnTransID = "TRANSID";
-
-
+    public String dBColumnTransID = "TRANSID";
+    public String dbColumnEmployeeUsername = "USERNAME";
+    public String dbColumnEmployeePassword = "PASSWORD";
     //db Query
 
 
@@ -142,12 +142,14 @@ public class DBHelper extends SQLiteOpenHelper {
     private String dbBuildQuery10 = "CREATE TABLE " + dbTableEmployee + " ( " +
             dbColumnEmployeeID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             dbColumnEmployeeFullID + " TEXT , " +
+            dbColumnEmployeeUsername + " TEXT , " +
+            dbColumnEmployeePassword + " TEXT , " +
             dBColumnName + " TEXT, " +
             dbColumnAccountType + " TEXT, " +
             dbColumnSalary + " REAL )";
 
     private String dbBuildQuery11 = "CREATE TABLE " + dbTableTransation + " ( " +
-            getdBColumnTransID+ " int PRIMARY KEY, " +
+            dBColumnTransID+ " int PRIMARY KEY, " +
             dbColumnTransactionID + " TEXT, " +
             dBColumnDate + " TEXT, " +
             dBColumnType + " TEXT, " +
