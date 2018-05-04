@@ -1,7 +1,6 @@
 package com.example.maricalara.allseasons.Activity;
 
 import android.content.DialogInterface;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
@@ -72,9 +71,8 @@ public class TransactionsAddBought extends AppCompatActivity {
 
     private String type, itemName, transactionID, supplierName;
     private int qty;
-    private ArrayAdapter<String> stringArrayAdapter, arrayAdapter2, arrayAdapter3;
+    private ArrayAdapter<String> stringArrayAdapter, arrayAdapter2, arrayAdapter3, arrayAdapter4;
     private ArrayList<String> arrListSupplierName, arrListType, arrListName;
-
     private ArrayList<Object> arrTransact = new ArrayList<>();
     Object object = null;
     Seeds seeds;
@@ -85,6 +83,7 @@ public class TransactionsAddBought extends AppCompatActivity {
     Equipment equipment;
     double price = 0, totalPrice = 0;
     Object strName = null;
+    String[] spinnerListType = {"Seeds", "Seedlings", "Packaging", "Fertilizer", "Insecticides", "Equipment"};
 
     //get Date String
     Date date = new Date();
@@ -123,6 +122,11 @@ public class TransactionsAddBought extends AppCompatActivity {
 
         txtDate.setText(strDate);
 
+        String[] spinnerListType = {"", ""};
+        ArrayAdapter<String> arrayAdapters = new ArrayAdapter<String>(TransactionsAddBought.this, android.R.layout.simple_dropdown_item_1line, spinnerListType);
+        spinnerItem.setAdapter(arrayAdapters);
+        spinnerItemName.setAdapter(arrayAdapters);
+
         //set array for spinner type 1 and type 2
 
         arrListSupplierName = tDAO.retrieveListSpinner(dbHelper);
@@ -136,9 +140,7 @@ public class TransactionsAddBought extends AppCompatActivity {
             }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
 
             @Override
             public void afterTextChanged(Editable s) {
@@ -151,11 +153,8 @@ public class TransactionsAddBought extends AppCompatActivity {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
             }
-
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
 
             @Override
             public void afterTextChanged(Editable s) {
@@ -165,16 +164,13 @@ public class TransactionsAddBought extends AppCompatActivity {
 
         btnAddTransaction = (Button) findViewById(R.id.btnAdd);
         btnAddTransaction.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View view) {
-                submitForm();
-                setData();
-
-
+                if (validateSuplierName() && validateContact() && validateType() && validateName()) {
+                    setData();
+                }
             }
         });
-
 
         btnView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -237,38 +233,12 @@ public class TransactionsAddBought extends AppCompatActivity {
         builderView.show();
     }
 
-
-    private void submitForm() {
-        if (validateSuplierName()) {
-            return;
-        }
-
-        if (validateContact()) {
-            return;
-        }
-
-        if (validateQty()) {
-            return;
-        }
-
-        if (validateType()) {
-            return;
-        }
-
-        if (validateName()) {
-            return;
-        }
-
-    }
-
     private boolean validateSuplierName() {
         if (spinnerSupplierName.getText().toString().trim().isEmpty()) {
-            spinnerSupplierName.setError("Pick Item Type!");
-            //inputLayoutUnitPrice.setError("Enter Last Name!");
+            spinnerSupplierName.setError("Pick Supplier!");
             requestFocus(spinnerSupplierName);
             return false;
         } else {
-
             return true;
         }
     }
@@ -303,7 +273,6 @@ public class TransactionsAddBought extends AppCompatActivity {
             requestFocus(spinnerItem);
             return false;
         } else {
-
             return true;
         }
 
@@ -316,7 +285,6 @@ public class TransactionsAddBought extends AppCompatActivity {
             requestFocus(spinnerItemName);
             return false;
         } else {
-
             return true;
         }
 
@@ -394,7 +362,7 @@ public class TransactionsAddBought extends AppCompatActivity {
                         object = equipmentDAO.retrieveOne(dbHelper, type, itemName);
                         equipment = (Equipment) object;
                         price = equipment.getPrice();
-                        totalPrice =  equipment.getPrice() * qty;
+                        totalPrice = equipment.getPrice() * qty;
                         arrTransact.add(new Equipment(type, itemName, qty, price, totalPrice, strDate));
 
                         new AlertDialog.Builder(TransactionsAddBought.this)
@@ -425,6 +393,7 @@ public class TransactionsAddBought extends AppCompatActivity {
                                 .show();
                     }
                 } else {
+
                     new AlertDialog.Builder(TransactionsAddBought.this)
                             .setTitle("Adding Entry")
                             .setMessage("Entry already exists! /n Would you like to add another entry?")
@@ -450,7 +419,7 @@ public class TransactionsAddBought extends AppCompatActivity {
                         object = imDao.retrieveOne(dbHelper, type, itemName);
                         insecticides = (Insecticides) object;
                         price = insecticides.getPrice();
-                        totalPrice= insecticides.getPrice() * qty;
+                        totalPrice = insecticides.getPrice() * qty;
                         arrTransact.add(new Insecticides(type, itemName, qty, price, totalPrice, strDate));
 
                         new AlertDialog.Builder(TransactionsAddBought.this)
@@ -729,9 +698,8 @@ public class TransactionsAddBought extends AppCompatActivity {
             equipmentDAO.updateTransaction(dbHelper, arrTransact);
             imDao.updateTransaction(dbHelper, arrTransact);
             rmDAO.updateTransaction(dbHelper, arrTransact);
-        }
-        catch (Exception e){
-            Toast.makeText(this,e.toString(),Toast.LENGTH_SHORT);
+        } catch (Exception e) {
+            Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT);
         }
     }
 

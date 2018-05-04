@@ -10,6 +10,9 @@ import java.util.HashMap;
 import java.util.List;
 
 public interface TransactionDAO {
+
+
+
     Cursor getAllData(DBHelper dbHelper);
 
     public Cursor getAllEmployee(DBHelper dbHelper);
@@ -35,6 +38,8 @@ public interface TransactionDAO {
     void updateEntry(DBHelper dbHelper, String name, Double price);
 
     void deleteEntry(DBHelper dbHelper, String name);
+
     ArrayList<String> retrieveListSpinner(DBHelper dbHelper);
+
     public ArrayList<String> retrieveListSpinnerColumn(DBHelper dbHelper, String spinnerCategory, String columnName, String value);
 }

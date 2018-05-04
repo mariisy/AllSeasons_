@@ -497,7 +497,6 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
 
     }
 
-
     private boolean validateItemName() {
         if (txtItemName.getText().toString().trim().isEmpty()) {
             inputLayoutItemname.setError("Enter Item Name!");
