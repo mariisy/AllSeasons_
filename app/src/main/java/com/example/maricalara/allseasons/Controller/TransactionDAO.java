@@ -3,6 +3,7 @@ package com.example.maricalara.allseasons.Controller;
 import android.database.Cursor;
 
 import com.example.maricalara.allseasons.Model.DBHelper;
+import com.example.maricalara.allseasons.Model.Employees;
 import com.example.maricalara.allseasons.Model.WarehouseMaterial;
 
 import java.util.ArrayList;
@@ -21,7 +22,9 @@ public interface TransactionDAO {
 
     ArrayList<WarehouseMaterial> getAllDataWarehouse(DBHelper dbHelper);
 
-    boolean checkExistingEmployee(DBHelper dbHelper, String type, String name);
+    boolean checkExistingEmployee(DBHelper dbHelper, String username, String password);
+
+    Employees retrieveOneEmployee(DBHelper dbHelper, String username, String password);
 
     public void addEntry(DBHelper dbHelper, Object object, String type, String name, String contact);
 

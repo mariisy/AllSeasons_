@@ -85,7 +85,6 @@ public class EquipmentDAOImpl implements EquipmentDAO {
         String queryForRetrievalOne = "SELECT * FROM " + "EQUIPMENT WHERE NAME = '" + name + "'  AND TYPE = '" + type + "' ";
         Cursor cursor = db.rawQuery(queryForRetrievalOne, null);
         Equipment equipment = new Equipment(null, null, 0, 0, 0,null);
-        Object object = null;
 
         if (cursor.moveToFirst()) {
             do {
@@ -99,7 +98,6 @@ public class EquipmentDAOImpl implements EquipmentDAO {
 
 
         }
-        object = (Object) equipment;
 
         return equipment;
     }
