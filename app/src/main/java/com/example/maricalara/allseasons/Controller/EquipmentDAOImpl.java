@@ -115,7 +115,7 @@ public class EquipmentDAOImpl implements EquipmentDAO {
     }
 
     @Override
-    public void updateTransaction(DBHelper dbHelper, ArrayList<Object> objArray) {
+    public void updateTransactionAdd(DBHelper dbHelper, ArrayList<Object> objArray) {
         dbRead = dbHelper.getReadableDatabase();
         Equipment equipment = new Equipment(null, null, 0, 0, 0,null);
         ContentValues val = new ContentValues();

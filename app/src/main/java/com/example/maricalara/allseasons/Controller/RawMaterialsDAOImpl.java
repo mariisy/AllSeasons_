@@ -161,7 +161,7 @@ public class RawMaterialsDAOImpl implements RawMaterialsDAO {
     }
 
     @Override
-    public void updateTransaction(DBHelper dbHelper, ArrayList<Object> objArray) {
+    public void updateTransactionAdd(DBHelper dbHelper, ArrayList<Object> objArray) {
         dbRead = dbHelper.getReadableDatabase();
         dbWrite = dbHelper.getWritableDatabase();
         Seeds seed = new Seeds(null, null, 0, 0, 0, null);

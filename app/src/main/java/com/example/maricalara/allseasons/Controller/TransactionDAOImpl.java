@@ -52,9 +52,9 @@ public class TransactionDAOImpl implements TransactionDAO {
     }
 
     @Override
-    public boolean checkExistingEmployee(DBHelper dbHelper, String username, String password) {
+    public boolean checkExistingEmployee(DBHelper dbHelper, String type, String employeeName) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        String queryForCheck = "SELECT NAME FROM " + "EMPLOYEE" + " WHERE USERNAME = '" + username + "' AND PASSWORD = '" + password + "'";
+        String queryForCheck = "SELECT NAME FROM " + "EMPLOYEE" + " WHERE TYPE = '" + type + "' AND NAME = '" + employeeName + "'";
 
         Cursor result = db.rawQuery(queryForCheck, null);
         if (result.getCount() == 0) {

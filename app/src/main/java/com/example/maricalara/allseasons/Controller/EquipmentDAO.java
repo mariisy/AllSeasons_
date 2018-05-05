@@ -20,7 +20,7 @@ public interface EquipmentDAO {
 
     boolean checkExistingWarehouse(DBHelper dbHelper, String type, String name);
 
-    void updateTransaction(DBHelper dbHelper, ArrayList<Object> objArray);
+    void updateTransactionAdd(DBHelper dbHelper, ArrayList<Object> objArray);
 
     void deleteEntry(DBHelper dbHelper, String name);
 

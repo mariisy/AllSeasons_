@@ -222,7 +222,7 @@ public class IndirectMaterialsDAOImpl implements IndirectMaterialsDAO {
     }
 
     @Override
-    public void updateTransaction(DBHelper dbHelper, ArrayList<Object> objArray) {
+    public void updateTransactionAdd(DBHelper dbHelper, ArrayList<Object> objArray) {
         dbRead = dbHelper.getReadableDatabase();
         dbWrite = dbHelper.getWritableDatabase();
         Insecticides in = new Insecticides(null, null, 0, 0, 0, null);

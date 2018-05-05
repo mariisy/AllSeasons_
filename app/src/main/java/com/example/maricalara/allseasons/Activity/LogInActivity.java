@@ -64,7 +64,7 @@ public class LogInActivity extends AppCompatActivity {
         private void getData(){
         username = txtUsername.getText().toString();
         password = txtPass.getText().toString();
-        if (tDAO.checkExistingWarehouse(dbHelper, username, password)) {
+        if (tDAO.checkExistingEmployee(dbHelper, username,password)) {
             try {
                 employees = tDAO.retrieveOneEmployee(dbHelper, username, password);
 

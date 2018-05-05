@@ -1,7 +1,6 @@
 package com.example.maricalara.allseasons.Activity;
 
 import android.content.DialogInterface;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
@@ -19,8 +18,6 @@ import android.widget.TextView;
 
 import com.example.maricalara.allseasons.Controller.AccountingDAO;
 import com.example.maricalara.allseasons.Controller.AccountingDAOImpl;
-import com.example.maricalara.allseasons.Controller.EquipmentDAO;
-import com.example.maricalara.allseasons.Controller.EquipmentDAOImpl;
 import com.example.maricalara.allseasons.Controller.IndirectMaterialsDAO;
 import com.example.maricalara.allseasons.Controller.IndirectMaterialsDAOImpl;
 import com.example.maricalara.allseasons.Controller.RawMaterialsDAO;
@@ -28,7 +25,6 @@ import com.example.maricalara.allseasons.Controller.RawMaterialsDAOImpl;
 import com.example.maricalara.allseasons.Controller.TransactionDAO;
 import com.example.maricalara.allseasons.Controller.TransactionDAOImpl;
 import com.example.maricalara.allseasons.Model.DBHelper;
-import com.example.maricalara.allseasons.Model.Equipment;
 import com.example.maricalara.allseasons.Model.Fertilizers;
 import com.example.maricalara.allseasons.Model.Insecticides;
 import com.example.maricalara.allseasons.Model.Packaging;
@@ -584,7 +580,8 @@ public class TransactionUseMaterials extends AppCompatActivity {
     }
 
     private void addCart() {
-        imDao.updateTransaction(dbHelper, arrTransact);
-        rmDAO.updateTransaction(dbHelper, arrTransact);
+        imDao.updateTransactionAdd(dbHelper, arrTransact);
+        rmDAO.updateTransactionAdd(dbHelper, arrTransact);
     }
+
 }

@@ -695,9 +695,9 @@ public class TransactionsAddBought extends AppCompatActivity {
 
     private void addCart() {
         try {
-            equipmentDAO.updateTransaction(dbHelper, arrTransact);
-            imDao.updateTransaction(dbHelper, arrTransact);
-            rmDAO.updateTransaction(dbHelper, arrTransact);
+            equipmentDAO.updateTransactionAdd(dbHelper, arrTransact);
+            imDao.updateTransactionAdd(dbHelper, arrTransact);
+            rmDAO.updateTransactionAdd(dbHelper, arrTransact);
         } catch (Exception e) {
             Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT);
         }
