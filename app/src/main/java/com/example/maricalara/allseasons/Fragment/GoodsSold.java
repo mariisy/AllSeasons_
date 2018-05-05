@@ -22,6 +22,9 @@ public class GoodsSold extends Fragment {
     private ViewPager viewPager;
     private ViewPagerAdapter adapter;
 
+    //bundle extra
+    String empID, name;
+
 
     public GoodsSold() {
         // Required empty public constructor
@@ -50,6 +53,10 @@ public class GoodsSold extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), TransactionAddSold.class);
+
+                empID = getArguments().getString("EmployeeID");
+                name = getArguments().getString("EmployeeName");
+
                 getActivity().startActivity(intent);
             }
         });
