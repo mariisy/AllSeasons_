@@ -24,6 +24,8 @@ public interface TransactionDAO {
 
     boolean checkExistingEmployee(DBHelper dbHelper, String username, String password);
 
+    public boolean checkLogin(DBHelper dbHelper, String type, String employeeName);
+
     Employees retrieveOneEmployee(DBHelper dbHelper, String username, String password);
 
     public void addEntry(DBHelper dbHelper, Object object, String type, String name, String contact);
