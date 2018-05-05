@@ -249,7 +249,7 @@ public class SettingsAddStaff extends AppCompatActivity {
 
         switch (type) {
             case "Farmer":
-                if (!transactionDAO.checkExistingEmployee(dbHelper,type, employeeName)) {
+                if (!transactionDAO.checkExistingEmployee(dbHelper,type, employeeName, null,null)) {
                     Employees employees = new Employees(0,null,null,null,employeeName, type,salary);
                     try {
                         transactionDAO.addEntry(dbHelper, employees, "Employee","","");
@@ -301,7 +301,7 @@ public class SettingsAddStaff extends AppCompatActivity {
                 }
                 break;
             case "Staff":
-                if (!transactionDAO.checkExistingEmployee(dbHelper,type, employeeName)) {
+                if (!transactionDAO.checkExistingEmployee(dbHelper,type, employeeName,null,null)) {
                     Employees employees = new Employees(0,null,null,null,employeeName, type,salary);
                     try {
                         transactionDAO.addEntry(dbHelper, employees, "Employee","","");
@@ -354,7 +354,7 @@ public class SettingsAddStaff extends AppCompatActivity {
                 break;
 
             case "Supervisor":
-                if (!transactionDAO.checkExistingEmployee(dbHelper,type, employeeName)) {
+                if (!transactionDAO.checkExistingEmployee(dbHelper,type, employeeName,null,null)) {
                     Employees employees = new Employees(0,null,null,null,employeeName, type,salary);
                     try {
                         transactionDAO.addEntry(dbHelper, employees, "Employee","","");
