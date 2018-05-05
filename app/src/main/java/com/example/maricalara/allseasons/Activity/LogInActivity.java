@@ -53,7 +53,10 @@ public class LogInActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (validateUsername() && validatePassword()) {
-                    getData();
+                 //   getData();
+                    Intent myIntent = new Intent(LogInActivity.this,
+                            MainActivity.class);
+                    startActivity(myIntent);
                 }
 
 

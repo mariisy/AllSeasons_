@@ -50,7 +50,6 @@ public class DBHelper extends SQLiteOpenHelper {
     public String dBColumnTotalEarnings = "TOTAL_EARNINGS";
     public String dbColumnDebit = "DEBIT";
     public String dbColumnCredit = "CREDIT";
-
     public String dbColumnContactNum = "CONTACT_NUMBER";
     public String dbColumnAddress = "ADDRESS";
     public String dbColumnCustomerID = "CUSTOMER_ID";
@@ -63,6 +62,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public String dbColumnDelivery = "DELIVERY";
     public String dBColumnSupplierName = "SUPPLIER_NAME";
     public String dBColumnTransID = "TRANSID";
+    public String dbColumnWPIID = "WPIID";
     public String dbColumnEmployeeUsername = "USERNAME";
     public String dbColumnEmployeePassword = "PASSWORD";
     //db Query
@@ -95,11 +95,8 @@ public class DBHelper extends SQLiteOpenHelper {
             dBColumnTotalCost + " REAL )";
 
     private String dbBuildQuery4 = "CREATE TABLE " + dbTableWPI + " ( " +
+            dbColumnWPIID+ " int PRIMARY KEY, " +
             dBColumnDate + " TEXT, " +
-            dBColumnType + " TEXT, " +
-            dBColumnName + " TEXT, " +
-            dBColumnQuantity + " INTEGER, " +
-            dBColumnPrice + " REAL, " +
             dBColumnTotalCost + " REAL )";
 
     private String dbBuildQuery5 = "CREATE TABLE " + dbTableFGI + " ( " +
@@ -236,7 +233,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         */
 
-
+        db.execSQL(dbBuildQuery4);
         db.execSQL(dbBuildQuery1);
         db.execSQL(dbBuildQuery2);
         db.execSQL(dbBuildQuery3);
