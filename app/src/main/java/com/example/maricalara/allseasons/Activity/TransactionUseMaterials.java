@@ -69,6 +69,8 @@ public class TransactionUseMaterials extends AppCompatActivity {
     private ArrayList<String> arrList;
     private ArrayList<Object> arrTransact = new ArrayList<>();
     private ArrayAdapter<String> stringArrayAdapter;
+    private ArrayAdapter<String> arrayAdapter3;
+    private ArrayList<String> arrListName;
     Object strName = null;
 
     //get Date String
@@ -121,6 +123,7 @@ public class TransactionUseMaterials extends AppCompatActivity {
         });
 
 
+
         btnView = (Button) findViewById(R.id.btnView);
         btnView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,6 +133,19 @@ public class TransactionUseMaterials extends AppCompatActivity {
             }
         });
 
+        spinnerItem.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                populateSpinnerName();
+            }
+        });
     }
 
 
@@ -580,8 +596,12 @@ public class TransactionUseMaterials extends AppCompatActivity {
     }
 
     private void addCart() {
-        imDao.updateTransactionAdd(dbHelper, arrTransact);
-        rmDAO.updateTransactionAdd(dbHelper, arrTransact);
+        aDAO.updateWPI(dbHelper,arrTransact);
     }
-
+    private void populateSpinnerName() {
+        type = spinnerItem.getText().toString();
+        arrListName = tDAO.retrieveListSpinnerColumn(dbHelper, "NAME", "TYPE", type);
+        arrayAdapter3 = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, arrListName);
+        spinnerItemName.setAdapter(arrayAdapter3);
+    }
 }

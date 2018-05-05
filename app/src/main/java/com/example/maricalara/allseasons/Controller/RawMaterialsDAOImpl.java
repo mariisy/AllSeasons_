@@ -244,8 +244,9 @@ public class RawMaterialsDAOImpl implements RawMaterialsDAO {
                     dbRead.update("CASH", values, selection, selectionArgs);
                 }
             }
-        }
     }
+    }
+
 
     @Override
     public ArrayList<String> retrieveListSpinner(DBHelper dbHelper, String type) {
