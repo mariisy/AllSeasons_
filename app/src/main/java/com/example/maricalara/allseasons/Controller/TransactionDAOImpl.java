@@ -63,7 +63,6 @@ public class TransactionDAOImpl implements TransactionDAO {
             return false;//not existing. NULL
         }
         return true;//existing. NOT NULL
-
     }
 
 
