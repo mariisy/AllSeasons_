@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface TransactionDAO {
 
-
+    void addDefault(DBHelper dbHelper);
 
     Cursor getAllData(DBHelper dbHelper);
 
