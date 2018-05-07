@@ -96,7 +96,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
     private String dbBuildQuery4 = "CREATE TABLE " + dbTableWPI + " ( " +
             dbColumnWPIID+ " int PRIMARY KEY, " +
-            dBColumnDate + " TEXT, " +
             dBColumnTotalCost + " REAL )";
 
     private String dbBuildQuery5 = "CREATE TABLE " + dbTableFGI + " ( " +
