@@ -22,7 +22,9 @@ public interface TransactionDAO {
 
     ArrayList<WarehouseMaterial> getAllDataWarehouse(DBHelper dbHelper);
 
-    boolean checkExistingEmployee(DBHelper dbHelper, String type, String employeeName, String username, String password);
+    boolean checkExistingEmployee(DBHelper dbHelper, String type, String employeeName);
+
+    boolean checkExist(DBHelper dbHelper,String username, String password);
 
     Employees retrieveOneEmployee(DBHelper dbHelper, String username, String password);
 

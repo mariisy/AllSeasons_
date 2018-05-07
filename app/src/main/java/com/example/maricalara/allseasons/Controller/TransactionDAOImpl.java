@@ -66,42 +66,24 @@ public class TransactionDAOImpl implements TransactionDAO {
         return result;
     }
 
-    @Override
-    public boolean checkExistingEmployee(DBHelper dbHelper, String type, String employeeName, String username, String password) {
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        String queryForCheck = "SELECT NAME FROM " + "EMPLOYEE" + " WHERE ACCOUNT_TYPE = '" + type + "' AND NAME = '" + employeeName + "'";
-        String queryForLogin = "SELECT NAME FROM " + "EMPLOYEE" + " WHERE USERNAME = '" + username + "'";
-
-        Cursor result = db.rawQuery(queryForCheck, null);
-        Cursor res = db.rawQuery(queryForLogin,null);
-        if (result.getCount() == 0 || res.getCount() == 0) {
-            return false;//not existing. NULL
-        }
-
-        if (res.getCount() == 0) {
-            return false;//not existing. NULL
-        }
-        return true;//existing. NOT NULL
-    }
-
 
     @Override
     public Employees retrieveOneEmployee(DBHelper dbHelper, String username, String password) {
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        dbRead = dbHelper.getReadableDatabase();
         String queryForRetrievalOne = "SELECT * FROM " + "EMPLOYEE" + " WHERE USERNAME = '" + username + "' AND PASSWORD = '" + password + "'";
-        Cursor cursor = db.rawQuery(queryForRetrievalOne, null);
+        Cursor cursor = dbRead.rawQuery(queryForRetrievalOne, null);
         Employees employees = new Employees(0, null, null, null, null,null, 0);
 
 
         if (cursor.moveToFirst()) {
             do {
-                employees.setEmployeeID(cursor.getInt(cursor.getColumnIndex("")));
-                employees.setEmployeeFullID(cursor.getString(cursor.getColumnIndex("")));
-                employees.setUserName(cursor.getString(cursor.getColumnIndex("")));
-                employees.setPassword(cursor.getString(cursor.getColumnIndex("")));
-                employees.setName(cursor.getString(cursor.getColumnIndex("")));
-                employees.setAccountype(cursor.getString(cursor.getColumnIndex("")));
-                employees.setSalary(cursor.getInt(cursor.getColumnIndex("")));
+                employees.setEmployeeID(cursor.getInt(cursor.getColumnIndex("EMPLOYEE_ID")));
+                employees.setEmployeeFullID(cursor.getString(cursor.getColumnIndex("EMPLOYEE_FULL_ID")));
+                employees.setUserName(cursor.getString(cursor.getColumnIndex("USERNAME")));
+                employees.setPassword(cursor.getString(cursor.getColumnIndex("PASSWORD")));
+                employees.setName(cursor.getString(cursor.getColumnIndex("NAME")));
+                employees.setAccountype(cursor.getString(cursor.getColumnIndex("ACCOUNT_TYPE")));
+                employees.setSalary(cursor.getInt(cursor.getColumnIndex("SALARY")));
 
             } while (cursor.moveToNext());
         }
@@ -126,6 +108,31 @@ public class TransactionDAOImpl implements TransactionDAO {
             } while (cursor.moveToNext());
         }
         return listHolder;
+    }
+
+    @Override
+    public boolean checkExistingEmployee(DBHelper dbHelper, String type, String employeeName) {
+        dbWrite = dbHelper.getWritableDatabase();
+        String queryForCheck = "SELECT NAME FROM " + "EMPLOYEE" + " WHERE ACCOUNT_TYPE = '" + type + "' AND NAME = '" + employeeName + "'";
+
+        Cursor result = dbWrite.rawQuery(queryForCheck, null);
+
+        if (result.getCount() == 0 ) {
+            return false;//not existing. NULL
+        }
+        return true;//existing. NOT NULL
+    }
+
+    @Override
+    public boolean checkExist(DBHelper dbHelper, String username, String password) {
+        dbWrite = dbHelper.getWritableDatabase();
+        String queryForLogin = "SELECT * FROM " + "EMPLOYEE" + " WHERE USERNAME = '" + username + "' AND PASSWORD = '" + password + "'";
+
+        Cursor res = dbWrite.rawQuery(queryForLogin,null);
+        if (res.getCount() == 0) {
+            return false;//not existing. NULL
+        }
+        return true;//existing. NOT NULL
     }
 
     @Override

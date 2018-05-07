@@ -50,6 +50,9 @@ public class LogInActivity extends AppCompatActivity {
         txtPass = (EditText) findViewById(R.id.txtPass);
         dbHelper = new DBHelper(LogInActivity.this);
 
+        if (!tDAO.checkExist(dbHelper,  "admin", "admin")) {
+            tDAO.addDefault(dbHelper);
+        }
 
         btnlogin = (Button) findViewById(R.id.btnlogin);
         btnlogin.setOnClickListener(new View.OnClickListener() {
@@ -57,7 +60,9 @@ public class LogInActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (validateUsername() && validatePassword()) {
+
                     addEntryWPI();
+
                     getData();
                 }
 
@@ -69,7 +74,7 @@ public class LogInActivity extends AppCompatActivity {
     private void getData() {
         username = txtUsername.getText().toString();
         password = txtPass.getText().toString();
-        if (tDAO.checkExistingEmployee(dbHelper, null, null, username, password)) {
+        if (tDAO.checkExist(dbHelper, username, password)) {
             try {
                 employees = tDAO.retrieveOneEmployee(dbHelper, username, password);
 
@@ -85,7 +90,7 @@ public class LogInActivity extends AppCompatActivity {
                 new AlertDialog.Builder(LogInActivity.this)
                         .setTitle("Log In Error")
                         .setMessage("Log In failed.")
-                        .setNeutralButton("Retry", new DialogInterface.OnClickListener() {
+                        .setNeutralButton("Retry \n" + e, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                             }
                         })
@@ -166,8 +171,6 @@ public class LogInActivity extends AppCompatActivity {
         if (!aDAO.checkExistingWPI(dbHelper)) {
             aDAO.addEntry(dbHelper);
         }
-        if (!tDAO.checkExistingEmployee(dbHelper, null, null, "admin", "admin")) {
-            tDAO.addDefault(dbHelper);
-        }
+
     }
 }
