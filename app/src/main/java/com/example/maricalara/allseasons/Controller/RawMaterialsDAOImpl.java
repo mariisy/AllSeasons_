@@ -261,6 +261,12 @@ public class RawMaterialsDAOImpl implements RawMaterialsDAO {
         }
         return listHolder;
     }
+    @Override
+    public Cursor getAllDataRM(DBHelper dbHelper) {
+        dbWrite = dbHelper.getWritableDatabase();
+        Cursor result = dbWrite.rawQuery("SELECT * FROM RAW_MATERIALS", null);
+        return result;
+    }
 
     @Override
     public void deleteEntry(DBHelper dbHelper, String name) {
