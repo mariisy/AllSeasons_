@@ -220,7 +220,12 @@ public class IndirectMaterialsDAOImpl implements IndirectMaterialsDAO {
         }
         return true;//existing. NOT NULL
     }
-
+    @Override
+    public Cursor getAllDataIM(DBHelper dbHelper) {
+        dbWrite = dbHelper.getWritableDatabase();
+        Cursor result = dbWrite.rawQuery("SELECT * FROM INDIRECT_MATERIALS", null);
+        return result;
+    }
     @Override
     public void updateTransactionAdd(DBHelper dbHelper, ArrayList<Object> objArray) {
         dbRead = dbHelper.getReadableDatabase();

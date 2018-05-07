@@ -25,6 +25,13 @@ public class AccountingDAOImpl implements AccountingDAO {
 
 
     @Override
+    public Cursor getAllDataWPI(DBHelper dbHelper) {
+            dbWrite = dbHelper.getWritableDatabase();
+            Cursor result = dbWrite.rawQuery("SELECT * FROM WPI", null);
+            return result;
+    }
+
+    @Override
     public void addEntry(DBHelper dbHelper) {
         dbWrite = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();

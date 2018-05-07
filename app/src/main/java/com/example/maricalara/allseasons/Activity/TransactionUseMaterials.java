@@ -1,6 +1,7 @@
 package com.example.maricalara.allseasons.Activity;
 
 import android.content.DialogInterface;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
@@ -44,7 +45,7 @@ public class TransactionUseMaterials extends AppCompatActivity {
     //for UI
     private String type, itemName;
     private int qty;
-    private Button btnAddTransaction, btnView;
+    private Button btnAddTransaction, btnView,btnView2;
     private MaterialBetterSpinner spinnerItem, spinnerItemName;
     private Toolbar toolbar;
     private TextInputLayout inputLayoutQty;
@@ -105,7 +106,7 @@ public class TransactionUseMaterials extends AppCompatActivity {
         spinnerItemName = (MaterialBetterSpinner) findViewById(R.id.spinnerItemName);
         txtDate = (TextView) findViewById(R.id.txtDate);
         txtTransaction = (TextView) findViewById(R.id.txtTransactionID);
-
+        btnView2= (Button)findViewById(R.id.btnView2);
         txtDate.setText(strDate);
 
         //set array for spinner type 1 and type 2
@@ -145,6 +146,41 @@ public class TransactionUseMaterials extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 populateSpinnerName();
+            }
+        });
+
+
+        btnView2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Cursor result = aDAO.getAllDataWPI(dbHelper);
+                StringBuffer buffer = new StringBuffer();
+                while (result.moveToNext()) {
+                    buffer.append("ID: " + result.getString(0) + "\n");
+                    buffer.append("Total Cost: " + result.getString(1) + "\n\n");
+                }
+                Cursor result2 = rmDAO.getAllDataRM(dbHelper);
+                StringBuffer buffer2 = new StringBuffer();
+                while (result2.moveToNext()) {
+                    buffer2.append("Type: " + result2.getString(1) + "\n");
+                    buffer2.append("Name: " + result2.getString(2) + "\n");
+                    buffer2.append("Quantity: " + result2.getString(3) + "\n");
+                    buffer2.append("Price" + result2.getString(4) + "\n");
+                    buffer2.append("Total Cost: " + result2.getString(5) + "\n\n");
+                }
+                Cursor result3 = imDao.getAllDataIM(dbHelper);
+                StringBuffer buffer3 = new StringBuffer();
+                while (result3.moveToNext()) {
+                    buffer3.append("Type: " + result3.getString(1) + "\n");
+                    buffer3.append("Name: " + result3.getString(2) + "\n");
+                    buffer3.append("Quantity: " + result3.getString(3) + "\n");
+                    buffer3.append("Price" + result3.getString(4) + "\n");
+                    buffer3.append("Total Cost: " + result3.getString(5) + "\n\n");
+                }
+
+                android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(TransactionUseMaterials.this);
+                builder.setMessage(buffer2.toString()+"\n"+buffer3.toString()+"\n"+buffer.toString());
+                builder.show();
             }
         });
     }

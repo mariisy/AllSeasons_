@@ -15,5 +15,5 @@ public interface IndirectMaterialsDAO {
      boolean checkExisting (DBHelper dbHelper,String name);
      public void updateTransactionAdd(DBHelper dbHelper, ArrayList<Object> objArray);
      void deleteEntry (DBHelper dbHelper, String name);
-
+     public Cursor getAllDataIM(DBHelper dbHelper);
 }
