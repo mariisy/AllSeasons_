@@ -57,6 +57,9 @@ public class GoodsSold extends Fragment {
                 empID = getArguments().getString("EmployeeID");
                 name = getArguments().getString("EmployeeName");
 
+
+                intent.putExtra("EmployeeName", name);
+                intent.putExtra("EmployeeID", empID);
                 getActivity().startActivity(intent);
             }
         });
