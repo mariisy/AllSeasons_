@@ -19,7 +19,6 @@ import com.example.maricalara.allseasons.Controller.TransactionDAO;
 import com.example.maricalara.allseasons.Controller.TransactionDAOImpl;
 import com.example.maricalara.allseasons.Model.DBHelper;
 import com.example.maricalara.allseasons.Model.Employees;
-import com.example.maricalara.allseasons.Model.Equipment;
 import com.example.maricalara.allseasons.R;
 
 public class LogInActivity extends AppCompatActivity {
@@ -56,12 +55,8 @@ public class LogInActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (validateUsername() && validatePassword()) {
-                 //   getData();
                     addEntryWPI();
-                    Intent myIntent = new Intent(LogInActivity.this,
-                            MainActivity.class);
-                    startActivity(myIntent);
-
+                    getData();
                 }
 
 
@@ -69,10 +64,10 @@ public class LogInActivity extends AppCompatActivity {
         });
     }
 
-        private void getData(){
+    private void getData() {
         username = txtUsername.getText().toString();
         password = txtPass.getText().toString();
-        if (tDAO.checkExistingEmployee(dbHelper, null, null, username,password)) {
+        if (tDAO.checkExistingEmployee(dbHelper, null, null, username, password)) {
             try {
                 employees = tDAO.retrieveOneEmployee(dbHelper, username, password);
 
@@ -164,9 +159,13 @@ public class LogInActivity extends AppCompatActivity {
             }
         }
     }
-    private void addEntryWPI(){
-        if(!aDAO.checkExistingWPI(dbHelper)){
+
+    private void addEntryWPI() {
+        if (!aDAO.checkExistingWPI(dbHelper)) {
             aDAO.addEntry(dbHelper);
+        }
+        if (tDAO.checkExistingEmployee(dbHelper, null, null, "admin", "admin")) {
+            tDAO.addDefault(dbHelper);
         }
     }
 }
