@@ -77,6 +77,10 @@ public class TransactionDAOImpl implements TransactionDAO {
         if (result.getCount() == 0 || res.getCount() == 0) {
             return false;//not existing. NULL
         }
+
+        if (res.getCount() == 0) {
+            return false;//not existing. NULL
+        }
         return true;//existing. NOT NULL
     }
 

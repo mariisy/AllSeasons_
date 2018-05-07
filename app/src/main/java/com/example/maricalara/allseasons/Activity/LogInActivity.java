@@ -49,6 +49,8 @@ public class LogInActivity extends AppCompatActivity {
         txtUsername = (EditText) findViewById(R.id.txtUsername);
         txtPass = (EditText) findViewById(R.id.txtPass);
         dbHelper = new DBHelper(LogInActivity.this);
+
+
         btnlogin = (Button) findViewById(R.id.btnlogin);
         btnlogin.setOnClickListener(new View.OnClickListener() {
 
@@ -164,7 +166,7 @@ public class LogInActivity extends AppCompatActivity {
         if (!aDAO.checkExistingWPI(dbHelper)) {
             aDAO.addEntry(dbHelper);
         }
-        if (tDAO.checkExistingEmployee(dbHelper, null, null, "admin", "admin")) {
+        if (!tDAO.checkExistingEmployee(dbHelper, null, null, "admin", "admin")) {
             tDAO.addDefault(dbHelper);
         }
     }
