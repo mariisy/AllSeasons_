@@ -141,9 +141,9 @@ public class DBHelper extends SQLiteOpenHelper {
             dbColumnEmployeeFullID + " TEXT , " +
             dbColumnEmployeeUsername + " TEXT , " +
             dbColumnEmployeePassword + " TEXT , " +
-            dBColumnName + " TEXT, " +
-            dbColumnAccountType + " TEXT, " +
-            dbColumnSalary + " REAL )";
+            dBColumnName + " TEXT ,  " +
+            dbColumnAccountType + " TEXT ," +
+            dbColumnSalary + " REAL  )";
 
     private String dbBuildQuery11 = "CREATE TABLE " + dbTableTransation + " ( " +
             dBColumnTransID+ " int PRIMARY KEY, " +

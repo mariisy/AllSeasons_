@@ -17,7 +17,6 @@ import com.example.maricalara.allseasons.Controller.TransactionDAO;
 import com.example.maricalara.allseasons.Controller.TransactionDAOImpl;
 import com.example.maricalara.allseasons.Model.DBHelper;
 import com.example.maricalara.allseasons.Model.Employees;
-import com.example.maricalara.allseasons.Model.Equipment;
 import com.example.maricalara.allseasons.R;
 
 public class LogInActivity extends AppCompatActivity {
@@ -35,7 +34,7 @@ public class LogInActivity extends AppCompatActivity {
 
     //data varaiables
     String username, password, empID, name;
-    Employees employees;
+    Employees employees = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,16 +46,17 @@ public class LogInActivity extends AppCompatActivity {
         txtUsername = (EditText) findViewById(R.id.txtUsername);
         txtPass = (EditText) findViewById(R.id.txtPass);
 
+
+        defAccount();
         btnlogin = (Button) findViewById(R.id.btnlogin);
         btnlogin.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
                 if (validateUsername() && validatePassword()) {
-                 //   getData();
-                    Intent myIntent = new Intent(LogInActivity.this,
-                            MainActivity.class);
-                    startActivity(myIntent);
+                    getData();
+                    Intent intent = new Intent(LogInActivity.this, MainActivity.class);
+                    startActivity(intent);
                 }
 
 
@@ -64,10 +64,16 @@ public class LogInActivity extends AppCompatActivity {
         });
     }
 
-        private void getData(){
+    private void defAccount(){
+        if (!tDAO.checkExistingEmployee(dbHelper, null, null, "admin", "admin")){
+            tDAO.addDefault(dbHelper);
+        }
+    }
+
+    private void getData() {
         username = txtUsername.getText().toString();
         password = txtPass.getText().toString();
-        if (tDAO.checkExistingEmployee(dbHelper, null, null, username,password)) {
+        if (tDAO.checkExistingEmployee(dbHelper, null, null, username, password)) {
             try {
                 employees = tDAO.retrieveOneEmployee(dbHelper, username, password);
 

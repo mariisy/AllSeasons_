@@ -196,14 +196,14 @@ public class MainActivity extends AppCompatActivity {
     private Fragment getHomeFragment() {
         switch (navItemIndex) {
             case 0:
-                GoodsSold goodsPurchasing = new GoodsSold();
+                GoodsSold goodsSold = new GoodsSold();
 
                 bundle = new Bundle();
                 bundle.putString("EmployeeID", empID);
                 bundle.putString("EmployeeName", name);
-                goodsPurchasing.setArguments(bundle);
+                goodsSold.setArguments(bundle);
 
-                return goodsPurchasing;
+                return goodsSold;
             case 1:
                 BoughtGoods boughtGoods = new BoughtGoods();
 
