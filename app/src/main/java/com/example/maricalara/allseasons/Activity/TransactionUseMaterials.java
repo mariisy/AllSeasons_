@@ -123,7 +123,6 @@ public class TransactionUseMaterials extends AppCompatActivity {
         });
 
 
-
         btnView = (Button) findViewById(R.id.btnView);
         btnView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -138,8 +137,10 @@ public class TransactionUseMaterials extends AppCompatActivity {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
             }
+
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
 
             @Override
             public void afterTextChanged(Editable s) {
@@ -314,7 +315,7 @@ public class TransactionUseMaterials extends AppCompatActivity {
         double unitPrice = 0;
 
         switch (type) {
-                        case "Insecticides":
+            case "Insecticides":
                 if (tDAO.checkExistingWarehouse(dbHelper, type, itemName)) {
                     try {
 
@@ -596,8 +597,9 @@ public class TransactionUseMaterials extends AppCompatActivity {
     }
 
     private void addCart() {
-        aDAO.updateWPI(dbHelper,arrTransact);
+        aDAO.updateWPI(dbHelper, arrTransact);
     }
+
     private void populateSpinnerName() {
         type = spinnerItem.getText().toString();
         arrListName = tDAO.retrieveListSpinnerColumn(dbHelper, "NAME", "TYPE", type);

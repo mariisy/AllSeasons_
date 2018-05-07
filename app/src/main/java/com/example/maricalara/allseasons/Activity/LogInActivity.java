@@ -13,10 +13,13 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.example.maricalara.allseasons.Controller.AccountingDAO;
+import com.example.maricalara.allseasons.Controller.AccountingDAOImpl;
 import com.example.maricalara.allseasons.Controller.TransactionDAO;
 import com.example.maricalara.allseasons.Controller.TransactionDAOImpl;
 import com.example.maricalara.allseasons.Model.DBHelper;
 import com.example.maricalara.allseasons.Model.Employees;
+import com.example.maricalara.allseasons.Model.Equipment;
 import com.example.maricalara.allseasons.R;
 
 public class LogInActivity extends AppCompatActivity {
@@ -30,11 +33,12 @@ public class LogInActivity extends AppCompatActivity {
 
     //DAO
     private TransactionDAO tDAO = new TransactionDAOImpl();
-    private DBHelper dbHelper = new DBHelper(LogInActivity.this);
+    private DBHelper dbHelper;
+    private AccountingDAO aDAO = new AccountingDAOImpl();
 
     //data varaiables
     String username, password, empID, name;
-    Employees employees = null;
+    Employees employees;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,18 +49,19 @@ public class LogInActivity extends AppCompatActivity {
         inputLayoutPass = (TextInputLayout) findViewById(R.id.input_layout_pass);
         txtUsername = (EditText) findViewById(R.id.txtUsername);
         txtPass = (EditText) findViewById(R.id.txtPass);
-
-
-        defAccount();
+        dbHelper = new DBHelper(LogInActivity.this);
         btnlogin = (Button) findViewById(R.id.btnlogin);
         btnlogin.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
                 if (validateUsername() && validatePassword()) {
-                    getData();
-                    Intent intent = new Intent(LogInActivity.this, MainActivity.class);
-                    startActivity(intent);
+                 //   getData();
+                    addEntryWPI();
+                    Intent myIntent = new Intent(LogInActivity.this,
+                            MainActivity.class);
+                    startActivity(myIntent);
+
                 }
 
 
@@ -64,16 +69,10 @@ public class LogInActivity extends AppCompatActivity {
         });
     }
 
-    private void defAccount(){
-        if (!tDAO.checkExistingEmployee(dbHelper, null, null, "admin", "admin")){
-            tDAO.addDefault(dbHelper);
-        }
-    }
-
-    private void getData() {
+        private void getData(){
         username = txtUsername.getText().toString();
         password = txtPass.getText().toString();
-        if (tDAO.checkExistingEmployee(dbHelper, null, null, username, password)) {
+        if (tDAO.checkExistingEmployee(dbHelper, null, null, username,password)) {
             try {
                 employees = tDAO.retrieveOneEmployee(dbHelper, username, password);
 
@@ -163,6 +162,11 @@ public class LogInActivity extends AppCompatActivity {
                     validatePassword();
                     break;
             }
+        }
+    }
+    private void addEntryWPI(){
+        if(!aDAO.checkExistingWPI(dbHelper)){
+            aDAO.addEntry(dbHelper);
         }
     }
 }

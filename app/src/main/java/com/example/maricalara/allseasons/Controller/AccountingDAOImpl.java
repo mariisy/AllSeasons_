@@ -25,6 +25,27 @@ public class AccountingDAOImpl implements AccountingDAO {
 
 
     @Override
+    public void addEntry(DBHelper dbHelper) {
+        dbWrite = dbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("TOTAL_COST", 0);
+        dbWrite.insert("WPI", null, values);
+    }
+
+    @Override
+    public boolean checkExistingWPI(DBHelper dbHelper) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        String queryForCheck = "SELECT * FROM WPI" ;
+
+        Cursor result = db.rawQuery(queryForCheck, null);
+        if (result.getCount() == 0) {
+            return false;//not existing. NULL
+        }
+        return true;//existing. NOT NULL
+
+    }
+
+    @Override
     public void updateWPI(DBHelper dbHelper, ArrayList<Object> objArray) {
         dbRead = dbHelper.getReadableDatabase();
         dbWrite = dbHelper.getWritableDatabase();
@@ -157,6 +178,10 @@ public class AccountingDAOImpl implements AccountingDAO {
                     val.put("QUANTITY", pa.getQuantity() + packaging.getQuantity());
                     val.put("PRICE", packaging.getPrice());
                     val.put("TOTAL_COST", pa.getTotalPrice() + packaging.getTotalPrice());
+
+                    String selection = "NAME" + " LIKE ?";
+                    String[] selectionArgs = {packaging.getName()};
+                    dbRead.update("INDIRECT_MATERIALS", val, selection, selectionArgs);
 
                 }
             }

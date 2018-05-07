@@ -31,21 +31,6 @@ public class TransactionDAOImpl implements TransactionDAO {
     private Employees employees;
 
     @Override
-    public void addDefault(DBHelper dbHelper) {
-        dbWrite = dbHelper.getWritableDatabase();
-
-        ContentValues values = new ContentValues();
-        values.put("USERNAME", "admin");
-        values.put("EMPLOYEE_FULL_ID", "ADMIN_01");
-        values.put("PASSWORD", "admin");
-        values.put("ACCOUNT_TYPE", "admin");
-        values.put("NAME", "admin_Hennry");
-        values.put("SALARY", 0);
-        dbWrite.insert("EMPLOYEE", null, values);
-
-    }
-
-    @Override
     public Cursor getAllData(DBHelper dbHelper) {
         dbWrite = dbHelper.getWritableDatabase();
         Cursor result = dbWrite.rawQuery("SELECT * FROM WAREHOUSE_EQUIPMENT", null);
@@ -70,15 +55,11 @@ public class TransactionDAOImpl implements TransactionDAO {
     public boolean checkExistingEmployee(DBHelper dbHelper, String type, String employeeName, String username, String password) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         String queryForCheck = "SELECT NAME FROM " + "EMPLOYEE" + " WHERE ACCOUNT_TYPE = '" + type + "' AND NAME = '" + employeeName + "'";
-        String queryForLogin = "SELECT * FROM " + "EMPLOYEE" + " WHERE USERNAME = '" + username + "' AND PASSWORD = '" + password + "'";
+        String queryForLogin = "SELECT NAME FROM " + "EMPLOYEE" + " WHERE USERNAME = '" + username + "' AND PASSWORD = '" + password + "'";
 
         Cursor result = db.rawQuery(queryForCheck, null);
         Cursor res = db.rawQuery(queryForLogin,null);
         if (result.getCount() == 0 || res.getCount() == 0) {
-            return false;//not existing. NULL
-        }
-
-        if (res.getCount() == 0) {
             return false;//not existing. NULL
         }
         return true;//existing. NOT NULL
@@ -294,8 +275,6 @@ public class TransactionDAOImpl implements TransactionDAO {
                     fLetter = String.valueOf(employees.getName().charAt(0));
                     lName = employees.getName().substring(employees.getName().lastIndexOf(" ") + 1);
                     userName = fLetter + lName;
-
-
                     values.put("USERNAME", userName);
                     values.put("PASSWORD", employees.getPassword());
                     values.put("ACCOUNT_TYPE", employees.getAccountype());
