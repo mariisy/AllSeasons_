@@ -110,6 +110,7 @@ public class TransactionDAOImpl implements TransactionDAO {
         return listHolder;
     }
 
+
     @Override
     public boolean checkExistingEmployee(DBHelper dbHelper, String type, String employeeName) {
         dbWrite = dbHelper.getWritableDatabase();

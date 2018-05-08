@@ -49,20 +49,13 @@ public class LogInActivity extends AppCompatActivity {
         txtUsername = (EditText) findViewById(R.id.txtUsername);
         txtPass = (EditText) findViewById(R.id.txtPass);
         dbHelper = new DBHelper(LogInActivity.this);
-
-        if (!tDAO.checkExist(dbHelper,  "admin", "admin")) {
-            tDAO.addDefault(dbHelper);
-        }
-
         btnlogin = (Button) findViewById(R.id.btnlogin);
         btnlogin.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
                 if (validateUsername() && validatePassword()) {
-
                     addEntryWPI();
-
                     getData();
                 }
 
@@ -90,7 +83,7 @@ public class LogInActivity extends AppCompatActivity {
                 new AlertDialog.Builder(LogInActivity.this)
                         .setTitle("Log In Error")
                         .setMessage("Log In failed.")
-                        .setNeutralButton("Retry \n" + e, new DialogInterface.OnClickListener() {
+                        .setNeutralButton("Retry", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                             }
                         })
@@ -171,6 +164,8 @@ public class LogInActivity extends AppCompatActivity {
         if (!aDAO.checkExistingWPI(dbHelper)) {
             aDAO.addEntry(dbHelper);
         }
-
+        if (!tDAO.checkExist(dbHelper, "admin", "admin")) {
+            tDAO.addDefault(dbHelper);
+        }
     }
 }

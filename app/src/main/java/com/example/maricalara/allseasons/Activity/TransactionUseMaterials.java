@@ -26,6 +26,7 @@ import com.example.maricalara.allseasons.Controller.RawMaterialsDAOImpl;
 import com.example.maricalara.allseasons.Controller.TransactionDAO;
 import com.example.maricalara.allseasons.Controller.TransactionDAOImpl;
 import com.example.maricalara.allseasons.Model.DBHelper;
+import com.example.maricalara.allseasons.Model.Equipment;
 import com.example.maricalara.allseasons.Model.Fertilizers;
 import com.example.maricalara.allseasons.Model.Insecticides;
 import com.example.maricalara.allseasons.Model.Packaging;
@@ -66,7 +67,7 @@ public class TransactionUseMaterials extends AppCompatActivity {
     Packaging packaging;
     Fertilizers fertilizers;
     Insecticides insecticides;
-    double totalPrice = 0;
+    double price = 0, totalPrice = 0;
     private ArrayList<String> arrList;
     private ArrayList<Object> arrTransact = new ArrayList<>();
     private ArrayAdapter<String> stringArrayAdapter;
@@ -165,7 +166,7 @@ public class TransactionUseMaterials extends AppCompatActivity {
                     buffer2.append("Type: " + result2.getString(1) + "\n");
                     buffer2.append("Name: " + result2.getString(2) + "\n");
                     buffer2.append("Quantity: " + result2.getString(3) + "\n");
-                    buffer2.append("Price" + result2.getString(4) + "\n");
+                    buffer2.append("Price:" + result2.getString(4) + "\n");
                     buffer2.append("Total Cost: " + result2.getString(5) + "\n\n");
                 }
                 Cursor result3 = imDao.getAllDataIM(dbHelper);
@@ -174,7 +175,7 @@ public class TransactionUseMaterials extends AppCompatActivity {
                     buffer3.append("Type: " + result3.getString(1) + "\n");
                     buffer3.append("Name: " + result3.getString(2) + "\n");
                     buffer3.append("Quantity: " + result3.getString(3) + "\n");
-                    buffer3.append("Price" + result3.getString(4) + "\n");
+                    buffer3.append("Price:" + result3.getString(4) + "\n");
                     buffer3.append("Total Cost: " + result3.getString(5) + "\n\n");
                 }
 
@@ -201,6 +202,7 @@ public class TransactionUseMaterials extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 addCart();
+                finish();
             }
         });
         builderView.setNegativeButton("Close View", new DialogInterface.OnClickListener() {
@@ -357,13 +359,13 @@ public class TransactionUseMaterials extends AppCompatActivity {
 
                         object = imDao.retrieveOne(dbHelper, type, itemName);
                         insecticides = (Insecticides) object;
-                        unitPrice = insecticides.getPrice();
+                        price = insecticides.getPrice();
                         totalPrice = insecticides.getPrice() * qty;
-                        arrTransact.add(new Insecticides(type, itemName, qty, unitPrice, totalPrice, strDate));
+                        arrTransact.add(new Insecticides(type, itemName, qty, price, totalPrice, strDate));
 
                         new AlertDialog.Builder(TransactionUseMaterials.this)
                                 .setTitle("Adding Entry")
-                                .setMessage(itemName + " Added!\n Would you like to add another entry?")
+                                .setMessage(itemName + " Added! /n Would you like to add another entry?")
                                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
@@ -380,7 +382,7 @@ public class TransactionUseMaterials extends AppCompatActivity {
                     } catch (Exception e) {
                         new AlertDialog.Builder(TransactionUseMaterials.this)
                                 .setTitle("Adding Entry")
-                                .setMessage("Adding entry unsuccesful!\n Please try again.")
+                                .setMessage("Adding entry unsuccesful! /n Please try again.")
                                 .setNeutralButton("Ok", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
                                     }
@@ -390,7 +392,7 @@ public class TransactionUseMaterials extends AppCompatActivity {
                 } else {
                     new AlertDialog.Builder(TransactionUseMaterials.this)
                             .setTitle("Adding Entry")
-                            .setMessage("Entry already exists!\n Would you like to add another entry?")
+                            .setMessage("Entry already exists! /n Would you like to add another entry?")
                             .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
@@ -412,13 +414,13 @@ public class TransactionUseMaterials extends AppCompatActivity {
 
                         object = imDao.retrieveOne(dbHelper, type, itemName);
                         fertilizers = (Fertilizers) object;
-                        unitPrice = fertilizers.getPrice();
+                        price = fertilizers.getPrice();
                         totalPrice = fertilizers.getPrice() * qty;
-                        arrTransact.add(new Fertilizers(type, itemName, qty, unitPrice, totalPrice, strDate));
+                        arrTransact.add(new Fertilizers(type, itemName, qty, price, totalPrice, strDate));
 
                         new AlertDialog.Builder(TransactionUseMaterials.this)
                                 .setTitle("Adding Entry")
-                                .setMessage(itemName + " Added!\n Would you like to add another entry?")
+                                .setMessage(itemName + " Added! /n Would you like to add another entry?")
                                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
@@ -435,7 +437,7 @@ public class TransactionUseMaterials extends AppCompatActivity {
                     } catch (Exception e) {
                         new AlertDialog.Builder(TransactionUseMaterials.this)
                                 .setTitle("Adding Entry")
-                                .setMessage("Adding entry unsuccesful!\n Please try again.")
+                                .setMessage("Adding entry unsuccesful! /n Please try again.")
                                 .setNeutralButton("Ok", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
                                     }
@@ -445,7 +447,7 @@ public class TransactionUseMaterials extends AppCompatActivity {
                 } else {
                     new AlertDialog.Builder(TransactionUseMaterials.this)
                             .setTitle("Adding Entry")
-                            .setMessage("Entry already exists!\n Would you like to add another entry?")
+                            .setMessage("Entry already exists! /n Would you like to add another entry?")
                             .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
@@ -467,13 +469,13 @@ public class TransactionUseMaterials extends AppCompatActivity {
 
                         object = imDao.retrieveOne(dbHelper, type, itemName);
                         packaging = (Packaging) object;
-                        unitPrice = packaging.getPrice();
+                        price = packaging.getPrice();
                         totalPrice = packaging.getPrice() * qty;
-                        arrTransact.add(new Packaging(type, itemName, qty, unitPrice, totalPrice, strDate));
+                        arrTransact.add(new Packaging(type, itemName, qty, price, totalPrice, strDate));
 
                         new AlertDialog.Builder(TransactionUseMaterials.this)
                                 .setTitle("Adding Entry")
-                                .setMessage(itemName + " Added!\n Would you like to add another entry?")
+                                .setMessage(itemName + " Added! /n Would you like to add another entry?")
                                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
@@ -490,7 +492,7 @@ public class TransactionUseMaterials extends AppCompatActivity {
                     } catch (Exception e) {
                         new AlertDialog.Builder(TransactionUseMaterials.this)
                                 .setTitle("Adding Entry")
-                                .setMessage("Adding entry unsuccesful! \n Please try again.")
+                                .setMessage("Adding entry unsuccesful! /n Please try again.")
                                 .setNeutralButton("Ok", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
                                     }
@@ -500,7 +502,7 @@ public class TransactionUseMaterials extends AppCompatActivity {
                 } else {
                     new AlertDialog.Builder(TransactionUseMaterials.this)
                             .setTitle("Adding Entry")
-                            .setMessage("Entry already exists! \n Would you like to add another entry?")
+                            .setMessage("Entry already exists! /n Would you like to add another entry?")
                             .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
@@ -522,13 +524,13 @@ public class TransactionUseMaterials extends AppCompatActivity {
 
                         object = rmDAO.retreiveOne(dbHelper, type, itemName);
                         seeds = (Seeds) object;
-                        unitPrice = seeds.getPrice();
+                        price = seeds.getPrice();
                         totalPrice = seeds.getPrice() * qty;
-                        arrTransact.add(new Seeds(type, itemName, qty, unitPrice, totalPrice, strDate));
+                        arrTransact.add(new Seeds(type, itemName, qty, price, totalPrice, strDate));
 
                         new AlertDialog.Builder(TransactionUseMaterials.this)
                                 .setTitle("Adding Entry")
-                                .setMessage(itemName + " Added! \n Would you like to add another entry?")
+                                .setMessage(itemName + " Added! /n Would you like to add another entry?")
                                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
@@ -556,7 +558,7 @@ public class TransactionUseMaterials extends AppCompatActivity {
                 } else {
                     new AlertDialog.Builder(TransactionUseMaterials.this)
                             .setTitle("Adding Entry")
-                            .setMessage("Entry already exists! \n Would you like to add another entry?")
+                            .setMessage("Entry already exists! /n Would you like to add another entry?")
                             .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
@@ -578,13 +580,13 @@ public class TransactionUseMaterials extends AppCompatActivity {
 
                         object = rmDAO.retreiveOne(dbHelper, type, itemName);
                         seedlings = (Seedlings) object;
-                        unitPrice = seedlings.getPrice();
+                        price = seedlings.getPrice();
                         totalPrice = seedlings.getPrice() * qty;
-                        arrTransact.add(new Seedlings(type, itemName, qty, unitPrice, totalPrice, strDate));
+                        arrTransact.add(new Seedlings(type, itemName, qty, price, totalPrice, strDate));
 
                         new AlertDialog.Builder(TransactionUseMaterials.this)
                                 .setTitle("Adding Entry")
-                                .setMessage(itemName + " Added! \n Would you like to add another entry?")
+                                .setMessage(itemName + " Added! /n Would you like to add another entry?")
                                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
@@ -601,7 +603,7 @@ public class TransactionUseMaterials extends AppCompatActivity {
                     } catch (Exception e) {
                         new AlertDialog.Builder(TransactionUseMaterials.this)
                                 .setTitle("Adding Entry")
-                                .setMessage("Adding entry unsuccesful! \n Please try again.")
+                                .setMessage("Adding entry unsuccesful! /n Please try again.")
                                 .setNeutralButton("Ok", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
                                     }
@@ -611,7 +613,7 @@ public class TransactionUseMaterials extends AppCompatActivity {
                 } else {
                     new AlertDialog.Builder(TransactionUseMaterials.this)
                             .setTitle("Adding Entry")
-                            .setMessage("Entry already exists! \n Would you like to add another entry?")
+                            .setMessage("Entry already exists! /n Would you like to add another entry?")
                             .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
@@ -629,7 +631,6 @@ public class TransactionUseMaterials extends AppCompatActivity {
 
             default: //do something
         }
-
     }
 
     private void addCart() {
