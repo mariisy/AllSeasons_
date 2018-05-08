@@ -42,7 +42,7 @@ public class TransactionHarvest extends AppCompatActivity {
     private String type, itemName;
     private int qty;
     private Button btnAddTransaction;
-    private MaterialBetterSpinner spinnerItem, spinnerItemName;
+    private MaterialBetterSpinner spinnerName, spinnerItemName;
     private Toolbar toolbar;
     private TextInputLayout inputLayoutQty;
     private EditText txtQty;
@@ -94,16 +94,17 @@ public class TransactionHarvest extends AppCompatActivity {
         inputLayoutQty = (TextInputLayout) findViewById(R.id.input_layout_qty);
         txtQty = (EditText) findViewById(R.id.txtQty);
 
-        spinnerItem = (MaterialBetterSpinner) findViewById(R.id.spinnerItem);
-        spinnerItemName = (MaterialBetterSpinner) findViewById(R.id.spinnerItemName);
+        spinnerName = (MaterialBetterSpinner) findViewById(R.id.spinnerName);
         txtDate = (TextView) findViewById(R.id.txtDate);
         txtTransaction = (TextView) findViewById(R.id.txtTransactionID);
 
         txtDate.setText(strDate);
 
         //set array for spinner type 1 and type 2
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, spinnerListType);
-        spinnerItem.setAdapter(arrayAdapter);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line, spinnerListType);
+        MaterialBetterSpinner materialDesignSpinner = (MaterialBetterSpinner)findViewById(R.id.spinnerName);
+        materialDesignSpinner.setAdapter(arrayAdapter);
+
 
 
         btnAddTransaction = (Button) findViewById(R.id.btnAdd);

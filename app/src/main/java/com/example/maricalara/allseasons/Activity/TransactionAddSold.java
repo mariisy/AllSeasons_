@@ -86,10 +86,8 @@ public class TransactionAddSold extends AppCompatActivity {
 
 
         //layout for spinnerCrop
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_dropdown_item_1line, SPINNERLIST);
-        MaterialBetterSpinner materialDesignSpinner = (MaterialBetterSpinner)
-                findViewById(R.id.spinnerItem);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line, SPINNERLIST);
+        MaterialBetterSpinner materialDesignSpinner = (MaterialBetterSpinner)findViewById(R.id.spinnerItem);
         materialDesignSpinner.setAdapter(arrayAdapter);
 
         btnAddTransaction = (Button) findViewById(R.id.btnAdd);
