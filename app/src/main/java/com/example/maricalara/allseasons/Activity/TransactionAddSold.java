@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.maricalara.allseasons.R;
@@ -34,6 +35,11 @@ public class TransactionAddSold extends AppCompatActivity {
     private TextInputLayout inputLayoutCustomerName, inputLayoutContactNum, inputLayoutQuantity, inputLayoutAddress;
     private CheckBox chckDelivery;
     private Toolbar toolbar;
+    private TextView txtTransactionID, txtDate;
+
+    //bundle extra
+    String empID, name;
+
 
     //get Date String
     Date date = new Date();
@@ -66,6 +72,17 @@ public class TransactionAddSold extends AppCompatActivity {
         txtQty = (EditText) findViewById(R.id.txtQty);
         txtAddress = (EditText) findViewById(R.id.txtAddress);
         chckDelivery = (CheckBox) findViewById(R.id.delivery);
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            empID = extras.getString("EmployeeID");
+            name = extras.getString("EmployeeName");
+        }
+
+        txtTransactionID = (TextView) findViewById(R.id.txtTransactionID);
+        txtTransactionID.setText(empID);
+        txtDate = (TextView) findViewById(R.id.txtDate);
+        txtDate.setText(strDate);
 
 
         //layout for spinnerCrop
