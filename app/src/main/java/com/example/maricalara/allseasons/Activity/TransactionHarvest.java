@@ -74,7 +74,7 @@ public class TransactionHarvest extends AppCompatActivity {
     String strDate = "Date: " + dayOfTheWeek + ", " + dateForTheDay;
 
     //Sample for List for Spinner type 1
-    String[] spinnerListType = {"Seeds", "Seedlings", "Packaging", "Fertilizer", "Insecticides", "Equipment"};
+    String[] spinnerListType = {"Crops"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,8 +94,7 @@ public class TransactionHarvest extends AppCompatActivity {
         inputLayoutQty = (TextInputLayout) findViewById(R.id.input_layout_qty);
         txtQty = (EditText) findViewById(R.id.txtQty);
 
-        spinnerItem = (MaterialBetterSpinner) findViewById(R.id.spinnerItem);
-        spinnerItemName = (MaterialBetterSpinner) findViewById(R.id.spinnerItemName);
+        spinnerItemName = (MaterialBetterSpinner) findViewById(R.id.spinnerName);
         txtDate = (TextView) findViewById(R.id.txtDate);
         txtTransaction = (TextView) findViewById(R.id.txtTransactionID);
 
@@ -110,23 +109,14 @@ public class TransactionHarvest extends AppCompatActivity {
         btnAddTransaction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                submitForm();
-                //setData();
+                if(validateQty() && validateName()){
+
+                }
             }
         });
 
     }
 
-    private void submitForm() {
-        if (validateQty()) {
-            return;
-        }
-
-        if (validateName()) {
-            return;
-        }
-
-    }
 
     private boolean validateQty() {
         if (txtQty.getText().toString().trim().isEmpty()) {
