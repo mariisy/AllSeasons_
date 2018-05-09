@@ -382,7 +382,7 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
             case "Seeds":
                 if (!tDAO.checkExistingWarehouse(dbHelper, type, itemName)) {
                     Seeds seeds = new Seeds(type, itemName, qty, unitPrice, totalPrice, strDate);
-                    Crops crop = new Crops("Crops", itemName, 0, 0, strDate);
+                    Crops crop = new Crops("Crops", itemName, 0, 0, 0, strDate);
                     try {
                         tDAO.addEntry(dbHelper, seeds, type, supplierName, supplierContact);
                         tDAO.addEntry(dbHelper, crop, "Crops", "", "");
@@ -438,7 +438,7 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
             case "Seedlings":
                 if (!tDAO.checkExistingWarehouse(dbHelper, type, itemName)) {
                     Seedlings seedlings = new Seedlings(type, itemName, qty, unitPrice, totalPrice, strDate);
-                    Crops crop = new Crops("Crops", itemName, 0, 0, strDate);
+                    Crops crop = new Crops("Crops", itemName, 0, 0,0, strDate);
                     try {
                         tDAO.addEntry(dbHelper, seedlings, type, supplierName, supplierContact);
                         tDAO.addEntry(dbHelper, crop, "Crops", "", "");

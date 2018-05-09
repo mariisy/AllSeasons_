@@ -196,8 +196,17 @@ public class TransactionDAOImpl implements TransactionDAO {
                     values.put("CONTACT_NUMBER", contact);
                     values.put("TYPE", crop.getType());
                     values.put("NAME", crop.getName());
-                    values.put("PRICE", crop.getPrice());
+                    values.put("PRICE", 0);
                     dbWrite.insert("WAREHOUSE_EQUIPMENT", null, values);
+
+                    ContentValues val = new ContentValues();
+                    val.put("DATE", seeds.getDate());
+                    val.put("TYPE", seeds.getType());
+                    val.put("NAME", seeds.getName());
+                    val.put("WEIGHT", 0);
+                    val.put("PRICE", 0);
+                    val.put("TOTAL_COST", 0);
+
                 }
                 break;
 

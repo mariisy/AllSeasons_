@@ -8,15 +8,17 @@ public class Crops {
 
     private String type;
     private String name;
+    private double unitPrice;
     private double weight;
-    private double price;
+    private double totalPrice;
     private String date;
 
-    public Crops(String type, String name, double weight, double price, String date) {
+    public Crops(String type, String name, double unitPrice, double weight, double totalPrice, String date) {
         this.type = type;
         this.name = name;
+        this.unitPrice = unitPrice;
         this.weight = weight;
-        this.price = price;
+        this.totalPrice = totalPrice;
         this.date = date;
     }
 
@@ -36,6 +38,14 @@ public class Crops {
         this.name = name;
     }
 
+    public double getUnitPrice() {
+        return unitPrice;
+    }
+
+    public void setUnitPrice(double unitPrice) {
+        this.unitPrice = unitPrice;
+    }
+
     public double getWeight() {
         return weight;
     }
@@ -44,12 +54,12 @@ public class Crops {
         this.weight = weight;
     }
 
-    public double getPrice() {
-        return price;
+    public double getTotalPrice() {
+        return totalPrice;
     }
 
-    public void setPrice(double price) {
-        this.price = price;
+    public void setTotalPrice(double totalPrice) {
+        this.totalPrice = totalPrice;
     }
 
     public String getDate() {
@@ -65,6 +75,6 @@ public class Crops {
         return
                 " " + name + "\n" +
                         "Quantity: " + weight + "\n" +
-                        "Total Price: " + price + "\n \n";
+                        "Total Price: " + totalPrice + "\n \n";
     }
 }

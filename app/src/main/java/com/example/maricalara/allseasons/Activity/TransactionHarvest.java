@@ -1,8 +1,10 @@
 package com.example.maricalara.allseasons.Activity;
 
-import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.AppCompatActivity;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.design.widget.TextInputLayout;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -16,18 +18,10 @@ import android.widget.TextView;
 
 import com.example.maricalara.allseasons.Controller.AccountingDAO;
 import com.example.maricalara.allseasons.Controller.AccountingDAOImpl;
-import com.example.maricalara.allseasons.Controller.IndirectMaterialsDAO;
-import com.example.maricalara.allseasons.Controller.IndirectMaterialsDAOImpl;
-import com.example.maricalara.allseasons.Controller.RawMaterialsDAO;
-import com.example.maricalara.allseasons.Controller.RawMaterialsDAOImpl;
 import com.example.maricalara.allseasons.Controller.TransactionDAO;
 import com.example.maricalara.allseasons.Controller.TransactionDAOImpl;
+import com.example.maricalara.allseasons.Model.Crops;
 import com.example.maricalara.allseasons.Model.DBHelper;
-import com.example.maricalara.allseasons.Model.Fertilizers;
-import com.example.maricalara.allseasons.Model.Insecticides;
-import com.example.maricalara.allseasons.Model.Packaging;
-import com.example.maricalara.allseasons.Model.Seedlings;
-import com.example.maricalara.allseasons.Model.Seeds;
 import com.example.maricalara.allseasons.R;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
@@ -35,14 +29,15 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Objects;
 
 public class TransactionHarvest extends AppCompatActivity {
 
     //for UI
-    private String type, itemName;
-    private int qty;
-    private Button btnAddTransaction;
-    private MaterialBetterSpinner spinnerItem, spinnerItemName;
+    private String itemName;
+    private double weight;
+    private Button btnAddTransaction, btnView;
+    private MaterialBetterSpinner spinnerName;
     private Toolbar toolbar;
     private TextInputLayout inputLayoutQty;
     private EditText txtQty;
@@ -50,15 +45,12 @@ public class TransactionHarvest extends AppCompatActivity {
 
     //DAO
     private TransactionDAO tDAO = new TransactionDAOImpl();
+    private AccountingDAO aDAO = new AccountingDAOImpl();
     private DBHelper dbHelper = new DBHelper(TransactionHarvest.this);
 
     //data variable
+    Crops crops = null;
     Object object = null;
-    Seeds seeds;
-    Seedlings seedlings;
-    Packaging packaging;
-    Fertilizers fertilizers;
-    Insecticides insecticides;
     double totalPrice = 0;
     private ArrayList<String> arrList;
     private ArrayList<Object> arrTransact = new ArrayList<>();
@@ -74,7 +66,7 @@ public class TransactionHarvest extends AppCompatActivity {
     String strDate = "Date: " + dayOfTheWeek + ", " + dateForTheDay;
 
     //Sample for List for Spinner type 1
-    String[] spinnerListType = {"Seeds", "Seedlings", "Packaging", "Fertilizer", "Insecticides", "Equipment"};
+    String[] spinnerListType = {"Pechay"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,8 +86,7 @@ public class TransactionHarvest extends AppCompatActivity {
         inputLayoutQty = (TextInputLayout) findViewById(R.id.input_layout_qty);
         txtQty = (EditText) findViewById(R.id.txtQty);
 
-        spinnerItem = (MaterialBetterSpinner) findViewById(R.id.spinnerItem);
-        spinnerItemName = (MaterialBetterSpinner) findViewById(R.id.spinnerItemName);
+        spinnerName = (MaterialBetterSpinner) findViewById(R.id.spinnerName);
         txtDate = (TextView) findViewById(R.id.txtDate);
         txtTransaction = (TextView) findViewById(R.id.txtTransactionID);
 
@@ -103,28 +94,144 @@ public class TransactionHarvest extends AppCompatActivity {
 
         //set array for spinner type 1 and type 2
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, spinnerListType);
-        spinnerItem.setAdapter(arrayAdapter);
+        spinnerName.setAdapter(arrayAdapter);
 
 
         btnAddTransaction = (Button) findViewById(R.id.btnAdd);
         btnAddTransaction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                submitForm();
-                //setData();
+                if (validateQty() && validateName()) {
+                    setData();
+                }
+
+            }
+        });
+
+        btnView = (Button) findViewById(R.id.btnView);
+        btnView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewButton();
             }
         });
 
     }
 
-    private void submitForm() {
-        if (validateQty()) {
-            return;
+    private void viewButton() {
+        AlertDialog.Builder builderView = new AlertDialog.Builder(TransactionHarvest.this);
+        builderView.setTitle("Cart Items");
+        ArrayList<String> strings = new ArrayList<>(arrTransact.size());
+        for (Object obj : arrTransact) {
+            strings.add(Objects.toString(obj, null));
         }
 
-        if (validateName()) {
-            return;
+        stringArrayAdapter = new ArrayAdapter<String>(TransactionHarvest.this, android.R.layout.simple_list_item_1, strings);
+
+        builderView.setPositiveButton("Add Transactions", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                addCart();
+            }
+        });
+        builderView.setNegativeButton("Close View", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        builderView.setAdapter(stringArrayAdapter, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                strName = stringArrayAdapter.getItem(which);
+                AlertDialog.Builder builderInner = new AlertDialog.Builder(TransactionHarvest.this);
+                builderInner.setMessage(strName.toString());
+                builderInner.setTitle("Delete item?");
+                builderInner.setPositiveButton("Continue ", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //action delete
+                        stringArrayAdapter.remove(strName.toString());
+                        stringArrayAdapter.notifyDataSetChanged();
+                        dialog.dismiss();
+
+                    }
+                });
+                builderInner.setNegativeButton("Close", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                builderInner.show();
+
+            }
+        });
+        builderView.show();
+    }
+
+    private void setData() {
+
+
+        itemName = spinnerName.getText().toString();
+        weight = Double.valueOf(txtQty.getText().toString());
+
+        double unitPrice = 0;
+
+        if (tDAO.checkExistingWarehouse(dbHelper, "Crops", itemName)) {
+            try {
+                object = aDAO.retrieveOne(dbHelper, "Crops", itemName);
+                crops = (Crops) object;
+                totalPrice = crops.getUnitPrice() * weight;
+                arrTransact.add(new Crops("Crops", itemName, crops.getUnitPrice(), weight, totalPrice, strDate));
+
+                new AlertDialog.Builder(TransactionHarvest.this)
+                        .setTitle("Adding Entry")
+                        .setMessage(itemName + " Added! /n Would you like to add another entry?")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                addCart();
+                                finish();
+                            }
+                        })
+                        .show();
+            } catch (Exception e) {
+                new AlertDialog.Builder(TransactionHarvest.this)
+                        .setTitle("Adding Entry")
+                        .setMessage("Adding entry unsuccesful! /n Please try again. " + e)
+                        .setNeutralButton("Ok", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                            }
+                        })
+                        .show();
+            }
+        } else {
+            new AlertDialog.Builder(TransactionHarvest.this)
+                    .setTitle("Adding Entry")
+                    .setMessage("Entry already exists! /n Would you like to add another entry?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                        }
+                    })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            finish();
+                        }
+                    })
+                    .show();
         }
+    }
+
+    private void addCart() {
 
     }
 
@@ -141,10 +248,10 @@ public class TransactionHarvest extends AppCompatActivity {
     }
 
     private boolean validateName() {
-        if (spinnerItemName.getText().toString().trim().isEmpty()) {
-            spinnerItemName.setError("Pick Item Type!");
+        if (spinnerName.getText().toString().trim().isEmpty()) {
+            spinnerName.setError("Pick Item Type!");
             //inputLayoutUnitPrice.setError("Enter Last Name!");
-            requestFocus(spinnerItemName);
+            requestFocus(spinnerName);
             return false;
         } else {
 

@@ -46,6 +46,7 @@ public class SettingsWarehousing extends Fragment {
         ArrayList<String> list = new ArrayList<String>();
         list.add("Add Items to Warehouse");
         list.add("Edit Costing");
+        list.add("Farming Season");
         ArrayAdapter adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, list);
         // Assign adapterStaff to ListView
         listWarehousing.setAdapter(adapter);

@@ -162,7 +162,7 @@ public class LogInActivity extends AppCompatActivity {
 
     private void addEntryWPI() {
         if (!aDAO.checkExistingWPI(dbHelper)) {
-            aDAO.addEntry(dbHelper);
+            aDAO.addEntry(dbHelper, "WPI");
         }
         if (!tDAO.checkExist(dbHelper, "admin", "admin")) {
             tDAO.addDefault(dbHelper);

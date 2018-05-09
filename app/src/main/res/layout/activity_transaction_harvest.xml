@@ -116,6 +116,14 @@
                 android:text="Add to Cart!"
                 android:layout_marginTop="10dp"/>
 
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/btnView"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+
+                android:text="View" />
+
 
         </LinearLayout>
 

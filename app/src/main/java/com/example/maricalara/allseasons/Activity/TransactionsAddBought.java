@@ -112,7 +112,6 @@ public class TransactionsAddBought extends AppCompatActivity {
         inputLayoutQty = (TextInputLayout) findViewById(R.id.input_layout_qty);
 
         txtQty = (EditText) findViewById(R.id.txtQty);
-        btnView = (Button) findViewById(R.id.btnView);
         spinnerType = (MaterialBetterSpinner) findViewById(R.id.spinnerType);
         spinnerItemName = (MaterialBetterSpinner) findViewById(R.id.spinnerItemName);
         spinnerSupplierName = (MaterialBetterSpinner) findViewById(R.id.spinnerSupplierName);
@@ -172,6 +171,7 @@ public class TransactionsAddBought extends AppCompatActivity {
             }
         });
 
+        btnView = (Button) findViewById(R.id.btnView);
         btnView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

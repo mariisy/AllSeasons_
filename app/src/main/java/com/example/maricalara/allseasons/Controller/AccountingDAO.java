@@ -9,7 +9,8 @@ import java.util.ArrayList;
 
 public interface AccountingDAO {
     Cursor getAllDataWPI(DBHelper dbHelper);
-    void addEntry(DBHelper dbHelper);
+    void addEntry(DBHelper dbHelper, String type);
+    Crops retrieveOne(DBHelper dbHelper, String type, String name);
     boolean checkExistingWPI(DBHelper dbHelper);
     void updateWPI(DBHelper dbHelper, ArrayList<Object> objArray);
 }

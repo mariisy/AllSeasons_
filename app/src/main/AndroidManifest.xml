@@ -29,7 +29,8 @@
         <activity android:name=".Activity.TransactionAddSold" />
         <activity android:name=".Activity.TransactionUseMaterials" />
         <activity android:name=".Activity.EditWarehouse" />
-        <activity android:name=".Activity.TransactionHarvest"></activity>
+        <activity android:name=".Activity.TransactionHarvest" />
+        <activity android:name=".Activity.SettingsAddFarmingSeason"></activity>
     </application>
 
 </manifest>

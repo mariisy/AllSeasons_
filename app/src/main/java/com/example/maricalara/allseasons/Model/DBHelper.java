@@ -47,6 +47,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public String dBColumnQuantity = "QUANTITY";
     public String dBColumnPrice = "PRICE";
     public String dBColumnTotalCost = "TOTAL_COST";
+    public String dBColumnWeight = "WEIGHT";
     public String dBColumnTotalEarnings = "TOTAL_EARNINGS";
     public String dbColumnDebit = "DEBIT";
     public String dbColumnCredit = "CREDIT";
@@ -102,7 +103,7 @@ public class DBHelper extends SQLiteOpenHelper {
             dBColumnDate + " TEXT, " +
             dBColumnType + " TEXT, " +
             dBColumnName + " TEXT, " +
-            dBColumnQuantity + " INTEGER, " +
+            dBColumnWeight + " REAL, " +
             dBColumnPrice + " REAL, " +
             dBColumnTotalCost + " REAL )";
 
