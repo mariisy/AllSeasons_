@@ -22,16 +22,13 @@ public interface TransactionDAO {
 
     ArrayList<WarehouseMaterial> getAllDataWarehouse(DBHelper dbHelper);
 
-    boolean checkExistingEmployee(DBHelper dbHelper, String type, String employeeName);
-
-    boolean checkExist(DBHelper dbHelper,String username, String password);
 
     Employees retrieveOneEmployee(DBHelper dbHelper, String username, String password);
 
     public void addEntry(DBHelper dbHelper, Object object, String type, String name, String contact);
-
+    boolean checkExistingEmployee(DBHelper dbHelper, String type, String employeeName);
     public void addBoughtList(DBHelper dbHelper, Object object, String type);
-
+    boolean checkExist(DBHelper dbHelper, String username, String password);
     public void addSoldList(DBHelper dbHelper, Object object, String type);
 
     HashMap<String, List<String>> retrieveBoughtList(DBHelper dbHelper);
