@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Activity.SettingsAddFarmingSeason">
 
     <include layout="@layout/app_bar_main" />
@@ -22,48 +22,155 @@
             android:paddingRight="24dp"
             android:paddingTop="56dp">
 
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/btnDatePicker"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Pick Farming Season Start Date!" />
 
-            <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
-                android:id="@+id/spinnerCrop"
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/txtDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Date"
+                    android:inputType="textPersonName" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_hectare"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/txtHectareSize"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Land Size (hectares)"
+                    android:inputType="numberDecimal" />
+            </android.support.design.widget.TextInputLayout>
+
+
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:hint="Select Crop"
-                android:textColorHint="#bdbdbd"
-                app:met_floatingLabel="normal" />
+                android:layout_marginTop="10dp">
+
+                <!-- Item -->
+                <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+                    android:id="@+id/spinnerSeed"
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:hint="Select Seed Type"
+                    android:textColorHint="#bdbdbd"
+                    app:met_floatingLabel="normal" />
 
 
-            <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
-                android:id="@+id/spinnerHectare"
+                <!-- quantity Label -->
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_layout_qty"
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_toEndOf="@id/spinnerSeed">
+
+                    <EditText
+                        android:id="@+id/txtQty"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Qty"
+                        android:inputType="number" />
+                </android.support.design.widget.TextInputLayout>
+
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:hint="Hectare Size"
-                android:textColorHint="#bdbdbd"
-                app:met_floatingLabel="normal" />
+                android:layout_marginTop="10dp">
 
-            <EditText
-                android:id="@+id/txtSeedsQty"
+                <!-- Item -->
+                <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+                    android:id="@+id/spinnerFertilizer"
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:hint="Select Fertilizer Type"
+                    android:textColorHint="#bdbdbd"
+                    app:met_floatingLabel="normal" />
+
+
+                <!-- quantity Label -->
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_layout_qty1"
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_toEndOf="@id/spinnerFertilizer">
+
+                    <EditText
+                        android:id="@+id/txtQty1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Qty"
+                        android:inputType="number" />
+                </android.support.design.widget.TextInputLayout>
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Seeds Quantity"
-                android:inputType="number" />
+                android:layout_marginTop="10dp">
 
-            <EditText
-                android:id="@+id/txtFertilizerQty"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Fertilizer Quantity"
-                android:inputType="number" />
+                <!-- Item -->
+                <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+                    android:id="@+id/spinnerInsecticide"
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:hint="Select Insecticide Type"
+                    android:textColorHint="#bdbdbd"
+                    app:met_floatingLabel="normal" />
 
-            <EditText
-                android:id="@+id/txtInsecticides"
-                android:layout_width="match_parent"
+
+                <!-- quantity Label -->
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_layout_qty2"
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_toEndOf="@id/spinnerInsecticide">
+
+                    <EditText
+                        android:id="@+id/txtQty2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Qty"
+                        android:inputType="number" />
+                </android.support.design.widget.TextInputLayout>
+
+            </RelativeLayout>
+
+            <!-- Submit -->
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/btnSetData"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:hint="Insecticides Quantity"
-                android:inputType="number" />
+                android:text="Set Data!" />
+
 
         </LinearLayout>
 
