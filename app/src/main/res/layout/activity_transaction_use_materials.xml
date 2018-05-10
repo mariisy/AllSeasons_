@@ -50,7 +50,15 @@
 
             </RelativeLayout>
 
-
+            <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+                android:id="@+id/spinnerCropType"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:hint="Select Crop Type"
+                android:textColorHint="#bdbdbd"
+                app:met_floatingLabel="normal" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -85,6 +93,8 @@
                         android:hint="Qty/Kg" />
                 </android.support.design.widget.TextInputLayout>
             </RelativeLayout>
+
+
 
             <RelativeLayout
                 android:layout_width="match_parent"

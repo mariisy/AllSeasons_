@@ -47,7 +47,7 @@ public class TransactionUseMaterials extends AppCompatActivity {
     private String type, itemName;
     private int qty;
     private Button btnAddTransaction, btnView,btnView2;
-    private MaterialBetterSpinner spinnerItem, spinnerItemName;
+    private MaterialBetterSpinner spinnerItem, spinnerItemName, spinnerCropType;
     private Toolbar toolbar;
     private TextInputLayout inputLayoutQty;
     private EditText txtQty;
@@ -105,6 +105,7 @@ public class TransactionUseMaterials extends AppCompatActivity {
 
         spinnerItem = (MaterialBetterSpinner) findViewById(R.id.spinnerItem);
         spinnerItemName = (MaterialBetterSpinner) findViewById(R.id.spinnerItemName);
+        spinnerCropType = (MaterialBetterSpinner) findViewById(R.id.spinnerCropType);
         txtDate = (TextView) findViewById(R.id.txtDate);
         txtTransaction = (TextView) findViewById(R.id.txtTransactionID);
         btnView2= (Button)findViewById(R.id.btnView2);
@@ -119,8 +120,12 @@ public class TransactionUseMaterials extends AppCompatActivity {
         btnAddTransaction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                submitForm();
-                setData();
+
+                if(validateQty() && validateType() && validateCrop() && validateName()){
+                    setData();
+                }
+
+
             }
         });
 
@@ -242,17 +247,15 @@ public class TransactionUseMaterials extends AppCompatActivity {
         builderView.show();
     }
 
-    private void submitForm() {
-        if (validateQty()) {
-            return;
-        }
+    private boolean validateCrop() {
+        if (spinnerCropType.getText().toString().trim().isEmpty()) {
+            spinnerCropType.setError("Pick Item Type!");
+            //inputLayoutUnitPrice.setError("Enter Last Name!");
+            requestFocus(spinnerCropType);
+            return false;
+        } else {
 
-        if (validateType()) {
-            return;
-        }
-
-        if (validateName()) {
-            return;
+            return true;
         }
 
     }
@@ -317,6 +320,9 @@ public class TransactionUseMaterials extends AppCompatActivity {
 
         public void afterTextChanged(Editable editable) {
             switch (view.getId()) {
+                case R.id.spinnerCropType:
+                    validateCrop();
+                    break;
                 case R.id.txtQty:
                     validateQty();
                     break;

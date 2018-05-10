@@ -55,6 +55,12 @@ public class DBHelper extends SQLiteOpenHelper {
     public String dbColumnAddress = "ADDRESS";
     public String dbColumnCustomerID = "CUSTOMER_ID";
 
+    public String dbColumnHectare = "HECTARE_SIZE";
+    public String dbColumnSeedsCost = "SEEDS_COST";
+    public String dbColumnFertilizerCost = "FERTILIZER_COST";
+    public String dbColumnInsecticidesCost = "INSECTICIDES_COST";
+
+
     public String dbColumnEmployeeID = "EMPLOYEE_ID";
     public String dbColumnEmployeeFullID = "EMPLOYEE_FULL_ID";
     public String dbColumnAccountType = "ACCOUNT_TYPE";
@@ -104,7 +110,10 @@ public class DBHelper extends SQLiteOpenHelper {
             dBColumnType + " TEXT, " +
             dBColumnName + " TEXT, " +
             dBColumnWeight + " REAL, " +
-            dBColumnPrice + " REAL, " +
+            dbColumnHectare + " REAL, " +
+            dbColumnSeedsCost + " REAL, " +
+            dbColumnFertilizerCost + " REAL, " +
+            dbColumnInsecticidesCost + " REAL, " +
             dBColumnTotalCost + " REAL )";
 
     private String dbBuildQuery6 = "CREATE TABLE " + dbTableCGS + " ( " +
@@ -240,6 +249,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(dbBuildQuery15);
         db.execSQL(dbBuildQuery8);
         db.execSQL(dbBuildQuery10);
+        db.execSQL(dbBuildQuery5);
     //    db.execSQL(dbBuildQuery11);
     }
 

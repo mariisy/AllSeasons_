@@ -240,6 +240,7 @@ public class SettingsAddStaff extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
     private void getData() {
         employeeName = txtFname.getText().toString() + " " + txtLname.getText().toString();
         type = spinnerPosition.getText().toString();
