@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.example.maricalara.allseasons.Activity.SettingsAddFarmingSeason;
 import com.example.maricalara.allseasons.Activity.SettingsAddToWarehouse;
 import com.example.maricalara.allseasons.Activity.SettingsEditStaff;
 import com.example.maricalara.allseasons.Activity.SettingsEditWarehouse;
@@ -59,6 +60,8 @@ public class SettingsWarehousing extends Fragment {
                     intent = new Intent(getActivity(), SettingsAddToWarehouse.class);
                 } else if (position == 1) {
                     intent = new Intent(getActivity(), SettingsEditWarehouse.class);
+                }else if (position == 2){
+                    intent = new Intent(getActivity(), SettingsAddFarmingSeason.class);
                 }
 
                 startActivity(intent);

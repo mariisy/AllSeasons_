@@ -16,6 +16,15 @@
             </menu>
         </item>
 
+        <item android:title="Growing Season">
+            <menu>
+                <item
+                    android:id="@+id/nav_farming"
+                    android:icon="@drawable/ic_assignment_white_48dp"
+                    android:title="@string/nav_season" />
+            </menu>
+        </item>
+
         <item android:title="Inventory">
             <menu>
                 <item

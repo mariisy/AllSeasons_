@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.maricalara.allseasons.Fragment.BoughtGoods;
+import com.example.maricalara.allseasons.Fragment.FarmingSeason;
 import com.example.maricalara.allseasons.Fragment.GoodsSold;
 import com.example.maricalara.allseasons.Fragment.SalesReport;
 import com.example.maricalara.allseasons.Fragment.Settings;
@@ -61,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG_SETTINGS = "settings";
     private static final String TAG_WAREHOUSE = "warehouse";
     private static final String TAG_LOGOUT = "logOut";
+    private static final String TAG_SEASON = "season";
     public static String CURRENT_TAG = TAG_PURCHASING;
 
     // toolbar titles respected to selected nav menu item
@@ -214,6 +216,15 @@ public class MainActivity extends AppCompatActivity {
 
                 return boughtGoods;
             case 2:
+                FarmingSeason farmingSeason = new FarmingSeason();
+
+                bundle = new Bundle();
+                bundle.putString("EmployeeID", empID);
+                bundle.putString("EmployeeName", name);
+                farmingSeason.setArguments(bundle);
+
+                return farmingSeason;
+            case 3:
                 Warehouse warehouse = new Warehouse();
 
                 bundle = new Bundle();
@@ -223,7 +234,7 @@ public class MainActivity extends AppCompatActivity {
 
                 return warehouse;
 
-            case 3:
+            case 4:
                 SalesReport salesReport = new SalesReport();
 
                 bundle = new Bundle();
@@ -233,9 +244,8 @@ public class MainActivity extends AppCompatActivity {
 
                 return salesReport;
 
-            case 4:
+            case 5:
                 Settings settings = new Settings();
-
                 bundle = new Bundle();
                 bundle.putString("EmployeeID", empID);
                 bundle.putString("EmployeeName", name);
@@ -275,16 +285,20 @@ public class MainActivity extends AppCompatActivity {
                         navItemIndex = 1;
                         CURRENT_TAG = TAG_PURCHASED;
                         break;
-                    case R.id.nav_warehouse:
+                    case R.id.nav_farming:
                         navItemIndex = 2;
+                        CURRENT_TAG = TAG_SEASON;
+                        break;
+                    case R.id.nav_warehouse:
+                        navItemIndex = 3;
                         CURRENT_TAG = TAG_WAREHOUSE;
                         break;
                     case R.id.nav_sales:
-                        navItemIndex = 3;
+                        navItemIndex = 4;
                         CURRENT_TAG = TAG_SALES;
                         break;
                     case R.id.nav_settings:
-                        navItemIndex = 4;
+                        navItemIndex = 5;
                         CURRENT_TAG = TAG_SETTINGS;
                         break;
                     case R.id.nav_about_us:

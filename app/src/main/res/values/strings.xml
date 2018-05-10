@@ -10,6 +10,7 @@
     <!-- Navigation Drawer menu labels -->
     <string name="nav_purchasing">Goods Procurement</string>
     <string name="nav_sold">Sold Goods</string>
+    <string name="nav_season">Growing Season</string>
     <string name="nav_warehouse">Warehouse</string>
     <string name="nav_utilities">Utility</string>
     <string name="nav_settings">Settings</string>
@@ -24,6 +25,7 @@
     <string-array name="nav_item_activity_titles">
         <item>Goods Sold</item>
         <item>Goods Procurement</item>
+        <item>Growing Season</item>
         <item>Warehouse</item>
         <item>Sales report</item>
         <item>Setting</item>
