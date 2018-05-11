@@ -112,7 +112,7 @@ public class SalesReport extends Fragment {
         PIEDATA = new PieData(PieEntryLabels, pieDataSet);
         pieDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
         pieChart.setData(PIEDATA);
-        pieChart.animateY(3000);
+        pieChart.animateY(2000);
 
 
         //for line chart

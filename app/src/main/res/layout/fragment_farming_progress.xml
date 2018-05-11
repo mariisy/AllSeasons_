@@ -1,5 +1,272 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:orientation="vertical"
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp"
+            android:paddingTop="56dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <TableLayout
+                    android:id="@+id/tblPlan"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentStart="true">
+
+                    <TableRow
+                        android:id="@+id/rowTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:layout_marginTop="4dp"
+                        android:background="@drawable/table_border">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.3"
+                            android:gravity="center"
+                            android:padding="10dp"
+                            android:text="Planned Resource"
+                            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+
+                    </TableRow>
+
+                    <TableRow
+                        android:id="@+id/row_1"
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:layout_marginTop="7dp"
+                        android:background="@drawable/table_border">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:padding="5dp"
+                            android:text="Crop:" />
+
+                        <TextView
+                            android:id="@+id/txtCrop"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:padding="7dp"
+                            android:text="Row 1"
+                            android:textAppearance="?android:attr/textAppearanceSmall" />
+                    </TableRow>
+
+                    <TableRow
+                        android:id="@+id/row_2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="7dp"
+                        android:background="@drawable/table_border">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <TextView
+                                android:id="@+id/txt1"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="right"
+                                android:padding="5dp"
+                                android:text="Seeds Qty:" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/txt1"
+                                android:layout_weight="1"
+                                android:gravity="right"
+                                android:padding="7dp"
+                                android:text="Seeds Total Price:"
+                                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <TextView
+                                android:id="@+id/txtSeedsQty"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:padding="5dp"
+                                android:text="Row 2" />
+
+                            <TextView
+                                android:id="@+id/txtSeedsPrice"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/txtSeedsQty"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:padding="7dp"
+                                android:text="Row 2"
+                                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                        </RelativeLayout>
+                    </TableRow>
+
+                    <TableRow
+                        android:id="@+id/row_3"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="7dp"
+                        android:background="@drawable/table_border">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <TextView
+                                android:id="@+id/txt2"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="right"
+                                android:padding="5dp"
+                                android:text="Seeds Qty:" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/txt2"
+                                android:layout_weight="1"
+                                android:gravity="right"
+                                android:padding="7dp"
+                                android:text="Seeds Total Price:"
+                                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <TextView
+                                android:id="@+id/txtFertilizersQty"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:padding="5dp"
+                                android:text="Row 2" />
+
+                            <TextView
+                                android:id="@+id/txtFertilizersPrice"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/txtFertilizersQty"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:padding="7dp"
+                                android:text="Row 2"
+                                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                        </RelativeLayout>
+                    </TableRow>
+
+                    <TableRow
+                        android:id="@+id/row_4"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="7dp"
+                        android:background="@drawable/table_border">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <TextView
+                                android:id="@+id/txt3"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="right"
+                                android:padding="5dp"
+                                android:text="Seeds Qty:" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/txt3"
+                                android:layout_weight="1"
+                                android:gravity="right"
+                                android:padding="7dp"
+                                android:text="Seeds Total Price:"
+                                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <TextView
+                                android:id="@+id/txtInsecticidesQty"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:padding="5dp"
+                                android:text="Row 2" />
+
+                            <TextView
+                                android:id="@+id/txtInsecticidesPrice"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/txtInsecticidesQty"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:padding="7dp"
+                                android:text="Row 2"
+                                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                        </RelativeLayout>
+                    </TableRow>
+
+                </TableLayout>
+
+
+                <com.github.mikephil.charting.charts.PieChart
+                    android:id="@+id/chartPie"
+                    android:layout_width="fill_parent"
+                    android:layout_height="500dp"
+                    android:layout_marginBottom="50dp"
+                    android:layout_marginTop="50dp"
+                    android:layout_below="@+id/tblPlan"/>
+
+
+            </RelativeLayout>
+
+
+
+
+        </LinearLayout>
+    </ScrollView>
+
 
 </RelativeLayout>

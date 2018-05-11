@@ -52,7 +52,6 @@ public class FarmingSeason extends Fragment {
 
 
         materialDesignFAb = (FloatingActionMenu) rootView.findViewById(R.id.material_design_android_floating_action_menu);
-        fabAdd = (FloatingActionButton) rootView.findViewById(R.id.fab1);
         fabUse = (FloatingActionButton) rootView.findViewById(R.id.fabUse);
         fabHarvest = (FloatingActionButton) rootView.findViewById(R.id.fabHarvest);
         fabMsg = (FloatingActionButton) rootView.findViewById(R.id.fabMessage);
