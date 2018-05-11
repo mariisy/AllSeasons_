@@ -4,7 +4,7 @@
     android:layout_height="match_parent">
 
 
-    <ScrollView
+    <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true">
@@ -18,6 +18,7 @@
             android:paddingRight="24dp"
             android:paddingTop="56dp">
 
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -26,9 +27,7 @@
                 <TableLayout
                     android:id="@+id/tblPlan"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentStart="true">
+                    android:layout_height="match_parent">
 
                     <TableRow
                         android:id="@+id/rowTitle"
@@ -250,23 +249,31 @@
 
                 </TableLayout>
 
-
                 <com.github.mikephil.charting.charts.PieChart
                     android:id="@+id/chartPie"
                     android:layout_width="fill_parent"
                     android:layout_height="500dp"
                     android:layout_marginBottom="50dp"
                     android:layout_marginTop="50dp"
-                    android:layout_below="@+id/tblPlan"/>
-
+                    android:layout_toEndOf="@+id/tblPlan"/>
 
             </RelativeLayout>
 
 
 
 
+
+
+
+
+
+
+
+
+
         </LinearLayout>
-    </ScrollView>
+
+    </HorizontalScrollView>
 
 
 </RelativeLayout>

@@ -75,7 +75,6 @@ public class FarmingProgress extends Fragment {
     }
 
     public void AddValuesToPieEntryLabels(){
-
         PieEntryLabels.add("Planted");
         PieEntryLabels.add("Land to be PLanted");
     }

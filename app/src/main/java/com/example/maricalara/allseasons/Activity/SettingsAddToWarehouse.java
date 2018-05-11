@@ -537,7 +537,6 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
         if (spinnerType1.getText().toString().trim().isEmpty()) {
             spinnerType1.setError("Pick Item Type!");
             //inputLayoutUnitPrice.setError("Enter Last Name!");
-            requestFocus(txtUprice);
             return false;
         } else {
 
