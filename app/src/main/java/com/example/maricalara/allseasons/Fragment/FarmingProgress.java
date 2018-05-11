@@ -69,14 +69,14 @@ public class FarmingProgress extends Fragment {
 
     public void AddValuesToPIEENTRY(){
 
-        PIEENTRY.add(new BarEntry(2f, 0));
-        PIEENTRY.add(new BarEntry(4f, 1));
+        PIEENTRY.add(new BarEntry(50, 0));
+        PIEENTRY.add(new BarEntry(30, 1));
 
     }
 
     public void AddValuesToPieEntryLabels(){
         PieEntryLabels.add("Planted");
-        PieEntryLabels.add("Land to be PLanted");
+        PieEntryLabels.add("Not Yet Planted");
     }
 
 
