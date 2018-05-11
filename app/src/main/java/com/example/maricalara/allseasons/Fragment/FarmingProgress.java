@@ -28,7 +28,7 @@ public class FarmingProgress extends Fragment {
     private ViewPagerAdapter adapter;
 
     //variables for pie chart
-    PieChart pieChart ;
+    PieChart pieChart, pieChart1 ;
     ArrayList<Entry> PIEENTRY ;
     ArrayList<String> PieEntryLabels ;
     PieDataSet pieDataSet ;
