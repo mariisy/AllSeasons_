@@ -1,6 +1,7 @@
 package com.example.maricalara.allseasons.Fragment;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -9,14 +10,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.maricalara.allseasons.Activity.TransactionHarvest;
+import com.example.maricalara.allseasons.Activity.TransactionUseMaterials;
+import com.example.maricalara.allseasons.Activity.TransactionsAddBought;
 import com.example.maricalara.allseasons.Adapter.ViewPagerAdapter;
 import com.example.maricalara.allseasons.R;
+import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
 
 public class FarmingSeason extends Fragment {
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private ViewPagerAdapter adapter;
+
+    //buttons
+    FloatingActionMenu materialDesignFAb;
+    FloatingActionButton fabAdd, fabUse, fabHarvest, fabMsg;
 
     public FarmingSeason() {
         // Required empty public constructor
@@ -38,6 +48,47 @@ public class FarmingSeason extends Fragment {
 
         tabLayout = (TabLayout) rootView.findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
+
+
+
+        materialDesignFAb = (FloatingActionMenu) rootView.findViewById(R.id.material_design_android_floating_action_menu);
+        fabAdd = (FloatingActionButton) rootView.findViewById(R.id.fab1);
+        fabUse = (FloatingActionButton) rootView.findViewById(R.id.fabUse);
+        fabHarvest = (FloatingActionButton) rootView.findViewById(R.id.fabHarvest);
+        fabMsg = (FloatingActionButton) rootView.findViewById(R.id.fabMessage);
+
+
+
+
+        fabUse.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Click action
+                Intent intent = new Intent(getActivity(), TransactionUseMaterials.class);
+                getActivity().startActivity(intent);
+
+            }
+        });
+
+        fabHarvest.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Click action
+                Intent intent = new Intent(getActivity(), TransactionHarvest.class);
+                getActivity().startActivity(intent);
+
+            }
+        });
+
+        fabMsg.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Click action
+                Intent intent = new Intent(Intent.ACTION_MAIN);
+                intent.addCategory(Intent.CATEGORY_DEFAULT);
+                intent.setType("vnd.android-dir/mms-sms");
+                startActivity(intent);
+
+            }
+        });
+
 
         // Inflate the layout for this fragment
         return rootView;

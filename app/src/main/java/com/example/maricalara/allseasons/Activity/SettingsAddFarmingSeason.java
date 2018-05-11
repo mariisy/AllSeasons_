@@ -37,7 +37,7 @@ public class SettingsAddFarmingSeason extends AppCompatActivity implements DateP
         //inflate toolbar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Add Staff");
+        getSupportActionBar().setTitle("Resource Planning");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 

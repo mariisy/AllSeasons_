@@ -69,23 +69,7 @@ public class Warehouse extends Fragment {
             }
         });
 
-        fabUse.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                // Click action
-                Intent intent = new Intent(getActivity(), TransactionUseMaterials.class);
-                getActivity().startActivity(intent);
 
-            }
-        });
-
-        fabHarvest.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                // Click action
-                Intent intent = new Intent(getActivity(), TransactionHarvest.class);
-                getActivity().startActivity(intent);
-
-            }
-        });
 
         fabMsg.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
