@@ -22,9 +22,6 @@ public class DBHelper extends SQLiteOpenHelper {
     public String dbTableEquipment = "EQUIPMENT";
 
     public String dbTableWarehouseEquip = "WAREHOUSE_EQUIPMENT";
-    public String dbTableWPI = "WPI";
-    public String dbTableFGI = "FGI";
-    public String dbTableCGS = "CGS";
     public String dbTableSalesRevenue = "SALES_REVENUE";
     public String dbTableCash = "CASH";
     public String dbTableCustomer = "CUSTOMER";
@@ -34,10 +31,13 @@ public class DBHelper extends SQLiteOpenHelper {
     public String dbTableIL = "INDIRECT_LABOR";
     public String dbTableSE = "SALARIES_EXPENSE";
     public String dbTableSupplier ="SUPPLIER";
-
-
-
-
+    public String dbTableWPI = "WPI";
+    public String dbTableFGI = "FGI";
+    public String dbTableCGS = "CGS";
+    public String dbResourcePlanningTable = "RESOURCE_PLANNING_TABLE";
+    public String dbTableUtilizeWPI = "UTILIZE_WPI";
+    public String dbTableUtilizeFGI = "UTILIZE_FGI";
+    public String dbTableUtilizeCGS = "UTILIZE_CGS";
 
 
     //column
@@ -55,10 +55,23 @@ public class DBHelper extends SQLiteOpenHelper {
     public String dbColumnAddress = "ADDRESS";
     public String dbColumnCustomerID = "CUSTOMER_ID";
 
-    public String dbColumnHectare = "HECTARE_SIZE";
+
+    public String dbColumnSeedsPrice = "SEEDS_PRICE";
+    public String dbColumnFertilizerPrice = "FERTILIZER_PRICE";
+    public String dbColumnInsecticidesPrice = "INSECTICIDES_PRICE";
+    public String dbColumnSeedsQuantity = "SEEDS_QUANTITY";
+    public String dbColumnFertilizerQuantity = "FERTILIZER_QUANTITY";
+    public String dbColumnInsecticidesQuantity = "INSECTICIDES_QUANTITY";
     public String dbColumnSeedsCost = "SEEDS_COST";
     public String dbColumnFertilizerCost = "FERTILIZER_COST";
     public String dbColumnInsecticidesCost = "INSECTICIDES_COST";
+    public String dbColumnSeedsPercentage = "SEEDS_PERCENTAGE";
+    public String dbColumnFertilizerPercentage = "FERTILIZER_PERCENTAGE";
+    public String dbColumnInsecticidesPercentage = "INSECTICIDES_PERCENTAGE";
+    public String dbColumnTotal_Percentage_Products = "TOTAL_PERCENTAGE_PRODUCTS";
+    public String dbColumnHectare = "HECTARE_SIZE";
+    public String dbColumnTotal_Percentage_Hectare_Done = "PERCENTAGE_HECTARE_DONE";
+
 
 
     public String dbColumnEmployeeID = "EMPLOYEE_ID";
@@ -69,9 +82,12 @@ public class DBHelper extends SQLiteOpenHelper {
     public String dbColumnDelivery = "DELIVERY";
     public String dBColumnSupplierName = "SUPPLIER_NAME";
     public String dBColumnTransID = "TRANSID";
-    public String dbColumnWPIID = "WPIID";
     public String dbColumnEmployeeUsername = "USERNAME";
     public String dbColumnEmployeePassword = "PASSWORD";
+    public String dbColumnWPIID = "WPIID";
+    public String dbColumnFGIID = "FGIID";
+    public String dbColumnCGSID = "CGSID";
+
     //db Query
 
 
@@ -106,22 +122,12 @@ public class DBHelper extends SQLiteOpenHelper {
             dBColumnTotalCost + " REAL )";
 
     private String dbBuildQuery5 = "CREATE TABLE " + dbTableFGI + " ( " +
-            dBColumnDate + " TEXT, " +
-            dBColumnType + " TEXT, " +
-            dBColumnName + " TEXT, " +
-            dBColumnWeight + " REAL, " +
-            dbColumnHectare + " REAL, " +
-            dbColumnSeedsCost + " REAL, " +
-            dbColumnFertilizerCost + " REAL, " +
-            dbColumnInsecticidesCost + " REAL, " +
+            dbColumnFGIID+ " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             dBColumnTotalCost + " REAL )";
 
+
     private String dbBuildQuery6 = "CREATE TABLE " + dbTableCGS + " ( " +
-            dBColumnDate + " TEXT, " +
-            dBColumnType + " TEXT, " +
-            dBColumnName + " TEXT, " +
-            dBColumnQuantity + " INTEGER, " +
-            dBColumnPrice + " REAL, " +
+            dbColumnCGSID+ " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             dBColumnTotalCost + " REAL )";
 
     private String dbBuildQuery7 = "CREATE TABLE " + dbTableSalesRevenue + " ( " +
@@ -188,6 +194,59 @@ public class DBHelper extends SQLiteOpenHelper {
             dBColumnName + " TEXT, " +
             dBColumnPrice + " REAL )";
 
+    private String dbBuildQuery16 = "CREATE TABLE " + dbResourcePlanningTable + " ( " +
+            dBColumnName + " TEXT, " +
+            dbColumnSeedsPrice + " REAL, " +
+            dbColumnFertilizerPrice + " REAL, " +
+            dbColumnInsecticidesPrice + " REAL, " +
+            dbColumnSeedsQuantity + " REAL, " +
+            dbColumnFertilizerQuantity + " REAL, " +
+            dbColumnInsecticidesQuantity + " REAL, " +
+            dbColumnSeedsCost + " REAL, " +
+            dbColumnFertilizerCost + " REAL, " +
+            dbColumnInsecticidesCost + " REAL, " +
+            dbColumnSeedsPercentage + " REAL, " +
+            dbColumnFertilizerPercentage + " REAL, " +
+            dbColumnInsecticidesPercentage + " REAL, " +
+            dbColumnTotal_Percentage_Products + " REAL, " +
+            dbColumnHectare + " REAL, " +
+            dbColumnTotal_Percentage_Hectare_Done + " REAL, " +
+            dBColumnTotalCost + " REAL )";
+
+
+    private String dbBuildQuery17 = "CREATE TABLE " + dbTableUtilizeWPI + " ( " +
+            dBColumnName + " TEXT, " +
+            dbColumnSeedsPrice + " REAL, " +
+            dbColumnFertilizerPrice + " REAL, " +
+            dbColumnInsecticidesPrice + " REAL, " +
+            dbColumnSeedsQuantity + " REAL, " +
+            dbColumnFertilizerQuantity + " REAL, " +
+            dbColumnInsecticidesQuantity + " REAL, " +
+            dbColumnSeedsCost + " REAL, " +
+            dbColumnFertilizerCost + " REAL, " +
+            dbColumnInsecticidesCost + " REAL, " +
+            dbColumnSeedsPercentage + " REAL, " +
+            dbColumnFertilizerPercentage + " REAL, " +
+            dbColumnInsecticidesPercentage + " REAL, " +
+            dbColumnTotal_Percentage_Products + " REAL, " +
+            dbColumnHectare + " REAL, " +
+            dbColumnTotal_Percentage_Hectare_Done + " REAL, " +
+            dBColumnTotalCost + " REAL )";
+
+    private String dbBuildQuery18 = "CREATE TABLE " + dbTableUtilizeFGI + " ( " +
+            dBColumnDate + " TEXT, " +
+            dBColumnType + " TEXT, " +
+            dBColumnName + " TEXT, " +
+            dBColumnWeight + " REAL, " +
+            dbColumnTotal_Percentage_Hectare_Done  + " REAL, " +
+            dBColumnTotalCost + " REAL )";
+
+    private String dbBuildQuery19 = "CREATE TABLE " + dbTableUtilizeCGS + " ( " +
+            dBColumnDate + " TEXT, " +
+            dBColumnType + " TEXT, " +
+            dBColumnName + " TEXT, " +
+            dBColumnWeight + " REAL, " +
+            dBColumnTotalCost + " REAL )";
 
     private String dbDestroyQuery1 = "DROP TABLE IF EXISTS " + dbTableRawMaterials;
     private String dbDestroyQuery2 = "DROP TABLE IF EXISTS " + dbTableIndirectMaterials;
