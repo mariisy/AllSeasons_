@@ -28,7 +28,7 @@ public class FarmingProgress extends Fragment {
     private ViewPagerAdapter adapter;
 
     //variables for pie chart
-    PieChart pieChart, pieChart1 ;
+    PieChart pieChart, pieChart1, pieChart2;
     ArrayList<Entry> PIEENTRY ;
     ArrayList<String> PieEntryLabels ;
     PieDataSet pieDataSet ;
@@ -52,16 +52,25 @@ public class FarmingProgress extends Fragment {
 
         //for pie chart
         pieChart = (PieChart) rootView.findViewById(R.id.chartPie);
+        pieChart1 = (PieChart) rootView.findViewById(R.id.chartPie1);
+        pieChart2 = (PieChart) rootView.findViewById(R.id.chartPie2);
+
         PIEENTRY = new ArrayList<>();
         PieEntryLabels = new ArrayList<String>();
         AddValuesToPIEENTRY();
         AddValuesToPieEntryLabels();
         pieDataSet = new PieDataSet(PIEENTRY, "");
         PIEDATA = new PieData(PieEntryLabels, pieDataSet);
-        pieDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+        pieDataSet.setColors(ColorTemplate.JOYFUL_COLORS);
+
         pieChart.setData(PIEDATA);
         pieChart.animateY(2000);
 
+        pieChart1.setData(PIEDATA);
+        pieChart1.animateY(2000);
+
+        pieChart2.setData(PIEDATA);
+        pieChart2.animateY(2000);
 
         // Inflate the layout for this fragment
         return rootView;
@@ -77,6 +86,7 @@ public class FarmingProgress extends Fragment {
     public void AddValuesToPieEntryLabels(){
         PieEntryLabels.add("Planted");
         PieEntryLabels.add("Not Yet Planted");
+
     }
 
 
