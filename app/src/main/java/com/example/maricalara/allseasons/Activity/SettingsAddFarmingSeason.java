@@ -16,9 +16,13 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
+import com.example.maricalara.allseasons.Controller.TransactionDAO;
+import com.example.maricalara.allseasons.Controller.TransactionDAOImpl;
+import com.example.maricalara.allseasons.Model.DBHelper;
 import com.example.maricalara.allseasons.R;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class SettingsAddFarmingSeason extends AppCompatActivity {
@@ -28,7 +32,10 @@ public class SettingsAddFarmingSeason extends AppCompatActivity {
     private MaterialBetterSpinner spinnerSeed, spinnerFertilizer, spinnerInsecticide;
     private Button btnSetData, btnDatePicker;
     private TextInputLayout inputLayoutqty, inputLayoutqty1, inputLayoutqty2, inputLayoutDate, inputLayoutLand;
-
+    private ArrayAdapter<String> arrayAdapter2, arrayAdapter3, arrayAdapter1;
+    private ArrayList<String> arrListSeed, arrListInsecticides, arrListFertilizers;
+    private TransactionDAO tDAO = new TransactionDAOImpl();
+    private DBHelper dbHelper = new DBHelper(SettingsAddFarmingSeason.this);
     //data
     //Sample for List for Spinner type 1
 
@@ -53,7 +60,7 @@ public class SettingsAddFarmingSeason extends AppCompatActivity {
         inputLayoutqty = (TextInputLayout) findViewById(R.id.input_layout_qty);
         inputLayoutqty1 = (TextInputLayout) findViewById(R.id.input_layout_qty1);
         inputLayoutqty2 = (TextInputLayout) findViewById(R.id.input_layout_qty2);
-   //     inputLayoutDate = (TextInputLayout) findViewById(R.id.input_layout_date);
+        inputLayoutDate = (TextInputLayout) findViewById(R.id.input_layout_date);
         inputLayoutLand  = (TextInputLayout) findViewById(R.id.input_layout_hectare);
         txtQty = (EditText) findViewById(R.id.txtQty);
         txtQty1 = (EditText) findViewById(R.id.txtQty1);
@@ -75,16 +82,16 @@ public class SettingsAddFarmingSeason extends AppCompatActivity {
                 }
             }
         });
-        String[] spinnerListType = {"", "", ""};
-         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, spinnerListType);
-        ArrayAdapter<String> arrayAdapter1 = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, spinnerListType);
-        ArrayAdapter<String> arrayAdapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, spinnerListType);
+        arrListFertilizers = tDAO.retrieveListSpinnerColumn(dbHelper, "NAME", "TYPE", "Fertilizer");
+        arrayAdapter3 = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, arrListFertilizers);
+        spinnerFertilizer.setAdapter(arrayAdapter3);
+        arrListInsecticides = tDAO.retrieveListSpinnerColumn(dbHelper, "NAME", "TYPE", "Insecticides");
+        arrayAdapter3 = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, arrListInsecticides);
+        spinnerInsecticide.setAdapter(arrayAdapter3);
+        arrListSeed = tDAO.retrieveListSpinnerColumn(dbHelper, "NAME", "TYPE", "Seeds");
+        arrayAdapter3 = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, arrListSeed);
+        spinnerSeed.setAdapter(arrayAdapter3);
 
-
-
-        spinnerSeed.setAdapter(arrayAdapter);
-        spinnerFertilizer.setAdapter(arrayAdapter1);
-        spinnerInsecticide.setAdapter(arrayAdapter2);
     }
 
 

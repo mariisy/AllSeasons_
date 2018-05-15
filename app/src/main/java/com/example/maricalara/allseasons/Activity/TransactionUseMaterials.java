@@ -72,7 +72,7 @@ public class TransactionUseMaterials extends AppCompatActivity {
     private ArrayList<Object> arrTransact = new ArrayList<>();
     private ArrayAdapter<String> stringArrayAdapter;
     private ArrayAdapter<String> arrayAdapter3;
-    private ArrayList<String> arrListName;
+    private ArrayList<String> arrListName,arrListCrop;
     Object strName = null;
 
     //get Date String
@@ -84,7 +84,7 @@ public class TransactionUseMaterials extends AppCompatActivity {
     String strDate = "Date: " + dayOfTheWeek + ", " + dateForTheDay;
 
     //Sample for List for Spinner type 1
-    String[] spinnerListType = {"Seeds", "Seedlings", "Packaging", "Fertilizer", "Insecticides", "Equipment"};
+    String[] spinnerListType = {"Seeds", "Seedlings", "Fertilizer", "Insecticides"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,6 +115,9 @@ public class TransactionUseMaterials extends AppCompatActivity {
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, spinnerListType);
         spinnerItem.setAdapter(arrayAdapter);
 
+        arrListCrop = tDAO.retrieveListSpinnerColumn(dbHelper, "NAME", "TYPE", "Crops");
+        arrayAdapter3 = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, arrListCrop);
+        spinnerCropType.setAdapter(arrayAdapter3);
 
         btnAddTransaction = (Button) findViewById(R.id.btnAdd);
         btnAddTransaction.setOnClickListener(new View.OnClickListener() {

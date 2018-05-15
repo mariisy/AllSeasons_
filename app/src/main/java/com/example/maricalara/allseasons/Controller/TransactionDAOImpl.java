@@ -453,7 +453,7 @@ public class TransactionDAOImpl implements TransactionDAO {
             do {
                 listHolder.add(cursor.getString(cursor.getColumnIndex(spinnerCategory)));
             } while (cursor.moveToNext());
-            ;
+
         }
         return listHolder;
     }
