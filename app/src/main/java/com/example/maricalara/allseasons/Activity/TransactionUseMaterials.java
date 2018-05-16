@@ -162,33 +162,34 @@ public class TransactionUseMaterials extends AppCompatActivity {
         btnView2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Cursor result = aDAO.getAllDataWPI(dbHelper);
+                Cursor result = aDAO.getAllUtilizeWPI(dbHelper);
                 StringBuffer buffer = new StringBuffer();
                 while (result.moveToNext()) {
-                    buffer.append("ID: " + result.getString(0) + "\n");
-                    buffer.append("Total Cost: " + result.getString(1) + "\n\n");
-                }
-                Cursor result2 = rmDAO.getAllDataRM(dbHelper);
-                StringBuffer buffer2 = new StringBuffer();
-                while (result2.moveToNext()) {
-                    buffer2.append("Type: " + result2.getString(1) + "\n");
-                    buffer2.append("Name: " + result2.getString(2) + "\n");
-                    buffer2.append("Quantity: " + result2.getString(3) + "\n");
-                    buffer2.append("Price:" + result2.getString(4) + "\n");
-                    buffer2.append("Total Cost: " + result2.getString(5) + "\n\n");
-                }
-                Cursor result3 = imDao.getAllDataIM(dbHelper);
-                StringBuffer buffer3 = new StringBuffer();
-                while (result3.moveToNext()) {
-                    buffer3.append("Type: " + result3.getString(1) + "\n");
-                    buffer3.append("Name: " + result3.getString(2) + "\n");
-                    buffer3.append("Quantity: " + result3.getString(3) + "\n");
-                    buffer3.append("Price:" + result3.getString(4) + "\n");
-                    buffer3.append("Total Cost: " + result3.getString(5) + "\n\n");
+                    //buffer.append("ID: " + result.getString(0) + "\n");
+                    buffer.append(result.getString(0) + "\n");
+                    buffer.append(result.getString(1) + "\n");
+                    buffer.append(result.getString(2) + "\n");
+                    buffer.append(result.getString(3) + "\n");
+                    buffer.append(result.getString(4) + "\n");
+                    buffer.append(result.getString(5) + "\n");
+                    buffer.append(result.getString(6) + "\n");
+                    buffer.append(result.getString(7) + "\n");
+                    buffer.append(result.getString(8) + "\n");
+                    buffer.append(result.getString(9) + "\n");
+                    buffer.append(result.getString(10) + "\n");
+                    buffer.append(result.getString(11) + "\n");
+                    buffer.append(result.getString(12) + "\n");
+                    buffer.append(result.getString(13) + "\n");
+                    buffer.append(result.getString(14) + "\n");
+                    buffer.append(result.getString(15) + "\n");
+                    buffer.append(result.getString(16) + "\n");
+                    buffer.append(result.getString(17) + "\n");
+                    buffer.append(result.getString(18) + "\n");
+                    buffer.append(result.getString(19) + "\n\n\n");
                 }
 
                 android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(TransactionUseMaterials.this);
-                builder.setMessage(buffer2.toString()+"\n"+buffer3.toString()+"\n"+buffer.toString());
+                builder.setMessage(buffer.toString()+"\n");
                 builder.show();
             }
         });

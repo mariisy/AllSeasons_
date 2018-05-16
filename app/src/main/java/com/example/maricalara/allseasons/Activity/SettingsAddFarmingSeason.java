@@ -203,6 +203,7 @@ public class SettingsAddFarmingSeason extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 hectareSize = Double.valueOf(txtHectareSize.getText().toString());
                 aDAO.addEntryPlanning(dbHelper, arrObject, hectareSize);
+                finish();
             }
         });
         builderView.setNegativeButton("Close View", new DialogInterface.OnClickListener() {

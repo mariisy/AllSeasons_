@@ -240,7 +240,6 @@ public class DBHelper extends SQLiteOpenHelper {
             dBColumnTotalCost + " REAL )";
 
     private String dbBuildQuery18 = "CREATE TABLE " + dbTableUtilizeFGI + " ( " +
-            dBColumnType + " TEXT, " +
             dBColumnDate + " TEXT, " +
             dBColumnType + " TEXT, " +
             dBColumnName + " TEXT, " +
@@ -307,7 +306,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
         */
-
+        db.execSQL(dbBuildQuery5);
         db.execSQL(dbBuildQuery4);
         db.execSQL(dbBuildQuery1);
         db.execSQL(dbBuildQuery2);
@@ -315,8 +314,10 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(dbBuildQuery15);
         db.execSQL(dbBuildQuery8);
         db.execSQL(dbBuildQuery10);
-        db.execSQL(dbBuildQuery5);
         db.execSQL(dbBuildQuery16);
+        db.execSQL(dbBuildQuery6);
+        db.execSQL(dbBuildQuery17);
+        db.execSQL(dbBuildQuery18);
     //    db.execSQL(dbBuildQuery11);
     }
 
