@@ -63,6 +63,11 @@ public class AccountingDAOImpl implements AccountingDAO {
                 values.put("SEEDS_COST", seeds.getTotalPrice());
                 values.put("SEEDS_PERCENTAGE", 1);
                 totalCost += seeds.getTotalPrice();
+
+
+                val.put("NAME", seeds.getName());
+                val.put("SEEDS_NAME", seeds.getName());
+                val.put("SEEDS_PRICE", seeds.getPrice());
             }
 
             if (obj instanceof Fertilizers) {
@@ -73,6 +78,9 @@ public class AccountingDAOImpl implements AccountingDAO {
                 values.put("FERTILIZER_COST", fertilizers.getTotalPrice());
                 values.put("FERTILIZER_PERCENTAGE", 1);
                 totalCost += fertilizers.getTotalPrice();
+
+                val.put("FERTILIZER_NAME", fertilizers.getName());
+                val.put("FERTILIZER_PRICE", fertilizers.getPrice());
             }
 
             if (obj instanceof Insecticides) {
@@ -83,6 +91,9 @@ public class AccountingDAOImpl implements AccountingDAO {
                 values.put("INSECTICIDES_COST", insecticides.getTotalPrice());
                 values.put("INSECTICIDES_PERCENTAGE", 1);
                 totalCost += insecticides.getTotalPrice();
+
+                val.put("INSECTICIDES_NAME", insecticides.getName());
+                val.put("INSECTICIDES_PRICE", insecticides.getPrice());
             }
 
 
@@ -96,19 +107,15 @@ public class AccountingDAOImpl implements AccountingDAO {
         dbWrite.insert("RESOURCE_PLANNING_TABLE", null, values);
 
 
-        val.put("NAME", "");
-        val.put("SEEDS_NAME","");
-        val.put("SEEDS_PRICE", 0);
+
         val.put("SEEDS_QUANTITY", 0);
         val.put("SEEDS_COST",0 );
         val.put("SEEDS_PERCENTAGE", 0);
-        val.put("FERTILIZER_NAME", "");
-        val.put("FERTILIZER_PRICE", 0);
+
         val.put("FERTILIZER_QUANTITY", 0);
         val.put("FERTILIZER_COST", 0);
         val.put("FERTILIZER_PERCENTAGE", 0);
-        val.put("INSECTICIDES_NAME", "");
-        val.put("INSECTICIDES_PRICE", 0);
+
         val.put("INSECTICIDES_QUANTITY", 0);
         val.put("INSECTICIDES_COST", 0);
         val.put("INSECTICIDES_PERCENTAGE", 0);
