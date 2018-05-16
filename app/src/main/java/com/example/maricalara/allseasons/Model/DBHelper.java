@@ -222,6 +222,9 @@ public class DBHelper extends SQLiteOpenHelper {
 
     private String dbBuildQuery17 = "CREATE TABLE " + dbTableUtilizeWPI + " ( " +
             dBColumnName + " TEXT, " +
+            dbColumnSeedsName + " TEXT, " +
+            dbColumnFertilizerName + " TEXT, " +
+            dbColumnInsecticidesName + " TEXT, " +
             dbColumnSeedsPrice + " REAL, " +
             dbColumnFertilizerPrice + " REAL, " +
             dbColumnInsecticidesPrice + " REAL, " +
@@ -316,6 +319,8 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(dbBuildQuery10);
         db.execSQL(dbBuildQuery5);
         db.execSQL(dbBuildQuery16);
+        db.execSQL(dbBuildQuery6);
+        db.execSQL(dbBuildQuery17);
     //    db.execSQL(dbBuildQuery11);
     }
 

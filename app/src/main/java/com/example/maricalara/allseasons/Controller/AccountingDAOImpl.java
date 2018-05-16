@@ -138,10 +138,15 @@ public class AccountingDAOImpl implements AccountingDAO {
         val.put("INSECTICIDES_QUANTITY", 0);
         val.put("INSECTICIDES_COST", 0);
         val.put("INSECTICIDES_PERCENTAGE", 0);
+
         val.put("TOTAL_PERCENTAGE_PRODUCTS", 0);
+
         val.put("HECTARE_SIZE", hectareSize);
+
         val.put("PERCENTAGE_HECTARE_DONE", 0);
+
         val.put("TOTAL_COST", 0);
+
         dbWrite.insert("UTILIZE_WPI", null, val);
     }
 
@@ -264,9 +269,6 @@ public class AccountingDAOImpl implements AccountingDAO {
                     do {
                         seeds_quantity = cursor3.getDouble(cursor3.getColumnIndex("SEEDS_QUANTITY"));
                         seeds_cost = cursor3.getDouble(cursor3.getColumnIndex("SEEDS_COST"));
-                        seeds_percentage = cursor3.getDouble(cursor3.getColumnIndex("SEEDS_PERCENTAGE"));
-                        total_percent = cursor3.getDouble(cursor3.getColumnIndex("TOTAL_PERCENTAGE_PRODUCTS"));
-                        percentage_hectare = cursor3.getDouble(cursor3.getColumnIndex("PERCENTAGE_HECTARE_DONE"));
                         total_cost = cursor3.getDouble(cursor3.getColumnIndex("TOTAL_COST"));
                     } while (cursor3.moveToNext());
                 }
@@ -277,17 +279,15 @@ public class AccountingDAOImpl implements AccountingDAO {
                 if (cursor4.moveToFirst()) {
                     do {
                         seeds_quantity2 = cursor4.getDouble(cursor4.getColumnIndex("SEEDS_QUANTITY"));
-                        total_percent2 = cursor4.getDouble(cursor4.getColumnIndex("TOTAL_PERCENTAGE_PRODUCTS"));
-                        percentage_hectare2 = cursor4.getDouble(cursor4.getColumnIndex("PERCENTAGE_HECTARE_DONE"));
                     } while (cursor4.moveToNext());
                 }
 
                 val3.put("SEEDS_PRICE", seeds.getPrice());
                 val3.put("SEEDS_QUANTITY",seeds_quantity + seeds.getQuantity());
                 val3.put("SEEDS_COST", seeds_cost + seeds.getTotalPrice());
-                val3.put("SEEDS_PERCENTAGE",seeds_percentage + (seeds_quantity + seeds.getQuantity())/seeds_quantity2);
-                val3.put("TOTAL_PERCENTAGE_PRODUCTS",(total_percent + (seeds_percentage  + (seeds_quantity + seeds.getQuantity())/seeds_quantity2))/3);
-                val3.put("PERCENTAGE_HECTARE_DONE",(((total_percent + (seeds_percentage  + (seeds_quantity + seeds.getQuantity())/seeds_quantity2))/3)/total_percent2)*(percentage_hectare/percentage_hectare2) );
+                val3.put("SEEDS_PERCENTAGE",(seeds_quantity + seeds.getQuantity())/seeds_quantity2);
+                val3.put("TOTAL_PERCENTAGE_PRODUCTS",((seeds_quantity + seeds.getQuantity())/seeds_quantity2)/3);
+                val3.put("PERCENTAGE_HECTARE_DONE",((seeds_quantity + seeds.getQuantity())/seeds_quantity2)/3);
                 val3.put("TOTAL_COST",total_cost+ seeds.getTotalPrice());
                 dbRead.update("UTILIZE_WPI", val3, selection, selectionArgs);
 
@@ -311,9 +311,9 @@ public class AccountingDAOImpl implements AccountingDAO {
                     val.put("DATE", insecticides.getDate());
                     val.put("TYPE", insecticides.getType());
                     val.put("NAME", insecticides.getName());
-                    val.put("QUANTITY", in.getQuantity() + insecticides.getQuantity());
+                    val.put("QUANTITY", in.getQuantity() - insecticides.getQuantity());
                     val.put("PRICE", insecticides.getPrice());
-                    val.put("TOTAL_COST", in.getTotalPrice() + insecticides.getTotalPrice());
+                    val.put("TOTAL_COST", in.getTotalPrice() - insecticides.getTotalPrice());
 
                     String selection = "NAME" + " LIKE ?";
                     String[] selectionArgs = {insecticides.getName()};
@@ -349,9 +349,9 @@ public class AccountingDAOImpl implements AccountingDAO {
                     val.put("DATE", fertilizers.getDate());
                     val.put("TYPE", fertilizers.getType());
                     val.put("NAME", fertilizers.getName());
-                    val.put("QUANTITY", fe.getQuantity() + fertilizers.getQuantity());
+                    val.put("QUANTITY", fe.getQuantity() - fertilizers.getQuantity());
                     val.put("PRICE", fertilizers.getPrice());
-                    val.put("TOTAL_COST", fe.getTotalPrice() + fertilizers.getTotalPrice());
+                    val.put("TOTAL_COST", fe.getTotalPrice() - fertilizers.getTotalPrice());
 
                     String selection = "NAME" + " LIKE ?";
                     String[] selectionArgs = {fertilizers.getName()};
@@ -387,9 +387,9 @@ public class AccountingDAOImpl implements AccountingDAO {
                     val.put("DATE", packaging.getDate());
                     val.put("TYPE", packaging.getType());
                     val.put("NAME", packaging.getName());
-                    val.put("QUANTITY", pa.getQuantity() + packaging.getQuantity());
+                    val.put("QUANTITY", pa.getQuantity() - packaging.getQuantity());
                     val.put("PRICE", packaging.getPrice());
-                    val.put("TOTAL_COST", pa.getTotalPrice() + packaging.getTotalPrice());
+                    val.put("TOTAL_COST", pa.getTotalPrice() - packaging.getTotalPrice());
 
                     String selection = "NAME" + " LIKE ?";
                     String[] selectionArgs = {packaging.getName()};
