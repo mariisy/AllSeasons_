@@ -179,7 +179,14 @@
                 style="@style/Widget.AppCompat.Button.Colored"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="Set Data!" />
+                android:text="View Data!" />
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/btnView"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="View!" />
 
 
         </LinearLayout>

@@ -32,12 +32,67 @@ public class AccountingDAOImpl implements AccountingDAO {
     }
 
     @Override
+    public Cursor getAllPlan(DBHelper dbHelper) {
+        dbWrite = dbHelper.getWritableDatabase();
+        Cursor result = dbWrite.rawQuery("SELECT * FROM RESOURCE_PLANNING_TABLE", null);
+        return result;
+    }
+
+    @Override
     public void addEntry(DBHelper dbHelper, String type) {
         dbWrite = dbHelper.getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put("TOTAL_COST", 0);
         dbWrite.insert("WPI", null, values);
+    }
+
+    @Override
+    public void addEntryPlanning(DBHelper dbHelper, ArrayList<Object> objArray, double hectareSize) {
+        dbWrite = dbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        double totalCost = 0;
+        for (Object obj : objArray) {
+            if (obj instanceof Seeds) {
+                seeds = (Seeds) obj;
+                values.put("NAME", seeds.getName());
+                values.put("SEEDS_NAME", seeds.getName());
+                values.put("SEEDS_PRICE", seeds.getPrice());
+                values.put("SEEDS_QUANTITY", seeds.getQuantity());
+                values.put("SEEDS_COST", seeds.getTotalPrice());
+                values.put("SEEDS_PERCENTAGE", 1);
+                totalCost += seeds.getTotalPrice();
+            }
+
+            if (obj instanceof Fertilizers) {
+                fertilizers = (Fertilizers) obj;
+                values.put("FERTILIZER_NAME", fertilizers.getName());
+                values.put("FERTILIZER_PRICE", fertilizers.getPrice());
+                values.put("FERTILIZER_QUANTITY", fertilizers.getQuantity());
+                values.put("FERTILIZER_COST", fertilizers.getTotalPrice());
+                values.put("FERTILIZER_PERCENTAGE", 1);
+                totalCost += fertilizers.getTotalPrice();
+            }
+
+            if (obj instanceof Insecticides) {
+                insecticides = (Insecticides) obj;
+                values.put("INSECTICIDES_NAME", insecticides.getName());
+                values.put("INSECTICIDES_PRICE", insecticides.getPrice());
+                values.put("INSECTICIDES_QUANTITY", insecticides.getQuantity());
+                values.put("INSECTICIDES_COST", insecticides.getTotalPrice());
+                values.put("INSECTICIDES_PERCENTAGE", 1);
+                totalCost += insecticides.getTotalPrice();
+            }
+
+
+
+
+        }
+        values.put("TOTAL_PERCENTAGE_PRODUCTS", 1);
+        values.put("HECTARE_SIZE", hectareSize);
+        values.put("PERCENTAGE_HECTARE_DONE", 1);
+        values.put("TOTAL_COST", totalCost);
+        dbWrite.insert("RESOURCE_PLANNING_TABLE", null, values);
     }
 
     @Override
