@@ -32,17 +32,73 @@ public class AccountingDAOImpl implements AccountingDAO {
     }
 
     @Override
-    public void addEntry(DBHelper dbHelper, String type) {
+    public Cursor getAllPlan(DBHelper dbHelper) {
         dbWrite = dbHelper.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put("TOTAL_COST", 0);
-        dbWrite.insert(type, null, values);
+        Cursor result = dbWrite.rawQuery("SELECT * FROM RESOURCE_PLANNING_TABLE", null);
+        return result;
     }
 
     @Override
-    public boolean checkExisting(DBHelper dbHelper, String type) {
+    public void addEntry(DBHelper dbHelper, String type) {
+        dbWrite = dbHelper.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put("TOTAL_COST", 0);
+        dbWrite.insert("WPI", null, values);
+    }
+
+    @Override
+    public void addEntryPlanning(DBHelper dbHelper, ArrayList<Object> objArray, double hectareSize) {
+        dbWrite = dbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        double totalCost = 0;
+        for (Object obj : objArray) {
+            if (obj instanceof Seeds) {
+                seeds = (Seeds) obj;
+                values.put("NAME", seeds.getName());
+                values.put("SEEDS_NAME", seeds.getName());
+                values.put("SEEDS_PRICE", seeds.getPrice());
+                values.put("SEEDS_QUANTITY", seeds.getQuantity());
+                values.put("SEEDS_COST", seeds.getTotalPrice());
+                values.put("SEEDS_PERCENTAGE", 1);
+                totalCost += seeds.getTotalPrice();
+            }
+
+            if (obj instanceof Fertilizers) {
+                fertilizers = (Fertilizers) obj;
+                values.put("FERTILIZER_NAME", fertilizers.getName());
+                values.put("FERTILIZER_PRICE", fertilizers.getPrice());
+                values.put("FERTILIZER_QUANTITY", fertilizers.getQuantity());
+                values.put("FERTILIZER_COST", fertilizers.getTotalPrice());
+                values.put("FERTILIZER_PERCENTAGE", 1);
+                totalCost += fertilizers.getTotalPrice();
+            }
+
+            if (obj instanceof Insecticides) {
+                insecticides = (Insecticides) obj;
+                values.put("INSECTICIDES_NAME", insecticides.getName());
+                values.put("INSECTICIDES_PRICE", insecticides.getPrice());
+                values.put("INSECTICIDES_QUANTITY", insecticides.getQuantity());
+                values.put("INSECTICIDES_COST", insecticides.getTotalPrice());
+                values.put("INSECTICIDES_PERCENTAGE", 1);
+                totalCost += insecticides.getTotalPrice();
+            }
+
+
+
+
+        }
+        values.put("TOTAL_PERCENTAGE_PRODUCTS", 1);
+        values.put("HECTARE_SIZE", hectareSize);
+        values.put("PERCENTAGE_HECTARE_DONE", 1);
+        values.put("TOTAL_COST", totalCost);
+        dbWrite.insert("RESOURCE_PLANNING_TABLE", null, values);
+    }
+
+    @Override
+    public boolean checkExistingWPI(DBHelper dbHelper) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        String queryForCheck = "SELECT * FROM "+ type;
+        String queryForCheck = "SELECT * FROM WPI";
 
         Cursor result = db.rawQuery(queryForCheck, null);
         if (result.getCount() == 0) {
@@ -106,21 +162,17 @@ public class AccountingDAOImpl implements AccountingDAO {
                     String[] selectionArgs = {seedlings.getName()};
                     dbRead.update("RAW_MATERIALS", val, selection, selectionArgs);
                 }
-
-
-                String queryUpdate3 = "SELECT TOTAL_COST FROM WPI ";
-                Cursor cursor3 = dbRead.rawQuery(queryUpdate3, null);
-                ContentValues val3 = new ContentValues();
-                double costTotal3 = 0;
-                if (cursor3.moveToFirst()) {
+                String queryUpdate2 = "SELECT TOTAL_COST FROM WPI ";
+                Cursor cursor2 = dbRead.rawQuery(queryUpdate2, null);
+                ContentValues values = new ContentValues();
+                double costTotal = 0;
+                if (cursor2.moveToFirst()) {
                     do {
-                        costTotal3 = cursor3.getDouble(cursor3.getColumnIndex("TOTAL_COST"));
-                    } while (cursor3.moveToNext());
-                    val3.put("TOTAL_COST", costTotal3 + seedlings.getTotalPrice());
-                    dbRead.update("WPI", val3, "WPIID=" + 1, null);
+                        costTotal = cursor2.getDouble(cursor2.getColumnIndex("TOTAL_COST"));
+                    } while (cursor2.moveToNext());
+                    values.put("TOTAL_COST", costTotal + seedlings.getTotalPrice());
+                    dbRead.update("WPI", values, "WPIID=" + 1, null);
                 }
-
-
             }
 
 
@@ -137,68 +189,30 @@ public class AccountingDAOImpl implements AccountingDAO {
                         seed.setTotalPrice(cursor.getDouble(cursor.getColumnIndex("TOTAL_COST")));
                         seed.setQuantity(cursor.getInt(cursor.getColumnIndex("QUANTITY")));
                     } while (cursor.moveToNext());
+
+                    val.put("DATE", seeds.getDate());
+                    val.put("TYPE", seeds.getType());
+                    val.put("NAME", seeds.getName());
+                    val.put("QUANTITY", seed.getQuantity() - seeds.getQuantity());
+                    val.put("PRICE", seeds.getPrice());
+                    val.put("TOTAL_COST", seed.getTotalPrice() - seeds.getTotalPrice());
+                    String selection = "NAME" + " LIKE ?";
+                    String[] selectionArgs = {seeds.getName()};
+                    dbRead.update("RAW_MATERIALS", val, selection, selectionArgs);
+                    //costTotal += seeds.getTotalPrice();
+
                 }
-                val.put("DATE", seeds.getDate());
-                val.put("TYPE", seeds.getType());
-                val.put("NAME", seeds.getName());
-                val.put("QUANTITY", seed.getQuantity() - seeds.getQuantity());
-                val.put("PRICE", seeds.getPrice());
-                val.put("TOTAL_COST", seed.getTotalPrice() - seeds.getTotalPrice());
-                String selection = "NAME" + " LIKE ?";
-                String[] selectionArgs = {seeds.getName()};
-                dbRead.update("RAW_MATERIALS", val, selection, selectionArgs);
-
-
                 String queryUpdate2 = "SELECT TOTAL_COST FROM WPI ";
                 Cursor cursor2 = dbRead.rawQuery(queryUpdate2, null);
-                ContentValues val2 = new ContentValues();
-                double costTotal2 = 0;
+                ContentValues values = new ContentValues();
+                double costTotal = 0;
                 if (cursor2.moveToFirst()) {
                     do {
-                        costTotal2 = cursor2.getDouble(cursor2.getColumnIndex("TOTAL_COST"));
+                        costTotal = cursor2.getDouble(cursor2.getColumnIndex("TOTAL_COST"));
                     } while (cursor2.moveToNext());
-                    val2.put("TOTAL_COST", costTotal2 + seeds.getTotalPrice());
+                    values.put("TOTAL_COST", costTotal + seeds.getTotalPrice());
+                    dbRead.update("WPI", values, "WPIID=" + 1, null);
                 }
-                dbRead.update("WPI", val2, "WPIID=" + 1, null);
-
-
-                String queryUpdate3 = "SELECT * FROM UTILIZE_WPI WHERE NAME = '" + seeds.getName() + "'";
-                Cursor cursor3 = dbRead.rawQuery(queryUpdate3, null);
-                ContentValues val3 = new ContentValues();
-                double  seeds_quantity = 0,seeds_cost = 0, seeds_percentage = 0, total_percent=0, percentage_hectare=0,total_cost=0 ;
-                if (cursor3.moveToFirst()) {
-                    do {
-                        seeds_quantity = cursor3.getDouble(cursor3.getColumnIndex("SEEDS_QUANTITY"));
-                        seeds_cost = cursor3.getDouble(cursor3.getColumnIndex("SEEDS_COST"));
-                        seeds_percentage = cursor3.getDouble(cursor3.getColumnIndex("SEEDS_PERCENTAGE"));
-                        total_percent = cursor3.getDouble(cursor3.getColumnIndex("TOTAL_PERCENTAGE_PRODUCTS"));
-                        percentage_hectare = cursor3.getDouble(cursor3.getColumnIndex("PERCENTAGE_HECTARE_DONE"));
-                        total_cost = cursor3.getDouble(cursor3.getColumnIndex("TOTAL_COST"));
-                    } while (cursor3.moveToNext());
-                }
-
-                String queryUpdate4 = "SELECT * FROM RESOURCE_PLANNING_TABLE WHERE NAME = '" + seeds.getName() + "'";
-                Cursor cursor4 = dbRead.rawQuery(queryUpdate4, null);
-                double  seeds_quantity2 = 0,total_percent2=0, percentage_hectare2=0;
-                if (cursor4.moveToFirst()) {
-                    do {
-                        seeds_quantity2 = cursor4.getDouble(cursor4.getColumnIndex("SEEDS_QUANTITY"));
-                        total_percent2 = cursor4.getDouble(cursor4.getColumnIndex("TOTAL_PERCENTAGE_PRODUCTS"));
-                        percentage_hectare2 = cursor4.getDouble(cursor4.getColumnIndex("PERCENTAGE_HECTARE_DONE"));
-                    } while (cursor4.moveToNext());
-                }
-
-                val3.put("SEEDS_PRICE", seeds.getPrice());
-                val3.put("SEEDS_QUANTITY",seeds_quantity + seeds.getQuantity());
-                val3.put("SEEDS_COST", seeds_cost + seeds.getTotalPrice());
-                val3.put("SEEDS_PERCENTAGE",seeds_percentage + (seeds_quantity + seeds.getQuantity())/seeds_quantity2);
-                val3.put("TOTAL_PERCENTAGE_PRODUCTS",(total_percent + (seeds_percentage  + (seeds_quantity + seeds.getQuantity())/seeds_quantity2))/3);
-                val3.put("PERCENTAGE_HECTARE_DONE",(((total_percent + (seeds_percentage  + (seeds_quantity + seeds.getQuantity())/seeds_quantity2))/3)/total_percent2)*(percentage_hectare/percentage_hectare2) );
-                val3.put("TOTAL_COST",total_cost+ seeds.getTotalPrice());
-                dbRead.update("UTILIZE_WPI", val3, selection, selectionArgs);
-
-
-
             }
 
             if (obj instanceof Insecticides) {

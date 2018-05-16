@@ -13,7 +13,7 @@ public interface RawMaterialsDAO {
      ArrayList<String> retrieveListSpinner(DBHelper dbHelper, String type);
      void addTransaction(DBHelper dbHelper, Object object, String type);
      ArrayList<Object> retrieveList (DBHelper dbHelper, String type);
-     Object retreiveOne(DBHelper dbHelper, String type, String name);
+     Object retrieveOne(DBHelper dbHelper, String type, String name);
      boolean checkExisting (DBHelper dbHelper,String name);
      void updateTransactionAdd(DBHelper dbHelper, ArrayList<Object> objArray);
      void deleteEntry (DBHelper dbHelper, String name);

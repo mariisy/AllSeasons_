@@ -353,7 +353,6 @@ public class IndirectMaterialsDAOImpl implements IndirectMaterialsDAO {
         }
     }
 
-
     @Override
     public void deleteEntry(DBHelper dbHelper, String name) {
         dbWrite = dbHelper.getWritableDatabase();

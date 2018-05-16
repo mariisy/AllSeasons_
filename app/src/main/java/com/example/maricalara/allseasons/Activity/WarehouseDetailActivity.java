@@ -125,7 +125,7 @@ public class WarehouseDetailActivity extends AppCompatActivity {
                 break;
 
             case "Seeds":
-                object = rmDAO.retreiveOne(dbHelper, strType, strName);
+                object = rmDAO.retrieveOne(dbHelper, strType, strName);
                 seeds = (Seeds) object;
                 txtType.setText(seeds.getType().toString());
                 txtName.setText(seeds.getName().toString());
@@ -137,7 +137,7 @@ public class WarehouseDetailActivity extends AppCompatActivity {
                 break;
 
             case "Seedlings":
-                object = rmDAO.retreiveOne(dbHelper, strType, strName);
+                object = rmDAO.retrieveOne(dbHelper, strType, strName);
                 seedlings = (Seedlings) object;
                 txtType.setText(seedlings.getType().toString());
                 txtName.setText(seedlings.getName().toString());
