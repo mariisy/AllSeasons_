@@ -11,6 +11,6 @@ public interface AccountingDAO {
     Cursor getAllDataWPI(DBHelper dbHelper);
     void addEntry(DBHelper dbHelper, String type);
     Crops retrieveOne(DBHelper dbHelper, String type, String name);
-    boolean checkExistingWPI(DBHelper dbHelper);
+    boolean checkExisting(DBHelper dbHelper, String type);
     void updateWPI(DBHelper dbHelper, ArrayList<Object> objArray);
 }

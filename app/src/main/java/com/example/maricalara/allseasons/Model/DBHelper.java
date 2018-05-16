@@ -234,6 +234,7 @@ public class DBHelper extends SQLiteOpenHelper {
             dBColumnTotalCost + " REAL )";
 
     private String dbBuildQuery18 = "CREATE TABLE " + dbTableUtilizeFGI + " ( " +
+            dBColumnType + " TEXT, " +
             dBColumnDate + " TEXT, " +
             dBColumnType + " TEXT, " +
             dBColumnName + " TEXT, " +
