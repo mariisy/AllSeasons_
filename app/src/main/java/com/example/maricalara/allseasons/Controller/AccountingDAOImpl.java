@@ -264,18 +264,20 @@ public class AccountingDAOImpl implements AccountingDAO {
                 String queryUpdate3 = "SELECT * FROM UTILIZE_WPI WHERE NAME = '" + seeds.getName() + "'";
                 Cursor cursor3 = dbRead.rawQuery(queryUpdate3, null);
                 ContentValues val3 = new ContentValues();
-                double  seeds_quantity = 0,seeds_cost = 0, seeds_percentage = 0, total_percent=0, percentage_hectare=0,total_cost=0 ;
+                double  seeds_quantity = 0,seeds_cost = 0, fertilzer_percent=0,insecticides_percent=0,total_cost=0 ;
                 if (cursor3.moveToFirst()) {
                     do {
                         seeds_quantity = cursor3.getDouble(cursor3.getColumnIndex("SEEDS_QUANTITY"));
                         seeds_cost = cursor3.getDouble(cursor3.getColumnIndex("SEEDS_COST"));
                         total_cost = cursor3.getDouble(cursor3.getColumnIndex("TOTAL_COST"));
+                        fertilzer_percent = cursor3.getDouble(cursor3.getColumnIndex("FERTILIZER_PERCENTAGE"));
+                        insecticides_percent = cursor3.getDouble(cursor3.getColumnIndex("INSECTICIDES_PERCENTAGE"));
                     } while (cursor3.moveToNext());
                 }
 
                 String queryUpdate4 = "SELECT * FROM RESOURCE_PLANNING_TABLE WHERE NAME = '" + seeds.getName() + "'";
                 Cursor cursor4 = dbRead.rawQuery(queryUpdate4, null);
-                double  seeds_quantity2 = 0,total_percent2=0, percentage_hectare2=0;
+                double  seeds_quantity2 = 0;
                 if (cursor4.moveToFirst()) {
                     do {
                         seeds_quantity2 = cursor4.getDouble(cursor4.getColumnIndex("SEEDS_QUANTITY"));
@@ -286,8 +288,8 @@ public class AccountingDAOImpl implements AccountingDAO {
                 val3.put("SEEDS_QUANTITY",seeds_quantity + seeds.getQuantity());
                 val3.put("SEEDS_COST", seeds_cost + seeds.getTotalPrice());
                 val3.put("SEEDS_PERCENTAGE",(seeds_quantity + seeds.getQuantity())/seeds_quantity2);
-                val3.put("TOTAL_PERCENTAGE_PRODUCTS",((seeds_quantity + seeds.getQuantity())/seeds_quantity2)/3);
-                val3.put("PERCENTAGE_HECTARE_DONE",((seeds_quantity + seeds.getQuantity())/seeds_quantity2)/3);
+                val3.put("TOTAL_PERCENTAGE_PRODUCTS",(fertilzer_percent+insecticides_percent +((seeds_quantity + seeds.getQuantity())/seeds_quantity2))/3);
+                val3.put("PERCENTAGE_HECTARE_DONE",(fertilzer_percent+insecticides_percent +((seeds_quantity + seeds.getQuantity())/seeds_quantity2))/3);
                 val3.put("TOTAL_COST",total_cost+ seeds.getTotalPrice());
                 dbRead.update("UTILIZE_WPI", val3, selection, selectionArgs);
 
@@ -314,12 +316,12 @@ public class AccountingDAOImpl implements AccountingDAO {
                     val.put("QUANTITY", in.getQuantity() - insecticides.getQuantity());
                     val.put("PRICE", insecticides.getPrice());
                     val.put("TOTAL_COST", in.getTotalPrice() - insecticides.getTotalPrice());
-
-                    String selection = "NAME" + " LIKE ?";
-                    String[] selectionArgs = {insecticides.getName()};
-                    dbRead.update("INDIRECT_MATERIALS", val, selection, selectionArgs);
-                    // costTotal += insecticides.getTotalPrice();
                 }
+                String selection = "NAME" + " LIKE ?";
+                String[] selectionArgs = {insecticides.getName()};
+                dbRead.update("INDIRECT_MATERIALS", val, selection, selectionArgs);
+
+
                 String queryUpdate2 = "SELECT TOTAL_COST FROM WPI ";
                 Cursor cursor2 = dbRead.rawQuery(queryUpdate2, null);
                 ContentValues values = new ContentValues();
@@ -328,9 +330,46 @@ public class AccountingDAOImpl implements AccountingDAO {
                     do {
                         costTotal = cursor2.getDouble(cursor2.getColumnIndex("TOTAL_COST"));
                     } while (cursor2.moveToNext());
-                    values.put("TOTAL_COST", costTotal + insecticides.getTotalPrice());
-                    dbRead.update("WPI", values, "WPIID=" + 1, null);
                 }
+                values.put("TOTAL_COST", costTotal + insecticides.getTotalPrice());
+                dbRead.update("WPI", values, "WPIID=" + 1, null);
+
+                String selection2 = "NAME" + " LIKE ?";
+                String[] selectionArgs2 = {seeds.getName()};
+
+                String queryUpdate3 = "SELECT * FROM UTILIZE_WPI WHERE NAME = '" + seeds.getName() + "'";
+                Cursor cursor3 = dbRead.rawQuery(queryUpdate3, null);
+                ContentValues val3 = new ContentValues();
+                double  insecticides_quantity = 0,insecticides_cost = 0,  fertilzer_percent=0,seeds_percent=0,total_cost=0;
+
+                if (cursor3.moveToFirst()) {
+                    do {
+                        insecticides_quantity = cursor3.getDouble(cursor3.getColumnIndex("INSECTICIDES_QUANTITY"));
+                        insecticides_cost = cursor3.getDouble(cursor3.getColumnIndex("INSECTICIDES_COST"));
+                        total_cost = cursor3.getDouble(cursor3.getColumnIndex("TOTAL_COST"));
+                        fertilzer_percent = cursor3.getDouble(cursor3.getColumnIndex("FERTILIZER_PERCENTAGE"));
+                        seeds_percent = cursor3.getDouble(cursor3.getColumnIndex("SEEDS_PERCENTAGE"));
+                    } while (cursor3.moveToNext());
+                }
+
+                String queryUpdate4 = "SELECT * FROM RESOURCE_PLANNING_TABLE WHERE NAME = '" + seeds.getName() + "'";
+                Cursor cursor4 = dbRead.rawQuery(queryUpdate4, null);
+                double  insecticides_quantity2 = 0;
+                if (cursor4.moveToFirst()) {
+                    do {
+                        insecticides_quantity2 = cursor4.getDouble(cursor4.getColumnIndex("INSECTICIDES_QUANTITY"));
+                    } while (cursor4.moveToNext());
+                }
+
+                val3.put("INSECTICIDES_PRICE", insecticides.getPrice());
+                val3.put("INSECTICIDES_QUANTITY",insecticides_quantity + insecticides.getQuantity());
+                val3.put("INSECTICIDES_COST", insecticides_cost + insecticides.getTotalPrice());
+                val3.put("INSECTICIDES_PERCENTAGE",(insecticides_quantity + insecticides.getQuantity())/insecticides_quantity2);
+                val3.put("TOTAL_PERCENTAGE_PRODUCTS",(fertilzer_percent+seeds_percent +((insecticides_quantity + insecticides.getQuantity())/insecticides_quantity2))/3);
+                val3.put("PERCENTAGE_HECTARE_DONE",(fertilzer_percent+seeds_percent +((insecticides_quantity + insecticides.getQuantity())/insecticides_quantity2))/3);
+                val3.put("TOTAL_COST",total_cost+ insecticides.getTotalPrice());
+                dbRead.update("UTILIZE_WPI", val3, selection2, selectionArgs2);
+
             }
 
             if (obj instanceof Fertilizers) {
@@ -352,12 +391,12 @@ public class AccountingDAOImpl implements AccountingDAO {
                     val.put("QUANTITY", fe.getQuantity() - fertilizers.getQuantity());
                     val.put("PRICE", fertilizers.getPrice());
                     val.put("TOTAL_COST", fe.getTotalPrice() - fertilizers.getTotalPrice());
-
-                    String selection = "NAME" + " LIKE ?";
-                    String[] selectionArgs = {fertilizers.getName()};
-                    dbRead.update("INDIRECT_MATERIALS", val, selection, selectionArgs);
-
                 }
+                String selection = "NAME" + " LIKE ?";
+                String[] selectionArgs = {fertilizers.getName()};
+                dbRead.update("INDIRECT_MATERIALS", val, selection, selectionArgs);
+
+
                 String queryUpdate2 = "SELECT TOTAL_COST FROM WPI ";
                 Cursor cursor2 = dbRead.rawQuery(queryUpdate2, null);
                 ContentValues values = new ContentValues();
@@ -366,9 +405,45 @@ public class AccountingDAOImpl implements AccountingDAO {
                     do {
                         costTotal = cursor2.getDouble(cursor2.getColumnIndex("TOTAL_COST"));
                     } while (cursor2.moveToNext());
-                    values.put("TOTAL_COST", costTotal + fertilizers.getTotalPrice());
-                    dbRead.update("WPI", values, "WPIID=" + 1, null);
                 }
+                values.put("TOTAL_COST", costTotal + fertilizers.getTotalPrice());
+                dbRead.update("WPI", values, "WPIID=" + 1, null);
+
+
+                String queryUpdate3 = "SELECT * FROM UTILIZE_WPI WHERE NAME = '" + seeds.getName() + "'";
+                Cursor cursor3 = dbRead.rawQuery(queryUpdate3, null);
+                ContentValues val3 = new ContentValues();
+                double  fertilizers_quantity = 0,fertilizers_cost = 0, total_cost=0,seeds_percent=0, insecticides_percent=0 ;
+                if (cursor3.moveToFirst()) {
+                    do {
+                        fertilizers_quantity = cursor3.getDouble(cursor3.getColumnIndex("FERTILIZER_QUANTITY"));
+                        fertilizers_cost = cursor3.getDouble(cursor3.getColumnIndex("FERTILIZER_COST"));
+                        total_cost = cursor3.getDouble(cursor3.getColumnIndex("TOTAL_COST"));
+                        seeds_percent = cursor3.getDouble(cursor3.getColumnIndex("SEEDS_PERCENTAGE"));
+                        insecticides_percent = cursor3.getDouble(cursor3.getColumnIndex("INSECTICIDES_PERCENTAGE"));
+                    } while (cursor3.moveToNext());
+                }
+
+                String queryUpdate4 = "SELECT * FROM RESOURCE_PLANNING_TABLE WHERE NAME = '" + seeds.getName() + "'";
+                Cursor cursor4 = dbRead.rawQuery(queryUpdate4, null);
+                double  fertilizers_quantity2 = 0;
+                if (cursor4.moveToFirst()) {
+                    do {
+                        fertilizers_quantity2 = cursor4.getDouble(cursor4.getColumnIndex("FERTILIZER_QUANTITY"));
+                    } while (cursor4.moveToNext());
+                }
+                String selection2 = "NAME" + " LIKE ?";
+                String[] selectionArgs2 = {seeds.getName()};
+                val3.put("FERTILIZER_PRICE", fertilizers.getPrice());
+                val3.put("FERTILIZER_QUANTITY",fertilizers_quantity + fertilizers.getQuantity());
+                val3.put("FERTILIZER_COST", fertilizers_cost + fertilizers.getTotalPrice());
+                val3.put("FERTILIZER_PERCENTAGE",(fertilizers_quantity + fertilizers.getQuantity())/fertilizers_quantity2);
+                val3.put("TOTAL_PERCENTAGE_PRODUCTS",(seeds_percent+ insecticides_percent+((fertilizers_quantity + fertilizers.getQuantity())/fertilizers_quantity2))/3);
+                val3.put("PERCENTAGE_HECTARE_DONE",(seeds_percent+ insecticides_percent+((fertilizers_quantity + fertilizers.getQuantity())/fertilizers_quantity2))/3);
+                val3.put("TOTAL_COST",total_cost+ fertilizers.getTotalPrice());
+                dbRead.update("UTILIZE_WPI", val3, selection2, selectionArgs2);
+
+
             }
 
             if (obj instanceof Packaging) {
