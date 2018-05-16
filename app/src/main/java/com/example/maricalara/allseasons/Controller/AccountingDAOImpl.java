@@ -137,71 +137,68 @@ public class AccountingDAOImpl implements AccountingDAO {
                         seed.setTotalPrice(cursor.getDouble(cursor.getColumnIndex("TOTAL_COST")));
                         seed.setQuantity(cursor.getInt(cursor.getColumnIndex("QUANTITY")));
                     } while (cursor.moveToNext());
-
-                    val.put("DATE", seeds.getDate());
-                    val.put("TYPE", seeds.getType());
-                    val.put("NAME", seeds.getName());
-                    val.put("QUANTITY", seed.getQuantity() - seeds.getQuantity());
-                    val.put("PRICE", seeds.getPrice());
-                    val.put("TOTAL_COST", seed.getTotalPrice() - seeds.getTotalPrice());
-                    String selection = "NAME" + " LIKE ?";
-                    String[] selectionArgs = {seeds.getName()};
-                    dbRead.update("RAW_MATERIALS", val, selection, selectionArgs);
-
                 }
-
-                String queryUpdate2 = "SELECT * FROM UTILIZE_WPI WHERE NAME = '" + seeds.getName() + "'";
-                Cursor cursor2 = dbRead.rawQuery(queryUpdate2, null);
-                ContentValues val2 = new ContentValues();
-                double  seeds_quantity = 0,seeds_cost = 0, seeds_percentage = 0, total_percent=0, percentage_hectare=0,total_cost=0 ;
-                if (cursor2.moveToFirst()) {
-                    do {
-                        seeds_quantity = cursor2.getDouble(cursor2.getColumnIndex("SEEDS_QUANTITY"));
-                        seeds_cost = cursor2.getDouble(cursor2.getColumnIndex("SEEDS_COST"));
-                        seeds_percentage = cursor2.getDouble(cursor2.getColumnIndex("SEEDS_PERCENTAGE"));
-                        total_percent = cursor2.getDouble(cursor2.getColumnIndex("TOTAL_PERCENTAGE_PRODUCTS"));
-                        percentage_hectare = cursor2.getDouble(cursor2.getColumnIndex("PERCENTAGE_HECTARE_DONE"));
-                        total_cost = cursor2.getDouble(cursor2.getColumnIndex("TOTAL_COST"));
-                    } while (cursor2.moveToNext());
-
-                }
-                Cursor cursor4 = dbRead.rawQuery(queryUpdate2, null);
-                ContentValues val4 = new ContentValues();
-             //   double  seeds_quantity = 0,seeds_cost = 0, seeds_percentage = 0, total_percent=0, percentage_hectare=0,total_cost=0 ;
-                if (cursor4.moveToFirst()) {
-                    do {
-                        seeds_quantity = cursor4.getDouble(cursor4.getColumnIndex("SEEDS_QUANTITY"));
-                        seeds_cost = cursor4.getDouble(cursor4.getColumnIndex("SEEDS_COST"));
-                        seeds_percentage = cursor4.getDouble(cursor4.getColumnIndex("SEEDS_PERCENTAGE"));
-                        total_percent = cursor4.getDouble(cursor4.getColumnIndex("TOTAL_PERCENTAGE_PRODUCTS"));
-                        percentage_hectare = cursor4.getDouble(cursor4.getColumnIndex("PERCENTAGE_HECTARE_DONE"));
-                        total_cost = cursor4.getDouble(cursor4.getColumnIndex("TOTAL_COST"));
-                    } while (cursor4.moveToNext());
-
-                }
-                val2.put("SEEDS_PRICE", seeds.getPrice());
-                val2.put("SEEDS_QUANTITY",seeds_quantity + seeds.getQuantity());
-                val2.put("SEEDS_COST", seeds_cost + seeds.getTotalPrice());
-                val2.put("SEEDS_PERCENTAGE",seeds_percentage+ seeds.getPrice());
-                val2.put("TOTAL_PERCENTAGE_PRODUCTS",total_percent+ seeds.getPrice());
-                val2.put("PERCENTAGE_HECTARE_DONE",percentage_hectare+ seeds.getPrice());
-                val2.put("TOTAL_COST",total_cost+ seeds.getPrice());
+                val.put("DATE", seeds.getDate());
+                val.put("TYPE", seeds.getType());
+                val.put("NAME", seeds.getName());
+                val.put("QUANTITY", seed.getQuantity() - seeds.getQuantity());
+                val.put("PRICE", seeds.getPrice());
+                val.put("TOTAL_COST", seed.getTotalPrice() - seeds.getTotalPrice());
                 String selection = "NAME" + " LIKE ?";
                 String[] selectionArgs = {seeds.getName()};
-                dbRead.update("UTILIZE_WPI", val2, selection, selectionArgs);
+                dbRead.update("RAW_MATERIALS", val, selection, selectionArgs);
 
 
-                String queryUpdate3 = "SELECT TOTAL_COST FROM WPI ";
+                String queryUpdate2 = "SELECT TOTAL_COST FROM WPI ";
+                Cursor cursor2 = dbRead.rawQuery(queryUpdate2, null);
+                ContentValues val2 = new ContentValues();
+                double costTotal2 = 0;
+                if (cursor2.moveToFirst()) {
+                    do {
+                        costTotal2 = cursor2.getDouble(cursor2.getColumnIndex("TOTAL_COST"));
+                    } while (cursor2.moveToNext());
+                    val2.put("TOTAL_COST", costTotal2 + seeds.getTotalPrice());
+                }
+                dbRead.update("WPI", val2, "WPIID=" + 1, null);
+
+
+                String queryUpdate3 = "SELECT * FROM UTILIZE_WPI WHERE NAME = '" + seeds.getName() + "'";
                 Cursor cursor3 = dbRead.rawQuery(queryUpdate3, null);
                 ContentValues val3 = new ContentValues();
-                double costTotal3 = 0;
+                double  seeds_quantity = 0,seeds_cost = 0, seeds_percentage = 0, total_percent=0, percentage_hectare=0,total_cost=0 ;
                 if (cursor3.moveToFirst()) {
                     do {
-                        costTotal3 = cursor3.getDouble(cursor3.getColumnIndex("TOTAL_COST"));
+                        seeds_quantity = cursor3.getDouble(cursor3.getColumnIndex("SEEDS_QUANTITY"));
+                        seeds_cost = cursor3.getDouble(cursor3.getColumnIndex("SEEDS_COST"));
+                        seeds_percentage = cursor3.getDouble(cursor3.getColumnIndex("SEEDS_PERCENTAGE"));
+                        total_percent = cursor3.getDouble(cursor3.getColumnIndex("TOTAL_PERCENTAGE_PRODUCTS"));
+                        percentage_hectare = cursor3.getDouble(cursor3.getColumnIndex("PERCENTAGE_HECTARE_DONE"));
+                        total_cost = cursor3.getDouble(cursor3.getColumnIndex("TOTAL_COST"));
                     } while (cursor3.moveToNext());
-                    val3.put("TOTAL_COST", costTotal3 + seeds.getTotalPrice());
-                    dbRead.update("WPI", val3, "WPIID=" + 1, null);
                 }
+
+                String queryUpdate4 = "SELECT * FROM RESOURCE_PLANNING_TABLE WHERE NAME = '" + seeds.getName() + "'";
+                Cursor cursor4 = dbRead.rawQuery(queryUpdate4, null);
+                double  seeds_quantity2 = 0,total_percent2=0, percentage_hectare2=0;
+                if (cursor4.moveToFirst()) {
+                    do {
+                        seeds_quantity2 = cursor4.getDouble(cursor4.getColumnIndex("SEEDS_QUANTITY"));
+                        total_percent2 = cursor4.getDouble(cursor4.getColumnIndex("TOTAL_PERCENTAGE_PRODUCTS"));
+                        percentage_hectare2 = cursor4.getDouble(cursor4.getColumnIndex("PERCENTAGE_HECTARE_DONE"));
+                    } while (cursor4.moveToNext());
+                }
+
+                val3.put("SEEDS_PRICE", seeds.getPrice());
+                val3.put("SEEDS_QUANTITY",seeds_quantity + seeds.getQuantity());
+                val3.put("SEEDS_COST", seeds_cost + seeds.getTotalPrice());
+                val3.put("SEEDS_PERCENTAGE",seeds_percentage + (seeds_quantity + seeds.getQuantity())/seeds_quantity2);
+                val3.put("TOTAL_PERCENTAGE_PRODUCTS",(total_percent + (seeds_percentage  + (seeds_quantity + seeds.getQuantity())/seeds_quantity2))/3);
+                val3.put("PERCENTAGE_HECTARE_DONE",(((total_percent + (seeds_percentage  + (seeds_quantity + seeds.getQuantity())/seeds_quantity2))/3)/total_percent2)*(percentage_hectare/percentage_hectare2) );
+                val3.put("TOTAL_COST",total_cost+ seeds.getTotalPrice());
+                dbRead.update("UTILIZE_WPI", val3, selection, selectionArgs);
+
+
+
             }
 
             if (obj instanceof Insecticides) {
