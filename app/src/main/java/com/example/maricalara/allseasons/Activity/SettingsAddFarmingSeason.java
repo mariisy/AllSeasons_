@@ -1,10 +1,11 @@
 package com.example.maricalara.allseasons.Activity;
 
 import android.app.DatePickerDialog;
-import android.graphics.Color;
-import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.AppCompatActivity;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.design.widget.TextInputLayout;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -13,36 +14,72 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 
+import com.example.maricalara.allseasons.Controller.AccountingDAO;
+import com.example.maricalara.allseasons.Controller.AccountingDAOImpl;
+import com.example.maricalara.allseasons.Controller.IndirectMaterialsDAO;
+import com.example.maricalara.allseasons.Controller.IndirectMaterialsDAOImpl;
+import com.example.maricalara.allseasons.Controller.RawMaterialsDAO;
+import com.example.maricalara.allseasons.Controller.RawMaterialsDAOImpl;
 import com.example.maricalara.allseasons.Controller.TransactionDAO;
 import com.example.maricalara.allseasons.Controller.TransactionDAOImpl;
 import com.example.maricalara.allseasons.Model.DBHelper;
+import com.example.maricalara.allseasons.Model.Equipment;
+import com.example.maricalara.allseasons.Model.Fertilizers;
+import com.example.maricalara.allseasons.Model.Insecticides;
+import com.example.maricalara.allseasons.Model.Packaging;
+import com.example.maricalara.allseasons.Model.Seedlings;
+import com.example.maricalara.allseasons.Model.Seeds;
 import com.example.maricalara.allseasons.R;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 public class SettingsAddFarmingSeason extends AppCompatActivity {
 
     Toolbar toolbar;
     private EditText txtQty, txtQty1, txtQty2, txtDate, txtHectareSize;
     private MaterialBetterSpinner spinnerSeed, spinnerFertilizer, spinnerInsecticide;
-    private Button btnSetData, btnDatePicker;
+    private Button btnSetData, btnDatePicker, btnViewData;
     private TextInputLayout inputLayoutqty, inputLayoutqty1, inputLayoutqty2, inputLayoutDate, inputLayoutLand;
     private ArrayAdapter<String> arrayAdapter2, arrayAdapter3, arrayAdapter1;
     private ArrayList<String> arrListSeed, arrListInsecticides, arrListFertilizers;
+
+
+    //DAO
+    private IndirectMaterialsDAO imDao = new IndirectMaterialsDAOImpl();
+    private RawMaterialsDAO rmDAO = new RawMaterialsDAOImpl();
+    private AccountingDAO aDAO = new AccountingDAOImpl();
     private TransactionDAO tDAO = new TransactionDAOImpl();
     private DBHelper dbHelper = new DBHelper(SettingsAddFarmingSeason.this);
-    //data
-    //Sample for List for Spinner type 1
 
+    //get Date String
+    Date date = new Date();
+    SimpleDateFormat sdf = new SimpleDateFormat("EEEE");
+    Date d = new Date();
+    String dayOfTheWeek = sdf.format(d);
+    String dateForTheDay = DateFormat.getDateInstance().format(date);
+    String strDate = "Date: " + dayOfTheWeek + ", " + dateForTheDay;
+
+    //data variables
     private DatePickerDialog dpd;
-
-
-
+    Calendar cal = Calendar.getInstance();
+    private String dateSet;
+    private String seed, fertilizer, insecticide;
+    private int seedQty, fertilizerQty, insecticideQty;
+    private double price, price1, price2, totalPrice, totalPrice1, totalPrice2;
+    private ArrayList<Object> arrObject = new ArrayList<>();
+    private ArrayList<ArrayList<Object>> arrTransact = new ArrayList<>();
+    Object object = null, object1 = null, object2 = null;
+    Seeds seeds;
+    Seedlings seedlings;
+    Fertilizers fertilizers;
+    Insecticides insecticides;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +98,7 @@ public class SettingsAddFarmingSeason extends AppCompatActivity {
         inputLayoutqty1 = (TextInputLayout) findViewById(R.id.input_layout_qty1);
         inputLayoutqty2 = (TextInputLayout) findViewById(R.id.input_layout_qty2);
         inputLayoutDate = (TextInputLayout) findViewById(R.id.input_layout_date);
-        inputLayoutLand  = (TextInputLayout) findViewById(R.id.input_layout_hectare);
+        inputLayoutLand = (TextInputLayout) findViewById(R.id.input_layout_hectare);
         txtQty = (EditText) findViewById(R.id.txtQty);
         txtQty1 = (EditText) findViewById(R.id.txtQty1);
         txtQty2 = (EditText) findViewById(R.id.txtQty2);
@@ -71,17 +108,34 @@ public class SettingsAddFarmingSeason extends AppCompatActivity {
         spinnerFertilizer = (MaterialBetterSpinner) findViewById(R.id.spinnerFertilizer);
         spinnerInsecticide = (MaterialBetterSpinner) findViewById(R.id.spinnerInsecticide);
         btnSetData = (Button) findViewById(R.id.btnSetData);
+        btnViewData = (Button) findViewById(R.id.btnViewData);
         btnDatePicker = (Button) findViewById(R.id.btnDatePicker);
 
         btnSetData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if(validateQty() && validateType()){
+                if (validateQty() && validateType()) {
                     //do something
+                    setData();
                 }
             }
         });
+
+        btnDatePicker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        btnViewData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
         arrListFertilizers = tDAO.retrieveListSpinnerColumn(dbHelper, "NAME", "TYPE", "Fertilizer");
         arrayAdapter3 = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, arrListFertilizers);
         spinnerFertilizer.setAdapter(arrayAdapter3);
@@ -92,6 +146,71 @@ public class SettingsAddFarmingSeason extends AppCompatActivity {
         arrayAdapter3 = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, arrListSeed);
         spinnerSeed.setAdapter(arrayAdapter3);
 
+    }
+
+    private void addCart() {
+
+    }
+
+    private void setData() {
+
+        seedQty = Integer.valueOf(txtQty.getText().toString());
+        fertilizerQty = Integer.valueOf(txtQty1.getText().toString());
+        insecticideQty = Integer.valueOf(txtQty2.getText().toString());
+        seed = spinnerSeed.getText().toString();
+        fertilizer = spinnerFertilizer.getText().toString();
+        insecticide = spinnerInsecticide.getText().toString();
+
+
+
+        try {
+            object = rmDAO.retrieveOne(dbHelper, "Seeds", seed);
+            seeds = (Seeds) object;
+                price = seeds.getPrice();
+                totalPrice = price * seedQty;
+                arrObject.add(new Seeds("Seeds", seed, seedQty, price, totalPrice, strDate));
+
+            object = imDao.retrieveOne(dbHelper, "Fertilizer", fertilizer);
+                fertilizers = (Fertilizers) object;
+                price1 = fertilizers.getPrice();
+                totalPrice = price * fertilizerQty;
+                arrObject.add(new Fertilizers("Fertilizers", fertilizer, fertilizerQty, price, totalPrice, strDate));
+
+            object = imDao.retrieveOne(dbHelper, "Insecticides", insecticide);
+            insecticides = (Insecticides) object;
+                price = insecticides.getPrice();
+                totalPrice = price * insecticideQty;
+                arrObject.add(new Insecticides("Insecticides", insecticide, insecticideQty, price, totalPrice, strDate));
+
+
+
+            new AlertDialog.Builder(SettingsAddFarmingSeason.this)
+                    .setTitle("Adding Entry")
+                    .setMessage(arrObject.toString() + " Added! /n Would you like to add another entry?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                        }
+                    })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            addCart();
+                            finish();
+                        }
+                    })
+                    .show();
+
+        } catch (Exception e) {
+            new AlertDialog.Builder(SettingsAddFarmingSeason.this)
+                    .setTitle("Adding Entry")
+                    .setMessage("Adding entry unsuccesful! /n Please try again."+e)
+                    .setNeutralButton("Ok", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                        }
+                    })
+                    .show();
+        }
     }
 
 

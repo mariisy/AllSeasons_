@@ -15,13 +15,13 @@
         android:fillViewport="true">
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:orientation="vertical"
-            android:paddingLeft="24dp"
-            android:paddingRight="24dp"
-            android:paddingTop="56dp">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:orientation="vertical"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp"
+        android:paddingTop="56dp">
 
             <android.support.v7.widget.AppCompatButton
                 android:id="@+id/btnDatePicker"
@@ -169,6 +169,13 @@
             <!-- Submit -->
             <android.support.v7.widget.AppCompatButton
                 android:id="@+id/btnSetData"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Set Data!" />
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/btnViewData"
                 style="@style/Widget.AppCompat.Button.Colored"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"

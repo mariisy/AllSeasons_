@@ -581,7 +581,7 @@ public class TransactionsAddBought extends AppCompatActivity {
                 if (tDAO.checkExistingWarehouse(dbHelper, type, itemName)) {
                     try {
 
-                        object = rmDAO.retreiveOne(dbHelper, type, itemName);
+                        object = rmDAO.retrieveOne(dbHelper, type, itemName);
                         seeds = (Seeds) object;
                         price = seeds.getPrice();
                         totalPrice = seeds.getPrice() * qty;
@@ -637,7 +637,7 @@ public class TransactionsAddBought extends AppCompatActivity {
                 if (tDAO.checkExistingWarehouse(dbHelper, type, itemName)) {
                     try {
 
-                        object = rmDAO.retreiveOne(dbHelper, type, itemName);
+                        object = rmDAO.retrieveOne(dbHelper, type, itemName);
                         seedlings = (Seedlings) object;
                         price = seedlings.getPrice();
                         totalPrice = seedlings.getPrice() * qty;

@@ -12,10 +12,12 @@ import android.view.ViewGroup;
 import com.example.maricalara.allseasons.Adapter.ViewPagerAdapter;
 import com.example.maricalara.allseasons.R;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
@@ -60,15 +62,21 @@ public class FarmingProgress extends Fragment {
         AddValuesToPIEENTRY();
         AddValuesToPieEntryLabels();
         pieDataSet = new PieDataSet(PIEENTRY, "");
+        //PIEDATA = new PieData(PieEntryLabels, pieDataSet);
         PIEDATA = new PieData(PieEntryLabels, pieDataSet);
-        pieDataSet.setColors(ColorTemplate.JOYFUL_COLORS);
+        pieDataSet.setColors(ColorTemplate.VORDIPLOM_COLORS);
 
+
+        pieDataSet.setValueFormatter(new PercentFormatter());
+        pieChart.setUsePercentValues(true);
         pieChart.setData(PIEDATA);
         pieChart.animateY(2000);
 
+        pieChart1.setUsePercentValues(true);
         pieChart1.setData(PIEDATA);
         pieChart1.animateY(2000);
 
+        pieChart2.setUsePercentValues(true);
         pieChart2.setData(PIEDATA);
         pieChart2.animateY(2000);
 
@@ -99,4 +107,6 @@ public class FarmingProgress extends Fragment {
     public void onDetach() {
         super.onDetach();
     }
+
+
 }

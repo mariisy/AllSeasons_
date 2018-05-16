@@ -104,7 +104,7 @@ public class RawMaterialsDAOImpl implements RawMaterialsDAO {
     }
 
     @Override
-    public Object retreiveOne(DBHelper dbHelper, String type, String name) {
+    public Object retrieveOne(DBHelper dbHelper, String type, String name) {
         dbRead = dbHelper.getReadableDatabase();
         String queryForRetrievalOne = "SELECT * FROM " + "RAW_MATERIALS WHERE NAME = '" + name + "'  AND TYPE = '" + type + "' ";
         Cursor cursor = dbRead.rawQuery(queryForRetrievalOne, null);
