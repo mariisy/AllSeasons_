@@ -30,7 +30,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public String dbTableDL = "DIRECT_LABOR";
     public String dbTableIL = "INDIRECT_LABOR";
     public String dbTableSE = "SALARIES_EXPENSE";
-    public String dbTableSupplier ="SUPPLIER";
+    public String dbTableSupplier = "SUPPLIER";
     public String dbTableWPI = "WPI";
     public String dbTableFGI = "FGI";
     public String dbTableCGS = "CGS";
@@ -76,7 +76,6 @@ public class DBHelper extends SQLiteOpenHelper {
     public String dbColumnTotal_Percentage_Hectare_Done = "PERCENTAGE_HECTARE_DONE";
 
 
-
     public String dbColumnEmployeeID = "EMPLOYEE_ID";
     public String dbColumnEmployeeFullID = "EMPLOYEE_FULL_ID";
     public String dbColumnAccountType = "ACCOUNT_TYPE";
@@ -92,7 +91,6 @@ public class DBHelper extends SQLiteOpenHelper {
     public String dbColumnCGSID = "CGSID";
 
     //db Query
-
 
 
     private String dbBuildQuery1 = "CREATE TABLE " + dbTableRawMaterials + " ( " +
@@ -121,16 +119,16 @@ public class DBHelper extends SQLiteOpenHelper {
             dBColumnTotalCost + " REAL )";
 
     private String dbBuildQuery4 = "CREATE TABLE " + dbTableWPI + " ( " +
-            dbColumnWPIID+ " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            dbColumnWPIID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             dBColumnTotalCost + " REAL )";
 
     private String dbBuildQuery5 = "CREATE TABLE " + dbTableFGI + " ( " +
-            dbColumnFGIID+ " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            dbColumnFGIID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             dBColumnTotalCost + " REAL )";
 
 
     private String dbBuildQuery6 = "CREATE TABLE " + dbTableCGS + " ( " +
-            dbColumnCGSID+ " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            dbColumnCGSID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             dBColumnTotalCost + " REAL )";
 
     private String dbBuildQuery7 = "CREATE TABLE " + dbTableSalesRevenue + " ( " +
@@ -164,7 +162,7 @@ public class DBHelper extends SQLiteOpenHelper {
             dbColumnSalary + " REAL  )";
 
     private String dbBuildQuery11 = "CREATE TABLE " + dbTableTransation + " ( " +
-            dBColumnTransID+ " int PRIMARY KEY, " +
+            dBColumnTransID + " int PRIMARY KEY, " +
             dbColumnTransactionID + " TEXT, " +
             dBColumnDate + " TEXT, " +
             dBColumnType + " TEXT, " +
@@ -222,6 +220,9 @@ public class DBHelper extends SQLiteOpenHelper {
 
     private String dbBuildQuery17 = "CREATE TABLE " + dbTableUtilizeWPI + " ( " +
             dBColumnName + " TEXT, " +
+            dbColumnSeedsName + " TEXT, " +
+            dbColumnFertilizerName + " TEXT, " +
+            dbColumnInsecticidesName + " TEXT, " +
             dbColumnSeedsPrice + " REAL, " +
             dbColumnFertilizerPrice + " REAL, " +
             dbColumnInsecticidesPrice + " REAL, " +
@@ -244,7 +245,7 @@ public class DBHelper extends SQLiteOpenHelper {
             dBColumnType + " TEXT, " +
             dBColumnName + " TEXT, " +
             dBColumnWeight + " REAL, " +
-            dbColumnTotal_Percentage_Hectare_Done  + " REAL, " +
+            dbColumnTotal_Percentage_Hectare_Done + " REAL, " +
             dBColumnTotalCost + " REAL )";
 
     private String dbBuildQuery19 = "CREATE TABLE " + dbTableUtilizeCGS + " ( " +
@@ -269,7 +270,6 @@ public class DBHelper extends SQLiteOpenHelper {
     private String dbDestroyQuery13 = "DROP TABLE IF EXISTS " + dbTableIL;
     private String dbDestroyQuery14 = "DROP TABLE IF EXISTS " + dbTableSE;
     private String dbDestroyQuery15 = "DROP TABLE IF EXISTS " + dbTableFGI;
-
 
 
     public DBHelper(Context context) {
@@ -316,7 +316,8 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(dbBuildQuery10);
         db.execSQL(dbBuildQuery5);
         db.execSQL(dbBuildQuery16);
-    //    db.execSQL(dbBuildQuery11);
+        db.execSQL(dbBuildQuery17);
+        //    db.execSQL(dbBuildQuery11);
     }
 
     @Override

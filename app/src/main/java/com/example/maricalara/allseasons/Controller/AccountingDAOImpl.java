@@ -51,6 +51,7 @@ public class AccountingDAOImpl implements AccountingDAO {
     public void addEntryPlanning(DBHelper dbHelper, ArrayList<Object> objArray, double hectareSize) {
         dbWrite = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
+        ContentValues val = new ContentValues();
         double totalCost = 0;
         for (Object obj : objArray) {
             if (obj instanceof Seeds) {
@@ -93,6 +94,29 @@ public class AccountingDAOImpl implements AccountingDAO {
         values.put("PERCENTAGE_HECTARE_DONE", 1);
         values.put("TOTAL_COST", totalCost);
         dbWrite.insert("RESOURCE_PLANNING_TABLE", null, values);
+
+
+        val.put("NAME", "");
+        val.put("SEEDS_NAME","");
+        val.put("SEEDS_PRICE", 0);
+        val.put("SEEDS_QUANTITY", 0);
+        val.put("SEEDS_COST",0 );
+        val.put("SEEDS_PERCENTAGE", 0);
+        val.put("FERTILIZER_NAME", "");
+        val.put("FERTILIZER_PRICE", 0);
+        val.put("FERTILIZER_QUANTITY", 0);
+        val.put("FERTILIZER_COST", 0);
+        val.put("FERTILIZER_PERCENTAGE", 0);
+        val.put("INSECTICIDES_NAME", "");
+        val.put("INSECTICIDES_PRICE", 0);
+        val.put("INSECTICIDES_QUANTITY", 0);
+        val.put("INSECTICIDES_COST", 0);
+        val.put("INSECTICIDES_PERCENTAGE", 0);
+        val.put("TOTAL_PERCENTAGE_PRODUCTS", 0);
+        val.put("HECTARE_SIZE", hectareSize);
+        val.put("PERCENTAGE_HECTARE_DONE", 0);
+        val.put("TOTAL_COST", 0);
+        dbWrite.insert("UTILIZE_WPI", null, val);
     }
 
     @Override
