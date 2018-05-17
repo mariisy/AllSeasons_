@@ -93,7 +93,7 @@ public class EditWarehouse extends AppCompatActivity {
     private void updateData() {
         try {
             double uPrice = Double.valueOf(txtUprice.getText().toString());
-            tDAO.updateEntry(dbHelper, strName, uPrice);
+            tDAO.updateEntry(dbHelper, strType, strName, uPrice);
             new AlertDialog.Builder(EditWarehouse.this)
                     .setTitle("Updating Entry")
                     .setMessage("Entry Update Successful!.")

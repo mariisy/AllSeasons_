@@ -410,14 +410,14 @@ public class TransactionDAOImpl implements TransactionDAO {
     }
 
     @Override
-    public void updateEntry(DBHelper dbHelper, String name, Double price) {
+    public void updateEntry(DBHelper dbHelper, String type, String name, Double price) {
         dbRead = dbHelper.getReadableDatabase();
 
         ContentValues values = new ContentValues();
         values.put("PRICE", price);
 
-        String selection = "NAME" + " LIKE ?";
-        String[] selectionArgs = {name};
+        String selection = "TYPE" + " LIKE ?" + " AND " + "NAME" + " LIKE ?";
+        String[] selectionArgs = {type, name};
 
         dbRead.update("WAREHOUSE_EQUIPMENT", values, selection, selectionArgs);
 

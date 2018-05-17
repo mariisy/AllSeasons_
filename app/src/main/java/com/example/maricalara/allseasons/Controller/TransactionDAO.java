@@ -40,11 +40,13 @@ public interface TransactionDAO {
 
     boolean checkExistingWarehouse(DBHelper dbHelper, String type, String name);
 
-    void updateEntry(DBHelper dbHelper, String name, Double price);
+    void updateEntry(DBHelper dbHelper, String type, String name, Double price);
 
     void deleteEntry(DBHelper dbHelper, String name);
 
     ArrayList<String> retrieveListSpinner(DBHelper dbHelper);
 
     public ArrayList<String> retrieveListSpinnerColumn(DBHelper dbHelper, String spinnerCategory, String columnName, String value);
+
+
 }

@@ -66,7 +66,7 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
     private Double unitPrice, totalPrice;
     private int qty;
 
-    //    //get Date String
+    //get Date String
     Date date = new Date();
     SimpleDateFormat sdf = new SimpleDateFormat("EEEE");
     Date d = new Date();
