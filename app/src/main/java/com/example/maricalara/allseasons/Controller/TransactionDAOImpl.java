@@ -416,10 +416,14 @@ public class TransactionDAOImpl implements TransactionDAO {
         ContentValues values = new ContentValues();
         values.put("PRICE", price);
 
-        String selection = "TYPE" + " LIKE ?" + " AND " + "NAME" + " LIKE ?";
+        String selections = "TYPE" + " LIKE ?" + " AND " + "NAME" + " LIKE ?";
         String[] selectionArgs = {type, name};
 
-        dbRead.update("WAREHOUSE_EQUIPMENT", values, selection, selectionArgs);
+        String selection = "NAME" + " LIKE ?";
+        String[] selectionArg = { name};
+
+        dbRead.update("WAREHOUSE_EQUIPMENT", values, selections, selectionArgs);
+        dbRead.update("UTILIZE_FGI", values, selection, selectionArg);
 
     }
 
