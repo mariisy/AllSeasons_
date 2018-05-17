@@ -200,12 +200,16 @@ public class TransactionDAOImpl implements TransactionDAO {
                     dbWrite.insert("WAREHOUSE_EQUIPMENT", null, values);
 
                     ContentValues val = new ContentValues();
-                    val.put("DATE", seeds.getDate());
-                    val.put("TYPE", seeds.getType());
-                    val.put("NAME", seeds.getName());
+                    val.put("TYPE", crop.getType());
+                    val.put("NAME", crop.getName());
                     val.put("WEIGHT", 0);
                     val.put("PRICE", 0);
-                    val.put("TOTAL_COST", 0);
+                    val.put("DATE", crop.getDate());
+                    val.put("TOTAL_COST_HARVESTED", 0);
+                    val.put("TOTAL_COST_SOLD", 0);
+                    val.put("PERCENTAGE_HECTARE_DONE",0);
+                    val.put("HECTARE_SIZE_HARVESTED", 0);
+                    dbWrite.insert("UTILIZE_FGI", null, values);
 
                 }
                 break;

@@ -47,6 +47,8 @@ public class DBHelper extends SQLiteOpenHelper {
     public String dBColumnQuantity = "QUANTITY";
     public String dBColumnPrice = "PRICE";
     public String dBColumnTotalCost = "TOTAL_COST";
+    public String dBColumnTotalCostHarvested = "TOTAL_COST_HARVESTED";
+    public String dBColumnTotalCostSold = "TOTAL_COST_SOLD";
     public String dBColumnWeight = "WEIGHT";
     public String dBColumnTotalEarnings = "TOTAL_EARNINGS";
     public String dbColumnDebit = "DEBIT";
@@ -73,6 +75,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public String dbColumnInsecticidesPercentage = "INSECTICIDES_PERCENTAGE";
     public String dbColumnTotal_Percentage_Products = "TOTAL_PERCENTAGE_PRODUCTS";
     public String dbColumnHectare = "HECTARE_SIZE";
+    public String dbColumnHectareHarvested = "HECTARE_SIZE_HARVESTED";
     public String dbColumnTotal_Percentage_Hectare_Done = "PERCENTAGE_HECTARE_DONE";
 
 
@@ -249,8 +252,10 @@ public class DBHelper extends SQLiteOpenHelper {
             dBColumnName + " TEXT, " +
             dBColumnWeight + " REAL, " +
             dbColumnTotal_Percentage_Hectare_Done  + " REAL, " +
-            dBColumnTotalCost + " REAL, " +
-            dbColumnhectare_harvested  + " REAL )";
+            dBColumnTotalCostHarvested + " REAL, " +
+            dbColumnHectareHarvested + " REAL, " +
+            dBColumnPrice + " REAL, " +
+            dBColumnTotalCostSold  + " REAL )";
 
     private String dbBuildQuery19 = "CREATE TABLE " + dbTableUtilizeCGS + " ( " +
             dBColumnDate + " TEXT, " +

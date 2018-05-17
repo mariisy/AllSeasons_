@@ -35,7 +35,7 @@ public class TransactionHarvest extends AppCompatActivity {
 
     //for UI
     private String itemName;
-    private double weight;
+    private double weight,hectare;
     private Button btnAddTransaction, btnView;
     private MaterialBetterSpinner spinnerName;
     private Toolbar toolbar;
@@ -175,7 +175,7 @@ public class TransactionHarvest extends AppCompatActivity {
 
     private void setData() {
 
-
+        hectare = Double.valueOf(txtHectare.getText().toString());
         itemName = spinnerName.getText().toString();
         weight = Double.valueOf(txtQty.getText().toString());
 
@@ -185,8 +185,7 @@ public class TransactionHarvest extends AppCompatActivity {
             try {
                 object = aDAO.retrieveOne(dbHelper, "Crops", itemName);
                 crops = (Crops) object;
-                totalPrice = crops.getUnitPrice() * weight;
-                arrTransact.add(new Crops("Crops", itemName, crops.getUnitPrice(), weight, totalPrice, strDate));
+                arrTransact.add(new Crops("Crops", itemName, crops.getUnitPrice(), weight, 0, strDate,0,hectare,0));
 
                 new AlertDialog.Builder(TransactionHarvest.this)
                         .setTitle("Adding Entry")

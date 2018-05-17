@@ -10,16 +10,24 @@ public class Crops {
     private String name;
     private double unitPrice;
     private double weight;
-    private double totalPrice;
+    private double totalCostHarvested;
     private String date;
+    private double hectarePercent;
+    private double hectareHarvested;
+    private double totalcostSold;
 
-    public Crops(String type, String name, double unitPrice, double weight, double totalPrice, String date) {
+
+    public Crops(String type, String name, double unitPrice, double weight, double totalCostHarvested, String date, double hectarePercent, double hectareHarvested, double totalcostSold) {
+
         this.type = type;
         this.name = name;
         this.unitPrice = unitPrice;
         this.weight = weight;
-        this.totalPrice = totalPrice;
+        this.totalCostHarvested = totalCostHarvested;
         this.date = date;
+        this.hectarePercent = hectarePercent;
+        this.hectareHarvested = hectareHarvested;
+        this.totalcostSold = totalcostSold;
     }
 
     public String getType() {
@@ -54,12 +62,12 @@ public class Crops {
         this.weight = weight;
     }
 
-    public double getTotalPrice() {
-        return totalPrice;
+    public double getTotalCostHarvested() {
+        return totalCostHarvested;
     }
 
-    public void setTotalPrice(double totalPrice) {
-        this.totalPrice = totalPrice;
+    public void setTotalCostHarvested(double totalCostHarvested) {
+        this.totalCostHarvested = totalCostHarvested;
     }
 
     public String getDate() {
@@ -70,11 +78,36 @@ public class Crops {
         this.date = date;
     }
 
+    public double getHectarePercent() {
+        return hectarePercent;
+    }
+
+    public void setHectarePercent(double hectarePercent) {
+        this.hectarePercent = hectarePercent;
+    }
+
+    public double getHectareHarvested() {
+        return hectareHarvested;
+    }
+
+    public void setHectareHarvested(double hectareHarvested) {
+        this.hectareHarvested = hectareHarvested;
+    }
+
+    public double getTotalcostSold() {
+        return totalcostSold;
+    }
+
+    public void setTotalcostSold(double totalcostSold) {
+        this.totalcostSold = totalcostSold;
+    }
     @Override
     public String toString() {
-        return
-                " " + name + "\n" +
-                        "Quantity: " + weight + "\n" +
-                        "Total Price: " + totalPrice + "\n \n";
+        return "Crops{" +
+                "type='" + type + '\'' +
+                ", name='" + name + '\'' +
+                ", weight=" + weight +
+                ", hectareHarvested=" + hectareHarvested +
+                '}';
     }
 }

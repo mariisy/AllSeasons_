@@ -17,4 +17,5 @@ public interface AccountingDAO {
     Crops retrieveOne(DBHelper dbHelper, String type, String name);
     boolean checkExisting(DBHelper dbHelper, String type);
     void updateWPI(DBHelper dbHelper, ArrayList<Object> objArray);
+    void updateFGI(DBHelper dbHelper, ArrayList<Object> objArray);
 }
