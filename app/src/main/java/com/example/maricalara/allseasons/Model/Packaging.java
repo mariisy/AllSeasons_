@@ -11,6 +11,17 @@ public class Packaging {
     private int quantity;
     private double price,totalPrice;
     private String date;
+    private String cropType;
+
+    public Packaging(String type, String name, int quantity, double price, double totalPrice, String date, String cropType) {
+        this.type = type;
+        this.name = name;
+        this.quantity = quantity;
+        this.price = price;
+        this.totalPrice = totalPrice;
+        this.date = date;
+        this.cropType = cropType;
+    }
 
     public String getType() {
         return type;
@@ -60,23 +71,22 @@ public class Packaging {
         this.date = date;
     }
 
-    public Packaging(String type, String name, int quantity, double price, double totalPrice, String date) {
-        this.type = type;
-        this.name = name;
-        this.quantity = quantity;
+    public String getCropType() {
+        return cropType;
+    }
 
-        this.price = price;
-        this.totalPrice = totalPrice;
-        this.date = date;
+    public void setCropType(String cropType) {
+        this.cropType = cropType;
     }
 
     @Override
     public String toString() {
-        return
+           return
                 "Type: " + type + "\n" +
                         "Item Name: " + name + "\n" +
                         "Quantity: " + quantity + "\n" +
                         "Price: " + price + "\n" +
-                        "Total Price: " + totalPrice + "\n \n" ;
+                        "Total Price: " + totalPrice + "\n \n";
     }
+
 }

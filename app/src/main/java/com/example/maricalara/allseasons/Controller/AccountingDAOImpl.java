@@ -178,9 +178,9 @@ public class AccountingDAOImpl implements AccountingDAO {
     public void updateWPI(DBHelper dbHelper, ArrayList<Object> objArray) {
         dbRead = dbHelper.getReadableDatabase();
         dbWrite = dbHelper.getWritableDatabase();
-        Insecticides in = new Insecticides(null, null, 0, 0, 0, null);
-        Fertilizers fe = new Fertilizers(null, null, 0, 0, 0, null);
-        Packaging pa = new Packaging(null, null, 0, 0, 0, null);
+        Insecticides in = new Insecticides(null, null, 0, 0, 0, null,null);
+        Fertilizers fe = new Fertilizers(null, null, 0, 0, 0, null,null);
+        Packaging pa = new Packaging(null, null, 0, 0, 0, null,null);
         Seeds seed = new Seeds(null, null, 0, 0, 0, null);
         Seedlings seedling = new Seedlings(null, null, 0, 0, 0, null);
 
@@ -337,9 +337,9 @@ public class AccountingDAOImpl implements AccountingDAO {
                 dbRead.update("WPI", values, "WPIID=" + 1, null);
 
                 String selection2 = "NAME" + " LIKE ?";
-                String[] selectionArgs2 = {seeds.getName()};
+                String[] selectionArgs2 = {insecticides.getCropType()};
 
-                String queryUpdate3 = "SELECT * FROM UTILIZE_WPI WHERE NAME = '" + seeds.getName() + "'";
+                String queryUpdate3 = "SELECT * FROM UTILIZE_WPI WHERE NAME = '" +insecticides.getCropType() + "'";
                 Cursor cursor3 = dbRead.rawQuery(queryUpdate3, null);
                 ContentValues val3 = new ContentValues();
                 double  insecticides_quantity = 0,insecticides_cost = 0,  fertilzer_percent=0,seeds_percent=0,total_cost=0;
@@ -354,7 +354,7 @@ public class AccountingDAOImpl implements AccountingDAO {
                     } while (cursor3.moveToNext());
                 }
 
-                String queryUpdate4 = "SELECT * FROM RESOURCE_PLANNING_TABLE WHERE NAME = '" + seeds.getName() + "'";
+                String queryUpdate4 = "SELECT * FROM RESOURCE_PLANNING_TABLE WHERE NAME = '" + insecticides.getCropType() + "'";
                 Cursor cursor4 = dbRead.rawQuery(queryUpdate4, null);
                 double  insecticides_quantity2 = 0;
                 if (cursor4.moveToFirst()) {
@@ -412,7 +412,7 @@ public class AccountingDAOImpl implements AccountingDAO {
                 dbRead.update("WPI", values, "WPIID=" + 1, null);
 
 
-                String queryUpdate3 = "SELECT * FROM UTILIZE_WPI WHERE NAME = '" + seeds.getName() + "'";
+                String queryUpdate3 = "SELECT * FROM UTILIZE_WPI WHERE NAME = '" + fertilizers.getCropType() + "'";
                 Cursor cursor3 = dbRead.rawQuery(queryUpdate3, null);
                 ContentValues val3 = new ContentValues();
                 double  fertilizers_quantity = 0,fertilizers_cost = 0, total_cost=0,seeds_percent=0, insecticides_percent=0 ;
@@ -426,7 +426,7 @@ public class AccountingDAOImpl implements AccountingDAO {
                     } while (cursor3.moveToNext());
                 }
 
-                String queryUpdate4 = "SELECT * FROM RESOURCE_PLANNING_TABLE WHERE NAME = '" + seeds.getName() + "'";
+                String queryUpdate4 = "SELECT * FROM RESOURCE_PLANNING_TABLE WHERE NAME = '" +  fertilizers.getCropType() + "'";
                 Cursor cursor4 = dbRead.rawQuery(queryUpdate4, null);
                 double  fertilizers_quantity2 = 0;
                 if (cursor4.moveToFirst()) {
@@ -435,7 +435,7 @@ public class AccountingDAOImpl implements AccountingDAO {
                     } while (cursor4.moveToNext());
                 }
                 String selection2 = "NAME" + " LIKE ?";
-                String[] selectionArgs2 = {seeds.getName()};
+                String[] selectionArgs2 = { fertilizers.getCropType()};
                 val3.put("FERTILIZER_PRICE", fertilizers.getPrice());
                 val3.put("FERTILIZER_QUANTITY",fertilizers_quantity + fertilizers.getQuantity());
                 val3.put("FERTILIZER_COST", fertilizers_cost + fertilizers.getTotalPrice());
@@ -492,9 +492,9 @@ public class AccountingDAOImpl implements AccountingDAO {
     public void updateFGI(DBHelper dbHelper, ArrayList<Object> objArray) {
         dbRead = dbHelper.getReadableDatabase();
         dbWrite = dbHelper.getWritableDatabase();
-        Insecticides in = new Insecticides(null, null, 0, 0, 0, null);
-        Fertilizers fe = new Fertilizers(null, null, 0, 0, 0, null);
-        Packaging pa = new Packaging(null, null, 0, 0, 0, null);
+        Insecticides in = new Insecticides(null, null, 0, 0, 0, null,null);
+        Fertilizers fe = new Fertilizers(null, null, 0, 0, 0, null,null);
+        Packaging pa = new Packaging(null, null, 0, 0, 0, null,null);
         Seeds seed = new Seeds(null, null, 0, 0, 0, null);
         Seedlings seedling = new Seedlings(null, null, 0, 0, 0, null);
 

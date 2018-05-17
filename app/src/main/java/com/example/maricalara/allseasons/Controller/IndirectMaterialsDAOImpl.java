@@ -91,7 +91,7 @@ public class IndirectMaterialsDAOImpl implements IndirectMaterialsDAO {
                         double price = cursor.getDouble(cursor.getColumnIndex("PRICE"));
                         double totalPrice = cursor.getDouble(cursor.getColumnIndex("TOTAL_COST"));
                         String date = cursor.getString(cursor.getColumnIndex("DATE"));
-                        listIns.add(new Insecticides(typ, name, qty, price, totalPrice, date));
+                        listIns.add(new Insecticides(typ, name, qty, price, totalPrice, date,null));
 
                     } while (cursor.moveToNext());
                 }
@@ -107,7 +107,7 @@ public class IndirectMaterialsDAOImpl implements IndirectMaterialsDAO {
                         double price = cursor.getDouble(cursor.getColumnIndex("PRICE"));
                         double totalPrice = cursor.getDouble(cursor.getColumnIndex("TOTAL_COST"));
                         String date = cursor.getString(cursor.getColumnIndex("DATE"));
-                        listFer.add(new Fertilizers(typ, name, qty, price, totalPrice, date));
+                        listFer.add(new Fertilizers(typ, name, qty, price, totalPrice, date,null));
 
                     } while (cursor.moveToNext());
                 }
@@ -123,7 +123,7 @@ public class IndirectMaterialsDAOImpl implements IndirectMaterialsDAO {
                         double price = cursor.getDouble(cursor.getColumnIndex("PRICE"));
                         double totalPrice = cursor.getDouble(cursor.getColumnIndex("TOTAL_COST"));
                         String date = cursor.getString(cursor.getColumnIndex("DATE"));
-                        listPack.add(new Packaging(typ, name, qty, price, totalPrice, date));
+                        listPack.add(new Packaging(typ, name, qty, price, totalPrice, date,null));
                     } while (cursor.moveToNext());
                 }
                 break;
@@ -155,9 +155,9 @@ public class IndirectMaterialsDAOImpl implements IndirectMaterialsDAO {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         String queryForRetrievalOne = "SELECT * FROM " + "INDIRECT_MATERIALS WHERE NAME = '" + name + "'  AND TYPE = '" + type + "' ";
         Cursor cursor = db.rawQuery(queryForRetrievalOne, null);
-        Insecticides in = new Insecticides(null, null, 0, 0, 0, null);
-        Fertilizers fe = new Fertilizers(null, null, 0, 0, 0, null);
-        Packaging pa = new Packaging(null, null, 0, 0, 0, null);
+        Insecticides in = new Insecticides(null, null, 0, 0, 0, null,null);
+        Fertilizers fe = new Fertilizers(null, null, 0, 0, 0, null,null);
+        Packaging pa = new Packaging(null, null, 0, 0, 0, null,null);
         Object object = null;
 
         switch (type) {
@@ -230,9 +230,9 @@ public class IndirectMaterialsDAOImpl implements IndirectMaterialsDAO {
     public void updateTransactionAdd(DBHelper dbHelper, ArrayList<Object> objArray) {
         dbRead = dbHelper.getReadableDatabase();
         dbWrite = dbHelper.getWritableDatabase();
-        Insecticides in = new Insecticides(null, null, 0, 0, 0, null);
-        Fertilizers fe = new Fertilizers(null, null, 0, 0, 0, null);
-        Packaging pa = new Packaging(null, null, 0, 0, 0, null);
+        Insecticides in = new Insecticides(null, null, 0, 0, 0, null,null);
+        Fertilizers fe = new Fertilizers(null, null, 0, 0, 0, null,null);
+        Packaging pa = new Packaging(null, null, 0, 0, 0, null,null);
         ContentValues val = new ContentValues();
         double costTotal = 0;
         ContentValues values = new ContentValues();

@@ -420,7 +420,7 @@ public class TransactionDAOImpl implements TransactionDAO {
         String[] selectionArgs = {type, name};
 
         String selection = "NAME" + " LIKE ?";
-        String[] selectionArg = { name};
+        String[] selectionArg = {name};
 
         dbRead.update("WAREHOUSE_EQUIPMENT", values, selections, selectionArgs);
         dbRead.update("UTILIZE_FGI", values, selection, selectionArg);
