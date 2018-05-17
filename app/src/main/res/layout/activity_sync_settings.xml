@@ -21,6 +21,13 @@
             android:paddingRight="24dp"
             android:paddingTop="56dp">
 
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/btnExport"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Start Data Export" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -80,11 +87,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:paddingTop="30dp"
-                android:text="Client Title"
+                android:text="Send Database Records"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="#555555"
-                android:textSize="24dp"
-                tools:context=".Activity.SyncSettingsActivity" />
+                android:textColor="#555555" />
 
             <View
                 android:layout_width="fill_parent"
