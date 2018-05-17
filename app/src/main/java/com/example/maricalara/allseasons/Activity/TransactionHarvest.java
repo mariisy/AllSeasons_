@@ -39,8 +39,8 @@ public class TransactionHarvest extends AppCompatActivity {
     private Button btnAddTransaction, btnView;
     private MaterialBetterSpinner spinnerName;
     private Toolbar toolbar;
-    private TextInputLayout inputLayoutQty;
-    private EditText txtQty;
+    private TextInputLayout inputLayoutQty, inputLayoutHectare;
+    private EditText txtQty, txtHectare;
     private TextView txtDate, txtTransaction;
 
     //DAO
@@ -77,7 +77,7 @@ public class TransactionHarvest extends AppCompatActivity {
         //inflate toolbar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Use Warehouse Materials");
+        getSupportActionBar().setTitle("Harvest");
 
         //inflate back arrow button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -85,6 +85,8 @@ public class TransactionHarvest extends AppCompatActivity {
 
         inputLayoutQty = (TextInputLayout) findViewById(R.id.input_layout_qty);
         txtQty = (EditText) findViewById(R.id.txtQty);
+        inputLayoutHectare = (TextInputLayout) findViewById(R.id.input_layout_percent);
+        txtHectare = (EditText) findViewById(R.id.txtHectare);
 
         spinnerName = (MaterialBetterSpinner) findViewById(R.id.spinnerName);
         txtDate = (TextView) findViewById(R.id.txtDate);
@@ -101,7 +103,7 @@ public class TransactionHarvest extends AppCompatActivity {
         btnAddTransaction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (validateQty() && validateName()) {
+                if (validateQty() && validateName() && validateHectare()) {
                     setData();
                 }
 
@@ -235,6 +237,18 @@ public class TransactionHarvest extends AppCompatActivity {
 
     }
 
+    private boolean validateHectare() {
+        if (txtHectare.getText().toString().trim().isEmpty()) {
+            inputLayoutHectare.setError("Enter Quantity!");
+            requestFocus(txtHectare);
+            return false;
+        } else {
+            inputLayoutHectare.setErrorEnabled(false);
+            return true;
+        }
+
+    }
+
     private boolean validateQty() {
         if (txtQty.getText().toString().trim().isEmpty()) {
             inputLayoutQty.setError("Enter Quantity!");
@@ -287,6 +301,9 @@ public class TransactionHarvest extends AppCompatActivity {
                     break;
                 case R.id.spinnerItemName:
                     validateName();
+                    break;
+                case R.id.txtHectare:
+                    validateHectare();
                     break;
             }
         }

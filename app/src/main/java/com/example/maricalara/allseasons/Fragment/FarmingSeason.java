@@ -12,9 +12,10 @@ import android.view.ViewGroup;
 
 import com.example.maricalara.allseasons.Activity.TransactionHarvest;
 import com.example.maricalara.allseasons.Activity.TransactionUseMaterials;
-import com.example.maricalara.allseasons.Activity.TransactionsAddBought;
+
 import com.example.maricalara.allseasons.Adapter.ViewPagerAdapter;
 import com.example.maricalara.allseasons.R;
+
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 
@@ -51,7 +52,7 @@ public class FarmingSeason extends Fragment {
 
 
 
-        materialDesignFAb = (FloatingActionMenu) rootView.findViewById(R.id.material_design_android_floating_action_menu);
+        materialDesignFAb = (FloatingActionMenu) rootView.findViewById(R.id.floating_action_menu);
         fabUse = (FloatingActionButton) rootView.findViewById(R.id.fabUse);
         fabHarvest = (FloatingActionButton) rootView.findViewById(R.id.fabHarvest);
         fabMsg = (FloatingActionButton) rootView.findViewById(R.id.fabMessage);
