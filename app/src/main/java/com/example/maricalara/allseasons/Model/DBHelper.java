@@ -90,6 +90,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public String dbColumnWPIID = "WPIID";
     public String dbColumnFGIID = "FGIID";
     public String dbColumnCGSID = "CGSID";
+    public String dbColumnhectare_harvested = "HECTARE_HARVESTED";
 
     //db Query
 
@@ -248,7 +249,8 @@ public class DBHelper extends SQLiteOpenHelper {
             dBColumnName + " TEXT, " +
             dBColumnWeight + " REAL, " +
             dbColumnTotal_Percentage_Hectare_Done  + " REAL, " +
-            dBColumnTotalCost + " REAL )";
+            dBColumnTotalCost + " REAL, " +
+            dbColumnhectare_harvested  + " REAL )";
 
     private String dbBuildQuery19 = "CREATE TABLE " + dbTableUtilizeCGS + " ( " +
             dBColumnDate + " TEXT, " +
@@ -321,6 +323,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(dbBuildQuery16);
         db.execSQL(dbBuildQuery6);
         db.execSQL(dbBuildQuery17);
+        db.execSQL(dbBuildQuery18);
     //    db.execSQL(dbBuildQuery11);
     }
 
