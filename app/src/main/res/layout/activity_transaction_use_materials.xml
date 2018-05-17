@@ -48,15 +48,6 @@
                     android:textColor="#555555"
                     android:textAppearance="?android:attr/textAppearanceMedium"/>
 
-                <TextView android:id="@+id/txtLandSize"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:text="Land Size:"
-                    android:layout_below="@id/txtTransactionID"
-                    android:textColor="#555555"
-                    android:textAppearance="?android:attr/textAppearanceMedium"/>
-
             </RelativeLayout>
 
             <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner

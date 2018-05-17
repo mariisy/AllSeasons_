@@ -6,8 +6,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.example.maricalara.allseasons.Activity.TransactionHarvest;
-import com.example.maricalara.allseasons.Activity.TransactionUseMaterials;
 import com.github.clans.fab.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -55,8 +53,6 @@ public class Warehouse extends Fragment {
 
         materialDesignFAb = (FloatingActionMenu) rootView.findViewById(R.id.material_design_android_floating_action_menu);
         fabAdd = (FloatingActionButton) rootView.findViewById(R.id.fab1);
-        fabUse = (FloatingActionButton) rootView.findViewById(R.id.fabUse);
-        fabHarvest = (FloatingActionButton) rootView.findViewById(R.id.fabHarvest);
         fabMsg = (FloatingActionButton) rootView.findViewById(R.id.fabMessage);
 
 

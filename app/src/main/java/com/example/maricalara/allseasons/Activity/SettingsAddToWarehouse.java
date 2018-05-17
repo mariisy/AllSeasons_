@@ -91,12 +91,14 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
         btnView = (Button) findViewById(R.id.btnView);
         txtSupplierName = (EditText) findViewById(R.id.txtSupplierName);
         txtSupplierContact = (EditText) findViewById(R.id.txtSupplierContact);
+
         //inflate toolbar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Add Items to Warehouse");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setIcon(R.drawable.ic_menu);
 
         //set array for spinner type
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, spinnerListType);

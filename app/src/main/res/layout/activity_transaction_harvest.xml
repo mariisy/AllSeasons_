@@ -29,42 +29,22 @@
 
 
                 <TextView
-                    android:id="@+id/date_today"
+                    android:id="@+id/txtDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="15dp"
                     android:gravity="left"
                     android:text="Date:"
-                    android:textSize="20sp" />
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
 
                 <TextView
-                    android:id="@+id/txtDate"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="15dp"
-                    android:layout_marginStart="12dp"
-                    android:layout_toRightOf="@id/date_today"
-                    android:text="asdf"
-                    android:textSize="20sp" />
-
-                <TextView
-                    android:id="@+id/transaction_id"
+                    android:id="@+id/txtTransactionID"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/date_today"
                     android:layout_marginBottom="10dp"
                     android:text="Transaction ID:"
-                    android:textSize="20sp" />
-
-                <TextView
-                    android:id="@+id/textView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBottom="@+id/transaction_id"
-                    android:layout_marginStart="12dp"
-                    android:layout_toEndOf="@+id/transaction_id"
-                    android:text="asdf"
-                    android:textSize="20sp" />
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
 
 
             </RelativeLayout>
@@ -104,6 +84,41 @@
                         android:hint="Qty/Kg"
                         android:inputType="number" />
                 </android.support.design.widget.TextInputLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true">
+
+                <!-- Item -->
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_layout_percent"
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/txtHectare"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentEnd="true"
+                        android:hint="Hectare Size"
+                        android:inputType="number" />
+                </android.support.design.widget.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/hA"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp"
+                    android:layout_toEndOf="@+id/input_layout_percent"
+                    android:gravity="center"
+                    android:text="Hectare (hA)"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+
             </RelativeLayout>
 
 
