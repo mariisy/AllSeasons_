@@ -105,7 +105,7 @@
                         android:layout_alignParentBottom="true"
                         android:layout_alignParentEnd="true"
                         android:hint="Hectare Size"
-                        android:inputType="number" />
+                        android:inputType="numberDecimal" />
                 </android.support.design.widget.TextInputLayout>
 
                 <TextView
