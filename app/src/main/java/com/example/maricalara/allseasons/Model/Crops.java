@@ -103,11 +103,10 @@ public class Crops {
     }
     @Override
     public String toString() {
-        return "Crops{" +
-                "type='" + type + '\'' +
-                ", name='" + name + '\'' +
-                ", weight=" + weight +
-                ", hectareHarvested=" + hectareHarvested +
-                '}';
+        return
+        "Type: " + type + "\n" +
+                "Item Name: " + name + "\n" +
+                "Weight: " + weight + "\n" +
+                "HectareHarvested Price: " + hectareHarvested + "\n \n";
     }
 }

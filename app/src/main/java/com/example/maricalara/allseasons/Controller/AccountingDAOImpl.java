@@ -153,7 +153,7 @@ public class AccountingDAOImpl implements AccountingDAO {
 
     public Crops retrieveOne(DBHelper dbHelper, String type, String name) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        String queryForRetrievalOne = "SELECT * FROM " + "WAREHOUSE_EQUIPMENT WHERE NAME = '" + name + "'  AND TYPE = '" + type + "' ";
+        String queryForRetrievalOne = "SELECT * FROM " + "UTILIZE_FGI WHERE NAME = '" + name + "'  AND TYPE = '" + type + "' ";
         Cursor cursor = db.rawQuery(queryForRetrievalOne, null);
         Crops crops = new Crops(null, null, 0, 0, 0, null,0,0,0);
 

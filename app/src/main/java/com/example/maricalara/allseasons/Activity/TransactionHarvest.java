@@ -42,7 +42,7 @@ public class TransactionHarvest extends AppCompatActivity {
     private TextInputLayout inputLayoutQty, inputLayoutHectare;
     private EditText txtQty, txtHectare;
     private TextView txtDate, txtTransaction;
-
+    private ArrayList<String>  arrListCrop;
     //DAO
     private TransactionDAO tDAO = new TransactionDAOImpl();
     private AccountingDAO aDAO = new AccountingDAOImpl();
@@ -52,9 +52,8 @@ public class TransactionHarvest extends AppCompatActivity {
     Crops crops = null;
     Object object = null;
     double totalPrice = 0;
-    private ArrayList<String> arrList;
     private ArrayList<Object> arrTransact = new ArrayList<>();
-    private ArrayAdapter<String> stringArrayAdapter;
+    private ArrayAdapter<String> stringArrayAdapter,arrayAdapter;
     Object strName = null;
 
     //get Date String
@@ -64,9 +63,6 @@ public class TransactionHarvest extends AppCompatActivity {
     String dayOfTheWeek = sdf.format(d);
     String dateForTheDay = DateFormat.getDateInstance().format(date);
     String strDate = "Date: " + dayOfTheWeek + ", " + dateForTheDay;
-
-    //Sample for List for Spinner type 1
-    String[] spinnerListType = {"Pechay"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,7 +91,8 @@ public class TransactionHarvest extends AppCompatActivity {
         txtDate.setText(strDate);
 
         //set array for spinner type 1 and type 2
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, spinnerListType);
+        arrListCrop = tDAO.retrieveListSpinnerColumn(dbHelper, "NAME", "TYPE", "Crops");
+        arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, arrListCrop);
         spinnerName.setAdapter(arrayAdapter);
 
 
@@ -179,13 +176,14 @@ public class TransactionHarvest extends AppCompatActivity {
         itemName = spinnerName.getText().toString();
         weight = Double.valueOf(txtQty.getText().toString());
 
-        double unitPrice = 0;
+        double totalCostSold = 0;
 
         if (tDAO.checkExistingWarehouse(dbHelper, "Crops", itemName)) {
             try {
                 object = aDAO.retrieveOne(dbHelper, "Crops", itemName);
                 crops = (Crops) object;
-                arrTransact.add(new Crops("Crops", itemName, crops.getUnitPrice(), weight, 0, strDate,0,hectare,0));
+                totalCostSold = crops.getUnitPrice() * weight;
+                arrTransact.add(new Crops("Crops", itemName, crops.getUnitPrice(), weight, 0, strDate,0,hectare,totalCostSold));
 
                 new AlertDialog.Builder(TransactionHarvest.this)
                         .setTitle("Adding Entry")

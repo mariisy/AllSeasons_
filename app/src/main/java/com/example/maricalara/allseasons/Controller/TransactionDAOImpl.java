@@ -211,6 +211,7 @@ public class TransactionDAOImpl implements TransactionDAO {
                     val.put("HECTARE_SIZE_HARVESTED", 0);
                     dbWrite.insert("UTILIZE_FGI", null, values);
 
+
                 }
                 break;
 
@@ -424,6 +425,7 @@ public class TransactionDAOImpl implements TransactionDAO {
 
         dbRead.update("WAREHOUSE_EQUIPMENT", values, selections, selectionArgs);
         dbRead.update("UTILIZE_FGI", values, selection, selectionArg);
+
 
     }
 
