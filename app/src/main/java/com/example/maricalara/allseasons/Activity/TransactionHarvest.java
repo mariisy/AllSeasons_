@@ -183,7 +183,7 @@ public class TransactionHarvest extends AppCompatActivity {
                 object = aDAO.retrieveOne(dbHelper, "Crops", itemName);
                 crops = (Crops) object;
                 totalCostSold = crops.getUnitPrice() * weight;
-                arrTransact.add(new Crops("Crops", itemName, crops.getUnitPrice(), weight, 0, strDate,0,hectare,totalCostSold));
+                arrTransact.add(new Crops("Crops", itemName, 0, weight, 0, strDate,0,hectare,0));
 
                 new AlertDialog.Builder(TransactionHarvest.this)
                         .setTitle("Adding Entry")
@@ -196,8 +196,7 @@ public class TransactionHarvest extends AppCompatActivity {
                         .setNegativeButton("No", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                addCart();
-                                finish();
+                                 finish();
                             }
                         })
                         .show();
@@ -231,7 +230,7 @@ public class TransactionHarvest extends AppCompatActivity {
     }
 
     private void addCart() {
-
+        aDAO.updateFGI(dbHelper, arrTransact);
     }
 
     private boolean validateHectare() {
