@@ -55,7 +55,7 @@ public class LogInActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (validateUsername() && validatePassword()) {
-                    addEntryWPI();
+                    addEntry();
                     getData();
                 }
 
@@ -160,12 +160,23 @@ public class LogInActivity extends AppCompatActivity {
         }
     }
 
-    private void addEntryWPI() {
-        if (!aDAO.checkExistingWPI(dbHelper)) {
+    private void addEntry() {
+
+        if (!aDAO.checkExisting(dbHelper, "WPI")) {
             aDAO.addEntry(dbHelper, "WPI");
         }
+
+        if (!aDAO.checkExisting(dbHelper, "FGI")) {
+            aDAO.addEntry(dbHelper, "FGI");
+        }
+
+        if (!aDAO.checkExisting(dbHelper, "CGS")) {
+            aDAO.addEntry(dbHelper, "CGS");
+        }
+
         if (!tDAO.checkExist(dbHelper, "admin", "admin")) {
             tDAO.addDefault(dbHelper);
         }
+
     }
 }
