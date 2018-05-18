@@ -37,7 +37,7 @@ public class SyncSettingsActivity extends AppCompatActivity implements WifiP2pMa
     private Toolbar toolbar;
 
     //UI
-    Button btnExport, btnStartSend, btnStartRecieve;
+    Button btnExport, btnStartSend, btnStartRecieve, btnBrowse;
 
     //get Date String
     Date date = new Date();
@@ -110,13 +110,8 @@ public class SyncSettingsActivity extends AppCompatActivity implements WifiP2pMa
 
 
         //inflate UI
-        btnExport = (Button) findViewById(R.id.btnExport);
-        btnExport.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                exportDB();
-            }
-        });
+
+
 
         btnStartSend = (Button) findViewById(R.id.btnStartSend);
         btnStartSend.setOnClickListener(new View.OnClickListener() {
@@ -133,6 +128,15 @@ public class SyncSettingsActivity extends AppCompatActivity implements WifiP2pMa
             @Override
             public void onClick(View v) {
                 serverStart();
+            }
+        });
+
+        btnBrowse = (Button) findViewById(R.id.btnBrowse);
+        btnBrowse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent clientStartIntent = new Intent(SyncSettingsActivity.this, SyncSettingsBrowse.class);
+                startActivityForResult(clientStartIntent, fileRequestID);
             }
         });
     }

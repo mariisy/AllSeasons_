@@ -39,6 +39,9 @@ import java.util.ArrayList;
 
 public class SyncSettingsClient extends AppCompatActivity {
 
+    //UI
+    Button btnSearch, btnBrowse, btnSend;
+
     //data variable
     String directory_path;
 
@@ -94,12 +97,29 @@ public class SyncSettingsClient extends AppCompatActivity {
 
         //setTargetFileStatus("testing");
 
-        Button btnSend = (Button) findViewById(R.id.btnSend);
-        btnSend.setOnClickListener(new View.OnClickListener() {
+
+        btnBrowse = (Button) findViewById(R.id.btnBrowse);
+        btnBrowse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 exportDB();
+                Intent clientStartIntent = new Intent(SyncSettingsClient.this, SyncSettingsBrowse.class);
+                startActivityForResult(clientStartIntent, fileRequestID);
+            }
+        });
+
+        btnSearch = (Button) findViewById(R.id.btnSearch);
+        btnSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 searchForPeers();
+            }
+        });
+
+        btnSend = (Button) findViewById(R.id.btnSend);
+        btnSend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 sendFile();
             }
         });
@@ -241,8 +261,8 @@ public class SyncSettingsClient extends AppCompatActivity {
         if (resultCode == Activity.RESULT_OK && requestCode == fileRequestID) {
             //Fetch result
 
-            File targetDir = new File(directory_path);
-            //File targetDir = (File) data.getExtras().get("file");
+           // File targetDir = new File(directory_path);
+            File targetDir = (File) data.getExtras().get("file");
 
             if (targetDir.isFile()) {
                 if (targetDir.canRead()) {
