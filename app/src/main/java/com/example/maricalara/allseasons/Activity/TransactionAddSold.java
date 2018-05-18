@@ -16,17 +16,20 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.maricalara.allseasons.Controller.TransactionDAO;
+import com.example.maricalara.allseasons.Controller.TransactionDAOImpl;
+import com.example.maricalara.allseasons.Model.DBHelper;
 import com.example.maricalara.allseasons.R;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class TransactionAddSold extends AppCompatActivity {
 
     //Sample for List for Spinner
-    String[] SPINNERLIST = {"Chilli", "Pechay", "Gulay"};
 
 
     //for UI
@@ -36,11 +39,13 @@ public class TransactionAddSold extends AppCompatActivity {
     private CheckBox chckDelivery;
     private Toolbar toolbar;
     private TextView txtTransactionID, txtDate;
-
+    private ArrayAdapter<String> arrayAdapter3;
+    private ArrayList<String> arrListCrop;
+    private MaterialBetterSpinner spinnerItem;
     //bundle extra
     String empID, name;
-
-
+    private TransactionDAO tDAO = new TransactionDAOImpl();
+    private DBHelper dbHelper = new DBHelper(TransactionAddSold.this);
     //get Date String
     Date date = new Date();
     SimpleDateFormat sdf = new SimpleDateFormat("EEEE");
@@ -62,7 +67,7 @@ public class TransactionAddSold extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-
+        spinnerItem =(MaterialBetterSpinner)findViewById(R.id.spinnerItem);
         inputLayoutCustomerName = (TextInputLayout) findViewById(R.id.input_layout_customerName);
         inputLayoutContactNum = (TextInputLayout) findViewById(R.id.input_layout_contactNum);
         inputLayoutQuantity = (TextInputLayout) findViewById(R.id.input_layout_qty);
@@ -88,9 +93,9 @@ public class TransactionAddSold extends AppCompatActivity {
 
 
         //layout for spinnerCrop
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line, SPINNERLIST);
-        MaterialBetterSpinner materialDesignSpinner = (MaterialBetterSpinner)findViewById(R.id.spinnerItem);
-        materialDesignSpinner.setAdapter(arrayAdapter);
+        arrListCrop = tDAO.retrieveListSpinnerColumn(dbHelper, "NAME", "TYPE", "Crops");
+        arrayAdapter3 = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, arrListCrop);
+        spinnerItem.setAdapter(arrayAdapter3);
 
         btnAddTransaction = (Button) findViewById(R.id.btnAdd);
         btnAddTransaction.setOnClickListener(new View.OnClickListener() {
