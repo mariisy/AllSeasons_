@@ -270,6 +270,7 @@ public class TransactionAddSold extends AppCompatActivity {
                                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
                                     }
                                 })
                                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -299,6 +300,7 @@ public class TransactionAddSold extends AppCompatActivity {
                             .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
+
                                 }
                             })
                             .setNegativeButton("No", new DialogInterface.OnClickListener() {
