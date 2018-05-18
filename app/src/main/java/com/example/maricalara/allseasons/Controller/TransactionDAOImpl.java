@@ -203,13 +203,12 @@ public class TransactionDAOImpl implements TransactionDAO {
                     val.put("TYPE", crop.getType());
                     val.put("NAME", crop.getName());
                     val.put("WEIGHT", 0);
-                    val.put("PRICE", 0);
                     val.put("DATE", crop.getDate());
                     val.put("TOTAL_COST_HARVESTED", 0);
-                    val.put("TOTAL_COST_SOLD", 0);
                     val.put("PERCENTAGE_HECTARE_DONE",0);
-                    val.put("HECTARE_SIZE_HARVESTED", 0);
-                    dbWrite.insert("UTILIZE_FGI", null, values);
+                    val.put("HECTARE_HARVESTED", 0);
+                    dbWrite.insert("UTILIZE_FGI", null, val);
+
 
                 }
                 break;
@@ -419,11 +418,13 @@ public class TransactionDAOImpl implements TransactionDAO {
         String selections = "TYPE" + " LIKE ?" + " AND " + "NAME" + " LIKE ?";
         String[] selectionArgs = {type, name};
 
-        String selection = "NAME" + " LIKE ?";
-        String[] selectionArg = { name};
+
 
         dbRead.update("WAREHOUSE_EQUIPMENT", values, selections, selectionArgs);
-        dbRead.update("UTILIZE_FGI", values, selection, selectionArg);
+     //   String selection = "NAME" + " LIKE ?";
+     //   String[] selectionArg = {name};
+      //  dbRead.update("UTILIZE_WPI", values, selection, selectionArg);
+
 
     }
 

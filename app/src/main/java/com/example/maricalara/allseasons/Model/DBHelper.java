@@ -75,7 +75,6 @@ public class DBHelper extends SQLiteOpenHelper {
     public String dbColumnInsecticidesPercentage = "INSECTICIDES_PERCENTAGE";
     public String dbColumnTotal_Percentage_Products = "TOTAL_PERCENTAGE_PRODUCTS";
     public String dbColumnHectare = "HECTARE_SIZE";
-    public String dbColumnHectareHarvested = "HECTARE_SIZE_HARVESTED";
     public String dbColumnTotal_Percentage_Hectare_Done = "PERCENTAGE_HECTARE_DONE";
 
 
@@ -93,7 +92,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public String dbColumnWPIID = "WPIID";
     public String dbColumnFGIID = "FGIID";
     public String dbColumnCGSID = "CGSID";
-    public String dbColumnhectare_harvested = "HECTARE_HARVESTED";
+    public String dbColumnhectareHarvested = "HECTARE_HARVESTED";
 
     //db Query
 
@@ -253,9 +252,7 @@ public class DBHelper extends SQLiteOpenHelper {
             dBColumnWeight + " REAL, " +
             dbColumnTotal_Percentage_Hectare_Done  + " REAL, " +
             dBColumnTotalCostHarvested + " REAL, " +
-            dbColumnHectareHarvested + " REAL, " +
-            dBColumnPrice + " REAL, " +
-            dBColumnTotalCostSold  + " REAL )";
+            dbColumnhectareHarvested + " REAL )";
 
     private String dbBuildQuery19 = "CREATE TABLE " + dbTableUtilizeCGS + " ( " +
             dBColumnDate + " TEXT, " +

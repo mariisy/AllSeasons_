@@ -420,7 +420,7 @@ public class TransactionsAddBought extends AppCompatActivity {
                         insecticides = (Insecticides) object;
                         price = insecticides.getPrice();
                         totalPrice = insecticides.getPrice() * qty;
-                        arrTransact.add(new Insecticides(type, itemName, qty, price, totalPrice, strDate));
+                        arrTransact.add(new Insecticides(type, itemName, qty, price, totalPrice, strDate,null));
 
                         new AlertDialog.Builder(TransactionsAddBought.this)
                                 .setTitle("Adding Entry")
@@ -475,7 +475,7 @@ public class TransactionsAddBought extends AppCompatActivity {
                         fertilizers = (Fertilizers) object;
                         price = fertilizers.getPrice();
                         totalPrice = fertilizers.getPrice() * qty;
-                        arrTransact.add(new Fertilizers(type, itemName, qty, price, totalPrice, strDate));
+                        arrTransact.add(new Fertilizers(type, itemName, qty, price, totalPrice, strDate,null));
 
                         new AlertDialog.Builder(TransactionsAddBought.this)
                                 .setTitle("Adding Entry")
@@ -530,7 +530,7 @@ public class TransactionsAddBought extends AppCompatActivity {
                         packaging = (Packaging) object;
                         price = packaging.getPrice();
                         totalPrice = packaging.getPrice() * qty;
-                        arrTransact.add(new Packaging(type, itemName, qty, price, totalPrice, strDate));
+                        arrTransact.add(new Packaging(type, itemName, qty, price, totalPrice, strDate,null));
 
                         new AlertDialog.Builder(TransactionsAddBought.this)
                                 .setTitle("Adding Entry")

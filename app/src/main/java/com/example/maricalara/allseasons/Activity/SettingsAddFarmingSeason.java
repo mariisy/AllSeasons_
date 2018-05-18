@@ -264,13 +264,13 @@ public class SettingsAddFarmingSeason extends AppCompatActivity {
             fertilizers = (Fertilizers) object;
             price = fertilizers.getPrice();
             totalPrice = price * fertilizerQty;
-            arrObject.add(new Fertilizers("Fertilizers", fertilizer, fertilizerQty, price, totalPrice, strDate));
+            arrObject.add(new Fertilizers("Fertilizers", fertilizer, fertilizerQty, price, totalPrice, strDate,null));
 
             object = imDao.retrieveOne(dbHelper, "Insecticides", insecticide);
             insecticides = (Insecticides) object;
             price = insecticides.getPrice();
             totalPrice = price * insecticideQty;
-            arrObject.add(new Insecticides("Insecticides", insecticide, insecticideQty, price, totalPrice, strDate));
+            arrObject.add(new Insecticides("Insecticides", insecticide, insecticideQty, price, totalPrice, strDate,null));
 
 
             new AlertDialog.Builder(SettingsAddFarmingSeason.this)

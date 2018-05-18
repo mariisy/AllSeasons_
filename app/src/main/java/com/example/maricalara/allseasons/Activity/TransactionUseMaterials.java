@@ -44,7 +44,7 @@ import java.util.Objects;
 public class TransactionUseMaterials extends AppCompatActivity {
 
     //for UI
-    private String type, itemName;
+    private String type, itemName,cropType;
     private int qty;
     private Button btnAddTransaction, btnView,btnView2;
     private MaterialBetterSpinner spinnerItem, spinnerItemName, spinnerCropType;
@@ -187,9 +187,14 @@ public class TransactionUseMaterials extends AppCompatActivity {
                     buffer.append(result.getString(18) + "\n");
                     buffer.append(result.getString(19) + "\n\n\n");
                 }
-
+                Cursor result2 = aDAO.getAllDataWPI(dbHelper);
+                StringBuffer buffer2 = new StringBuffer();
+                while (result2.moveToNext()) {
+                    //buffer.append("ID: " + result.getString(0) + "\n");
+                    buffer2.append("Total Cost: "+result2.getString(1) + "\n");
+                }
                 android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(TransactionUseMaterials.this);
-                builder.setMessage(buffer.toString()+"\n");
+                builder.setMessage(buffer.toString()+"\n"+buffer2.toString());
                 builder.show();
             }
         });
@@ -359,7 +364,7 @@ public class TransactionUseMaterials extends AppCompatActivity {
         type = spinnerItem.getText().toString();
         itemName = spinnerItemName.getText().toString();
         qty = Integer.parseInt(txtQty.getText().toString());
-
+        cropType = spinnerCropType.getText().toString();
         double unitPrice = 0;
 
         switch (type) {
@@ -371,7 +376,7 @@ public class TransactionUseMaterials extends AppCompatActivity {
                         insecticides = (Insecticides) object;
                         price = insecticides.getPrice();
                         totalPrice = insecticides.getPrice() * qty;
-                        arrTransact.add(new Insecticides(type, itemName, qty, price, totalPrice, strDate));
+                        arrTransact.add(new Insecticides(type, itemName, qty, price, totalPrice, strDate,cropType));
 
                         new AlertDialog.Builder(TransactionUseMaterials.this)
                                 .setTitle("Adding Entry")
@@ -426,7 +431,7 @@ public class TransactionUseMaterials extends AppCompatActivity {
                         fertilizers = (Fertilizers) object;
                         price = fertilizers.getPrice();
                         totalPrice = fertilizers.getPrice() * qty;
-                        arrTransact.add(new Fertilizers(type, itemName, qty, price, totalPrice, strDate));
+                        arrTransact.add(new Fertilizers(type, itemName, qty, price, totalPrice, strDate,cropType));
 
                         new AlertDialog.Builder(TransactionUseMaterials.this)
                                 .setTitle("Adding Entry")
@@ -481,7 +486,7 @@ public class TransactionUseMaterials extends AppCompatActivity {
                         packaging = (Packaging) object;
                         price = packaging.getPrice();
                         totalPrice = packaging.getPrice() * qty;
-                        arrTransact.add(new Packaging(type, itemName, qty, price, totalPrice, strDate));
+                        arrTransact.add(new Packaging(type, itemName, qty, price, totalPrice, strDate,cropType));
 
                         new AlertDialog.Builder(TransactionUseMaterials.this)
                                 .setTitle("Adding Entry")
@@ -591,7 +596,7 @@ public class TransactionUseMaterials extends AppCompatActivity {
                         seedlings = (Seedlings) object;
                         price = seedlings.getPrice();
                         totalPrice = seedlings.getPrice() * qty;
-                        arrTransact.add(new Seedlings(type, itemName, qty, price, totalPrice, strDate));
+                        arrTransact.add(new Seedlings(cropType, itemName, qty, price, totalPrice, strDate));
 
                         new AlertDialog.Builder(TransactionUseMaterials.this)
                                 .setTitle("Adding Entry")
@@ -604,7 +609,6 @@ public class TransactionUseMaterials extends AppCompatActivity {
                                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        addCart();
                                         finish();
                                     }
                                 })

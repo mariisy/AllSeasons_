@@ -221,7 +221,7 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
 
             case "Insecticides":
                 if (!tDAO.checkExistingWarehouse(dbHelper, type, itemName)) {
-                    Insecticides ins = new Insecticides(type, itemName, qty, unitPrice, totalPrice, strDate);
+                    Insecticides ins = new Insecticides(type, itemName, qty, unitPrice, totalPrice, strDate,null);
                     try {
                         tDAO.addEntry(dbHelper, ins, type, supplierName, supplierContact);
                         // tDAO.addBoughtList(dbHelper, ins, type);
@@ -275,7 +275,7 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
 
             case "Fertilizer":
                 if (!tDAO.checkExistingWarehouse(dbHelper, type, itemName)) {
-                    Fertilizers fer = new Fertilizers(type, itemName, qty, unitPrice, totalPrice, strDate);
+                    Fertilizers fer = new Fertilizers(type, itemName, qty, unitPrice, totalPrice, strDate,null);
                     try {
                         tDAO.addEntry(dbHelper, fer, type, supplierName, supplierContact);
                         //  tDAO.addBoughtList(dbHelper, fer, type);
@@ -329,7 +329,7 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
 
             case "Packaging":
                 if (!tDAO.checkExistingWarehouse(dbHelper, type, itemName)) {
-                    Packaging packaging = new Packaging(type, itemName, qty, unitPrice, totalPrice, strDate);
+                    Packaging packaging = new Packaging(type, itemName, qty, unitPrice, totalPrice, strDate,null);
                     try {
                         tDAO.addEntry(dbHelper, packaging, type, supplierName, supplierContact);
                         //tDAO.addBoughtList(dbHelper, packaging, type);

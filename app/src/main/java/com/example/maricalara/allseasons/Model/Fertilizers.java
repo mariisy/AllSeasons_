@@ -11,14 +11,16 @@ public class Fertilizers {
     private int quantity;
     private double price,totalPrice;
     private String date;
+    private String cropType;
 
-    public Fertilizers(String type, String name, int quantity, double price, double totalPrice, String date) {
+    public Fertilizers(String type, String name, int quantity, double price, double totalPrice, String date, String cropType) {
         this.type = type;
         this.name = name;
         this.quantity = quantity;
         this.price = price;
         this.totalPrice = totalPrice;
         this.date = date;
+        this.cropType = cropType;
     }
 
     public String getType() {
@@ -67,6 +69,14 @@ public class Fertilizers {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public String getCropType() {
+        return cropType;
+    }
+
+    public void setCropType(String cropType) {
+        this.cropType = cropType;
     }
 
     @Override
