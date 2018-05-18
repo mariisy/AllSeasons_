@@ -31,8 +31,8 @@ public class TransactionAddSold extends AppCompatActivity {
 
     //for UI
     private Button btnAddTransaction;
-    private EditText txtCustomerName, txtContactNum, txtQty, txtAddress;
-    private TextInputLayout inputLayoutCustomerName, inputLayoutContactNum, inputLayoutQuantity, inputLayoutAddress;
+    private EditText txtCustomerName, txtContactNum, txtQty, txtAddress, txtPackagingQty;
+    private TextInputLayout inputLayoutCustomerName, inputLayoutContactNum, inputLayoutQuantity, inputLayoutAddress, inputLayoutQtyPackaging;
     private CheckBox chckDelivery;
     private Toolbar toolbar;
     private TextView txtTransactionID, txtDate;
@@ -67,6 +67,8 @@ public class TransactionAddSold extends AppCompatActivity {
         inputLayoutContactNum = (TextInputLayout) findViewById(R.id.input_layout_contactNum);
         inputLayoutQuantity = (TextInputLayout) findViewById(R.id.input_layout_qty);
         inputLayoutAddress = (TextInputLayout) findViewById(R.id.input_layout_address);
+        inputLayoutQtyPackaging = (TextInputLayout) findViewById(R.id.input_layout_qty_package);
+        txtPackagingQty = (EditText) findViewById(R.id.txtPackagingQty);
         txtCustomerName = (EditText) findViewById(R.id.txtCustomerName);
         txtContactNum = (EditText) findViewById(R.id.txtContactNum);
         txtQty = (EditText) findViewById(R.id.txtQty);
@@ -96,7 +98,9 @@ public class TransactionAddSold extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                submitEditText();
+               if(validateAddress() && validateContact() && validateCustomerName() && validatePackaging() && validateQuantity()){
+                   //do something
+               }
 
             }
         });
@@ -104,23 +108,16 @@ public class TransactionAddSold extends AppCompatActivity {
 
     }
 
+    private boolean validatePackaging() {
+            if (txtPackagingQty.getText().toString().trim().isEmpty()) {
+                inputLayoutQtyPackaging.setError("Enter Customer Address!");
+                requestFocus(chckDelivery);
+                return false;
+            } else {
+                inputLayoutQtyPackaging.setErrorEnabled(false);
+            }
 
-    private void submitEditText() {
-        if (!validateCustomerName()) {
-            return;
-        }
-
-        if (!validateContact()) {
-            return;
-        }
-
-        if (!validateAddress()) {
-            return;
-        }
-        if (!validateQuantity()) {
-            return;
-        }
-        Toast.makeText(this.getApplicationContext(), "Thank You!", Toast.LENGTH_SHORT).show();
+        return true;
     }
 
     private boolean validateAddress() {
@@ -207,6 +204,9 @@ public class TransactionAddSold extends AppCompatActivity {
                     break;
                 case R.id.txtAddress:
                     validateAddress();
+                    break;
+                case R.id.txtPackagingQty:
+                    validatePackaging();
                     break;
             }
         }

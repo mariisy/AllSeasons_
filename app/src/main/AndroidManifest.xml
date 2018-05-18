@@ -2,6 +2,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.maricalara.allseasons">
 
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/temp_logo"
@@ -9,8 +18,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/MyMaterialTheme">
-
-        <activity android:name=".Activity.LogInActivity"
+        <activity
+            android:name=".Activity.LogInActivity"
             android:theme="@style/MyMaterialTheme.Base">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -18,9 +27,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activity.MainActivity"
+        <activity
+            android:name=".Activity.MainActivity"
             android:theme="@style/MyMaterialTheme.Base" />
-        <activity android:name=".Activity.AboutUs"
+        <activity
+            android:name=".Activity.AboutUs"
             android:theme="@style/MyMaterialTheme.Base" />
         <activity android:name=".Activity.StaffSettingsActivity" />
         <activity android:name=".Activity.SettingsAddStaff" />
@@ -34,8 +45,8 @@
         <activity android:name=".Activity.TransactionUseMaterials" />
         <activity android:name=".Activity.EditWarehouse" />
         <activity android:name=".Activity.TransactionHarvest" />
-        <activity android:name=".Activity.SettingsAddFarmingSeason"></activity>
+        <activity android:name=".Activity.SettingsAddFarmingSeason" />
+        <activity android:name=".Activity.SyncSettingsClient"></activity>
     </application>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
 </manifest>

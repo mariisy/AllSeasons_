@@ -21,13 +21,7 @@
             android:paddingRight="24dp"
             android:paddingTop="56dp">
 
-            <android.support.v7.widget.AppCompatButton
-                android:id="@+id/btnExport"
-                style="@style/Widget.AppCompat.Button.Colored"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Start Data Export" />
+
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -36,19 +30,28 @@
                 android:orientation="horizontal">
 
                 <android.support.v7.widget.AppCompatButton
-                    android:id="@+id/btnStartSync"
+                    android:id="@+id/btnExport"
                     style="@style/Widget.AppCompat.Button.Colored"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="Start Sync" />
+                    android:text="Start Database \n Export" />
+
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/btnStartRecieve"
+                    style="@style/Widget.AppCompat.Button.Colored"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_toEndOf="@+id/btnExport"
+                    android:text="Start Sync:\n Receive Data" />
 
                 <android.support.v7.widget.AppCompatButton
                     android:id="@+id/btnStopSync"
                     style="@style/Widget.AppCompat.Button.Colored"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toEndOf="@+id/btnStartSync"
+                    android:layout_toEndOf="@+id/btnStartRecieve"
                     android:text="Stop Sync" />
             </RelativeLayout>
 
@@ -97,12 +100,12 @@
                 android:background="@color/colorPrimaryDark" />
 
             <android.support.v7.widget.AppCompatButton
-                android:id="@+id/btnStartSyncClient"
+                android:id="@+id/btnStartSend"
                 style="@style/Widget.AppCompat.Button.Colored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:text="Start Sync" />
+                android:text="Send Data" />
 
         </LinearLayout>
 
