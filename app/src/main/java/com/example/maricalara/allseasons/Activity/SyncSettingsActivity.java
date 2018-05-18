@@ -1,6 +1,7 @@
 package com.example.maricalara.allseasons.Activity;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -180,6 +181,31 @@ public class SyncSettingsActivity extends AppCompatActivity implements WifiP2pMa
     *
     *
     */
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (resultCode == Activity.RESULT_OK && requestCode == fileRequestID) {
+            //Fetch result
+            File targetDir = (File) data.getExtras().get("file");
+
+            if (targetDir.isDirectory()) {
+                if (targetDir.canWrite()) {
+                    downloadTargetFile = targetDir;
+                    TextView filePath = (TextView) findViewById(R.id.server_file_path);
+                    filePath.setText(targetDir.getPath());
+                    setServerFileTransferStatus("Download directory set to " + targetDir.getName());
+
+                } else {
+                    setServerFileTransferStatus("You do not have permission to write to " + targetDir.getName());
+                }
+
+            } else {
+                setServerFileTransferStatus("The selected file is not a directory. Please select a valid download directory.");
+            }
+
+        }
+    }
 
     public void serverStart(){
         //If server is already listening on port or transfering data, do not attempt to start server service

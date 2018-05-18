@@ -22,6 +22,30 @@
             android:paddingTop="56dp">
 
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/path"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Path"
+                    tools:context=".Activity.SyncSettingsActivity"
+                    android:textAppearance="?android:attr/textAppearanceLarge"/>
+
+                <EditText
+                    android:id="@+id/server_file_path"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:editable="false"
+                    android:hint="Path"
+                    android:layout_toEndOf="@+id/path"/>
+            </RelativeLayout>
+
+
 
             <RelativeLayout
                 android:layout_width="match_parent"
