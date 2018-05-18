@@ -15,6 +15,7 @@ public interface AccountingDAO {
     Cursor getAllUtilizeWPI(DBHelper dbHelper);
     Cursor getAllUtilizeFGI(DBHelper dbHelper);
     void addEntry(DBHelper dbHelper, String type);
+    Crops retrieveOne2 (DBHelper dbHelper, String type, String name);
     public void addEntryPlanning(DBHelper dbHelper, ArrayList<Object> objArray, double hectareSize);
     Crops retrieveOne(DBHelper dbHelper, String type, String name);
     boolean checkExisting(DBHelper dbHelper, String type);

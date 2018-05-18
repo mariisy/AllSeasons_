@@ -1,7 +1,9 @@
 package com.example.maricalara.allseasons.Activity;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -16,8 +18,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.maricalara.allseasons.Controller.AccountingDAO;
+import com.example.maricalara.allseasons.Controller.AccountingDAOImpl;
 import com.example.maricalara.allseasons.Controller.TransactionDAO;
 import com.example.maricalara.allseasons.Controller.TransactionDAOImpl;
+import com.example.maricalara.allseasons.Model.Crops;
 import com.example.maricalara.allseasons.Model.DBHelper;
 import com.example.maricalara.allseasons.R;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
@@ -26,11 +31,16 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Objects;
 
 public class TransactionAddSold extends AppCompatActivity {
 
-    //Sample for List for Spinner
-
+    //data variables
+    String itemName, strName;
+    double qty, price, totalPrice;
+    Crops crops;
+    Object object;
+    private ArrayList<Object> arrTransact = new ArrayList<>();
 
     //for UI
     private Button btnAddTransaction;
@@ -41,11 +51,18 @@ public class TransactionAddSold extends AppCompatActivity {
     private TextView txtTransactionID, txtDate;
     private ArrayAdapter<String> arrayAdapter3;
     private ArrayList<String> arrListCrop;
+    private ArrayAdapter<String> stringArrayAdapter;
     private MaterialBetterSpinner spinnerItem;
+
+
     //bundle extra
     String empID, name;
+    private AccountingDAO aDAO = new AccountingDAOImpl();
     private TransactionDAO tDAO = new TransactionDAOImpl();
     private DBHelper dbHelper = new DBHelper(TransactionAddSold.this);
+
+
+
     //get Date String
     Date date = new Date();
     SimpleDateFormat sdf = new SimpleDateFormat("EEEE");
@@ -104,7 +121,7 @@ public class TransactionAddSold extends AppCompatActivity {
             public void onClick(View view) {
 
                if(validateAddress() && validateContact() && validateCustomerName() && validatePackaging() && validateQuantity()){
-                   //do something
+                   setData();
                }
 
             }
@@ -231,5 +248,122 @@ public class TransactionAddSold extends AppCompatActivity {
         }
     }
 
+    private void setData() {
 
+        itemName = spinnerItem.getText().toString();
+        qty = Integer.parseInt(txtQty.getText().toString());
+
+        Date date = new Date();
+        double unitPrice = 0;
+
+                if (tDAO.checkExistingWarehouse(dbHelper, "Crops", itemName)) {
+                    try {
+                        object = aDAO.retrieveOne(dbHelper, "", itemName);
+                        crops = (Crops) object;
+                        price = crops.getUnitPrice();
+                        totalPrice = crops.getUnitPrice() * qty;
+                        arrTransact.add(new Crops("Crop", itemName, price, qty,  0, strDate,0,0,0));
+
+                        new AlertDialog.Builder(TransactionAddSold.this)
+                                .setTitle("Adding Entry")
+                                .setMessage(itemName + " Added! /n Would you like to add another entry?")
+                                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                    }
+                                })
+                                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        viewButton();
+
+                                    }
+                                })
+                                .show();
+
+                    } catch (Exception e) {
+                        new AlertDialog.Builder(TransactionAddSold.this)
+                                .setTitle("Adding Entry")
+                                .setMessage("Adding entry unsuccesful! /n Please try again.")
+                                .setNeutralButton("Ok", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                    }
+                                })
+                                .show();
+                    }
+                } else {
+
+                    new AlertDialog.Builder(TransactionAddSold.this)
+                            .setTitle("Adding Entry")
+                            .setMessage("Entry already exists! /n Would you like to add another entry?")
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                }
+                            })
+                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    finish();
+                                }
+                            })
+                            .show();
+                }
+
+
+    }
+
+    private void viewButton() {
+        AlertDialog.Builder builderView = new AlertDialog.Builder(TransactionAddSold.this);
+        builderView.setTitle("Cart Items");
+        ArrayList<String> strings = new ArrayList<>(arrTransact.size());
+        for (Object obj : arrTransact) {
+            strings.add(Objects.toString(obj, null));
+        }
+
+        stringArrayAdapter = new ArrayAdapter<String>(TransactionAddSold.this, android.R.layout.simple_list_item_1, strings);
+
+        builderView.setPositiveButton("Add Transactions", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //aDAO.updateCGS();
+                finish();
+            }
+        });
+        builderView.setNegativeButton("Close View", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        builderView.setAdapter(stringArrayAdapter, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                strName = stringArrayAdapter.getItem(which);
+                AlertDialog.Builder builderInner = new AlertDialog.Builder(TransactionAddSold.this);
+                builderInner.setMessage(strName.toString());
+                builderInner.setTitle("Delete item?");
+                builderInner.setPositiveButton("Continue ", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //action delete
+                        stringArrayAdapter.remove(strName.toString());
+                        stringArrayAdapter.notifyDataSetChanged();
+                        dialog.dismiss();
+
+                    }
+                });
+                builderInner.setNegativeButton("Close", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                builderInner.show();
+
+            }
+        });
+        builderView.show();
+    }
 }

@@ -68,6 +68,28 @@ public class AccountingDAOImpl implements AccountingDAO {
     }
 
     @Override
+    public Crops retrieveOne2(DBHelper dbHelper, String type, String name) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        String queryForRetrievalOne = "SELECT * FROM " + "WAREHOUSE_EQUIPMENT WHERE NAME = '" + name + "'  AND TYPE = '" + type + "' ";
+        Cursor cursor = db.rawQuery(queryForRetrievalOne, null);
+        Crops crops = new Crops(null, null, 0, 0, 0, null,0,0,0);
+
+        if (cursor.moveToFirst()) {
+            do {
+                crops.setType(cursor.getString(cursor.getColumnIndex("TYPE")));
+                crops.setName(cursor.getString(cursor.getColumnIndex("NAME")));
+                crops.setWeight(cursor.getDouble(cursor.getColumnIndex("WEIGHT")));
+                crops.setDate(cursor.getString(cursor.getColumnIndex("DATE")));
+                crops.setTotalCostHarvested(cursor.getDouble(cursor.getColumnIndex("TOTAL_COST_HARVESTED")));
+                crops.setHectarePercent(cursor.getDouble(cursor.getColumnIndex("PERCENTAGE_HECTARE_DONE")));
+                crops.setHectareHarvested(cursor.getDouble(cursor.getColumnIndex("HECTARE_HARVESTED")));
+            } while (cursor.moveToNext());
+        }
+
+        return crops;
+    }
+
+    @Override
     public boolean checkExisting(DBHelper dbHelper, String type) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         String queryForCheck = "SELECT * FROM " + type;
