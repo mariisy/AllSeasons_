@@ -209,6 +209,13 @@ public class TransactionDAOImpl implements TransactionDAO {
                     val.put("HECTARE_HARVESTED", 0);
                     dbWrite.insert("UTILIZE_FGI", null, val);
 
+                    ContentValues val1 = new ContentValues();
+                    val1.put("TYPE", crop.getType());
+                    val1.put("NAME", crop.getName());
+                    val1.put("WEIGHT", 0);
+                    val1.put("DATE", crop.getDate());
+                    val1.put("TOTAL_COST_HARVESTED", 0);
+                    dbWrite.insert("UTILIZE_CGS", null, val);
 
                 }
                 break;
