@@ -32,6 +32,13 @@ public class AccountingDAOImpl implements AccountingDAO {
     }
 
     @Override
+    public Cursor getAllDataFGI(DBHelper dbHelper) {
+        dbWrite = dbHelper.getWritableDatabase();
+        Cursor result = dbWrite.rawQuery("SELECT * FROM FGI", null);
+        return result;
+    }
+
+    @Override
     public Cursor getAllPlan(DBHelper dbHelper) {
         dbWrite = dbHelper.getWritableDatabase();
         Cursor result = dbWrite.rawQuery("SELECT * FROM RESOURCE_PLANNING_TABLE", null);
@@ -42,6 +49,13 @@ public class AccountingDAOImpl implements AccountingDAO {
     public Cursor getAllUtilizeWPI(DBHelper dbHelper) {
         dbWrite = dbHelper.getWritableDatabase();
         Cursor result = dbWrite.rawQuery("SELECT * FROM UTILIZE_WPI", null);
+        return result;
+    }
+
+    @Override
+    public Cursor getAllUtilizeFGI(DBHelper dbHelper) {
+        dbWrite = dbHelper.getWritableDatabase();
+        Cursor result = dbWrite.rawQuery("SELECT * FROM UTILIZE_FGI", null);
         return result;
     }
 
@@ -162,12 +176,10 @@ public class AccountingDAOImpl implements AccountingDAO {
                 crops.setType(cursor.getString(cursor.getColumnIndex("TYPE")));
                 crops.setName(cursor.getString(cursor.getColumnIndex("NAME")));
                 crops.setWeight(cursor.getDouble(cursor.getColumnIndex("WEIGHT")));
-                crops.setUnitPrice(cursor.getDouble(cursor.getColumnIndex("PRICE")));
                 crops.setDate(cursor.getString(cursor.getColumnIndex("DATE")));
                 crops.setTotalCostHarvested(cursor.getDouble(cursor.getColumnIndex("TOTAL_COST_HARVESTED")));
-                crops.setTotalcostSold(cursor.getDouble(cursor.getColumnIndex("TOTAL_COST_SOLD")));
                 crops.setHectarePercent(cursor.getDouble(cursor.getColumnIndex("PERCENTAGE_HECTARE_DONE")));
-                crops.setHectareHarvested(cursor.getDouble(cursor.getColumnIndex("HECTARE_SIZE_HARVESTED")));
+                crops.setHectareHarvested(cursor.getDouble(cursor.getColumnIndex("HECTARE_HARVESTED")));
             } while (cursor.moveToNext());
         }
 
@@ -492,14 +504,11 @@ public class AccountingDAOImpl implements AccountingDAO {
     public void updateFGI(DBHelper dbHelper, ArrayList<Object> objArray) {
         dbRead = dbHelper.getReadableDatabase();
         dbWrite = dbHelper.getWritableDatabase();
-        Insecticides in = new Insecticides(null, null, 0, 0, 0, null,null);
-        Fertilizers fe = new Fertilizers(null, null, 0, 0, 0, null,null);
-        Packaging pa = new Packaging(null, null, 0, 0, 0, null,null);
-        Seeds seed = new Seeds(null, null, 0, 0, 0, null);
-        Seedlings seedling = new Seedlings(null, null, 0, 0, 0, null);
+        Crops crop = new Crops(null, null, 0, 0, 0, null,0,0,0);
 
         for (Object obj : objArray) {
             if (obj instanceof Crops) {
+                crops = (Crops) obj;
                 String queryUpdate3 = "SELECT * FROM RESOURCE_PLANNING_TABLE WHERE NAME = '" + crops.getName() + "'";
                 Cursor cursor3 = dbRead.rawQuery(queryUpdate3, null);
                 ContentValues val3 = new ContentValues();
@@ -526,11 +535,35 @@ public class AccountingDAOImpl implements AccountingDAO {
                 String selection2 = "NAME" + " LIKE ?";
                 String[] selectionArgs2 = { crops.getName()};
                 val3.put("WEIGHT",weight + crops.getWeight());
-                val3.put("HECTARE_SIZE_HARVESTED",hectareHarvested + crops.getHectareHarvested());
-                val3.put("percentageDoneHectare",(percentageDoneHectare + (hectareHarvested + crops.getHectareHarvested()))/hectareSize);
+                val3.put("HECTARE_HARVESTED",hectareHarvested + crops.getHectareHarvested());
+                val3.put("PERCENTAGE_HECTARE_DONE",(hectareHarvested + crops.getHectareHarvested())/hectareSize);
+                val3.put("TOTAL_COST_HARVESTED",(((hectareHarvested + crops.getHectareHarvested())/hectareSize)*seeds_cost)+(((hectareHarvested + crops.getHectareHarvested())/hectareSize)*fertilizers_cost)+(((hectareHarvested + crops.getHectareHarvested())/hectareSize)*insecticides_cost) );
                 dbRead.update("UTILIZE_FGI", val3, selection2, selectionArgs2);
 
 
+                String queryUpdate2 = "SELECT TOTAL_COST FROM FGI ";
+                Cursor cursor2 = dbRead.rawQuery(queryUpdate2, null);
+                ContentValues values = new ContentValues();
+                double costTotal = 0;
+                if (cursor2.moveToFirst()) {
+                    do {
+                        costTotal = cursor2.getDouble(cursor2.getColumnIndex("TOTAL_COST"));
+                    } while (cursor2.moveToNext());
+                }
+                values.put("TOTAL_COST", costTotal + (((crops.getHectareHarvested())/hectareSize)*seeds_cost)+(((crops.getHectareHarvested())/hectareSize)*fertilizers_cost)+(((crops.getHectareHarvested())/hectareSize)*insecticides_cost));
+                dbRead.update("FGI", values, "FGIID=" + 1, null);
+
+                String queryUpdate1 = "SELECT TOTAL_COST FROM WPI ";
+                Cursor cursor1 = dbRead.rawQuery(queryUpdate1, null);
+                ContentValues val1 = new ContentValues();
+                double costTotal1 = 0;
+                if (cursor1.moveToFirst()) {
+                    do {
+                        costTotal1 = cursor1.getDouble(cursor1.getColumnIndex("TOTAL_COST"));
+                    } while (cursor1.moveToNext());
+                }
+                val1.put("TOTAL_COST", costTotal1 - ((((crops.getHectareHarvested())/hectareSize)*seeds_cost)+(((crops.getHectareHarvested())/hectareSize)*fertilizers_cost)+(((crops.getHectareHarvested())/hectareSize)*insecticides_cost)));
+                dbRead.update("WPI", val1, "WPIID=" + 1, null);
             }
         }
     }

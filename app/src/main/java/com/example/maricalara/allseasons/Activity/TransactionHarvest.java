@@ -1,6 +1,7 @@
 package com.example.maricalara.allseasons.Activity;
 
 import android.content.DialogInterface;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
@@ -36,7 +37,7 @@ public class TransactionHarvest extends AppCompatActivity {
     //for UI
     private String itemName;
     private double weight,hectare;
-    private Button btnAddTransaction, btnView;
+    private Button btnAddTransaction, btnView, btnView2;
     private MaterialBetterSpinner spinnerName;
     private Toolbar toolbar;
     private TextInputLayout inputLayoutQty, inputLayoutHectare;
@@ -108,10 +109,46 @@ public class TransactionHarvest extends AppCompatActivity {
         });
 
         btnView = (Button) findViewById(R.id.btnView);
+        btnView2 = (Button) findViewById(R.id.btnView2);
         btnView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 viewButton();
+            }
+        });
+        btnView2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Cursor result = aDAO.getAllUtilizeFGI(dbHelper);
+                StringBuffer buffer = new StringBuffer();
+                while (result.moveToNext()) {
+                    //buffer.append("ID: " + result.getString(0) + "\n");
+                    buffer.append("Date: "+result.getString(0) + "\n");
+                    buffer.append("Type: "+result.getString(1) + "\n");
+                    buffer.append("Name: "+result.getString(2) + "\n");
+                    buffer.append("Weight: "+result.getString(3) + "\n");
+                    buffer.append("Hectare Harvested: "+result.getString(6) + "\n");
+                    buffer.append("Percent Hectare Done: "+result.getString(4) + "\n");
+                    buffer.append("Total Cost Harvested: "+result.getString(5) + "\n");
+                }
+
+                Cursor result2 = aDAO.getAllDataWPI(dbHelper);
+                StringBuffer buffer2 = new StringBuffer();
+                while (result2.moveToNext()) {
+                    //buffer.append("ID: " + result.getString(0) + "\n");
+                    buffer2.append("WPI Total Cost: "+result2.getString(1) + "\n");
+                }
+
+                Cursor result3 = aDAO.getAllDataFGI(dbHelper);
+                StringBuffer buffer3 = new StringBuffer();
+                while (result3.moveToNext()) {
+                    //buffer.append("ID: " + result.getString(0) + "\n");
+                    buffer3.append("FGI Total Cost: "+result3.getString(1) + "\n");
+                }
+
+                android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(TransactionHarvest.this);
+                builder.setMessage(buffer.toString()+"\n"+buffer2.toString()+"\n"+buffer3.toString());
+                builder.show();
             }
         });
 
@@ -131,6 +168,7 @@ public class TransactionHarvest extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 addCart();
+                dialog.dismiss();
             }
         });
         builderView.setNegativeButton("Close View", new DialogInterface.OnClickListener() {
@@ -171,18 +209,14 @@ public class TransactionHarvest extends AppCompatActivity {
     }
 
     private void setData() {
-
         hectare = Double.valueOf(txtHectare.getText().toString());
         itemName = spinnerName.getText().toString();
         weight = Double.valueOf(txtQty.getText().toString());
-
-        double totalCostSold = 0;
 
         if (tDAO.checkExistingWarehouse(dbHelper, "Crops", itemName)) {
             try {
                 object = aDAO.retrieveOne(dbHelper, "Crops", itemName);
                 crops = (Crops) object;
-                totalCostSold = crops.getUnitPrice() * weight;
                 arrTransact.add(new Crops("Crops", itemName, 0, weight, 0, strDate,0,hectare,0));
 
                 new AlertDialog.Builder(TransactionHarvest.this)
@@ -227,6 +261,8 @@ public class TransactionHarvest extends AppCompatActivity {
                     })
                     .show();
         }
+
+
     }
 
     private void addCart() {
