@@ -14,6 +14,7 @@ public interface AccountingDAO {
     Cursor getAllPlan(DBHelper dbHelper);
     Cursor getAllUtilizeWPI(DBHelper dbHelper);
     Cursor getAllUtilizeFGI(DBHelper dbHelper);
+    Cursor getAllUtilizeCGS(DBHelper dbHelper);
     void addEntry(DBHelper dbHelper, String type);
     Crops retrieveOne2 (DBHelper dbHelper, String type, String name);
     public void addEntryPlanning(DBHelper dbHelper, ArrayList<Object> objArray, double hectareSize);
@@ -21,4 +22,5 @@ public interface AccountingDAO {
     boolean checkExisting(DBHelper dbHelper, String type);
     void updateWPI(DBHelper dbHelper, ArrayList<Object> objArray);
     void updateFGI(DBHelper dbHelper, ArrayList<Object> objArray);
+    void updateCGS(DBHelper dbHelper, ArrayList<Object> objArray);
 }

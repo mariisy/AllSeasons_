@@ -46,6 +46,13 @@ public class AccountingDAOImpl implements AccountingDAO {
     }
 
     @Override
+    public Cursor getAllUtilizeCGS(DBHelper dbHelper) {
+        dbWrite = dbHelper.getWritableDatabase();
+        Cursor result = dbWrite.rawQuery("SELECT * FROM UTILIZE_CGS", null);
+        return result;
+    }
+
+    @Override
     public Cursor getAllUtilizeWPI(DBHelper dbHelper) {
         dbWrite = dbHelper.getWritableDatabase();
         Cursor result = dbWrite.rawQuery("SELECT * FROM UTILIZE_WPI", null);
@@ -78,11 +85,7 @@ public class AccountingDAOImpl implements AccountingDAO {
             do {
                 crops.setType(cursor.getString(cursor.getColumnIndex("TYPE")));
                 crops.setName(cursor.getString(cursor.getColumnIndex("NAME")));
-                crops.setWeight(cursor.getDouble(cursor.getColumnIndex("WEIGHT")));
                 crops.setDate(cursor.getString(cursor.getColumnIndex("DATE")));
-                crops.setTotalCostHarvested(cursor.getDouble(cursor.getColumnIndex("TOTAL_COST_HARVESTED")));
-                crops.setHectarePercent(cursor.getDouble(cursor.getColumnIndex("PERCENTAGE_HECTARE_DONE")));
-                crops.setHectareHarvested(cursor.getDouble(cursor.getColumnIndex("HECTARE_HARVESTED")));
             } while (cursor.moveToNext());
         }
 
@@ -522,6 +525,7 @@ public class AccountingDAOImpl implements AccountingDAO {
 
     }
 
+
     @Override
     public void updateFGI(DBHelper dbHelper, ArrayList<Object> objArray) {
         dbRead = dbHelper.getReadableDatabase();
@@ -541,7 +545,7 @@ public class AccountingDAOImpl implements AccountingDAO {
                         fertilizers_cost = cursor3.getDouble(cursor3.getColumnIndex("FERTILIZER_COST"));
                         insecticides_cost = cursor3.getDouble(cursor3.getColumnIndex("INSECTICIDES_COST"));
                         hectareSize = cursor3.getDouble(cursor3.getColumnIndex("HECTARE_SIZE"));
-                       } while (cursor3.moveToNext());
+                    } while (cursor3.moveToNext());
                 }
 
                 String queryUpdate4 = "SELECT * FROM UTILIZE_FGI WHERE NAME = '" +  crops.getName() + "'";
@@ -589,4 +593,68 @@ public class AccountingDAOImpl implements AccountingDAO {
             }
         }
     }
+
+
+    @Override
+    public void updateCGS(DBHelper dbHelper, ArrayList<Object> objArray) {
+        dbRead = dbHelper.getReadableDatabase();
+        dbWrite = dbHelper.getWritableDatabase();
+        Crops crop = new Crops(null, null, 0, 0, 0, null,0,0,0);
+
+        for (Object obj : objArray) {
+            if (obj instanceof Crops) {
+                crops = (Crops) obj;
+                String queryUpdate3 = "SELECT * FROM UTILIZE_FGI WHERE NAME = '" + crops.getName() + "'";
+                Cursor cursor3 = dbRead.rawQuery(queryUpdate3, null);
+                ContentValues val3 = new ContentValues();
+                double  weight=0, totalCostHarvested=0;
+                if (cursor3.moveToFirst()) {
+                    do {
+                        weight = cursor3.getDouble(cursor3.getColumnIndex("WEIGHT"));
+                        totalCostHarvested = cursor3.getDouble(cursor3.getColumnIndex("TOTAL_COST_HARVESTED"));
+                    } while (cursor3.moveToNext());
+                }
+
+                String queryUpdate4 = "SELECT * FROM UTILIZE_CGS WHERE NAME = '" +  crops.getName() + "'";
+                Cursor cursor4 = dbRead.rawQuery(queryUpdate4, null);
+                double  weight1 = 0,totalCostHarvested1=0;
+                if (cursor4.moveToFirst()) {
+                    do {
+                        weight1 = cursor4.getDouble(cursor4.getColumnIndex("WEIGHT"));
+                    } while (cursor4.moveToNext());
+                }
+                String selection2 = "NAME" + " LIKE ?";
+                String[] selectionArgs2 = { crops.getName()};
+                val3.put("WEIGHT",weight1 + crops.getWeight());
+                val3.put("TOTAL_COST_HARVESTED",totalCostHarvested*((weight1 + crops.getWeight())/weight));
+                dbRead.update("UTILIZE_CGS", val3, selection2, selectionArgs2);
+
+
+                String queryUpdate2 = "SELECT TOTAL_COST FROM FGI ";
+                Cursor cursor2 = dbRead.rawQuery(queryUpdate2, null);
+                ContentValues values = new ContentValues();
+                double costTotal = 0;
+                if (cursor2.moveToFirst()) {
+                    do {
+                        costTotal = cursor2.getDouble(cursor2.getColumnIndex("TOTAL_COST"));
+                    } while (cursor2.moveToNext());
+                }
+                values.put("TOTAL_COST", costTotal - totalCostHarvested*((crops.getWeight())/weight));
+                dbRead.update("FGI", values, "FGIID=" + 1, null);
+
+                String queryUpdate1 = "SELECT TOTAL_COST FROM CGS ";
+                Cursor cursor1 = dbRead.rawQuery(queryUpdate1, null);
+                ContentValues val1 = new ContentValues();
+                double costTotal1 = 0;
+                if (cursor1.moveToFirst()) {
+                    do {
+                        costTotal1 = cursor1.getDouble(cursor1.getColumnIndex("TOTAL_COST"));
+                    } while (cursor1.moveToNext());
+                }
+                val1.put("TOTAL_COST", costTotal1 - (totalCostHarvested*((crops.getWeight())/weight)));
+                dbRead.update("CGS", val1, "WPIID=" + 1, null);
+            }
+        }
+    }
+
 }

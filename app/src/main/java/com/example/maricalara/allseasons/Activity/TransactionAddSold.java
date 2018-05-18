@@ -1,6 +1,7 @@
 package com.example.maricalara.allseasons.Activity;
 
 import android.content.DialogInterface;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
@@ -37,13 +38,13 @@ public class TransactionAddSold extends AppCompatActivity {
 
     //data variables
     String itemName, strName;
-    double qty, price, totalPrice;
+    double weight, price, totalPrice;
     Crops crops;
     Object object;
     private ArrayList<Object> arrTransact = new ArrayList<>();
 
     //for UI
-    private Button btnAddTransaction;
+    private Button btnAddTransaction,btnView2;
     private EditText txtCustomerName, txtContactNum, txtQty, txtAddress, txtPackagingQty;
     private TextInputLayout inputLayoutCustomerName, inputLayoutContactNum, inputLayoutQuantity, inputLayoutAddress, inputLayoutQtyPackaging;
     private CheckBox chckDelivery;
@@ -96,7 +97,7 @@ public class TransactionAddSold extends AppCompatActivity {
         txtQty = (EditText) findViewById(R.id.txtQty);
         txtAddress = (EditText) findViewById(R.id.txtAddress);
         chckDelivery = (CheckBox) findViewById(R.id.delivery);
-
+        btnView2 = (Button)findViewById(R.id.btnView2);
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             empID = extras.getString("EmployeeID");
@@ -112,7 +113,7 @@ public class TransactionAddSold extends AppCompatActivity {
         //layout for spinnerCrop
         arrListCrop = tDAO.retrieveListSpinnerColumn(dbHelper, "NAME", "TYPE", "Crops");
         arrayAdapter3 = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, arrListCrop);
-        spinnerItem.setAdapter(arrayAdapter3);
+        spinnerItem .setAdapter(arrayAdapter3);
 
         btnAddTransaction = (Button) findViewById(R.id.btnAdd);
         btnAddTransaction.setOnClickListener(new View.OnClickListener() {
@@ -124,6 +125,41 @@ public class TransactionAddSold extends AppCompatActivity {
                    setData();
                }
 
+            }
+        });
+        btnView2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Cursor result = aDAO.getAllUtilizeFGI(dbHelper);
+                StringBuffer buffer = new StringBuffer();
+                while (result.moveToNext()) {
+                    //buffer.append("ID: " + result.getString(0) + "\n");
+                    buffer.append("Date: "+result.getString(0) + "\n");
+                    buffer.append("Type: "+result.getString(1) + "\n");
+                    buffer.append("Name: "+result.getString(2) + "\n");
+                    buffer.append("Weight: "+result.getString(3) + "\n");
+                    buffer.append("Hectare Harvested: "+result.getString(6) + "\n");
+                    buffer.append("Percent Hectare Done: "+result.getString(4) + "\n");
+                    buffer.append("Total Cost Harvested: "+result.getString(5) + "\n");
+                }
+
+                Cursor result2 = aDAO.getAllDataWPI(dbHelper);
+                StringBuffer buffer2 = new StringBuffer();
+                while (result2.moveToNext()) {
+                    //buffer.append("ID: " + result.getString(0) + "\n");
+                    buffer2.append("WPI Total Cost: "+result2.getString(1) + "\n");
+                }
+
+                Cursor result3 = aDAO.getAllDataFGI(dbHelper);
+                StringBuffer buffer3 = new StringBuffer();
+                while (result3.moveToNext()) {
+                    //buffer.append("ID: " + result.getString(0) + "\n");
+                    buffer3.append("FGI Total Cost: "+result3.getString(1) + "\n");
+                }
+
+                android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(TransactionAddSold.this);
+                builder.setMessage(buffer.toString()+"\n"+buffer2.toString()+"\n"+buffer3.toString());
+                builder.show();
             }
         });
 
@@ -251,18 +287,17 @@ public class TransactionAddSold extends AppCompatActivity {
     private void setData() {
 
         itemName = spinnerItem.getText().toString();
-        qty = Integer.parseInt(txtQty.getText().toString());
+        weight = Integer.parseInt(txtQty.getText().toString());
 
         Date date = new Date();
         double unitPrice = 0;
 
                 if (tDAO.checkExistingWarehouse(dbHelper, "Crops", itemName)) {
                     try {
-                        object = aDAO.retrieveOne(dbHelper, "", itemName);
+                        object = aDAO.retrieveOne2(dbHelper, "Crops", itemName);
                         crops = (Crops) object;
                         price = crops.getUnitPrice();
-                        totalPrice = crops.getUnitPrice() * qty;
-                        arrTransact.add(new Crops("Crop", itemName, price, qty,  0, strDate,0,0,0));
+                        arrTransact.add(new Crops("Crops", itemName, price, weight,  0, strDate,0,0,0));
 
                         new AlertDialog.Builder(TransactionAddSold.this)
                                 .setTitle("Adding Entry")
