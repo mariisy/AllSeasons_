@@ -259,7 +259,7 @@ public class DBHelper extends SQLiteOpenHelper {
             dBColumnType + " TEXT, " +
             dBColumnName + " TEXT, " +
             dBColumnWeight + " REAL, " +
-            dBColumnTotalCost + " REAL )";
+            dBColumnTotalCostHarvested + " REAL )";
 
     private String dbDestroyQuery1 = "DROP TABLE IF EXISTS " + dbTableRawMaterials;
     private String dbDestroyQuery2 = "DROP TABLE IF EXISTS " + dbTableIndirectMaterials;
@@ -326,6 +326,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(dbBuildQuery6);
         db.execSQL(dbBuildQuery17);
         db.execSQL(dbBuildQuery18);
+        db.execSQL(dbBuildQuery19);
     //    db.execSQL(dbBuildQuery11);
     }
 
