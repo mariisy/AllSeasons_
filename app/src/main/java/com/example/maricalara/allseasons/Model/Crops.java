@@ -106,7 +106,6 @@ public class Crops {
         return
         "Type: " + type + "\n" +
                 "Item Name: " + name + "\n" +
-                "Weight: " + weight + "\n" +
-                "HectareHarvested: " + hectareHarvested + "\n \n";
+                "Weight: " + weight + "\n\n";
     }
 }

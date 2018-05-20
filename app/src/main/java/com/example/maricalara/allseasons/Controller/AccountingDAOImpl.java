@@ -85,7 +85,7 @@ public class AccountingDAOImpl implements AccountingDAO {
             do {
                 crops.setType(cursor.getString(cursor.getColumnIndex("TYPE")));
                 crops.setName(cursor.getString(cursor.getColumnIndex("NAME")));
-                crops.setDate(cursor.getString(cursor.getColumnIndex("DATE")));
+                crops.setUnitPrice(cursor.getDouble(cursor.getColumnIndex("PRICE")));
             } while (cursor.moveToNext());
         }
 
@@ -652,7 +652,7 @@ public class AccountingDAOImpl implements AccountingDAO {
                     } while (cursor1.moveToNext());
                 }
                 val1.put("TOTAL_COST", costTotal1 - (totalCostHarvested*((crops.getWeight())/weight)));
-                dbRead.update("CGS", val1, "WPIID=" + 1, null);
+                dbRead.update("CGS", val1, "CGSID=" + 1, null);
             }
         }
     }

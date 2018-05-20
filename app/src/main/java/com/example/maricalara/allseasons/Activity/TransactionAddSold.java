@@ -130,17 +130,14 @@ public class TransactionAddSold extends AppCompatActivity {
         btnView2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Cursor result = aDAO.getAllUtilizeFGI(dbHelper);
+                Cursor result = aDAO.getAllUtilizeCGS(dbHelper);
                 StringBuffer buffer = new StringBuffer();
                 while (result.moveToNext()) {
                     //buffer.append("ID: " + result.getString(0) + "\n");
-                    buffer.append("Date: "+result.getString(0) + "\n");
                     buffer.append("Type: "+result.getString(1) + "\n");
                     buffer.append("Name: "+result.getString(2) + "\n");
                     buffer.append("Weight: "+result.getString(3) + "\n");
-                    buffer.append("Hectare Harvested: "+result.getString(6) + "\n");
-                    buffer.append("Percent Hectare Done: "+result.getString(4) + "\n");
-                    buffer.append("Total Cost Harvested: "+result.getString(5) + "\n");
+                    buffer.append("Total Cost Harvested: "+result.getString(4) + "\n");
                 }
 
                 Cursor result2 = aDAO.getAllDataWPI(dbHelper);
@@ -158,7 +155,7 @@ public class TransactionAddSold extends AppCompatActivity {
                 }
 
                 android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(TransactionAddSold.this);
-                builder.setMessage(buffer.toString()+"\n"+buffer2.toString()+"\n"+buffer3.toString());
+                builder.setMessage(buffer.toString()+"\n"+buffer3.toString()+"\n"+buffer2.toString());
                 builder.show();
             }
         });
@@ -320,7 +317,7 @@ public class TransactionAddSold extends AppCompatActivity {
                     } catch (Exception e) {
                         new AlertDialog.Builder(TransactionAddSold.this)
                                 .setTitle("Adding Entry")
-                                .setMessage("Adding entry unsuccesful! /n Please try again.")
+                                .setMessage("Adding entry unsuccesful! /n Please try again." +e)
                                 .setNeutralButton("Ok", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
                                     }
@@ -363,7 +360,7 @@ public class TransactionAddSold extends AppCompatActivity {
         builderView.setPositiveButton("Add Transactions", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                //aDAO.updateCGS();
+                updateCGS();
                 finish();
             }
         });
@@ -402,5 +399,8 @@ public class TransactionAddSold extends AppCompatActivity {
             }
         });
         builderView.show();
+    }
+    public void updateCGS(){
+        aDAO.updateCGS(dbHelper,arrTransact);
     }
 }

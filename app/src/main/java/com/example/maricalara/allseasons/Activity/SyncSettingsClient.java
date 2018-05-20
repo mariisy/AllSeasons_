@@ -28,7 +28,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ajts.androidmads.library.SQLiteToExcel;
 import com.example.maricalara.allseasons.Model.DBHelper;
 import com.example.maricalara.allseasons.R;
 import com.example.maricalara.allseasons.WifiP2PReceiverClass.ClientService;
@@ -102,7 +101,6 @@ public class SyncSettingsClient extends AppCompatActivity {
         btnBrowse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                exportDB();
                 Intent clientStartIntent = new Intent(SyncSettingsClient.this, SyncSettingsBrowse.class);
                 startActivityForResult(clientStartIntent, fileRequestID);
             }
@@ -178,29 +176,6 @@ public class SyncSettingsClient extends AppCompatActivity {
         });
     }
 
-
-    private void exportDB() {
-        directory_path = Environment.DIRECTORY_DOCUMENTS;
-        //  Environment.getRootDirectory().getPath();
-        //   .getExternalStorageDirectory().getPath() + "/DBBackup/";
-        SQLiteToExcel sqliteToExcel = new SQLiteToExcel(getApplicationContext(), DBHelper.DATABASE_NAME);
-        sqliteToExcel.exportAllTables("FarmDB.xls", new SQLiteToExcel.ExportListener() {
-            @Override
-            public void onStart() {
-                Toast.makeText(SyncSettingsClient.this, "Database Exporting! \n" + directory_path, Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void onCompleted(String filePath) {
-                Toast.makeText(SyncSettingsClient.this, "Database Exported!", Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void onError(Exception e) {
-                Toast.makeText(SyncSettingsClient.this, "Database Export Fail \n!" + e, Toast.LENGTH_LONG).show();
-            }
-        });
-    }
 
     public void sendFile() {
 

@@ -215,7 +215,7 @@ public class TransactionDAOImpl implements TransactionDAO {
                     val1.put("WEIGHT", 0);
                     val1.put("DATE", crop.getDate());
                     val1.put("TOTAL_COST_HARVESTED", 0);
-                    dbWrite.insert("UTILIZE_CGS", null, val);
+                    dbWrite.insert("UTILIZE_CGS", null, val1);
 
                 }
                 break;
