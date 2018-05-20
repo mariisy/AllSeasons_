@@ -133,12 +133,8 @@ public class TransactionAddSold extends AppCompatActivity {
                 Cursor result = aDAO.getAllUtilizeCGS(dbHelper);
                 StringBuffer buffer = new StringBuffer();
                 while (result.moveToNext()) {
-                    //buffer.append("ID: " + result.getString(0) + "\n");
-                    buffer.append("Type: "+result.getString(1) + "\n");
-                    buffer.append("Name: "+result.getString(2) + "\n");
-                    buffer.append("Weight: "+result.getString(3) + "\n");
-                    buffer.append("Total Cost Harvested(CGS): "+result.getString(4) + "\n");
-                    buffer.append("Total Cost Sold: "+result.getString(5) + "\n");
+                    //buffer.append("ID: " + result.getString(0) + "\n")
+                    buffer.append("Total Cost CGS: "+result.getString(4) + "\n");
                 }
 
                 Cursor result2 = aDAO.getAllDataWPI(dbHelper);
@@ -159,7 +155,7 @@ public class TransactionAddSold extends AppCompatActivity {
                 StringBuffer buffer4 = new StringBuffer();
                 while (result4.moveToNext()) {
                     //buffer.append("ID: " + result.getString(0) + "\n");
-                    buffer4.append("Type: "+result4.getString(1) + "\n");
+                    buffer4.append("CASH \n Type: "+result4.getString(1) + "\n");
                     buffer4.append("Name: "+result4.getString(2) + "\n");
                     buffer4.append("Debit: "+result4.getString(3) + "\n");
                     buffer4.append("Credit: "+result4.getString(4) + "\n");
@@ -169,6 +165,9 @@ public class TransactionAddSold extends AppCompatActivity {
                 StringBuffer buffer5 = new StringBuffer();
                 while (result5.moveToNext()) {
                     //buffer.append("ID: " + result.getString(0) + "\n");
+                    buffer5.append("SALES REVENUE \n Type: "+result5.getString(1) + "\n");
+                    buffer5.append("Name: "+result5.getString(2) + "\n");
+                    buffer5.append("Weight: "+result5.getString(3) + "\n");
                     buffer5.append("Total Earnings: "+result5.getString(5) + "\n");
                 }
 

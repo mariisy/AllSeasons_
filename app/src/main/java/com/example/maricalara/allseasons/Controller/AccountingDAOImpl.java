@@ -48,7 +48,7 @@ public class AccountingDAOImpl implements AccountingDAO {
     @Override
     public Cursor getAllDataCash(DBHelper dbHelper) {
         dbWrite = dbHelper.getWritableDatabase();
-        Cursor result = dbWrite.rawQuery("SELECT * FROM CASH", null);
+        Cursor result = dbWrite.rawQuery("SELECT * FROM CASH where TYPE = 'Crops' ", null);
         return result;
     }
 
