@@ -39,6 +39,20 @@ public class AccountingDAOImpl implements AccountingDAO {
     }
 
     @Override
+    public Cursor getAllDataSalesRevenue(DBHelper dbHelper) {
+        dbWrite = dbHelper.getWritableDatabase();
+        Cursor result = dbWrite.rawQuery("SELECT * FROM SALES_REVENUE", null);
+        return result;
+    }
+
+    @Override
+    public Cursor getAllDataCash(DBHelper dbHelper) {
+        dbWrite = dbHelper.getWritableDatabase();
+        Cursor result = dbWrite.rawQuery("SELECT * FROM CASH", null);
+        return result;
+    }
+
+    @Override
     public Cursor getAllPlan(DBHelper dbHelper) {
         dbWrite = dbHelper.getWritableDatabase();
         Cursor result = dbWrite.rawQuery("SELECT * FROM RESOURCE_PLANNING_TABLE", null);
@@ -604,6 +618,7 @@ public class AccountingDAOImpl implements AccountingDAO {
         for (Object obj : objArray) {
             if (obj instanceof Crops) {
                 crops = (Crops) obj;
+                //Updating CGS
                 String queryUpdate3 = "SELECT * FROM UTILIZE_FGI WHERE NAME = '" + crops.getName() + "'";
                 Cursor cursor3 = dbRead.rawQuery(queryUpdate3, null);
                 ContentValues val3 = new ContentValues();
@@ -617,19 +632,22 @@ public class AccountingDAOImpl implements AccountingDAO {
 
                 String queryUpdate4 = "SELECT * FROM UTILIZE_CGS WHERE NAME = '" +  crops.getName() + "'";
                 Cursor cursor4 = dbRead.rawQuery(queryUpdate4, null);
-                double  weight1 = 0,totalCostHarvested1=0;
+                double  weight1 = 0,totalCostSold=0;
                 if (cursor4.moveToFirst()) {
                     do {
                         weight1 = cursor4.getDouble(cursor4.getColumnIndex("WEIGHT"));
+                        totalCostSold = cursor4.getDouble(cursor4.getColumnIndex("TOTAL_COST_SOLD"));
+
                     } while (cursor4.moveToNext());
                 }
                 String selection2 = "NAME" + " LIKE ?";
                 String[] selectionArgs2 = { crops.getName()};
                 val3.put("WEIGHT",weight1 + crops.getWeight());
                 val3.put("TOTAL_COST_HARVESTED",totalCostHarvested*((weight1 + crops.getWeight())/weight));
+                val3.put("TOTAL_COST_SOLD",totalCostSold + crops.getTotalCostSold());
                 dbRead.update("UTILIZE_CGS", val3, selection2, selectionArgs2);
 
-
+                //Updating FGI
                 String queryUpdate2 = "SELECT TOTAL_COST FROM FGI ";
                 Cursor cursor2 = dbRead.rawQuery(queryUpdate2, null);
                 ContentValues values = new ContentValues();
@@ -642,6 +660,7 @@ public class AccountingDAOImpl implements AccountingDAO {
                 values.put("TOTAL_COST", costTotal - totalCostHarvested*((crops.getWeight())/weight));
                 dbRead.update("FGI", values, "FGIID=" + 1, null);
 
+                //Updating CGS
                 String queryUpdate1 = "SELECT TOTAL_COST FROM CGS ";
                 Cursor cursor1 = dbRead.rawQuery(queryUpdate1, null);
                 ContentValues val1 = new ContentValues();
@@ -653,6 +672,41 @@ public class AccountingDAOImpl implements AccountingDAO {
                 }
                 val1.put("TOTAL_COST", costTotal1 - (totalCostHarvested*((crops.getWeight())/weight)));
                 dbRead.update("CGS", val1, "CGSID=" + 1, null);
+
+
+                //UPDATING CASH AND SALESREVENUE
+                String queryUpdate5 = "SELECT * FROM " + "CASH WHERE NAME = '" + crops.getName() + "'  AND TYPE = '" + crops.getType() + "' ";
+                Cursor cursor5 = dbRead.rawQuery(queryUpdate5, null);
+                double debit=0;
+                ContentValues val4 = new ContentValues();
+                if (cursor5.moveToFirst()) {
+                    do {
+                        debit = cursor5.getDouble(cursor5.getColumnIndex("DEBIT"));
+                    } while (cursor5.moveToNext());
+                }
+                String selection3= "TYPE" + " LIKE ?" + " AND " + "NAME" + " LIKE ?";
+                String[] selectionArgs3 = {crops.getType(), crops.getName()};
+                val4.put("DEBIT",debit + crops.getTotalCostSold());
+                dbRead.update("CASH", val4, selection3, selectionArgs3);
+
+
+                String queryUpdate6 = "SELECT * FROM " + "SALES_REVENUE WHERE NAME = '" + crops.getName() + "'  AND TYPE = '" + crops.getType() + "' ";
+                Cursor cursor6 = dbRead.rawQuery(queryUpdate6, null);
+                double weight2=0, price=0, totalEarnings=0;
+                ContentValues val6 = new ContentValues();
+                if (cursor6.moveToFirst()) {
+                    do {
+                        weight2 = cursor6.getDouble(cursor6.getColumnIndex("WEIGHT"));
+                        price = cursor6.getDouble(cursor6.getColumnIndex("PRICE"));
+                        totalEarnings = cursor6.getDouble(cursor6.getColumnIndex("TOTAL_EARNINGS"));
+                    } while (cursor6.moveToNext());
+                }
+
+                val6.put("WEIGHT",weight2 + crops.getWeight());
+                val6.put("PRICE",price + crops.getUnitPrice());
+                val6.put("TOTAL_EARNINGS",totalEarnings + crops.getTotalCostSold());
+                dbRead.update("SALES_REVENUE", val6, selection2, selectionArgs2);
+
             }
         }
     }

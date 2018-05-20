@@ -217,6 +217,23 @@ public class TransactionDAOImpl implements TransactionDAO {
                     val1.put("TOTAL_COST_HARVESTED", 0);
                     dbWrite.insert("UTILIZE_CGS", null, val1);
 
+                    ContentValues val2 = new ContentValues();
+                    val2.put("DATE", crop.getDate());
+                    val2.put("TYPE", crop.getType());
+                    val2.put("NAME", crop.getName());
+                    val2.put("DEBIT", 0);
+                    val2.put("CREDIT", 0);
+                    dbWrite.insert("CASH", null, val2);
+
+                    ContentValues val3 = new ContentValues();
+                    val3.put("DATE", crop.getDate());
+                    val3.put("TYPE", crop.getType());
+                    val3.put("NAME", crop.getName());
+                    val3.put("WEIGHT", 0);
+                    val3.put("PRICE", 0);
+                    val3.put("TOTAL_EARNINGS", 0);
+                    dbWrite.insert("SALES_REVENUE", null, val3);
+
                 }
                 break;
 
@@ -421,12 +438,8 @@ public class TransactionDAOImpl implements TransactionDAO {
 
         ContentValues values = new ContentValues();
         values.put("PRICE", price);
-
         String selections = "TYPE" + " LIKE ?" + " AND " + "NAME" + " LIKE ?";
         String[] selectionArgs = {type, name};
-
-
-
         dbRead.update("WAREHOUSE_EQUIPMENT", values, selections, selectionArgs);
      //   String selection = "NAME" + " LIKE ?";
      //   String[] selectionArg = {name};

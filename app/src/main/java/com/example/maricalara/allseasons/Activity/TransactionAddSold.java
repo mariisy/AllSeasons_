@@ -137,7 +137,8 @@ public class TransactionAddSold extends AppCompatActivity {
                     buffer.append("Type: "+result.getString(1) + "\n");
                     buffer.append("Name: "+result.getString(2) + "\n");
                     buffer.append("Weight: "+result.getString(3) + "\n");
-                    buffer.append("Total Cost Harvested: "+result.getString(4) + "\n");
+                    buffer.append("Total Cost Harvested(CGS): "+result.getString(4) + "\n");
+                    buffer.append("Total Cost Sold: "+result.getString(5) + "\n");
                 }
 
                 Cursor result2 = aDAO.getAllDataWPI(dbHelper);
@@ -154,8 +155,25 @@ public class TransactionAddSold extends AppCompatActivity {
                     buffer3.append("FGI Total Cost: "+result3.getString(1) + "\n");
                 }
 
+                Cursor result4 = aDAO.getAllDataCash(dbHelper);
+                StringBuffer buffer4 = new StringBuffer();
+                while (result4.moveToNext()) {
+                    //buffer.append("ID: " + result.getString(0) + "\n");
+                    buffer4.append("Type: "+result4.getString(1) + "\n");
+                    buffer4.append("Name: "+result4.getString(2) + "\n");
+                    buffer4.append("Debit: "+result4.getString(3) + "\n");
+                    buffer4.append("Credit: "+result4.getString(4) + "\n");
+                }
+
+                Cursor result5 = aDAO.getAllDataSalesRevenue(dbHelper);
+                StringBuffer buffer5 = new StringBuffer();
+                while (result5.moveToNext()) {
+                    //buffer.append("ID: " + result.getString(0) + "\n");
+                    buffer5.append("Total Earnings: "+result5.getString(5) + "\n");
+                }
+
                 android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(TransactionAddSold.this);
-                builder.setMessage(buffer.toString()+"\n"+buffer3.toString()+"\n"+buffer2.toString());
+                builder.setMessage(buffer.toString()+"\n"+buffer3.toString()+"\n"+buffer2.toString()+"\n"+buffer4.toString()+"\n"+buffer5.toString());
                 builder.show();
             }
         });
@@ -294,7 +312,8 @@ public class TransactionAddSold extends AppCompatActivity {
                         object = aDAO.retrieveOne2(dbHelper, "Crops", itemName);
                         crops = (Crops) object;
                         price = crops.getUnitPrice();
-                        arrTransact.add(new Crops("Crops", itemName, price, weight,  0, strDate,0,0,0));
+                        double totalCostSold= price *weight;
+                        arrTransact.add(new Crops("Crops", itemName, price, weight,  0, strDate,0,0,totalCostSold));
 
                         new AlertDialog.Builder(TransactionAddSold.this)
                                 .setTitle("Adding Entry")

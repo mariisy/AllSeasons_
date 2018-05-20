@@ -14,7 +14,7 @@ public class Crops {
     private String date;
     private double hectarePercent;
     private double hectareHarvested;
-    private double totalcostSold;
+    private double totalCostSold;
 
 
     public Crops(String type, String name, double unitPrice, double weight, double totalCostHarvested, String date, double hectarePercent, double hectareHarvested, double totalcostSold) {
@@ -27,7 +27,7 @@ public class Crops {
         this.date = date;
         this.hectarePercent = hectarePercent;
         this.hectareHarvested = hectareHarvested;
-        this.totalcostSold = totalcostSold;
+        this.totalCostSold = totalcostSold;
     }
 
     public String getType() {
@@ -94,12 +94,12 @@ public class Crops {
         this.hectareHarvested = hectareHarvested;
     }
 
-    public double getTotalcostSold() {
-        return totalcostSold;
+    public double getTotalCostSold() {
+        return totalCostSold;
     }
 
-    public void setTotalcostSold(double totalcostSold) {
-        this.totalcostSold = totalcostSold;
+    public void setTotalCostSold(double totalCostSold) {
+        this.totalCostSold = totalCostSold;
     }
     @Override
     public String toString() {
