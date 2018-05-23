@@ -21,10 +21,13 @@ import android.widget.Toast;
 
 import com.example.maricalara.allseasons.Controller.AccountingDAO;
 import com.example.maricalara.allseasons.Controller.AccountingDAOImpl;
+import com.example.maricalara.allseasons.Controller.IndirectMaterialsDAO;
+import com.example.maricalara.allseasons.Controller.IndirectMaterialsDAOImpl;
 import com.example.maricalara.allseasons.Controller.TransactionDAO;
 import com.example.maricalara.allseasons.Controller.TransactionDAOImpl;
 import com.example.maricalara.allseasons.Model.Crops;
 import com.example.maricalara.allseasons.Model.DBHelper;
+import com.example.maricalara.allseasons.Model.Packaging;
 import com.example.maricalara.allseasons.R;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
@@ -38,8 +41,9 @@ public class TransactionAddSold extends AppCompatActivity {
 
     //data variables
     String itemName, strName;
-    double weight, price, totalPrice;
+    double weight,quantity, price, totalPrice;
     Crops crops;
+    Packaging packaging;
     Object object;
     private ArrayList<Object> arrTransact = new ArrayList<>();
 
@@ -60,6 +64,7 @@ public class TransactionAddSold extends AppCompatActivity {
     String empID, name;
     private AccountingDAO aDAO = new AccountingDAOImpl();
     private TransactionDAO tDAO = new TransactionDAOImpl();
+    private IndirectMaterialsDAO imDao = new IndirectMaterialsDAOImpl();
     private DBHelper dbHelper = new DBHelper(TransactionAddSold.this);
 
 
@@ -130,11 +135,11 @@ public class TransactionAddSold extends AppCompatActivity {
         btnView2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Cursor result = aDAO.getAllUtilizeCGS(dbHelper);
+                Cursor result = aDAO.getAllDataCGS(dbHelper);
                 StringBuffer buffer = new StringBuffer();
                 while (result.moveToNext()) {
                     //buffer.append("ID: " + result.getString(0) + "\n")
-                    buffer.append("Total Cost CGS: "+result.getString(4) + "\n");
+                    buffer.append("CGS: "+result.getString(1) + "\n");
                 }
 
                 Cursor result2 = aDAO.getAllDataWPI(dbHelper);
@@ -308,11 +313,19 @@ public class TransactionAddSold extends AppCompatActivity {
 
                 if (tDAO.checkExistingWarehouse(dbHelper, "Crops", itemName)) {
                     try {
-                        object = aDAO.retrieveOne2(dbHelper, "Crops", itemName);
+                        object = aDAO.retrieveOne2(dbHelper , "Crops", itemName);
                         crops = (Crops) object;
                         price = crops.getUnitPrice();
                         double totalCostSold= price *weight;
                         arrTransact.add(new Crops("Crops", itemName, price, weight,  0, strDate,0,0,totalCostSold));
+
+                        object = imDao.retrieveOne(dbHelper, "Packaging", "Plastic Wrapper");
+                        packaging = (Packaging) object;
+                        price = packaging.getPrice();
+                        quantity = Double.valueOf(txtPackagingQty.getText().toString());
+                        double totalCostSold1=price*quantity;
+                        arrTransact.add(new Packaging("Packaging", "Plastic Wrapper", quantity, price,  totalCostSold1, strDate,null));
+
 
                         new AlertDialog.Builder(TransactionAddSold.this)
                                 .setTitle("Adding Entry")

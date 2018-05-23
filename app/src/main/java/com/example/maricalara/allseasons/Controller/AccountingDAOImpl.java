@@ -39,6 +39,13 @@ public class AccountingDAOImpl implements AccountingDAO {
     }
 
     @Override
+    public Cursor getAllDataCGS(DBHelper dbHelper) {
+        dbWrite = dbHelper.getWritableDatabase();
+        Cursor result = dbWrite.rawQuery("SELECT * FROM CGS", null);
+        return result;
+    }
+
+    @Override
     public Cursor getAllDataSalesRevenue(DBHelper dbHelper) {
         dbWrite = dbHelper.getWritableDatabase();
         Cursor result = dbWrite.rawQuery("SELECT * FROM SALES_REVENUE", null);
@@ -613,16 +620,17 @@ public class AccountingDAOImpl implements AccountingDAO {
     public void updateCGS(DBHelper dbHelper, ArrayList<Object> objArray) {
         dbRead = dbHelper.getReadableDatabase();
         dbWrite = dbHelper.getWritableDatabase();
-        Crops crop = new Crops(null, null, 0, 0, 0, null,0,0,0);
+        Crops crop = new Crops(null, null, 0, 0, 0, null, 0, 0, 0);
+        Packaging pa = new Packaging(null, null, 0, 0, 0, null, null);
 
         for (Object obj : objArray) {
             if (obj instanceof Crops) {
                 crops = (Crops) obj;
-                //Updating CGS
+                //Updating FGI and UTILIZE CGS
                 String queryUpdate3 = "SELECT * FROM UTILIZE_FGI WHERE NAME = '" + crops.getName() + "'";
                 Cursor cursor3 = dbRead.rawQuery(queryUpdate3, null);
                 ContentValues val3 = new ContentValues();
-                double  weight=0, totalCostHarvested=0;
+                double weight = 0, totalCostHarvested = 0;
                 if (cursor3.moveToFirst()) {
                     do {
                         weight = cursor3.getDouble(cursor3.getColumnIndex("WEIGHT"));
@@ -630,9 +638,9 @@ public class AccountingDAOImpl implements AccountingDAO {
                     } while (cursor3.moveToNext());
                 }
 
-                String queryUpdate4 = "SELECT * FROM UTILIZE_CGS WHERE NAME = '" +  crops.getName() + "'";
+                String queryUpdate4 = "SELECT * FROM UTILIZE_CGS WHERE NAME = '" + crops.getName() + "'";
                 Cursor cursor4 = dbRead.rawQuery(queryUpdate4, null);
-                double  weight1 = 0,totalCostSold=0;
+                double weight1 = 0, totalCostSold = 0;
                 if (cursor4.moveToFirst()) {
                     do {
                         weight1 = cursor4.getDouble(cursor4.getColumnIndex("WEIGHT"));
@@ -641,10 +649,10 @@ public class AccountingDAOImpl implements AccountingDAO {
                     } while (cursor4.moveToNext());
                 }
                 String selection2 = "NAME" + " LIKE ?";
-                String[] selectionArgs2 = { crops.getName()};
-                val3.put("WEIGHT",weight1 + crops.getWeight());
-                val3.put("TOTAL_COST_HARVESTED",totalCostHarvested*((weight1 + crops.getWeight())/weight));
-                val3.put("TOTAL_COST_SOLD",totalCostSold + crops.getTotalCostSold());
+                String[] selectionArgs2 = {crops.getName()};
+                val3.put("WEIGHT", weight1 + crops.getWeight());
+                val3.put("TOTAL_COST_HARVESTED", totalCostHarvested * ((weight1 + crops.getWeight()) / weight));
+                val3.put("TOTAL_COST_SOLD", totalCostSold + crops.getTotalCostSold());
                 dbRead.update("UTILIZE_CGS", val3, selection2, selectionArgs2);
 
                 //Updating FGI
@@ -657,7 +665,7 @@ public class AccountingDAOImpl implements AccountingDAO {
                         costTotal = cursor2.getDouble(cursor2.getColumnIndex("TOTAL_COST"));
                     } while (cursor2.moveToNext());
                 }
-                values.put("TOTAL_COST", costTotal - totalCostHarvested*((crops.getWeight())/weight));
+                values.put("TOTAL_COST", costTotal - totalCostHarvested * ((crops.getWeight()) / weight));
                 dbRead.update("FGI", values, "FGIID=" + 1, null);
 
                 //Updating CGS
@@ -670,29 +678,29 @@ public class AccountingDAOImpl implements AccountingDAO {
                         costTotal1 = cursor1.getDouble(cursor1.getColumnIndex("TOTAL_COST"));
                     } while (cursor1.moveToNext());
                 }
-                val1.put("TOTAL_COST", costTotal1 - (totalCostHarvested*((crops.getWeight())/weight)));
+                val1.put("TOTAL_COST", costTotal1 + (totalCostHarvested * ((crops.getWeight()) / weight)));
                 dbRead.update("CGS", val1, "CGSID=" + 1, null);
 
 
                 //UPDATING CASH AND SALESREVENUE
                 String queryUpdate5 = "SELECT * FROM " + "CASH WHERE NAME = '" + crops.getName() + "'  AND TYPE = '" + crops.getType() + "' ";
                 Cursor cursor5 = dbRead.rawQuery(queryUpdate5, null);
-                double debit=0;
+                double debit = 0;
                 ContentValues val4 = new ContentValues();
                 if (cursor5.moveToFirst()) {
                     do {
                         debit = cursor5.getDouble(cursor5.getColumnIndex("DEBIT"));
                     } while (cursor5.moveToNext());
                 }
-                String selection3= "TYPE" + " LIKE ?" + " AND " + "NAME" + " LIKE ?";
+                String selection3 = "TYPE" + " LIKE ?" + " AND " + "NAME" + " LIKE ?";
                 String[] selectionArgs3 = {crops.getType(), crops.getName()};
-                val4.put("DEBIT",debit + crops.getTotalCostSold());
+                val4.put("DEBIT", debit + crops.getTotalCostSold());
                 dbRead.update("CASH", val4, selection3, selectionArgs3);
 
 
                 String queryUpdate6 = "SELECT * FROM " + "SALES_REVENUE WHERE NAME = '" + crops.getName() + "'  AND TYPE = '" + crops.getType() + "' ";
                 Cursor cursor6 = dbRead.rawQuery(queryUpdate6, null);
-                double weight2=0, price=0, totalEarnings=0;
+                double weight2 = 0, price = 0, totalEarnings = 0;
                 ContentValues val6 = new ContentValues();
                 if (cursor6.moveToFirst()) {
                     do {
@@ -702,13 +710,97 @@ public class AccountingDAOImpl implements AccountingDAO {
                     } while (cursor6.moveToNext());
                 }
 
-                val6.put("WEIGHT",weight2 + crops.getWeight());
-                val6.put("PRICE",price + crops.getUnitPrice());
-                val6.put("TOTAL_EARNINGS",totalEarnings + crops.getTotalCostSold());
+                val6.put("WEIGHT", weight2 + crops.getWeight());
+                val6.put("PRICE", price + crops.getUnitPrice());
+                val6.put("TOTAL_EARNINGS", totalEarnings + crops.getTotalCostSold());
                 dbRead.update("SALES_REVENUE", val6, selection2, selectionArgs2);
+            }
+
+            if (obj instanceof Packaging) {
+                //WPI
+                packaging = (Packaging) obj;
+                String queryUpdate = "SELECT TOTAL_COST FROM WPI ";
+                Cursor cursor = dbRead.rawQuery(queryUpdate, null);
+                ContentValues values = new ContentValues();
+                double costTotal = 0;
+                if (cursor.moveToFirst()) {
+                    do {
+                        costTotal = cursor.getDouble(cursor.getColumnIndex("TOTAL_COST"));
+                    } while (cursor.moveToNext());
+                }
+                values.put("TOTAL_COST", costTotal + packaging.getTotalPrice());
+                dbRead.update("WPI", values, "WPIID=" + 1, null);
+
+                //Indirect Materials
+                String queryUpdate1 = "SELECT * FROM " + "INDIRECT_MATERIALS WHERE NAME = '" + packaging.getName() + "'  AND TYPE = '" + packaging.getType() + "' ";
+                Cursor cursor1 = dbRead.rawQuery(queryUpdate1, null);
+                ContentValues val = new ContentValues();
+                if (cursor1.moveToFirst()) {
+                    do {
+                        pa.setTotalPrice(cursor1.getDouble(cursor1.getColumnIndex("TOTAL_COST")));
+                        pa.setQuantity(cursor1.getInt(cursor1.getColumnIndex("QUANTITY")));
+                    } while (cursor1.moveToNext());
+                }
+                val.put("QUANTITY", pa.getQuantity() - packaging.getQuantity());
+                val.put("TOTAL_COST", pa.getTotalPrice() - packaging.getTotalPrice());
+                String selection = "NAME" + " LIKE ?";
+                String[] selectionArgs = {packaging.getName()};
+                dbRead.update("INDIRECT_MATERIALS", val, selection, selectionArgs);
+
+                //Update FGI
+                String queryUpdate2 = "SELECT TOTAL_COST FROM FGI ";
+                Cursor cursor2 = dbRead.rawQuery(queryUpdate2, null);
+                ContentValues val2 = new ContentValues();
+                double costTotal2 = 0;
+                if (cursor2.moveToFirst()) {
+                    do {
+                        costTotal2 = cursor2.getDouble(cursor2.getColumnIndex("TOTAL_COST"));
+                    } while (cursor2.moveToNext());
+                }
+                val2.put("TOTAL_COST", costTotal2 + packaging.getTotalPrice());
+                dbRead.update("FGI", val2, "FGIID=" + 1, null);
+
+                //Update WPI
+                String queryUpdate3 = "SELECT TOTAL_COST FROM WPI ";
+                Cursor cursor3 = dbRead.rawQuery(queryUpdate3, null);
+                ContentValues val3 = new ContentValues();
+                double costTotal3 = 0;
+                if (cursor3.moveToFirst()) {
+                    do {
+                        costTotal3 = cursor3.getDouble(cursor3.getColumnIndex("TOTAL_COST"));
+                    } while (cursor3.moveToNext());
+                }
+                val3.put("TOTAL_COST", costTotal3 - packaging.getTotalPrice());
+                dbRead.update("WPI", val3, "WPIID=" + 1, null);
+
+                //Update CGS
+                String queryUpdate4 = "SELECT TOTAL_COST FROM CGS ";
+                Cursor cursor4 = dbRead.rawQuery(queryUpdate4, null);
+                ContentValues val4 = new ContentValues();
+                double costTotal4 = 0;
+                if (cursor4.moveToFirst()) {
+                    do {
+                        costTotal4 = cursor4.getDouble(cursor4.getColumnIndex("TOTAL_COST"));
+                    } while (cursor4.moveToNext());
+                }
+                val4.put("TOTAL_COST", costTotal4 + packaging.getTotalPrice());
+                dbRead.update("CGS", val4, "CGSID=" + 1, null);
+
+
+                //Update FGI
+                String queryUpdate5 = "SELECT TOTAL_COST FROM FGI ";
+                Cursor cursor5 = dbRead.rawQuery(queryUpdate5, null);
+                ContentValues val5 = new ContentValues();
+                double costTotal5 = 0;
+                if (cursor5.moveToFirst()) {
+                    do {
+                        costTotal5 = cursor5.getDouble(cursor5.getColumnIndex("TOTAL_COST"));
+                    } while (cursor5.moveToNext());
+                }
+                val5.put("TOTAL_COST", costTotal5 - packaging.getTotalPrice());
+                dbRead.update("FGI", val5, "FGIID=" + 1, null);
 
             }
         }
     }
-
 }

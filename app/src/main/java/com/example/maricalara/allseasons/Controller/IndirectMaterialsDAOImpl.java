@@ -333,10 +333,11 @@ public class IndirectMaterialsDAOImpl implements IndirectMaterialsDAO {
                     val.put("QUANTITY", pa.getQuantity() + packaging.getQuantity());
                     val.put("PRICE", packaging.getPrice());
                     val.put("TOTAL_COST", pa.getTotalPrice() + packaging.getTotalPrice());
-
                     String selection = "NAME" + " LIKE ?";
                     String[] selectionArgs = {packaging.getName()};
                     dbRead.update("INDIRECT_MATERIALS", val, selection, selectionArgs);
+
+
                     String queryUpdate2 = "SELECT * FROM " + "CASH WHERE NAME = '" + packaging.getName() + "'  AND TYPE = '" + packaging.getType() + "' ";
                     Cursor cursor2 = dbRead.rawQuery(queryUpdate2, null);
                     double credit=0;

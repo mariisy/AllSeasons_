@@ -6,14 +6,16 @@ package com.example.maricalara.allseasons.Model;
 
 public class Packaging {
 
+
     private String type;
     private String name;
-    private int quantity;
+    private double quantity;
     private double price,totalPrice;
     private String date;
     private String cropType;
 
-    public Packaging(String type, String name, int quantity, double price, double totalPrice, String date, String cropType) {
+
+    public Packaging(String type, String name, double quantity, double price, double totalPrice, String date, String cropType) {
         this.type = type;
         this.name = name;
         this.quantity = quantity;
@@ -22,7 +24,6 @@ public class Packaging {
         this.date = date;
         this.cropType = cropType;
     }
-
     public String getType() {
         return type;
     }
@@ -39,11 +40,11 @@ public class Packaging {
         this.name = name;
     }
 
-    public int getQuantity() {
+    public double getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(double quantity) {
         this.quantity = quantity;
     }
 
@@ -81,12 +82,11 @@ public class Packaging {
 
     @Override
     public String toString() {
-           return
+        return
                 "Type: " + type + "\n" +
                         "Item Name: " + name + "\n" +
                         "Quantity: " + quantity + "\n" +
                         "Price: " + price + "\n" +
                         "Total Price: " + totalPrice + "\n \n";
     }
-
 }

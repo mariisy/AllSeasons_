@@ -104,6 +104,23 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, spinnerListType);
         spinnerType1.setAdapter(arrayAdapter);
 
+        spinnerType1.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+               populateName();
+            }
+        });
+
 
         btnAddItem = (Button) findViewById(R.id.btnAdd);
         btnAddItem.setOnClickListener(new View.OnClickListener() {
@@ -115,7 +132,6 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
                 }
             }
         });
-
 
         btnView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -598,6 +614,18 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
 
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    public void populateName(){
+      String check =  spinnerType1.getText().toString();
+        if(check.equals("Packaging")) {
+                txtItemName.setText("Plastic Wrapper");
+                txtItemName.setEnabled(false);
+        }
+        else {
+            txtItemName.setEnabled(true);
+            txtItemName.setText("");
         }
     }
 }

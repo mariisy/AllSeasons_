@@ -11,6 +11,7 @@ public interface AccountingDAO {
 
     Cursor getAllDataWPI(DBHelper dbHelper);
     Cursor getAllDataFGI(DBHelper dbHelper);
+    Cursor getAllDataCGS(DBHelper dbHelper);
     Cursor getAllPlan(DBHelper dbHelper);
     Cursor getAllUtilizeWPI(DBHelper dbHelper);
     Cursor getAllUtilizeFGI(DBHelper dbHelper);
