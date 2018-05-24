@@ -46,7 +46,11 @@
         <activity android:name=".Activity.TransactionHarvest" />
         <activity android:name=".Activity.SettingsAddFarmingSeason" />
         <activity android:name=".Activity.SyncSettingsClient" />
-        <activity android:name=".Activity.SyncSettingsBrowse"></activity>
+        <activity android:name=".Activity.SyncSettingsBrowse" />
+        <activity
+            android:name=".Activity.SfpActivity"
+            android:label="@string/title_activity_sfp"
+            android:theme="@style/MyMaterialTheme"></activity>
     </application>
 
 </manifest>
