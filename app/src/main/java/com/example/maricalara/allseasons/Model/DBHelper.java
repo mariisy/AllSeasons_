@@ -42,7 +42,9 @@ public class DBHelper extends SQLiteOpenHelper {
 
     //column
     public String dBColumnDate = "DATE";
+    public String dBColumnDeliveryDate = "DELIVER_DATE";
     public String dBColumnName = "NAME";
+    public String dBColumnTransactionType = "TRANSACTION_TYPE";
     public String dBColumnType = "TYPE";
     public String dBColumnQuantity = "QUANTITY";
     public String dBColumnPrice = "PRICE";
@@ -83,10 +85,10 @@ public class DBHelper extends SQLiteOpenHelper {
     public String dbColumnEmployeeFullID = "EMPLOYEE_FULL_ID";
     public String dbColumnAccountType = "ACCOUNT_TYPE";
     public String dbColumnSalary = "SALARY";
-    public String dbColumnTransactionID = "TRANSACTIONID";
+    public String dbColumnTransactionFullID = "TRANSACTION_FULL_ID";
     public String dbColumnDelivery = "DELIVERY";
     public String dBColumnSupplierName = "SUPPLIER_NAME";
-    public String dBColumnTransID = "TRANSID";
+    public String dBColumnTransID = "TRANS_ID";
     public String dbColumnEmployeeUsername = "USERNAME";
     public String dbColumnEmployeePassword = "PASSWORD";
     public String dbColumnWPIID = "WPIID";
@@ -167,14 +169,15 @@ public class DBHelper extends SQLiteOpenHelper {
             dbColumnSalary + " REAL  )";
 
     private String dbBuildQuery11 = "CREATE TABLE " + dbTableTransation + " ( " +
-            dBColumnTransID+ " int PRIMARY KEY, " +
-            dbColumnTransactionID + " TEXT, " +
+            dBColumnTransID+ " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            dbColumnTransactionFullID + " TEXT, " +
             dBColumnDate + " TEXT, " +
+            dBColumnDeliveryDate + " TEXT, " +
+            dBColumnTransactionType + " TEXT, " +
             dBColumnType + " TEXT, " +
             dBColumnQuantity + " INTEGER, " +
             dBColumnPrice + " REAL, " +
             dBColumnTotalCost + " REAL, " +
-            dbColumnDelivery + " TEXT , " +
             dbColumnEmployeeID + " TEXT, " +
             dbColumnCustomerID + " TEXT )";
 
@@ -304,7 +307,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(dbBuildQuery6);
         db.execSQL(dbBuildQuery7);
         db.execSQL(dbBuildQuery8);
-        db.execSQL(dbBuildQuery9);
+
         db.execSQL(dbBuildQuery10);
 
         db.execSQL(dbBuildQuery12);
@@ -329,7 +332,8 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(dbBuildQuery18);
         db.execSQL(dbBuildQuery19);
         db.execSQL(dbBuildQuery7);
-    //    db.execSQL(dbBuildQuery11);
+        db.execSQL(dbBuildQuery9);
+        db.execSQL(dbBuildQuery11);
     }
 
     @Override

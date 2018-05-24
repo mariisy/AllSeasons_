@@ -6,16 +6,25 @@ package com.example.maricalara.allseasons.Model;
 
 public class Customer {
 
+    private int customerID;
     private String customerName;
     private String contactNumber;
     private String address;
 
-    public Customer(String customerName,  String contactNumber, String address) {
+    public Customer(int customerID, String customerName, String contactNumber, String address) {
+        this.customerID = customerID;
         this.customerName = customerName;
         this.contactNumber = contactNumber;
         this.address = address;
     }
 
+    public int getCustomerID() {
+        return customerID;
+    }
+
+    public void setCustomerID(int customerID) {
+        this.customerID = customerID;
+    }
 
     public String getCustomerName() {
         return customerName;

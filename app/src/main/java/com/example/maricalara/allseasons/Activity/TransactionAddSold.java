@@ -17,7 +17,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.maricalara.allseasons.Controller.AccountingDAO;
 import com.example.maricalara.allseasons.Controller.AccountingDAOImpl;
@@ -26,29 +25,34 @@ import com.example.maricalara.allseasons.Controller.IndirectMaterialsDAOImpl;
 import com.example.maricalara.allseasons.Controller.TransactionDAO;
 import com.example.maricalara.allseasons.Controller.TransactionDAOImpl;
 import com.example.maricalara.allseasons.Model.Crops;
+import com.example.maricalara.allseasons.Model.Customer;
 import com.example.maricalara.allseasons.Model.DBHelper;
 import com.example.maricalara.allseasons.Model.Packaging;
+import com.example.maricalara.allseasons.Model.Transaction;
 import com.example.maricalara.allseasons.R;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 
 public class TransactionAddSold extends AppCompatActivity {
 
     //data variables
-    String itemName, strName;
-    double weight,quantity, price, totalPrice;
+    String itemName, strName, custName, custNum, custAddress;
+    double weight, quantity, price, totalCostSold;
     Crops crops;
+    Customer customer;
     Packaging packaging;
     Object object;
     private ArrayList<Object> arrTransact = new ArrayList<>();
+    private ArrayList<Transaction> arrTransaction = new ArrayList<>();
 
     //for UI
-    private Button btnAddTransaction,btnView2;
+    private Button btnAddTransaction, btnView2;
     private EditText txtCustomerName, txtContactNum, txtQty, txtAddress, txtPackagingQty;
     private TextInputLayout inputLayoutCustomerName, inputLayoutContactNum, inputLayoutQuantity, inputLayoutAddress, inputLayoutQtyPackaging;
     private CheckBox chckDelivery;
@@ -68,7 +72,6 @@ public class TransactionAddSold extends AppCompatActivity {
     private DBHelper dbHelper = new DBHelper(TransactionAddSold.this);
 
 
-
     //get Date String
     Date date = new Date();
     SimpleDateFormat sdf = new SimpleDateFormat("EEEE");
@@ -76,6 +79,9 @@ public class TransactionAddSold extends AppCompatActivity {
     String dayOfTheWeek = sdf.format(d);
     String dateForTheDay = DateFormat.getDateInstance().format(date);
     String strDate = "Date: " + dayOfTheWeek + ", " + dateForTheDay;
+
+    Calendar calendar = Calendar.getInstance();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,7 +96,7 @@ public class TransactionAddSold extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        spinnerItem =(MaterialBetterSpinner)findViewById(R.id.spinnerItem);
+        spinnerItem = (MaterialBetterSpinner) findViewById(R.id.spinnerItem);
         inputLayoutCustomerName = (TextInputLayout) findViewById(R.id.input_layout_customerName);
         inputLayoutContactNum = (TextInputLayout) findViewById(R.id.input_layout_contactNum);
         inputLayoutQuantity = (TextInputLayout) findViewById(R.id.input_layout_qty);
@@ -102,7 +108,7 @@ public class TransactionAddSold extends AppCompatActivity {
         txtQty = (EditText) findViewById(R.id.txtQty);
         txtAddress = (EditText) findViewById(R.id.txtAddress);
         chckDelivery = (CheckBox) findViewById(R.id.delivery);
-        btnView2 = (Button)findViewById(R.id.btnView2);
+        btnView2 = (Button) findViewById(R.id.btnView2);
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             empID = extras.getString("EmployeeID");
@@ -118,7 +124,7 @@ public class TransactionAddSold extends AppCompatActivity {
         //layout for spinnerCrop
         arrListCrop = tDAO.retrieveListSpinnerColumn(dbHelper, "NAME", "TYPE", "Crops");
         arrayAdapter3 = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, arrListCrop);
-        spinnerItem .setAdapter(arrayAdapter3);
+        spinnerItem.setAdapter(arrayAdapter3);
 
         btnAddTransaction = (Button) findViewById(R.id.btnAdd);
         btnAddTransaction.setOnClickListener(new View.OnClickListener() {
@@ -126,9 +132,9 @@ public class TransactionAddSold extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-               if(validateAddress() && validateContact() && validateCustomerName() && validatePackaging() && validateQuantity()){
-                   setData();
-               }
+                if (validateAddress() && validateContact() && validateCustomerName() && validatePackaging() && validateQuantity()) {
+                    setData();
+                }
 
             }
         });
@@ -139,45 +145,45 @@ public class TransactionAddSold extends AppCompatActivity {
                 StringBuffer buffer = new StringBuffer();
                 while (result.moveToNext()) {
                     //buffer.append("ID: " + result.getString(0) + "\n")
-                    buffer.append("CGS: "+result.getString(1) + "\n");
+                    buffer.append("CGS: " + result.getString(1) + "\n");
                 }
 
                 Cursor result2 = aDAO.getAllDataWPI(dbHelper);
                 StringBuffer buffer2 = new StringBuffer();
                 while (result2.moveToNext()) {
                     //buffer.append("ID: " + result.getString(0) + "\n");
-                    buffer2.append("WPI Total Cost: "+result2.getString(1) + "\n");
+                    buffer2.append("WPI Total Cost: " + result2.getString(1) + "\n");
                 }
 
                 Cursor result3 = aDAO.getAllDataFGI(dbHelper);
                 StringBuffer buffer3 = new StringBuffer();
                 while (result3.moveToNext()) {
                     //buffer.append("ID: " + result.getString(0) + "\n");
-                    buffer3.append("FGI Total Cost: "+result3.getString(1) + "\n");
+                    buffer3.append("FGI Total Cost: " + result3.getString(1) + "\n");
                 }
 
                 Cursor result4 = aDAO.getAllDataCash(dbHelper);
                 StringBuffer buffer4 = new StringBuffer();
                 while (result4.moveToNext()) {
                     //buffer.append("ID: " + result.getString(0) + "\n");
-                    buffer4.append("CASH \n Type: "+result4.getString(1) + "\n");
-                    buffer4.append("Name: "+result4.getString(2) + "\n");
-                    buffer4.append("Debit: "+result4.getString(3) + "\n");
-                    buffer4.append("Credit: "+result4.getString(4) + "\n");
+                    buffer4.append("CASH \n Type: " + result4.getString(1) + "\n");
+                    buffer4.append("Name: " + result4.getString(2) + "\n");
+                    buffer4.append("Debit: " + result4.getString(3) + "\n");
+                    buffer4.append("Credit: " + result4.getString(4) + "\n");
                 }
 
                 Cursor result5 = aDAO.getAllDataSalesRevenue(dbHelper);
                 StringBuffer buffer5 = new StringBuffer();
                 while (result5.moveToNext()) {
                     //buffer.append("ID: " + result.getString(0) + "\n");
-                    buffer5.append("SALES REVENUE \n Type: "+result5.getString(1) + "\n");
-                    buffer5.append("Name: "+result5.getString(2) + "\n");
-                    buffer5.append("Weight: "+result5.getString(3) + "\n");
-                    buffer5.append("Total Earnings: "+result5.getString(5) + "\n");
+                    buffer5.append("SALES REVENUE \n Type: " + result5.getString(1) + "\n");
+                    buffer5.append("Name: " + result5.getString(2) + "\n");
+                    buffer5.append("Weight: " + result5.getString(3) + "\n");
+                    buffer5.append("Total Earnings: " + result5.getString(5) + "\n");
                 }
 
                 android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(TransactionAddSold.this);
-                builder.setMessage(buffer.toString()+"\n"+buffer3.toString()+"\n"+buffer2.toString()+"\n"+buffer4.toString()+"\n"+buffer5.toString());
+                builder.setMessage(buffer.toString() + "\n" + buffer3.toString() + "\n" + buffer2.toString() + "\n" + buffer4.toString() + "\n" + buffer5.toString());
                 builder.show();
             }
         });
@@ -186,13 +192,13 @@ public class TransactionAddSold extends AppCompatActivity {
     }
 
     private boolean validatePackaging() {
-            if (txtPackagingQty.getText().toString().trim().isEmpty()) {
-                inputLayoutQtyPackaging.setError("Enter Customer Address!");
-                requestFocus(chckDelivery);
-                return false;
-            } else {
-                inputLayoutQtyPackaging.setErrorEnabled(false);
-            }
+        if (txtPackagingQty.getText().toString().trim().isEmpty()) {
+            inputLayoutQtyPackaging.setError("Enter Customer Address!");
+            requestFocus(chckDelivery);
+            return false;
+        } else {
+            inputLayoutQtyPackaging.setErrorEnabled(false);
+        }
 
         return true;
     }
@@ -308,72 +314,70 @@ public class TransactionAddSold extends AppCompatActivity {
         itemName = spinnerItem.getText().toString();
         weight = Integer.parseInt(txtQty.getText().toString());
 
-        Date date = new Date();
-        double unitPrice = 0;
 
-                if (tDAO.checkExistingWarehouse(dbHelper, "Crops", itemName)) {
-                    try {
-                        object = aDAO.retrieveOne2(dbHelper , "Crops", itemName);
-                        crops = (Crops) object;
-                        price = crops.getUnitPrice();
-                        double totalCostSold= price *weight;
-                        arrTransact.add(new Crops("Crops", itemName, price, weight,  0, strDate,0,0,totalCostSold));
+        if (tDAO.checkExistingWarehouse(dbHelper, "Crops", itemName)) {
+            try {
+                object = aDAO.retrieveOne2(dbHelper, "Crops", itemName);
+                crops = (Crops) object;
+                price = crops.getUnitPrice();
+                totalCostSold = price * weight;
+                arrTransact.add(new Crops("Crops", itemName, price, weight, 0, strDate, 0, 0, totalCostSold));
 
-                        object = imDao.retrieveOne(dbHelper, "Packaging", "Plastic Wrapper");
-                        packaging = (Packaging) object;
-                        price = packaging.getPrice();
-                        quantity = Double.valueOf(txtPackagingQty.getText().toString());
-                        double totalCostSold1=price*quantity;
-                        arrTransact.add(new Packaging("Packaging", "Plastic Wrapper", quantity, price,  totalCostSold1, strDate,null));
+                object = imDao.retrieveOne(dbHelper, "Packaging", "Plastic Wrapper");
+                packaging = (Packaging) object;
+                price = packaging.getPrice();
+                quantity = Double.valueOf(txtPackagingQty.getText().toString());
+                double totalCostSold1 = price * quantity;
+                arrTransact.add(new Packaging("Packaging", "Plastic Wrapper", quantity, price, totalCostSold1, strDate, null));
 
 
-                        new AlertDialog.Builder(TransactionAddSold.this)
-                                .setTitle("Adding Entry")
-                                .setMessage(itemName + " Added! /n Would you like to add another entry?")
-                                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                    }
-                                })
-                                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        viewButton();
+                new AlertDialog.Builder(TransactionAddSold.this)
+                        .setTitle("Adding Entry")
+                        .setMessage(itemName + " Added! /n Would you like to add another entry?")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                viewButton();
 
-                                    }
-                                })
-                                .show();
+                            }
+                        })
+                        .show();
 
-                    } catch (Exception e) {
-                        new AlertDialog.Builder(TransactionAddSold.this)
-                                .setTitle("Adding Entry")
-                                .setMessage("Adding entry unsuccesful! /n Please try again." +e)
-                                .setNeutralButton("Ok", new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-                                    }
-                                })
-                                .show();
-                    }
-                } else {
+            } catch (Exception e) {
+                new AlertDialog.Builder(TransactionAddSold.this)
+                        .setTitle("Adding Entry")
+                        .setMessage("Adding entry unsuccesful! /n Please try again." + e)
+                        .setNeutralButton("Ok", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                            }
+                        })
+                        .show();
+            }
+        } else {
 
-                    new AlertDialog.Builder(TransactionAddSold.this)
-                            .setTitle("Adding Entry")
-                            .setMessage("Entry already exists! /n Would you like to add another entry?")
-                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
+            new AlertDialog.Builder(TransactionAddSold.this)
+                    .setTitle("Adding Entry")
+                    .setMessage("Entry already exists! /n Would you like to add another entry?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
 
-                                }
-                            })
-                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    finish();
-                                }
-                            })
-                            .show();
-                }
+                        }
+                    })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            finish();
+                        }
+                    })
+                    .show();
+        }
 
 
     }
@@ -431,7 +435,114 @@ public class TransactionAddSold extends AppCompatActivity {
         });
         builderView.show();
     }
-    public void updateCGS(){
-        aDAO.updateCGS(dbHelper,arrTransact);
+
+    public void addTransaction() {
+        custName = txtCustomerName.getText().toString();
+        custNum = txtContactNum.getText().toString();
+        custAddress = txtAddress.getText().toString();
+
+        int custID = 0;
+
+
+        if (!tDAO.checkExistCustomer(dbHelper, custName, custAddress)) {
+            tDAO.addEntry(dbHelper, new Customer(0, custName, custNum, custAddress), "Customer", null, null);
+        } else {
+            customer = tDAO.retrieveOneCustomer(dbHelper, custName, custAddress);
+            custID = customer.getCustomerID();
+            tDAO.updateCustomer(dbHelper, String.valueOf(custID), custNum);
+        }
+
+        boolean delivery;
+        delivery = ((chckDelivery.isChecked()) ? true : false);
+
+        calendar.setTime(date);
+        String datePlusOne = null;
+        if (strDate.toLowerCase().contains("monday")) {
+            calendar.setTime(date);
+            calendar.add(Calendar.YEAR, 2);
+            calendar.add(Calendar.MONTH, 2);
+            calendar.add(Calendar.DATE, 2);
+
+            Date currentDatePlusOne = calendar.getTime();
+            datePlusOne = DateFormat.getDateInstance().format(currentDatePlusOne);
+
+
+        } else if (strDate.toLowerCase().contains("tuesday")) {
+            calendar.setTime(date);
+            calendar.add(Calendar.YEAR, 1);
+            calendar.add(Calendar.MONTH, 1);
+            calendar.add(Calendar.DATE, 1);
+
+            Date currentDatePlusOne = calendar.getTime();
+            datePlusOne = DateFormat.getDateInstance().format(currentDatePlusOne);
+
+        } else if (strDate.toLowerCase().contains("wednesday")) {
+
+            calendar.setTime(date);
+            calendar.add(Calendar.YEAR, 7);
+            calendar.add(Calendar.MONTH, 7);
+            calendar.add(Calendar.DATE, 7);
+
+            Date currentDatePlusOne = calendar.getTime();
+            datePlusOne = DateFormat.getDateInstance().format(currentDatePlusOne);
+
+
+        } else if (strDate.toLowerCase().contains("thursday")) {
+            calendar.setTime(date);
+            calendar.add(Calendar.YEAR, 6);
+            calendar.add(Calendar.MONTH, 6);
+            calendar.add(Calendar.DATE, 6);
+
+            Date currentDatePlusOne = calendar.getTime();
+            datePlusOne = DateFormat.getDateInstance().format(currentDatePlusOne);
+
+
+        } else if (strDate.toLowerCase().contains("friday")) {
+            calendar.setTime(date);
+            calendar.add(Calendar.YEAR, 5);
+            calendar.add(Calendar.MONTH, 5);
+            calendar.add(Calendar.DATE, 5);
+
+            Date currentDatePlusOne = calendar.getTime();
+            datePlusOne = DateFormat.getDateInstance().format(currentDatePlusOne);
+
+
+        } else if (strDate.toLowerCase().contains("saturday")) {
+            calendar.setTime(date);
+            calendar.add(Calendar.YEAR, 4);
+            calendar.add(Calendar.MONTH, 4);
+            calendar.add(Calendar.DATE, 4);
+
+            Date currentDatePlusOne = calendar.getTime();
+            datePlusOne = DateFormat.getDateInstance().format(currentDatePlusOne);
+
+
+        } else if (strDate.toLowerCase().contains("sunday")) {
+            calendar.setTime(date);
+            calendar.add(Calendar.YEAR, 3);
+            calendar.add(Calendar.MONTH, 3);
+            calendar.add(Calendar.DATE, 3);
+
+            Date currentDatePlusOne = calendar.getTime();
+            datePlusOne = DateFormat.getDateInstance().format(currentDatePlusOne);
+        } else {
+
+        }
+
+        if (delivery) {
+            arrTransaction.add(new Transaction(0, null, strDate, datePlusOne, "Revenue", itemName,
+                    quantity, totalCostSold, 0, empID, custID));
+        } else {
+
+            arrTransaction.add(new Transaction(0, null, strDate, null, "Revenue", itemName,
+                    quantity, totalCostSold, 0, empID, custID));
+        }
+
+
+        tDAO.addTransactionList(dbHelper, arrTransaction);
+    }
+
+    public void updateCGS() {
+        aDAO.updateCGS(dbHelper, arrTransact);
     }
 }

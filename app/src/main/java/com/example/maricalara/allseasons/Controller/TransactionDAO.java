@@ -2,8 +2,10 @@ package com.example.maricalara.allseasons.Controller;
 
 import android.database.Cursor;
 
+import com.example.maricalara.allseasons.Model.Customer;
 import com.example.maricalara.allseasons.Model.DBHelper;
 import com.example.maricalara.allseasons.Model.Employees;
+import com.example.maricalara.allseasons.Model.Transaction;
 import com.example.maricalara.allseasons.Model.WarehouseMaterial;
 
 import java.util.ArrayList;
@@ -28,15 +30,17 @@ public interface TransactionDAO {
 
     boolean checkExistingEmployee(DBHelper dbHelper, String type, String employeeName);
 
-    public void addBoughtList(DBHelper dbHelper, Object object, String type);
+    boolean checkExistCustomer(DBHelper dbHelper, String name, String address);
+
+    Customer retrieveOneCustomer(DBHelper dbHelper, String name, String address);
+
+    void updateCustomer(DBHelper dbHelper, String custID, String custContact);
 
     boolean checkExist(DBHelper dbHelper, String username, String password);
 
-    public void addSoldList(DBHelper dbHelper, Object object, String type);
+     void addTransactionList(DBHelper dbHelper, ArrayList<Transaction> arrayList);
 
-    HashMap<String, List<String>> retrieveBoughtList(DBHelper dbHelper);
-
-    HashMap<String, List<String>> retrieveSoldList(DBHelper dbHelper);
+    ArrayList<HashMap<String, List<String>>> retrieveTransactionList(DBHelper dbHelper, ArrayList<Object> arrayList, String type);
 
     boolean checkExistingWarehouse(DBHelper dbHelper, String type, String name);
 

@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.example.maricalara.allseasons.Model.Crops;
+import com.example.maricalara.allseasons.Model.Customer;
 import com.example.maricalara.allseasons.Model.DBHelper;
 import com.example.maricalara.allseasons.Model.Employees;
 import com.example.maricalara.allseasons.Model.Equipment;
@@ -13,6 +14,7 @@ import com.example.maricalara.allseasons.Model.Insecticides;
 import com.example.maricalara.allseasons.Model.Packaging;
 import com.example.maricalara.allseasons.Model.Seedlings;
 import com.example.maricalara.allseasons.Model.Seeds;
+import com.example.maricalara.allseasons.Model.Transaction;
 import com.example.maricalara.allseasons.Model.WarehouseMaterial;
 
 import java.util.ArrayList;
@@ -24,6 +26,7 @@ public class TransactionDAOImpl implements TransactionDAO {
     private Insecticides ins;
     private Fertilizers fer;
     private Packaging pack;
+    Transaction transaction;
     private Seedlings seedlings;
     private Seeds seeds;
     Crops crop;
@@ -72,7 +75,7 @@ public class TransactionDAOImpl implements TransactionDAO {
         dbRead = dbHelper.getReadableDatabase();
         String queryForRetrievalOne = "SELECT * FROM " + "EMPLOYEE" + " WHERE USERNAME = '" + username + "' AND PASSWORD = '" + password + "'";
         Cursor cursor = dbRead.rawQuery(queryForRetrievalOne, null);
-        Employees employees = new Employees(0, null, null, null, null,null, 0);
+        Employees employees = new Employees(0, null, null, null, null, null, 0);
 
 
         if (cursor.moveToFirst()) {
@@ -118,10 +121,56 @@ public class TransactionDAOImpl implements TransactionDAO {
 
         Cursor result = dbWrite.rawQuery(queryForCheck, null);
 
-        if (result.getCount() == 0 ) {
+        if (result.getCount() == 0) {
             return false;//not existing. NULL
         }
         return true;//existing. NOT NULL
+    }
+
+    @Override
+    public boolean checkExistCustomer(DBHelper dbHelper, String name, String address) {
+        dbWrite = dbHelper.getWritableDatabase();
+        String queryForCheck = "SELECT NAME FROM " + "CUSTOMER" + " WHERE NAME = '" + name + "' AND ADRESS = '" + address + "'";
+
+        Cursor result = dbWrite.rawQuery(queryForCheck, null);
+
+        if (result.getCount() == 0) {
+            return false;//not existing. NULL
+        }
+        return true;//existing. NOT NULL
+    }
+
+    @Override
+    public Customer retrieveOneCustomer(DBHelper dbHelper, String name, String address) {
+        dbRead = dbHelper.getReadableDatabase();
+        String queryForRetrievalOne = "SELECT NAME FROM " + "CUSTOMER" + " WHERE NAME = '" + name + "' AND ADRESS = '" + address + "'";
+        Cursor cursor = dbRead.rawQuery(queryForRetrievalOne, null);
+        Customer customer = new Customer(0, null, null, null);
+
+
+        if (cursor.moveToFirst()) {
+            do {
+                customer.setCustomerID(cursor.getInt(cursor.getColumnIndex("CUSTOMER_ID")));
+                customer.setCustomerName(cursor.getString(cursor.getColumnIndex("NAME")));
+                customer.setContactNumber(cursor.getString(cursor.getColumnIndex("CONTACT_NUMBER")));
+                customer.setAddress(cursor.getString(cursor.getColumnIndex("ADDRESS")));
+
+
+            } while (cursor.moveToNext());
+        }
+
+        return customer;
+    }
+
+    @Override
+    public void updateCustomer(DBHelper dbHelper, String custID, String custContact) {
+        dbRead = dbHelper.getReadableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put("PRICE", custContact);
+        String selections = "CUSTOMER_ID" + " LIKE ?";
+        String[] selectionArgs = {custID};
+        dbRead.update("WAREHOUSE_EQUIPMENT", values, selections, selectionArgs);
     }
 
     @Override
@@ -129,11 +178,180 @@ public class TransactionDAOImpl implements TransactionDAO {
         dbWrite = dbHelper.getWritableDatabase();
         String queryForLogin = "SELECT * FROM " + "EMPLOYEE" + " WHERE USERNAME = '" + username + "' AND PASSWORD = '" + password + "'";
 
-        Cursor res = dbWrite.rawQuery(queryForLogin,null);
+        Cursor res = dbWrite.rawQuery(queryForLogin, null);
         if (res.getCount() == 0) {
             return false;//not existing. NULL
         }
         return true;//existing. NOT NULL
+    }
+
+    @Override
+    public void addTransactionList(DBHelper dbHelper, ArrayList<Transaction> arrayList) {
+        dbRead = dbHelper.getReadableDatabase();
+        dbWrite = dbHelper.getWritableDatabase();
+        Transaction transactions = new Transaction(0, null, null, null, "", null,
+                0, 0, 0, null, 0);
+
+        ContentValues values = new ContentValues();
+        for (Object obj : arrayList) {
+            if (obj instanceof Seedlings) {
+                transaction = (Transaction) obj;
+
+                values.put("TRANSACTION_FULL_ID", transaction.getTransactionFullID());
+                values.put("DATE", transaction.getDate());
+                values.put("DELIVERY_DATE", transaction.getDeliveryDate());
+                values.put("TRANSACTION_TYPE", transaction.getTransactionType());
+                values.put("TYPE", transaction.getItemType());
+                values.put("QUANTITY", transaction.getQuantity());
+                values.put("PRICE", transaction.getPrice());
+                values.put("TOTAL_COST", transaction.getTotalCost());
+                values.put("EMPLOYEE_ID", transaction.getEmployeeID());
+                values.put("CUSTOMER_ID", transaction.getCustomerID());
+                dbWrite.insert("TRANSACTIONS", null, values);
+
+
+                String queryUpdate = "SELECT * FROM " + "EMPLOYEE WHERE DATE = '" + transaction.getDate()
+                        + "' AND DELIVERY_DATE = '" + transaction.getDeliveryDate() + "' AND EMPLOYEE_ID = '" + transaction.getEmployeeID()
+                        + "' AND CUSTOMER_ID = '" + transaction.getCustomerID() + "' AND TYPE = '" + transaction.getItemType() + "'";
+                Cursor cursor = dbRead.rawQuery(queryUpdate, null);
+                ContentValues values2 = new ContentValues();
+
+                if (cursor.moveToFirst()) {
+                    do {
+                        transactions.setTransID(cursor.getInt(cursor.getColumnIndex("TRANS_ID")));
+                        transactions.setTransactionType(cursor.getString(cursor.getColumnIndex("TRANSACTION_TYPE")));
+                    } while (cursor.moveToNext());
+                    String selection = "TRANS_ID" + " LIKE ?";
+                    String[] selectionArgs = {String.valueOf(transactions.getTransID())};
+
+                    switch (transactions.getTransactionType()) {
+                        case "Revenue":
+                            values2.put("TRANSACTION_FULL_ID", "TRANS-RVN" + String.format("%03d", transactions.getTransID()));
+
+                            dbRead.update("TRANSACTIONS", values2, selection, selectionArgs);
+                            break;
+
+                        case "Expense":
+                            values2.put("TRANSACTION_FULL_ID", "TRANS-XPNS" + String.format("%03d", transactions.getTransID()));
+
+                            dbRead.update("TRANSACTIONS", values2, selection, selectionArgs);
+                            break;
+
+                        case "Usage":
+                            values2.put("TRANSACTION_FULL_ID", "TRANS-USG" + String.format("%03d", transactions.getTransID()));
+
+                            dbRead.update("TRANSACTIONS", values2, selection, selectionArgs);
+                            break;
+
+                        case "Storage":
+                            values2.put("TRANSACTION_FULL_ID", "TRANS-STRG" + String.format("%03d", transactions.getTransID()));
+
+                            dbRead.update("TRANSACTIONS", values2, selection, selectionArgs);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
+    public ArrayList<HashMap<String, List<String>>> retrieveTransactionList(DBHelper dbHelper, ArrayList<Object> arrayList, String type) {
+        dbRead = dbHelper.getReadableDatabase();
+        ArrayList<HashMap<String, List<String>>> allTransactionsList = new ArrayList<>();
+        HashMap<String, List<String>> revenueList = new HashMap<>();
+        HashMap<String, List<String>> expenseList = new HashMap<>();
+        HashMap<String, List<String>> usageList = new HashMap<>();
+        HashMap<String, List<String>> storageList = new HashMap<>();
+        HashMap<String, List<String>> deliveryList = new HashMap<>();
+        ArrayList<String> dateList = new ArrayList<>();
+        ArrayList<String> deliveryDateList = new ArrayList<>();
+        ArrayList<String> transactionIDList = new ArrayList<>();
+
+        String queryForDeliveryDate = "SELECT DELIVERY_DATE FROM TRANSACTIONS ";
+        String queryForDate = "SELECT DATE FROM TRANSACTIONS ";
+
+        Cursor cursor = dbWrite.rawQuery(queryForDate, null);
+        Cursor cursor2 = dbWrite.rawQuery(queryForDeliveryDate, null);
+
+        if (cursor2.moveToFirst()) {
+            do {
+                deliveryDateList.add(cursor.getString(cursor.getColumnIndex("DELIVERY_DATE")));
+            } while (cursor.moveToNext());
+        }
+
+        if (cursor.moveToFirst()) {
+            do {
+                dateList.add(cursor.getString(cursor.getColumnIndex("DATE")));
+            } while (cursor.moveToNext());
+        }
+
+        for (String date : dateList) {
+            String queryID = "SELECT TRANSACTION_FULL_ID FROM " + "TRANSACTIONS" + " WHERE DATE = '" + date + "' AND TRANSACTION_TYPE = '" + type + "'";
+            Cursor cursor3 = dbWrite.rawQuery(queryID, null);
+            switch (type) {
+                case "Revenue":
+                    if (cursor3.moveToFirst()) {
+                        do {
+                            transactionIDList.add(cursor.getString(cursor.getColumnIndex("TRANSACTION_FULL_ID")));
+                        } while (cursor.moveToNext());
+                        revenueList.put(date, transactionIDList);
+                    }
+                    break;
+
+                case "Expense":
+                    if (cursor3.moveToFirst()) {
+                        do {
+                            transactionIDList.add(cursor.getString(cursor.getColumnIndex("TRANSACTION_FULL_ID")));
+                        } while (cursor.moveToNext());
+                        expenseList.put(date, transactionIDList);
+                    }
+                    break;
+
+                case "Usage":
+                    if (cursor3.moveToFirst()) {
+                        do {
+                            transactionIDList.add(cursor.getString(cursor.getColumnIndex("TRANSACTION_FULL_ID")));
+                        } while (cursor.moveToNext());
+                        usageList.put(date, transactionIDList);
+                    }
+                    break;
+
+                case "Storage":
+                    if (cursor3.moveToFirst()) {
+                        do {
+                            transactionIDList.add(cursor.getString(cursor.getColumnIndex("TRANSACTION_FULL_ID")));
+                        } while (cursor.moveToNext());
+                        storageList.put(date, transactionIDList);
+                    }
+                    break;
+                default:
+                    break;
+
+            }
+        }
+
+        for (String date : deliveryDateList) {
+            String queryID = "SELECT TRANSACTION_FULL_ID FROM " + "TRANSACTIONS" + " WHERE DELIVERY_DATE = '" + date + "'";
+            Cursor cursor4 = dbWrite.rawQuery(queryID, null);
+
+            if (cursor4.moveToFirst()) {
+                do {
+                    transactionIDList.add(cursor.getString(cursor.getColumnIndex("TRANSACTION_FULL_ID")));
+                } while (cursor.moveToNext());
+                deliveryList.put(date, transactionIDList);
+            }
+        }
+
+        allTransactionsList.add(revenueList);
+        allTransactionsList.add(expenseList);
+        allTransactionsList.add(usageList);
+        allTransactionsList.add(storageList);
+        allTransactionsList.add(deliveryList);
+
+
+        return allTransactionsList;
     }
 
     @Override
@@ -205,7 +423,7 @@ public class TransactionDAOImpl implements TransactionDAO {
                     val.put("WEIGHT", 0);
                     val.put("DATE", crop.getDate());
                     val.put("TOTAL_COST_HARVESTED", 0);
-                    val.put("PERCENTAGE_HECTARE_DONE",0);
+                    val.put("PERCENTAGE_HECTARE_DONE", 0);
                     val.put("HECTARE_HARVESTED", 0);
                     dbWrite.insert("UTILIZE_FGI", null, val);
 
@@ -387,38 +605,6 @@ public class TransactionDAOImpl implements TransactionDAO {
         }
     }
 
-    @Override
-    public void addBoughtList(DBHelper dbHelper, Object object, String type) {
-
-    }
-
-    @Override
-    public void addSoldList(DBHelper dbHelper, Object object, String type) {
-
-    }
-
-    @Override
-    public HashMap<String, List<String>> retrieveBoughtList(DBHelper dbHelper) {
-        dbWrite = dbHelper.getWritableDatabase();
-        String queryGetDate = "SELECT DATE FROM TRANSACTIONS";
-        Cursor cursor = dbWrite.rawQuery(queryGetDate, null);
-
-        HashMap<String, List<String>> listDate = new HashMap<String, List<String>>();
-        List<String> listTransacion = new ArrayList<String>();
-
-        listDate.put("", listTransacion);
-
-        return listDate;
-    }
-
-    @Override
-    public HashMap<String, List<String>> retrieveSoldList(DBHelper dbHelper) {
-        HashMap<String, List<String>> listDate = new HashMap<String, List<String>>();
-        List<String> listTransaction = new ArrayList<String>();
-
-
-        return listDate;
-    }
 
     @Override
     public boolean checkExistingWarehouse(DBHelper dbHelper, String type, String name) {
@@ -441,9 +627,7 @@ public class TransactionDAOImpl implements TransactionDAO {
         String selections = "TYPE" + " LIKE ?" + " AND " + "NAME" + " LIKE ?";
         String[] selectionArgs = {type, name};
         dbRead.update("WAREHOUSE_EQUIPMENT", values, selections, selectionArgs);
-     //   String selection = "NAME" + " LIKE ?";
-     //   String[] selectionArg = {name};
-      //  dbRead.update("UTILIZE_WPI", values, selection, selectionArg);
+
 
 
     }
