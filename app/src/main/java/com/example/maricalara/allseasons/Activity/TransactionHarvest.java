@@ -44,6 +44,7 @@ public class TransactionHarvest extends AppCompatActivity {
     private EditText txtQty, txtHectare;
     private TextView txtDate, txtTransaction;
     private ArrayList<String>  arrListCrop;
+
     //DAO
     private TransactionDAO tDAO = new TransactionDAOImpl();
     private AccountingDAO aDAO = new AccountingDAOImpl();
@@ -312,7 +313,7 @@ public class TransactionHarvest extends AppCompatActivity {
         }
     }
 
-    private class MyTextWatcher implements TextWatcher {
+    private class MyTextWatcher implements TextWatcher  {
 
         private View view;
 
