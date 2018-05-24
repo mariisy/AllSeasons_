@@ -25,6 +25,10 @@ public class FarmingSeason extends Fragment {
     private ViewPager viewPager;
     private ViewPagerAdapter adapter;
 
+
+    //bundle extra
+    String empID, name;
+
     //buttons
     FloatingActionMenu materialDesignFAb;
     FloatingActionButton fabAdd, fabUse, fabHarvest, fabMsg;
@@ -64,6 +68,14 @@ public class FarmingSeason extends Fragment {
             public void onClick(View v) {
                 // Click action
                 Intent intent = new Intent(getActivity(), TransactionUseMaterials.class);
+
+
+                empID = getArguments().getString("EmployeeID");
+                name = getArguments().getString("EmployeeName");
+
+
+                intent.putExtra("EmployeeName", name);
+                intent.putExtra("EmployeeID", empID);
                 getActivity().startActivity(intent);
 
             }
@@ -73,6 +85,15 @@ public class FarmingSeason extends Fragment {
             public void onClick(View v) {
                 // Click action
                 Intent intent = new Intent(getActivity(), TransactionHarvest.class);
+
+
+
+                empID = getArguments().getString("EmployeeID");
+                name = getArguments().getString("EmployeeName");
+
+
+                intent.putExtra("EmployeeName", name);
+                intent.putExtra("EmployeeID", empID);
                 getActivity().startActivity(intent);
 
             }

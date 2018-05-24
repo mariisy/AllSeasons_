@@ -22,13 +22,16 @@ import com.example.maricalara.allseasons.Controller.AccountingDAOImpl;
 import com.example.maricalara.allseasons.Controller.TransactionDAO;
 import com.example.maricalara.allseasons.Controller.TransactionDAOImpl;
 import com.example.maricalara.allseasons.Model.Crops;
+import com.example.maricalara.allseasons.Model.Customer;
 import com.example.maricalara.allseasons.Model.DBHelper;
+import com.example.maricalara.allseasons.Model.Transaction;
 import com.example.maricalara.allseasons.R;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 
@@ -45,17 +48,22 @@ public class TransactionHarvest extends AppCompatActivity {
     private TextView txtDate, txtTransaction;
     private ArrayList<String>  arrListCrop;
 
+    //bundle extra
+    String empID, name;
+
     //DAO
     private TransactionDAO tDAO = new TransactionDAOImpl();
     private AccountingDAO aDAO = new AccountingDAOImpl();
     private DBHelper dbHelper = new DBHelper(TransactionHarvest.this);
 
     //data variable
+    Transaction transaction = null;
     Crops crops = null;
     Object object = null;
     double totalPrice = 0;
     private ArrayList<Object> arrTransact = new ArrayList<>();
     private ArrayAdapter<String> stringArrayAdapter,arrayAdapter;
+    private ArrayList<Transaction> arrTransaction = new ArrayList<>();
     Object strName = null;
 
     //get Date String
@@ -91,6 +99,14 @@ public class TransactionHarvest extends AppCompatActivity {
         txtTransaction = (TextView) findViewById(R.id.txtTransactionID);
 
         txtDate.setText(strDate);
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            empID = extras.getString("EmployeeID");
+            name = extras.getString("EmployeeName");
+        }
+
+        txtTransaction.setText(empID);
 
         //set array for spinner type 1 and type 2
         arrListCrop = tDAO.retrieveListSpinnerColumn(dbHelper, "NAME", "TYPE", "Crops");
@@ -264,6 +280,14 @@ public class TransactionHarvest extends AppCompatActivity {
         }
 
 
+    }
+
+    public void addTransaction() {
+
+            arrTransaction.add(new Transaction(0, null, strDate, null, "Storage", itemName,
+                    weight, 0, 0, empID, 0));
+
+        tDAO.addTransactionList(dbHelper, arrTransaction);
     }
 
     private void addCart() {

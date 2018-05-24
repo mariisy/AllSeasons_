@@ -226,25 +226,25 @@ public class TransactionDAOImpl implements TransactionDAO {
 
                     switch (transactions.getTransactionType()) {
                         case "Revenue":
-                            values2.put("TRANSACTION_FULL_ID", "TRANS-RVN" + String.format("%03d", transactions.getTransID()));
+                            values2.put("TRANSACTION_FULL_ID", "TRANSACT-RVN" + String.format("%03d", transactions.getTransID()));
 
                             dbRead.update("TRANSACTIONS", values2, selection, selectionArgs);
                             break;
 
                         case "Expense":
-                            values2.put("TRANSACTION_FULL_ID", "TRANS-XPNS" + String.format("%03d", transactions.getTransID()));
+                            values2.put("TRANSACTION_FULL_ID", "TRANSACT-XPNS" + String.format("%03d", transactions.getTransID()));
 
                             dbRead.update("TRANSACTIONS", values2, selection, selectionArgs);
                             break;
 
                         case "Usage":
-                            values2.put("TRANSACTION_FULL_ID", "TRANS-USG" + String.format("%03d", transactions.getTransID()));
+                            values2.put("TRANSACTION_FULL_ID", "TRANSACT-USG" + String.format("%03d", transactions.getTransID()));
 
                             dbRead.update("TRANSACTIONS", values2, selection, selectionArgs);
                             break;
 
                         case "Storage":
-                            values2.put("TRANSACTION_FULL_ID", "TRANS-STRG" + String.format("%03d", transactions.getTransID()));
+                            values2.put("TRANSACTION_FULL_ID", "TRANSACT-STRG" + String.format("%03d", transactions.getTransID()));
 
                             dbRead.update("TRANSACTIONS", values2, selection, selectionArgs);
                             break;
