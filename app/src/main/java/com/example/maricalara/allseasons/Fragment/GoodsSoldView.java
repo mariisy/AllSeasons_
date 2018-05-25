@@ -13,6 +13,9 @@ import android.widget.Toast;
 
 import com.example.maricalara.allseasons.Adapter.ExpandableListViewAdapter;
 import com.example.maricalara.allseasons.Controller.GSoldAddData;
+import com.example.maricalara.allseasons.Controller.TransactionDAO;
+import com.example.maricalara.allseasons.Controller.TransactionDAOImpl;
+import com.example.maricalara.allseasons.Model.DBHelper;
 import com.example.maricalara.allseasons.R;
 
 import java.util.ArrayList;
@@ -26,6 +29,11 @@ public class GoodsSoldView extends Fragment {
     ExpandableListViewAdapter expandableListViewAdapter;
     List<String> expandableListTitle;
     HashMap<String, List<String>> expandableListDetail;
+    ArrayList<HashMap<String, List<String>>> arrayList;
+
+    //DAO
+    TransactionDAO tDAO = new TransactionDAOImpl();
+    DBHelper dbHelper;
 
 
     public GoodsSoldView() {
@@ -41,8 +49,13 @@ public class GoodsSoldView extends Fragment {
 
 
         //List
-        expandableListView = (ExpandableListView) rootView.findViewById(R.id.expandableListViewGPAdd);
-        expandableListDetail = GSoldAddData.getData();
+        expandableListView = (ExpandableListView) rootView.findViewById(R.id.expandableListViewPGAdd);
+
+        dbHelper = new DBHelper(getActivity());
+
+        arrayList = tDAO.retrieveTransactionList(dbHelper, "Revenue");
+        expandableListDetail = (HashMap<String, List<String>>) arrayList.get(0);
+        //expandableListDetail = PGAddData.getData();
         expandableListTitle = new ArrayList<String>(expandableListDetail.keySet());
         expandableListViewAdapter = new ExpandableListViewAdapter(getActivity(), expandableListTitle, expandableListDetail);
 

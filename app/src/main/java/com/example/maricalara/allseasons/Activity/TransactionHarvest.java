@@ -185,6 +185,7 @@ public class TransactionHarvest extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 addCart();
+                addTransaction();
                 dialog.dismiss();
             }
         });
@@ -235,6 +236,8 @@ public class TransactionHarvest extends AppCompatActivity {
                 object = aDAO.retrieveOne(dbHelper, "Crops", itemName);
                 crops = (Crops) object;
                 arrTransact.add(new Crops("Crops", itemName, 0, weight, 0, strDate,0,hectare,0));
+                arrTransaction.add(new Transaction(0, null, strDate, null, "Storage", itemName,
+                        weight, 0, 0, empID, 0));
 
                 new AlertDialog.Builder(TransactionHarvest.this)
                         .setTitle("Adding Entry")
@@ -283,9 +286,6 @@ public class TransactionHarvest extends AppCompatActivity {
     }
 
     public void addTransaction() {
-
-            arrTransaction.add(new Transaction(0, null, strDate, null, "Storage", itemName,
-                    weight, 0, 0, empID, 0));
 
         tDAO.addTransactionList(dbHelper, arrTransaction);
     }

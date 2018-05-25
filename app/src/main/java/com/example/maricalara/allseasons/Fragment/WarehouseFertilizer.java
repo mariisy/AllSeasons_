@@ -53,6 +53,7 @@ public class WarehouseFertilizer extends Fragment {
 
         listView = (ListView) rootView.findViewById(R.id.list);
 
+        fertilizerAdapter.notifyDataSetChanged();
 
         DBHelper dbHelper = new DBHelper(getActivity());
         arrList = imDAO.retrieveList(dbHelper, "Fertilizer");

@@ -26,7 +26,7 @@ import java.util.ArrayList;
  * Created by Mari Calara on 16/10/2017.
  */
 
-public class WarehouseCrops extends Fragment {
+public class    WarehouseCrops extends Fragment {
 
 
 
@@ -51,6 +51,7 @@ public class WarehouseCrops extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_warehouse_crops, container, false);
+
 
 
          listView=(ListView)rootView.findViewById(R.id.list);
