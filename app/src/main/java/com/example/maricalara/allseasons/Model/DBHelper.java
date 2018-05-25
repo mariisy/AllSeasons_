@@ -38,7 +38,8 @@ public class DBHelper extends SQLiteOpenHelper {
     public String dbTableUtilizeWPI = "UTILIZE_WPI";
     public String dbTableUtilizeFGI = "UTILIZE_FGI";
     public String dbTableUtilizeCGS = "UTILIZE_CGS";
-
+    public String dbTableSFP = "SFP";
+    public String dbTableSCI = "SCI";
 
     //column
     public String dBColumnDate = "DATE";
@@ -265,6 +266,16 @@ public class DBHelper extends SQLiteOpenHelper {
             dBColumnTotalCostHarvested + " REAL, " +
             dBColumnTotalCostSold + " REAL )";
 
+    private String dbBuildQuery20 = "CREATE TABLE " + dbTableSFP + " ( " +
+            dbColumnAccountType + " TEXT, " +
+            dbColumnDebit + " REAL, " +
+            dbColumnCredit + " REAL )";
+
+    private String dbBuildQuery21 = "CREATE TABLE " + dbTableSCI + " ( " +
+            dbColumnAccountType + " TEXT, " +
+            dbColumnDebit + " REAL, " +
+            dbColumnCredit + " REAL )";
+
     private String dbDestroyQuery1 = "DROP TABLE IF EXISTS " + dbTableRawMaterials;
     private String dbDestroyQuery2 = "DROP TABLE IF EXISTS " + dbTableIndirectMaterials;
     private String dbDestroyQuery3 = "DROP TABLE IF EXISTS " + dbTableEquipment;
@@ -334,6 +345,9 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(dbBuildQuery7);
         db.execSQL(dbBuildQuery9);
         db.execSQL(dbBuildQuery11);
+        db.execSQL(dbBuildQuery20);
+        db.execSQL(dbBuildQuery21);
+
     }
 
     @Override

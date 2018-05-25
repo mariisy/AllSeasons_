@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activity.SfpActivity">
+    tools:context="com.example.maricalara.allseasons.Activity.SfpActivity">
 
     <include layout="@layout/app_bar_main" />
 
@@ -16,11 +16,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <Button
+        android:id="@+id/btnView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:layout_weight="1"
+        android:text="View" />
+
     <LinearLayout
         android:id="@+id/view1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
         android:orientation="horizontal"
         android:paddingLeft="24dp"
         android:paddingRight="24dp"
@@ -49,26 +57,37 @@
             android:text="Credit" />
     </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/viewAll"
-            android:layout_width="match_parent"
-            android:layout_below="@+id/view1"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:paddingLeft="24dp"
-            android:paddingRight="24dp">
+    <LinearLayout
+        android:id="@+id/view2"
+        android:layout_below="@+id/view1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp">
 
 
-            <TextView
-                android:id="@+id/txtViewAll"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="View All" />
+        <TextView
+            android:id="@+id/viewAccountType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Example" />
 
+        <TextView
+            android:id="@+id/viewDebit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="0" />
 
-        </LinearLayout>
-
+        <TextView
+            android:id="@+id/viewCredit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="0" />
+    </LinearLayout>
 
 </RelativeLayout>
     </ScrollView>
