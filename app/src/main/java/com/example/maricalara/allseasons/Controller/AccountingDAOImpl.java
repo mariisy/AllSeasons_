@@ -63,6 +63,7 @@ public class AccountingDAOImpl implements AccountingDAO {
         ArrayList<String> list = new ArrayList<>();
         list.add("Raw Materials");
         list.add("Indirect Materials");
+        list.add("Equipment");
         list.add("WPI");
         list.add("Direct Labor");
         list.add("Indirect Labor");
@@ -180,12 +181,17 @@ public class AccountingDAOImpl implements AccountingDAO {
         String selection5 = "ACCOUNT_TYPE" + " LIKE ?";
         String[] selectionArgs5 = {"Cash"};
         val5.put("ACCOUNT_TYPE","Cash");
-        val5.put("DEBIT", debit5-credit5);
-        val5.put("CREDIT",0);
+        if(debit5>credit5){
+            val5.put("DEBIT", debit5-credit5);
+        }
+        else {
+            val5.put("CREDIT", credit5-debit5);
+        }
         dbRead.update("SFP", val5, selection5, selectionArgs5);
 
 
     }
+
     @Override
     public ArrayList<String> viewSFP(DBHelper dbHelper,String columnName) {
         dbRead = dbHelper.getReadableDatabase();
@@ -200,6 +206,133 @@ public class AccountingDAOImpl implements AccountingDAO {
         return listHolder;
     }
 
+    @Override
+    public void addSCI(DBHelper dbHelper) {
+        dbWrite = dbHelper.getWritableDatabase();
+        String queryForCheck = "SELECT * FROM SCI";
+        Cursor result = dbWrite.rawQuery(queryForCheck, null);
+        ContentValues val = new ContentValues();
+        ArrayList<String> list = new ArrayList<>();
+        list.add("Raw Materials");
+        list.add("Indirect Materials");
+        list.add("Equipment");
+        list.add("WPI");
+        list.add("Direct Labor");
+        list.add("Indirect Labor");
+        list.add("Salaries Expense");
+        list.add("FGI");
+        list.add("CGS");
+        list.add("Sales Revenue");
+        list.add("Cash");
+        if (result.getCount() == 0) {
+            for(String accType : list){
+                val.put("ACCOUNT_TYPE", accType);
+                val.put("DEBIT", 0);
+                val.put("CREDIT", 0);
+                dbWrite.insert("SCI", null, val);
+            }
+        }
+
+    }
+
+    @Override
+    public void updateSCI(DBHelper dbHelper) {
+        dbRead = dbHelper.getReadableDatabase();
+        ContentValues val = new ContentValues();
+        String addIL = "SELECT SUM(SALARY) AS CREDIT FROM EMPLOYEE WHERE ACCOUNT_TYPE= 'Staff'  OR ACCOUNT_TYPE= 'Supervisor' ";
+        Cursor cursor = dbRead.rawQuery(addIL, null);
+        double credit =0;
+        if (cursor.moveToFirst()) {
+            do {
+                credit = cursor.getDouble(cursor.getColumnIndex("CREDIT"));
+            } while (cursor.moveToNext());
+        }
+        String selection = "ACCOUNT_TYPE" + " LIKE ?";
+        String[] selectionArgs = {"Indirect Labor"};
+        val.put("ACCOUNT_TYPE","Indirect Labor");
+        val.put("DEBIT", 0);
+        val.put("CREDIT",credit);
+        dbRead.update("SCI", val, selection, selectionArgs);
+
+        ContentValues val1 = new ContentValues();
+        String addDL = "SELECT SUM(SALARY) AS CREDIT FROM EMPLOYEE WHERE ACCOUNT_TYPE= 'Farmer'  ";
+        Cursor cursor1 = dbRead.rawQuery(addDL, null);
+        double credit1 =0;
+        if (cursor1.moveToFirst()) {
+            do {
+                credit1 = cursor1.getDouble(cursor1.getColumnIndex("CREDIT"));
+            } while (cursor1.moveToNext());
+        }
+        String selection1 = "ACCOUNT_TYPE" + " LIKE ?";
+        String[] selectionArgs1 = {"Direct Labor"};
+        val1.put("ACCOUNT_TYPE","Direct Labor");
+        val1.put("DEBIT", 0);
+        val1.put("CREDIT",credit1);
+        dbRead.update("SCI", val1, selection1, selectionArgs1);
+
+
+        ContentValues val2 = new ContentValues();
+        String addSalary = "SELECT SUM(SALARY) AS DEBIT FROM " + "EMPLOYEE ";
+        Cursor cursor2 = dbRead.rawQuery(addSalary, null);
+        double debit2 =0;
+        if (cursor2.moveToFirst()) {
+            do {
+                debit2 = cursor2.getDouble(cursor2.getColumnIndex("DEBIT"));
+            } while (cursor2.moveToNext());
+        }
+        String selection2 = "ACCOUNT_TYPE" + " LIKE ?";
+        String[] selectionArgs2 = {"Salaries Expense"};
+        val2.put("ACCOUNT_TYPE","Salaries Expense");
+        val2.put("DEBIT", debit2);
+        val2.put("CREDIT",0);
+        dbRead.update("SCI", val2, selection2, selectionArgs2);
+
+        ContentValues val3 = new ContentValues();
+        String addCGS = "SELECT SUM(TOTAL_COST) AS DEBIT FROM " + "CGS ";
+        Cursor cursor3 = dbRead.rawQuery(addCGS, null);
+        double debit3 =0;
+        if (cursor3.moveToFirst()) {
+            do {
+                debit3 = cursor3.getDouble(cursor3.getColumnIndex("DEBIT"));
+            } while (cursor3.moveToNext());
+        }
+        String selection3 = "ACCOUNT_TYPE" + " LIKE ?";
+        String[] selectionArgs3 = {"CGS"};
+        val3.put("ACCOUNT_TYPE","CGS");
+        val3.put("DEBIT", debit3);
+        val3.put("CREDIT",0);
+        dbRead.update("SCI", val3, selection3, selectionArgs3);
+
+        ContentValues val4 = new ContentValues();
+        String addFGI = "SELECT SUM(TOTAL_EARNINGS) AS CREDIT FROM " + "SALES_REVENUE ";
+        Cursor cursor4 = dbRead.rawQuery(addFGI, null);
+        double credit4 =0;
+        if (cursor4.moveToFirst()) {
+            do {
+                credit4 = cursor4.getDouble(cursor4.getColumnIndex("CREDIT"));
+            } while (cursor4.moveToNext());
+        }
+        String selection4 = "ACCOUNT_TYPE" + " LIKE ?";
+        String[] selectionArgs4 = {"Sales Revenue"};
+        val4.put("ACCOUNT_TYPE","Sales Revenue");
+        val4.put("DEBIT",0 );
+        val4.put("CREDIT",credit4);
+        dbRead.update("SCI", val4, selection4, selectionArgs4);
+    }
+
+    @Override
+    public ArrayList<String> viewSCI(DBHelper dbHelper,String columnName) {
+        dbRead = dbHelper.getReadableDatabase();
+        String queryForRetrievalAll = "SELECT "+ columnName + " FROM  SCI";
+        ArrayList<String> listHolder = new ArrayList<String>();
+        Cursor cursor = dbRead.rawQuery(queryForRetrievalAll, null);
+        if (cursor.moveToFirst()) {
+            do {
+                listHolder.add(cursor.getString(cursor.getColumnIndex(columnName)));
+            } while (cursor.moveToNext());
+        }
+        return listHolder;
+    }
     @Override
     public Cursor getAllDataCash(DBHelper dbHelper) {
         dbWrite = dbHelper.getWritableDatabase();
@@ -951,4 +1084,5 @@ public class AccountingDAOImpl implements AccountingDAO {
             }
         }
     }
+
 }
