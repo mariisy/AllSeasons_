@@ -51,6 +51,8 @@ public class TransactionsAddBought extends AppCompatActivity {
 
     private Toolbar toolbar;
 
+    //bundle extra
+    String empID, name;
 
     //for UI
     private Button btnAddTransaction, btnView;
@@ -120,6 +122,14 @@ public class TransactionsAddBought extends AppCompatActivity {
         txtTransaction = (TextView) findViewById(R.id.txtTransactionID);
 
         txtDate.setText(strDate);
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            empID = extras.getString("EmployeeID");
+            name = extras.getString("EmployeeName");
+        }
+
+        txtTransaction.setText(empID);
 
         String[] spinnerListType = {"", ""};
         ArrayAdapter<String> arrayAdapters = new ArrayAdapter<String>(TransactionsAddBought.this, android.R.layout.simple_dropdown_item_1line, spinnerListType);

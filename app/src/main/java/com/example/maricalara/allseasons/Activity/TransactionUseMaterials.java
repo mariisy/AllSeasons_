@@ -53,6 +53,9 @@ public class TransactionUseMaterials extends AppCompatActivity {
     private EditText txtQty;
     private TextView txtDate, txtTransaction;
 
+    //bundle extra
+    String empID, name;
+
     //DAO
     private AccountingDAO aDAO = new AccountingDAOImpl();
     private IndirectMaterialsDAO imDao = new IndirectMaterialsDAOImpl();
@@ -110,6 +113,15 @@ public class TransactionUseMaterials extends AppCompatActivity {
         txtTransaction = (TextView) findViewById(R.id.txtTransactionID);
         btnView2= (Button)findViewById(R.id.btnView2);
         txtDate.setText(strDate);
+
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            empID = extras.getString("EmployeeID");
+            name = extras.getString("EmployeeName");
+        }
+
+        txtTransaction.setText(empID);
 
         //set array for spinner type 1 and type 2
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, spinnerListType);

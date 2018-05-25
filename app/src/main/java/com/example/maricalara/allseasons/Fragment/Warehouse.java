@@ -27,7 +27,10 @@ public class Warehouse extends Fragment {
 
     //buttons
     FloatingActionMenu materialDesignFAb;
-    FloatingActionButton fabAdd, fabUse, fabHarvest, fabMsg;
+    FloatingActionButton fabAdd, fabMsg;
+
+    //bundle extra
+    String empID, name;
 
     public Warehouse() {
         // Required empty public constructor
@@ -60,6 +63,14 @@ public class Warehouse extends Fragment {
             public void onClick(View v) {
                 // Click action
                 Intent intent = new Intent(getActivity(), TransactionsAddBought.class);
+
+                empID = getArguments().getString("EmployeeID");
+                name = getArguments().getString("EmployeeName");
+
+
+                intent.putExtra("EmployeeName", name);
+                intent.putExtra("EmployeeID", empID);
+
                 getActivity().startActivity(intent);
 
             }
