@@ -555,6 +555,8 @@ public class TransactionUseMaterials extends AppCompatActivity {
                         price = seeds.getPrice();
                         totalPrice = seeds.getPrice() * qty;
                         arrTransact.add(new Seeds(type, itemName, qty, price, totalPrice, strDate));
+                        arrTransaction.add(new Transaction(0, null, strDate, null, "Usage", itemName,
+                                qty, 0, 0, empID, 0));
 
                         new AlertDialog.Builder(TransactionUseMaterials.this)
                                 .setTitle("Adding Entry")
@@ -661,15 +663,12 @@ public class TransactionUseMaterials extends AppCompatActivity {
     }
 
     public void addTransaction() {
-
-        arrTransaction.add(new Transaction(0, null, strDate, null, "Usage", itemName,
-                qty, 0, 0, empID, 0));
-
         tDAO.addTransactionList(dbHelper, arrTransaction);
     }
 
     private void addCart() {
         aDAO.updateWPI(dbHelper, arrTransact);
+        addTransaction();
     }
 
     private void populateSpinnerName() {

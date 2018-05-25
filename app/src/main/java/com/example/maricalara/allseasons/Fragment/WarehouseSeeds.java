@@ -57,6 +57,7 @@ public class WarehouseSeeds extends Fragment {
         listView = (ListView) rootView.findViewById(R.id.list);
 
 
+        seedsAdapter.notifyDataSetChanged();
         arrList = rmDAO.retrieveList(dbHelper, "Seeds");
 
         seeds = (ArrayList<Seeds>) arrList.get(1);

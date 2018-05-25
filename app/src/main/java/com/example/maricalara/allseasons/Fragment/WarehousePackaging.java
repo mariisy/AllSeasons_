@@ -49,6 +49,8 @@ public class WarehousePackaging extends Fragment {
 
         listView = (ListView) rootView.findViewById(R.id.list);
 
+        packagingAdapter.notifyDataSetChanged();
+
         DBHelper dbHelper = new DBHelper(getActivity());
         arrList = imDAO.retrieveList(dbHelper, "Packaging");
         packaging = (ArrayList<Packaging>) arrList.get(0);

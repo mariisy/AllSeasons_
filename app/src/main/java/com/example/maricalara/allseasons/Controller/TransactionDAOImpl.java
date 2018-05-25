@@ -253,6 +253,12 @@ public class TransactionDAOImpl implements TransactionDAO {
 
                             dbRead.update("TRANSACTIONS", values2, selection, selectionArgs);
                             break;
+
+                        case "Delivery":
+                            values2.put("TRANSACTION_FULL_ID", "TRANSACT-DLVR" + transactions.getEmployeeID() + String.format("%03d", transactions.getTransID()));
+
+                            dbRead.update("TRANSACTIONS", values2, selection, selectionArgs);
+                            break;
                         default:
                             break;
                     }
@@ -280,7 +286,7 @@ public class TransactionDAOImpl implements TransactionDAO {
         ArrayList<String> transactionIDList4 = new ArrayList<>();
         ArrayList<String> transactionIDList5 = new ArrayList<>();
 
-        String queryForDeliveryDate = "SELECT DELIVERY_DATE FROM TRANSACTIONS ";
+        String queryForDeliveryDate = "SELECT DELIVERY_DATE FROM TRANSACTIONS GROUP BY DELIVERY_DATE";
         String queryForDate = "SELECT DATE FROM TRANSACTIONS GROUP BY DATE ";
 
 

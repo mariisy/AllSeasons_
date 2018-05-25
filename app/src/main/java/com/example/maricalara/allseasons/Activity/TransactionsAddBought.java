@@ -603,6 +603,8 @@ public class TransactionsAddBought extends AppCompatActivity {
                         price = seeds.getPrice();
                         totalPrice = seeds.getPrice() * qty;
                         arrTransact.add(new Seeds(type, itemName, qty, price, totalPrice, strDate));
+                        arrTransaction.add(new Transaction(0, null, strDate, null, "Expense", itemName,
+                                qty, 0, totalPrice, empID, 0));
 
                         new AlertDialog.Builder(TransactionsAddBought.this)
                                 .setTitle("Adding Entry")
@@ -717,6 +719,7 @@ public class TransactionsAddBought extends AppCompatActivity {
             equipmentDAO.updateTransactionAdd(dbHelper, arrTransact);
             imDao.updateTransactionAdd(dbHelper, arrTransact);
             rmDAO.updateTransactionAdd(dbHelper, arrTransact);
+            addTransaction();
         } catch (Exception e) {
             Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT);
         }
@@ -724,10 +727,6 @@ public class TransactionsAddBought extends AppCompatActivity {
     }
 
     public void addTransaction() {
-
-        arrTransaction.add(new Transaction(0, null, strDate, null, "Expense", itemName,
-                qty, 0, 0, empID, 0));
-
         tDAO.addTransactionList(dbHelper, arrTransaction);
     }
 

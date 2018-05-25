@@ -52,6 +52,8 @@ public class WarehouseInsecticides extends Fragment {
 
         listView = (ListView) rootView.findViewById(R.id.list);
 
+        insecticidesAdapter.notifyDataSetChanged();
+
         DBHelper dbHelper = new DBHelper(getActivity());
         arrList = imDAO.retrieveList(dbHelper, "Insecticides");
         insecticides = (ArrayList<Insecticides>) arrList.get(0);

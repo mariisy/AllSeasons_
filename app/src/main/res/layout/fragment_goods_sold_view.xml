@@ -10,12 +10,14 @@
         android:layout_height="match_parent"
         android:fillViewport="true">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="60dp">
+            android:orientation="vertical"
+            android:layout_marginTop="40dp"
+            android:paddingTop="56dp"
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp">
 
             <ExpandableListView
                 android:id="@+id/expandableListViewGPAdd"
@@ -25,6 +27,6 @@
                 android:divider="@color/colorAccent"
                 android:dividerHeight="3dp" />
 
-        </RelativeLayout>
+        </LinearLayout>
     </ScrollView>
 </FrameLayout>
