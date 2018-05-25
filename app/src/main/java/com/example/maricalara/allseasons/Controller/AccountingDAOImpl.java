@@ -13,6 +13,8 @@ import com.example.maricalara.allseasons.Model.Seedlings;
 import com.example.maricalara.allseasons.Model.Seeds;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class AccountingDAOImpl implements AccountingDAO {
     SQLiteDatabase dbWrite, dbRead;
@@ -50,6 +52,152 @@ public class AccountingDAOImpl implements AccountingDAO {
         dbWrite = dbHelper.getWritableDatabase();
         Cursor result = dbWrite.rawQuery("SELECT * FROM SALES_REVENUE", null);
         return result;
+    }
+
+    @Override
+    public void addSFP(DBHelper dbHelper) {
+        dbWrite = dbHelper.getWritableDatabase();
+        String queryForCheck = "SELECT * FROM SFP";
+        Cursor result = dbWrite.rawQuery(queryForCheck, null);
+        ContentValues val = new ContentValues();
+        ArrayList<String> list = new ArrayList<>();
+        list.add("Raw Materials");
+        list.add("Indirect Materials");
+        list.add("WPI");
+        list.add("Direct Labor");
+        list.add("Indirect Labor");
+        list.add("Salaries Expense");
+        list.add("FGI");
+        list.add("CGS");
+        list.add("Sales Revenue");
+        list.add("Cash");
+        if (result.getCount() == 0) {
+            for(String accType : list){
+                val.put("ACCOUNT_TYPE", accType);
+                val.put("DEBIT", 0);
+                val.put("CREDIT", 0);
+                dbWrite.insert("SFP", null, val);
+            }
+        }
+
+    }
+
+    @Override
+    public void updateSFP(DBHelper dbHelper) {
+        dbRead = dbHelper.getReadableDatabase();
+        ContentValues val = new ContentValues();
+        String addRM = "SELECT SUM(TOTAL_COST) AS DEBIT FROM " + "RAW_MATERIALS ";
+        Cursor cursor = dbRead.rawQuery(addRM, null);
+        double debit =0;
+        if (cursor.moveToFirst()) {
+            do {
+                debit = cursor.getDouble(cursor.getColumnIndex("DEBIT"));
+            } while (cursor.moveToNext());
+        }
+        String selection = "ACCOUNT_TYPE" + " LIKE ?";
+        String[] selectionArgs = {"Raw Materials"};
+        val.put("ACCOUNT_TYPE","Raw Materials");
+        val.put("DEBIT", debit);
+        val.put("CREDIT",0);
+        dbRead.update("SFP", val, selection, selectionArgs);
+
+        ContentValues val1 = new ContentValues();
+        String addIM = "SELECT SUM(TOTAL_COST) AS DEBIT FROM " + "INDIRECT_MATERIALS ";
+        Cursor cursor1 = dbRead.rawQuery(addIM, null);
+        double debit1 =0;
+        if (cursor1.moveToFirst()) {
+            do {
+                debit1 = cursor1.getDouble(cursor1.getColumnIndex("DEBIT"));
+            } while (cursor1.moveToNext());
+        }
+        String selection1 = "ACCOUNT_TYPE" + " LIKE ?";
+        String[] selectionArgs1 = {"Indirect Materials"};
+        val1.put("ACCOUNT_TYPE","Indirect Materials");
+        val1.put("DEBIT", debit1);
+        val1.put("CREDIT",0);
+        dbRead.update("SFP", val1, selection1, selectionArgs1);
+
+
+        ContentValues val2 = new ContentValues();
+        String addEquip = "SELECT SUM(TOTAL_COST) AS DEBIT FROM " + "EQUIPMENT ";
+        Cursor cursor2 = dbRead.rawQuery(addEquip, null);
+        double debit2 =0;
+        if (cursor2.moveToFirst()) {
+            do {
+                debit2 = cursor2.getDouble(cursor2.getColumnIndex("DEBIT"));
+            } while (cursor2.moveToNext());
+        }
+        String selection2 = "ACCOUNT_TYPE" + " LIKE ?";
+        String[] selectionArgs2 = {"Equipment"};
+        val2.put("ACCOUNT_TYPE","Equipment");
+        val2.put("DEBIT", debit2);
+        val2.put("CREDIT",0);
+        dbRead.update("SFP", val2, selection2, selectionArgs2);
+
+        ContentValues val3 = new ContentValues();
+        String addWPI = "SELECT SUM(TOTAL_COST) AS DEBIT FROM " + "WPI ";
+        Cursor cursor3 = dbRead.rawQuery(addWPI, null);
+        double debit3 =0;
+        if (cursor3.moveToFirst()) {
+            do {
+                debit3 = cursor3.getDouble(cursor3.getColumnIndex("DEBIT"));
+            } while (cursor3.moveToNext());
+        }
+        String selection3 = "ACCOUNT_TYPE" + " LIKE ?";
+        String[] selectionArgs3 = {"WPI"};
+        val3.put("ACCOUNT_TYPE","WPI");
+        val3.put("DEBIT", debit3);
+        val3.put("CREDIT",0);
+        dbRead.update("SFP", val3, selection3, selectionArgs3);
+
+        ContentValues val4 = new ContentValues();
+        String addFGI = "SELECT SUM(TOTAL_COST) AS DEBIT FROM " + "FGI ";
+        Cursor cursor4 = dbRead.rawQuery(addFGI, null);
+        double debit4 =0;
+        if (cursor4.moveToFirst()) {
+            do {
+                debit4 = cursor4.getDouble(cursor4.getColumnIndex("DEBIT"));
+            } while (cursor4.moveToNext());
+        }
+        String selection4 = "ACCOUNT_TYPE" + " LIKE ?";
+        String[] selectionArgs4 = {"FGI"};
+        val4.put("ACCOUNT_TYPE","FGI");
+        val4.put("DEBIT", debit4);
+        val4.put("CREDIT",0);
+        dbRead.update("SFP", val4, selection4, selectionArgs4);
+
+
+        ContentValues val5 = new ContentValues();
+        String addCash = "SELECT SUM(DEBIT) AS DEBIT, SUM(CREDIT) AS CREDIT FROM " + "CASH";
+        Cursor cursor5 = dbRead.rawQuery(addCash, null);
+        double debit5 =0, credit5=0;
+        if (cursor5.moveToFirst()) {
+            do {
+                debit5 = cursor5.getDouble(cursor5.getColumnIndex("DEBIT"));
+                credit5 = cursor5.getDouble(cursor5.getColumnIndex("CREDIT"));
+            } while (cursor4.moveToNext());
+        }
+        String selection5 = "ACCOUNT_TYPE" + " LIKE ?";
+        String[] selectionArgs5 = {"Cash"};
+        val5.put("ACCOUNT_TYPE","Cash");
+        val5.put("DEBIT", debit5-credit5);
+        val5.put("CREDIT",0);
+        dbRead.update("SFP", val5, selection5, selectionArgs5);
+
+
+    }
+    @Override
+    public ArrayList<String> viewSFP(DBHelper dbHelper,String columnName) {
+        dbRead = dbHelper.getReadableDatabase();
+        String queryForRetrievalAll = "SELECT "+ columnName + " FROM  SFP";
+        ArrayList<String> listHolder = new ArrayList<String>();
+        Cursor cursor = dbRead.rawQuery(queryForRetrievalAll, null);
+        if (cursor.moveToFirst()) {
+            do {
+                listHolder.add(cursor.getString(cursor.getColumnIndex(columnName)));
+            } while (cursor.moveToNext());
+        }
+        return listHolder;
     }
 
     @Override

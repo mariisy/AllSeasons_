@@ -18,6 +18,9 @@ public interface AccountingDAO {
     Cursor getAllUtilizeCGS(DBHelper dbHelper);
     Cursor getAllDataCash(DBHelper dbHelper);
     Cursor getAllDataSalesRevenue(DBHelper dbHelper);
+    void addSFP(DBHelper dbHelper);
+    void updateSFP(DBHelper dbHelper);
+    ArrayList<String> viewSFP(DBHelper dbHelper,String columnName) ;
     void addEntry(DBHelper dbHelper, String type);
     Crops retrieveOne2 (DBHelper dbHelper, String type, String name);
     public void addEntryPlanning(DBHelper dbHelper, ArrayList<Object> objArray, double hectareSize);

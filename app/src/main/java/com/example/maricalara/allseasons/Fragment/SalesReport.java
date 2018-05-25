@@ -1,14 +1,17 @@
 package com.example.maricalara.allseasons.Fragment;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 
+import com.example.maricalara.allseasons.Activity.SfpActivity;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
@@ -35,7 +38,7 @@ public class SalesReport extends Fragment {
     ArrayAdapter<String> adapterCrops;
     List<String> listCrops;
     Spinner spinnerCrops;
-
+    Button button;
     //variables for bar chart
     BarChart barChart;
     ArrayList<BarEntry> BARENTRY ;
@@ -89,7 +92,14 @@ public class SalesReport extends Fragment {
                 rootView.findViewById(R.id.spinnerView);
         materialDesignSpinner.setAdapter(arrayAdapter);
 
-
+        button = (Button)rootView.findViewById(R.id.button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent =new Intent(getActivity(), SfpActivity.class);
+                startActivity(intent);
+            }
+        });
         //for bar graph
         barChart = (BarChart) rootView.findViewById(R.id.chartBar);
         BARENTRY = new ArrayList<>();
