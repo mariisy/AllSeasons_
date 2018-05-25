@@ -32,6 +32,7 @@ import com.example.maricalara.allseasons.Model.Insecticides;
 import com.example.maricalara.allseasons.Model.Packaging;
 import com.example.maricalara.allseasons.Model.Seedlings;
 import com.example.maricalara.allseasons.Model.Seeds;
+import com.example.maricalara.allseasons.Model.Transaction;
 import com.example.maricalara.allseasons.R;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
@@ -74,6 +75,7 @@ public class TransactionUseMaterials extends AppCompatActivity {
     private ArrayList<String> arrList;
     private ArrayList<Object> arrTransact = new ArrayList<>();
     private ArrayAdapter<String> stringArrayAdapter;
+    private ArrayList<Transaction> arrTransaction = new ArrayList<>();
     private ArrayAdapter<String> arrayAdapter3;
     private ArrayList<String> arrListName,arrListCrop;
     Object strName = null;
@@ -656,6 +658,14 @@ public class TransactionUseMaterials extends AppCompatActivity {
 
             default: //do something
         }
+    }
+
+    public void addTransaction() {
+
+        arrTransaction.add(new Transaction(0, null, strDate, null, "Usage", itemName,
+                qty, 0, 0, empID, 0));
+
+        tDAO.addTransactionList(dbHelper, arrTransaction);
     }
 
     private void addCart() {

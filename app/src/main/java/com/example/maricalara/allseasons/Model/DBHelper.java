@@ -42,7 +42,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     //column
     public String dBColumnDate = "DATE";
-    public String dBColumnDeliveryDate = "DELIVER_DATE";
+    public String dBColumnDeliveryDate = "DELIVERY_DATE";
     public String dBColumnName = "NAME";
     public String dBColumnTransactionType = "TRANSACTION_TYPE";
     public String dBColumnType = "TYPE";

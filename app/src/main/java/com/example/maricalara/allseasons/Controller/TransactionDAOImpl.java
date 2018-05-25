@@ -194,7 +194,7 @@ public class TransactionDAOImpl implements TransactionDAO {
 
         ContentValues values = new ContentValues();
         for (Object obj : arrayList) {
-            if (obj instanceof Seedlings) {
+            if (obj instanceof Transaction) {
                 transaction = (Transaction) obj;
 
                 values.put("TRANSACTION_FULL_ID", transaction.getTransactionFullID());
@@ -209,10 +209,14 @@ public class TransactionDAOImpl implements TransactionDAO {
                 values.put("CUSTOMER_ID", transaction.getCustomerID());
                 dbWrite.insert("TRANSACTIONS", null, values);
 
+                //String queryUpdate = "SELECT * FROM " + "TRANSACTIONS WHERE DATE = '" + transaction.getDate()+"' AND DELIVERY_DATE = '" + transaction.getDeliveryDate() + "'   AND DELIVERY_DATE = '" + transaction.getDeliveryDate() + "' AND EMPLOYEE_ID = '" + transaction.getEmployeeID() +"'  AND CUSTOMER_ID = '" + transaction.getCustomerID() + "' AND TYPE = '" + transaction.getItemType() + "' ";
 
-                String queryUpdate = "SELECT * FROM " + "EMPLOYEE WHERE DATE = '" + transaction.getDate()
-                        + "' AND DELIVERY_DATE = '" + transaction.getDeliveryDate() + "' AND EMPLOYEE_ID = '" + transaction.getEmployeeID()
-                        + "' AND CUSTOMER_ID = '" + transaction.getCustomerID() + "' AND TYPE = '" + transaction.getItemType() + "'";
+                String queryGet = "SELECT * FROM TRANSACTIONS";
+                Cursor res = dbWrite.rawQuery(queryGet, null);
+                int count = res.getCount();
+
+                String queryUpdate = "SELECT * FROM " + "TRANSACTIONS WHERE TRANS_ID = '" + count + "' ";
+
                 Cursor cursor = dbRead.rawQuery(queryUpdate, null);
                 ContentValues values2 = new ContentValues();
 
@@ -225,7 +229,7 @@ public class TransactionDAOImpl implements TransactionDAO {
                     String selection = "TRANS_ID" + " LIKE ?";
                     String[] selectionArgs = {String.valueOf(transactions.getTransID())};
 
-                    switch (transactions.getTransactionType()) {
+                    switch (transaction.getTransactionType()) {
                         case "Revenue":
                             values2.put("TRANSACTION_FULL_ID", "TRANSACT-RVN_" + transactions.getEmployeeID() + String.format("%03d", transactions.getTransID()));
 
@@ -258,8 +262,10 @@ public class TransactionDAOImpl implements TransactionDAO {
     }
 
     @Override
-    public ArrayList<HashMap<String, List<String>>> retrieveTransactionList(DBHelper dbHelper, ArrayList<Object> arrayList, String type) {
+    public ArrayList<HashMap<String, List<String>>> retrieveTransactionList(DBHelper dbHelper, String type) {
         dbRead = dbHelper.getReadableDatabase();
+        dbWrite = dbHelper.getWritableDatabase();
+
         ArrayList<HashMap<String, List<String>>> allTransactionsList = new ArrayList<>();
         HashMap<String, List<String>> revenueList = new HashMap<>();
         HashMap<String, List<String>> expenseList = new HashMap<>();
@@ -269,17 +275,26 @@ public class TransactionDAOImpl implements TransactionDAO {
         ArrayList<String> dateList = new ArrayList<>();
         ArrayList<String> deliveryDateList = new ArrayList<>();
         ArrayList<String> transactionIDList = new ArrayList<>();
+        ArrayList<String> transactionIDList2 = new ArrayList<>();
+        ArrayList<String> transactionIDList3 = new ArrayList<>();
+        ArrayList<String> transactionIDList4 = new ArrayList<>();
+        ArrayList<String> transactionIDList5 = new ArrayList<>();
 
         String queryForDeliveryDate = "SELECT DELIVERY_DATE FROM TRANSACTIONS ";
-        String queryForDate = "SELECT DATE FROM TRANSACTIONS ";
+        String queryForDate = "SELECT DATE FROM TRANSACTIONS GROUP BY DATE ";
 
-        Cursor cursor = dbWrite.rawQuery(queryForDate, null);
-        Cursor cursor2 = dbWrite.rawQuery(queryForDeliveryDate, null);
+
+
+
+        Cursor cursor = dbRead.rawQuery(queryForDate, null);
+        Cursor cursor2 = dbRead.rawQuery(queryForDeliveryDate, null);
+
+
 
         if (cursor2.moveToFirst()) {
             do {
-                deliveryDateList.add(cursor.getString(cursor.getColumnIndex("DELIVERY_DATE")));
-            } while (cursor.moveToNext());
+                deliveryDateList.add(cursor2.getString(cursor2.getColumnIndex("DELIVERY_DATE")));
+            } while (cursor2.moveToNext());
         }
 
         if (cursor.moveToFirst()) {
@@ -288,15 +303,18 @@ public class TransactionDAOImpl implements TransactionDAO {
             } while (cursor.moveToNext());
         }
 
+        String dates=null;
         for (String date : dateList) {
+            dates = date;
             String queryID = "SELECT TRANSACTION_FULL_ID FROM " + "TRANSACTIONS" + " WHERE DATE = '" + date + "' AND TRANSACTION_TYPE = '" + type + "'";
             Cursor cursor3 = dbWrite.rawQuery(queryID, null);
             switch (type) {
                 case "Revenue":
                     if (cursor3.moveToFirst()) {
                         do {
-                            transactionIDList.add(cursor.getString(cursor.getColumnIndex("TRANSACTION_FULL_ID")));
-                        } while (cursor.moveToNext());
+                            String id = cursor3.getString(cursor3.getColumnIndex("TRANSACTION_FULL_ID"));
+                            transactionIDList.add(id);
+                        } while (cursor3.moveToNext());
                         revenueList.put(date, transactionIDList);
                     }
                     break;
@@ -304,27 +322,27 @@ public class TransactionDAOImpl implements TransactionDAO {
                 case "Expense":
                     if (cursor3.moveToFirst()) {
                         do {
-                            transactionIDList.add(cursor.getString(cursor.getColumnIndex("TRANSACTION_FULL_ID")));
-                        } while (cursor.moveToNext());
-                        expenseList.put(date, transactionIDList);
+                            transactionIDList2.add(cursor3.getString(cursor3.getColumnIndex("TRANSACTION_FULL_ID")));
+                        } while (cursor3.moveToNext());
                     }
+
                     break;
 
                 case "Usage":
                     if (cursor3.moveToFirst()) {
                         do {
-                            transactionIDList.add(cursor.getString(cursor.getColumnIndex("TRANSACTION_FULL_ID")));
-                        } while (cursor.moveToNext());
-                        usageList.put(date, transactionIDList);
+                            transactionIDList3.add(cursor3.getString(cursor3.getColumnIndex("TRANSACTION_FULL_ID")));
+                        } while (cursor3.moveToNext());
+                        usageList.put(date, transactionIDList3);
                     }
                     break;
 
                 case "Storage":
                     if (cursor3.moveToFirst()) {
                         do {
-                            transactionIDList.add(cursor.getString(cursor.getColumnIndex("TRANSACTION_FULL_ID")));
-                        } while (cursor.moveToNext());
-                        storageList.put(date, transactionIDList);
+                            transactionIDList4.add(cursor3.getString(cursor3.getColumnIndex("TRANSACTION_FULL_ID")));
+                        } while (cursor3.moveToNext());
+                        storageList.put(date, transactionIDList4);
                     }
                     break;
                 default:
@@ -333,17 +351,23 @@ public class TransactionDAOImpl implements TransactionDAO {
             }
         }
 
+
+
         for (String date : deliveryDateList) {
-            String queryID = "SELECT TRANSACTION_FULL_ID FROM " + "TRANSACTIONS" + " WHERE DELIVERY_DATE = '" + date + "'";
-            Cursor cursor4 = dbWrite.rawQuery(queryID, null);
+            String queryID2 = "SELECT TRANSACTION_FULL_ID FROM " + "TRANSACTIONS" + " WHERE DELIVERY_DATE = '" + date + "'";
+            Cursor cursor4 = dbWrite.rawQuery(queryID2, null);
 
             if (cursor4.moveToFirst()) {
                 do {
-                    transactionIDList.add(cursor.getString(cursor.getColumnIndex("TRANSACTION_FULL_ID")));
-                } while (cursor.moveToNext());
-                deliveryList.put(date, transactionIDList);
+                    transactionIDList5.add(cursor4.getString(cursor4.getColumnIndex("TRANSACTION_FULL_ID")));
+                } while (cursor4.moveToNext());
+                deliveryList.put(date, transactionIDList5);
             }
         }
+
+
+        expenseList.put(dates, transactionIDList2);
+        //expenseList.put("date", transactionIDList2);
 
         allTransactionsList.add(revenueList);
         allTransactionsList.add(expenseList);

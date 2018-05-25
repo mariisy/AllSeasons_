@@ -32,6 +32,7 @@ import com.example.maricalara.allseasons.Model.Insecticides;
 import com.example.maricalara.allseasons.Model.Packaging;
 import com.example.maricalara.allseasons.Model.Seedlings;
 import com.example.maricalara.allseasons.Model.Seeds;
+import com.example.maricalara.allseasons.Model.Transaction;
 import com.example.maricalara.allseasons.R;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
@@ -76,6 +77,7 @@ public class TransactionsAddBought extends AppCompatActivity {
     private ArrayAdapter<String> stringArrayAdapter, arrayAdapter2, arrayAdapter3, arrayAdapter4;
     private ArrayList<String> arrListSupplierName, arrListType, arrListName;
     private ArrayList<Object> arrTransact = new ArrayList<>();
+    private ArrayList<Transaction> arrTransaction = new ArrayList<>();
     Object object = null;
     Seeds seeds;
     Seedlings seedlings;
@@ -204,6 +206,7 @@ public class TransactionsAddBought extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 addCart();
+                addTransaction();
             }
         });
         builderView.setNegativeButton("Close View", new DialogInterface.OnClickListener() {
@@ -387,6 +390,7 @@ public class TransactionsAddBought extends AppCompatActivity {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         addCart();
+                                        addTransaction();
                                         finish();
                                     }
                                 })
@@ -444,6 +448,7 @@ public class TransactionsAddBought extends AppCompatActivity {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         addCart();
+                                        addTransaction();
                                         finish();
                                     }
                                 })
@@ -499,6 +504,7 @@ public class TransactionsAddBought extends AppCompatActivity {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         addCart();
+                                        addTransaction();
                                         finish();
                                     }
                                 })
@@ -554,6 +560,7 @@ public class TransactionsAddBought extends AppCompatActivity {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         addCart();
+                                        addTransaction();
                                         finish();
                                     }
                                 })
@@ -609,6 +616,7 @@ public class TransactionsAddBought extends AppCompatActivity {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         addCart();
+                                        addTransaction();
                                         finish();
                                     }
                                 })
@@ -665,6 +673,7 @@ public class TransactionsAddBought extends AppCompatActivity {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         addCart();
+                                        addTransaction();
                                         finish();
                                     }
                                 })
@@ -711,6 +720,15 @@ public class TransactionsAddBought extends AppCompatActivity {
         } catch (Exception e) {
             Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT);
         }
+
+    }
+
+    public void addTransaction() {
+
+        arrTransaction.add(new Transaction(0, null, strDate, null, "Expense", itemName,
+                qty, 0, 0, empID, 0));
+
+        tDAO.addTransactionList(dbHelper, arrTransaction);
     }
 
     private void populateSpinnerType() {

@@ -40,7 +40,7 @@ public interface TransactionDAO {
 
      void addTransactionList(DBHelper dbHelper, ArrayList<Transaction> arrayList);
 
-    ArrayList<HashMap<String, List<String>>> retrieveTransactionList(DBHelper dbHelper, ArrayList<Object> arrayList, String type);
+    ArrayList<HashMap<String, List<String>>> retrieveTransactionList(DBHelper dbHelper,  String type);
 
     boolean checkExistingWarehouse(DBHelper dbHelper, String type, String name);
 
