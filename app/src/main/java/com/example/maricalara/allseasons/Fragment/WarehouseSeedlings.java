@@ -67,7 +67,7 @@ public class WarehouseSeedlings extends Fragment {
 
                 final Seedlings seedling = seedlings.get(position);
                 Snackbar snackbar =
-                        Snackbar.make(view, "Crop Name: " + seedling.getName(), Snackbar.LENGTH_LONG)
+                        Snackbar.make(view, "Type: " + seedling.getType(), Snackbar.LENGTH_LONG)
                                 .setAction("View", new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {

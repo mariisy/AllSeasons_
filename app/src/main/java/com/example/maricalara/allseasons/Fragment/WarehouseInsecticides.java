@@ -67,7 +67,7 @@ public class WarehouseInsecticides extends Fragment {
 
                 final Insecticides insecticide = insecticides.get(position);
                 Snackbar snackbar =
-                        Snackbar.make(view, "Crop ID: " + insecticide.getType(), Snackbar.LENGTH_LONG)
+                        Snackbar.make(view, "Type: " + insecticide.getType(), Snackbar.LENGTH_LONG)
                                 .setAction("View", new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {

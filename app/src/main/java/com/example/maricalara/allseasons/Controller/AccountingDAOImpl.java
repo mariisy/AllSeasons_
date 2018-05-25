@@ -262,6 +262,27 @@ public class AccountingDAOImpl implements AccountingDAO {
     }
 
     @Override
+    public ArrayList<Crops> retrieveCropsList(DBHelper dbHelper) {
+        dbRead = dbHelper.getReadableDatabase();
+        String queryForRetrievalAll = "SELECT * FROM " + "UTILIZE_FGI WHERE TYPE = '" + "Crops" + "' ";
+        ArrayList<Crops> listCrops = new ArrayList<>();
+        Cursor cursor = dbRead.rawQuery(queryForRetrievalAll, null);
+        if (cursor.moveToFirst()) {
+            do {
+                String typ = cursor.getString(cursor.getColumnIndex("TYPE"));
+                String name = cursor.getString(cursor.getColumnIndex("NAME"));
+                double weight = cursor.getInt(cursor.getColumnIndex("WEIGHT"));
+                double price = cursor.getDouble(cursor.getColumnIndex("PRICE"));
+                double totalCost = cursor.getDouble(cursor.getColumnIndex("TOTAL_COST_HARVESTED"));
+                String date = cursor.getString(cursor.getColumnIndex("DATE"));
+                listCrops.add(new Crops(typ, name, 0, weight, price, date,0,0,0));
+
+            } while (cursor.moveToNext());
+        }
+        return listCrops;
+    }
+
+    @Override
     public boolean checkExisting(DBHelper dbHelper, String type) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         String queryForCheck = "SELECT * FROM " + type;

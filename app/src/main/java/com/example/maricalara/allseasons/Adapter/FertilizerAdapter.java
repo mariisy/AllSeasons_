@@ -82,7 +82,7 @@ public class FertilizerAdapter extends ArrayAdapter<Fertilizers> implements View
 
 
         viewHolder.txtItem.setText(dataModel.getName());
-        viewHolder.txtQty.setText(String.valueOf(dataModel.getQuantity()) + " Pieces");
+        viewHolder.txtQty.setText("Stocks Available: " + String.valueOf(dataModel.getQuantity()) + " Sacks");
 
         // Return the completed view to render on screen
         return convertView;

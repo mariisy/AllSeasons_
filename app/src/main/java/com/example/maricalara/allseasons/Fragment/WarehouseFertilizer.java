@@ -69,7 +69,7 @@ public class WarehouseFertilizer extends Fragment {
 
                 final Fertilizers fertilizer = fertilizers.get(position);
                 Snackbar snackbar =
-                        Snackbar.make(view, "Crop ID: " + fertilizer.getType(), Snackbar.LENGTH_LONG)
+                        Snackbar.make(view, "Type: " + fertilizer.getType(), Snackbar.LENGTH_LONG)
                                 .setAction("View", new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {

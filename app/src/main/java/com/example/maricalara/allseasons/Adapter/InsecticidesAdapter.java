@@ -82,7 +82,7 @@ public class InsecticidesAdapter extends ArrayAdapter<Insecticides> implements V
 
 
         viewHolder.txtItem.setText(dataModel.getName());
-        viewHolder.txtQty.setText(String.valueOf(dataModel.getQuantity()) + " Pieces");
+        viewHolder.txtQty.setText("Stocks Available: " + String.valueOf(dataModel.getQuantity()) + " Sacks");
 
         // Return the completed view to render on screen
         return convertView;

@@ -17,7 +17,10 @@ import android.widget.TextView;
 
 import com.example.maricalara.allseasons.Activity.WarehouseDetailActivity;
 import com.example.maricalara.allseasons.Adapter.CropsAdapter;
+import com.example.maricalara.allseasons.Controller.AccountingDAO;
+import com.example.maricalara.allseasons.Controller.AccountingDAOImpl;
 import com.example.maricalara.allseasons.Model.Crops;
+import com.example.maricalara.allseasons.Model.DBHelper;
 import com.example.maricalara.allseasons.R;
 
 import java.util.ArrayList;
@@ -29,10 +32,10 @@ import java.util.ArrayList;
 public class    WarehouseCrops extends Fragment {
 
 
-
-    ArrayList<Crops> crops;
+    ArrayList<Crops> crops = new ArrayList<>();
     ListView listView;
     private static CropsAdapter cropsAdapter;
+    AccountingDAO aDAO = new AccountingDAOImpl();
 
     FragmentManager manager;
     FragmentTransaction transaction;
@@ -54,11 +57,10 @@ public class    WarehouseCrops extends Fragment {
 
 
 
-         listView=(ListView)rootView.findViewById(R.id.list);
+        cropsAdapter.notifyDataSetChanged();
 
-        crops= new ArrayList<>();
-        crops.add(new Crops("Crops","Chili", 100, 15, 15, "July 10",0,0,0));
-        crops.add(new Crops("Crops","Pechay", 100, 15 , 15,"July 10",0,0,0));
+        DBHelper dbHelper = new DBHelper(getActivity());
+        crops = aDAO.retrieveCropsList(dbHelper);
 
         cropsAdapter = new CropsAdapter(crops, getActivity().getApplicationContext());
 
@@ -69,7 +71,7 @@ public class    WarehouseCrops extends Fragment {
 
                 Crops crop= crops.get(position);
                 Snackbar snackbar =
-                Snackbar.make(view, "Crop ID: "+ crop.getType(), Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "Type: "+ crop.getType(), Snackbar.LENGTH_LONG)
                         .setAction("View", new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {

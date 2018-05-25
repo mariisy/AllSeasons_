@@ -65,7 +65,7 @@ public class WarehousePackaging extends Fragment {
 
                 final Packaging packagings = packaging.get(position);
                 Snackbar snackbar =
-                        Snackbar.make(view, "Type: " + packagings.getType(), Snackbar.LENGTH_LONG)
+                        Snackbar.make(view, "Type: "+ packagings.getType(), Snackbar.LENGTH_LONG)
                                 .setAction("View", new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {

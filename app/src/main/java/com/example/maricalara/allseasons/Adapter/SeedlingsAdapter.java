@@ -81,7 +81,7 @@ public class SeedlingsAdapter extends ArrayAdapter<Seedlings> implements View.On
 
 
         viewHolder.txtItem.setText(dataModel.getName());
-        viewHolder.txtQty.setText(String.valueOf(dataModel.getQuantity()) + " Pieces");
+        viewHolder.txtQty.setText("Stocks Available: " +String.valueOf(dataModel.getQuantity()) + " Pieces");
 
         // Return the completed view to render on screen
         return convertView;

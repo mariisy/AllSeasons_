@@ -83,7 +83,7 @@ public class CropsAdapter extends ArrayAdapter<Crops> implements View.OnClickLis
 
 
         viewHolder.txtItem.setText(dataModel.getType());
-        viewHolder.txtQty.setText(String.valueOf(dataModel.getWeight()) + "kg");
+        viewHolder.txtQty.setText("Stocks Available: " + String.valueOf(dataModel.getWeight()) + "kg");
 
         // Return the completed view to render on screen
         return convertView;
