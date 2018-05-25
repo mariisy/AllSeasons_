@@ -34,11 +34,13 @@ import com.example.maricalara.allseasons.Model.Insecticides;
 import com.example.maricalara.allseasons.Model.Packaging;
 import com.example.maricalara.allseasons.Model.Seedlings;
 import com.example.maricalara.allseasons.Model.Seeds;
+import com.example.maricalara.allseasons.Model.Transaction;
 import com.example.maricalara.allseasons.R;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class SettingsAddToWarehouse extends AppCompatActivity {
@@ -59,12 +61,15 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
     private DBHelper dbHelper = new DBHelper(SettingsAddToWarehouse.this);
 
 
+
     //Data variables
     String[] spinnerListType = {"Seeds", "Seedlings", "Packaging", "Fertilizer", "Insecticides", "Equipment"};
 
     private String itemName, type, supplierName, supplierContact;
     private Double unitPrice, totalPrice;
     private int qty;
+
+    private ArrayList<Transaction> arrTransaction = new ArrayList<>();
 
     //get Date String
     Date date = new Date();
@@ -117,7 +122,7 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-               populateName();
+                populateName();
             }
         });
 
@@ -129,6 +134,7 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
 
                 if (validateType() && validateQty() && validateItemName() && validateUnitPrice()) {
                     getData();
+                    addTransaction();
                 }
             }
         });
@@ -155,7 +161,7 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
                     buffer2.append("Credit: " + result2.getString(4) + "\n\n");
                 }
                 android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(SettingsAddToWarehouse.this);
-                builder.setMessage(buffer.toString()+"\n"+ buffer2.toString());
+                builder.setMessage(buffer.toString() + "\n" + buffer2.toString());
                 builder.show();
             }
         });
@@ -237,7 +243,7 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
 
             case "Insecticides":
                 if (!tDAO.checkExistingWarehouse(dbHelper, type, itemName)) {
-                    Insecticides ins = new Insecticides(type, itemName, qty, unitPrice, totalPrice, strDate,null);
+                    Insecticides ins = new Insecticides(type, itemName, qty, unitPrice, totalPrice, strDate, null);
                     try {
                         tDAO.addEntry(dbHelper, ins, type, supplierName, supplierContact);
                         // tDAO.addBoughtList(dbHelper, ins, type);
@@ -291,7 +297,7 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
 
             case "Fertilizer":
                 if (!tDAO.checkExistingWarehouse(dbHelper, type, itemName)) {
-                    Fertilizers fer = new Fertilizers(type, itemName, qty, unitPrice, totalPrice, strDate,null);
+                    Fertilizers fer = new Fertilizers(type, itemName, qty, unitPrice, totalPrice, strDate, null);
                     try {
                         tDAO.addEntry(dbHelper, fer, type, supplierName, supplierContact);
                         //  tDAO.addBoughtList(dbHelper, fer, type);
@@ -345,7 +351,7 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
 
             case "Packaging":
                 if (!tDAO.checkExistingWarehouse(dbHelper, type, itemName)) {
-                    Packaging packaging = new Packaging(type, itemName, qty, unitPrice, totalPrice, strDate,null);
+                    Packaging packaging = new Packaging(type, itemName, qty, unitPrice, totalPrice, strDate, null);
                     try {
                         tDAO.addEntry(dbHelper, packaging, type, supplierName, supplierContact);
                         //tDAO.addBoughtList(dbHelper, packaging, type);
@@ -400,7 +406,7 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
             case "Seeds":
                 if (!tDAO.checkExistingWarehouse(dbHelper, type, itemName)) {
                     Seeds seeds = new Seeds(type, itemName, qty, unitPrice, totalPrice, strDate);
-                    Crops crop = new Crops("Crops", itemName,0, 0, 0,strDate, 0,0,0 );
+                    Crops crop = new Crops("Crops", itemName, 0, 0, 0, strDate, 0, 0, 0);
                     try {
                         tDAO.addEntry(dbHelper, seeds, type, supplierName, supplierContact);
                         tDAO.addEntry(dbHelper, crop, "Crops", "", "");
@@ -456,7 +462,7 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
             case "Seedlings":
                 if (!tDAO.checkExistingWarehouse(dbHelper, type, itemName)) {
                     Seedlings seedlings = new Seedlings(type, itemName, qty, unitPrice, totalPrice, strDate);
-                    Crops crop = new Crops("Crops", itemName,0, 0, 0,strDate, 0,0,0 );
+                    Crops crop = new Crops("Crops", itemName, 0, 0, 0, strDate, 0, 0, 0);
                     try {
                         tDAO.addEntry(dbHelper, seedlings, type, supplierName, supplierContact);
                         tDAO.addEntry(dbHelper, crop, "Crops", "", "");
@@ -617,15 +623,22 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
         }
     }
 
-    public void populateName(){
-      String check =  spinnerType1.getText().toString();
-        if(check.equals("Packaging")) {
-                txtItemName.setText("Plastic Wrapper");
-                txtItemName.setEnabled(false);
-        }
-        else {
+    public void populateName() {
+        String check = spinnerType1.getText().toString();
+        if (check.equals("Packaging")) {
+            txtItemName.setText("Plastic Wrapper");
+            txtItemName.setEnabled(false);
+        } else {
             txtItemName.setEnabled(true);
             txtItemName.setText("");
         }
+    }
+
+    public void addTransaction() {
+
+        arrTransaction.add(new Transaction(0, "", strDate, "", "Expense", itemName,
+                qty, 0, totalPrice, "", 0));
+
+        tDAO.addTransactionList(dbHelper, arrTransaction);
     }
 }
