@@ -220,31 +220,32 @@ public class TransactionDAOImpl implements TransactionDAO {
                     do {
                         transactions.setTransID(cursor.getInt(cursor.getColumnIndex("TRANS_ID")));
                         transactions.setTransactionType(cursor.getString(cursor.getColumnIndex("TRANSACTION_TYPE")));
+                        transactions.setEmployeeID(cursor.getString(cursor.getColumnIndex("EMPLOYEE_ID")));
                     } while (cursor.moveToNext());
                     String selection = "TRANS_ID" + " LIKE ?";
                     String[] selectionArgs = {String.valueOf(transactions.getTransID())};
 
                     switch (transactions.getTransactionType()) {
                         case "Revenue":
-                            values2.put("TRANSACTION_FULL_ID", "TRANSACT-RVN" + String.format("%03d", transactions.getTransID()));
+                            values2.put("TRANSACTION_FULL_ID", "TRANSACT-RVN_" + transactions.getEmployeeID() + String.format("%03d", transactions.getTransID()));
 
                             dbRead.update("TRANSACTIONS", values2, selection, selectionArgs);
                             break;
 
                         case "Expense":
-                            values2.put("TRANSACTION_FULL_ID", "TRANSACT-XPNS" + String.format("%03d", transactions.getTransID()));
+                            values2.put("TRANSACTION_FULL_ID", "TRANSACT-XPNS" + transactions.getEmployeeID() + String.format("%03d", transactions.getTransID()));
 
                             dbRead.update("TRANSACTIONS", values2, selection, selectionArgs);
                             break;
 
                         case "Usage":
-                            values2.put("TRANSACTION_FULL_ID", "TRANSACT-USG" + String.format("%03d", transactions.getTransID()));
+                            values2.put("TRANSACTION_FULL_ID", "TRANSACT-USG" + transactions.getEmployeeID() + String.format("%03d", transactions.getTransID()));
 
                             dbRead.update("TRANSACTIONS", values2, selection, selectionArgs);
                             break;
 
                         case "Storage":
-                            values2.put("TRANSACTION_FULL_ID", "TRANSACT-STRG" + String.format("%03d", transactions.getTransID()));
+                            values2.put("TRANSACTION_FULL_ID", "TRANSACT-STRG" + transactions.getEmployeeID() + String.format("%03d", transactions.getTransID()));
 
                             dbRead.update("TRANSACTIONS", values2, selection, selectionArgs);
                             break;
