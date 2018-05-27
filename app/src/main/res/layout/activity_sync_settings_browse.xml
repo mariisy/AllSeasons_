@@ -6,31 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".Activity.SyncSettingsBrowse">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:textSize="25dp"
-        android:text="File Browser"
-        tools:context=".FileBrowser" />
 
-    <TextView
-        android:id="@+id/current_path"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:context=".Activity.SyncSettingsBrowse" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="selectDirectory"
-        android:text="Select Directory" />
-
-    <ListView
-        android:id="@+id/file_browser_listview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"></ListView>
 
 </LinearLayout>

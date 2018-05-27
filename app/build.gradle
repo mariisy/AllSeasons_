@@ -36,6 +36,7 @@ dependencies {
     implementation 'com.code-troopers.betterpickers:library:3.1.0'
     implementation 'com.ajts.androidmads.SQLite2Excel:library:1.0.2'
     implementation 'com.weiwangcn.betterspinner:library-material:1.1.0'
+    implementation 'com.kbeanie:multipicker:1.1.31@aar'
 
 }
 

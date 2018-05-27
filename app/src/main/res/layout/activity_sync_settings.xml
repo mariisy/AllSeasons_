@@ -21,41 +21,6 @@
             android:paddingRight="24dp"
             android:paddingTop="56dp">
 
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="left"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/path"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Path"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    tools:context=".Activity.SyncSettingsActivity" />
-
-                <EditText
-                    android:id="@+id/server_file_path"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:layout_toEndOf="@+id/path"
-                    android:layout_weight="1"
-                    android:editable="false"
-                    android:hint="Path" />
-
-                <android.support.v7.widget.AppCompatButton
-                    android:id="@+id/btnBrowse"
-                    style="@style/Widget.AppCompat.Button.Colored"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toEndOf="@+id/server_file_path"
-                    android:gravity="center"
-                    android:text="Browse" />
-            </RelativeLayout>
-
-
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -63,77 +28,23 @@
                 android:orientation="horizontal">
 
                 <android.support.v7.widget.AppCompatButton
-                    android:id="@+id/btnStartRecieve"
+                    android:id="@+id/btnExport"
                     style="@style/Widget.AppCompat.Button.Colored"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="Start Sync:\n Receive Data" />
+                    android:text="Export Database" />
 
                 <android.support.v7.widget.AppCompatButton
-                    android:id="@+id/btnStopSync"
+                    android:id="@+id/btnSync"
                     style="@style/Widget.AppCompat.Button.Colored"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toEndOf="@+id/btnStartRecieve"
-                    android:text="Stop Sync \n" />
+                    android:layout_toEndOf="@+id/btnExport"
+                    android:text="Sync Menu" />
+
 
             </RelativeLayout>
-
-            <TextView
-                android:id="@+id/server_status_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingTop="8dp"
-                android:text="Server Stop"
-                tools:context=".Activity.SyncSettingsActivity" />
-
-
-            <TextView
-                android:id="@+id/server_wifi_status_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingTop="3dp"
-                tools:context=".Activity.SyncSettingsActivity" />
-
-            <TextView
-                android:id="@+id/server_status_text_2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingTop="3dp"
-                tools:context=".Activity.SyncSettingsActivity" />
-
-            <TextView
-                android:id="@+id/server_file_transfer_status"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingTop="3dp"
-                tools:context=".Activity.SyncSettingsActivity" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:paddingTop="30dp"
-                android:text="Send Database Records"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="#555555" />
-
-            <View
-                android:layout_width="fill_parent"
-                android:layout_height="2dp"
-                android:background="@color/colorPrimaryDark" />
-
-            <android.support.v7.widget.AppCompatButton
-                android:id="@+id/btnStartSend"
-                style="@style/Widget.AppCompat.Button.Colored"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="Send Data" />
-
         </LinearLayout>
-
     </ScrollView>
-
 </RelativeLayout>

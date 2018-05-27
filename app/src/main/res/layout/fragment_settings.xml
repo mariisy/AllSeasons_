@@ -6,11 +6,19 @@
     tools:context="com.example.maricalara.allseasons.Fragment.Settings">
 
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:orientation="vertical"
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp"
+            android:paddingTop="56dp">
 
             <FrameLayout
                 android:id="@+id/settings_staff"
@@ -29,8 +37,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_below="@+id/settings_staff"
                 android:layout_marginBottom="10dp"
-                android:background="@drawable/settings_layout_boarder">
-            </FrameLayout>
+                android:background="@drawable/settings_layout_boarder"></FrameLayout>
 
             <FrameLayout
                 android:id="@+id/settings_expense"
@@ -39,7 +46,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_below="@+id/settings_liabilities"
                 android:layout_marginBottom="10dp"
-                android:background="@drawable/settings_layout_boarder">
-            </FrameLayout>
+                android:background="@drawable/settings_layout_boarder"></FrameLayout>
         </LinearLayout>
+    </ScrollView>
 </RelativeLayout>

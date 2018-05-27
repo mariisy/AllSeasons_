@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.maricalara.allseasons">
 
+    <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -47,6 +48,8 @@
         <activity android:name=".Activity.SettingsAddFarmingSeason" />
         <activity android:name=".Activity.SyncSettingsClient" />
         <activity android:name=".Activity.SyncSettingsBrowse" />
+        <activity android:name=".WifiP2P.Wifi.WiFiDirectActivity" />
+        <activity android:name=".WifiP2P.Wifi.DashboardActivity" />
         <activity
             android:name=".Activity.SfpActivity"
             android:label="@string/title_activity_sfp"
