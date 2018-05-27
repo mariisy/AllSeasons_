@@ -733,5 +733,38 @@ public class TransactionDAOImpl implements TransactionDAO {
         return arrCrops;
     }
 
+    @Override
+    public ArrayList<Transaction> retrieveExpense(DBHelper dbHelper) {
+        dbRead = dbHelper.getReadableDatabase();
+        dbWrite = dbHelper.getWritableDatabase();
+        Transaction transactions = new Transaction(0, null, null, null, "", null,
+                0, 0, 0, null, 0);
+        ArrayList<Transaction> arrExp = new ArrayList<>();
+        String queryForName = "SELECT TYPE FROM TRANSACTIONS WHERE TYPE = 'Expense'";
+        Cursor cursor2 = dbRead.rawQuery(queryForName, null);
+        ArrayList<String> arrName = new ArrayList<>();
+
+        if (cursor2.moveToFirst()) {
+            do {
+                arrName.add(cursor2.getString(cursor2.getColumnIndex("NAME")));
+            } while (cursor2.moveToNext());
+        }
+
+        for (String expName : arrName){
+            String queryForSum = "SELECT SUM(TOTAL_COST)" + "as Total FROM TRANSACTIONS WHERE NAME = '" + expName + "' ";
+            Cursor cursor = dbWrite.rawQuery(queryForSum, null);
+            if (cursor.moveToFirst()) {
+                do {
+                    transactions.setItemType(expName);
+                    double total = cursor.getInt(cursor.getColumnIndex("Total"));
+                    transactions.setTotalCost(total);
+                } while (cursor.moveToNext());
+                arrExp.add(transactions);
+            }
+        }
+
+        return null;
+    }
+
 
 }

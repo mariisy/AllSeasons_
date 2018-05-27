@@ -55,5 +55,7 @@ public interface TransactionDAO {
 
     ArrayList<Crops> retrieveSum(DBHelper dbHelper);
 
+    ArrayList<Transaction> retrieveExpense(DBHelper dbHelper);
+
 
 }

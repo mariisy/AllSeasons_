@@ -38,21 +38,37 @@
                 app:met_floatingLabel="normal" />
 
             <TextView
-                android:id="@+id/txtDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:gravity="left"
-                android:text="Crop Revenue"
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:gravity="center"
+                android:text="Revenue"
+                android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="#555555" />
 
             <com.github.mikephil.charting.charts.BarChart
-                android:id="@+id/chartBar"
+                android:id="@+id/barChartRevenue"
                 android:layout_width="fill_parent"
                 android:layout_height="300dp"
                 android:layout_marginBottom="20dp"
                 android:layout_marginTop="10dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:text="Expenses"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="#555555" />
+
+            <com.github.mikephil.charting.charts.BarChart
+                android:id="@+id/barChartExpense"
+                android:layout_width="fill_parent"
+                android:layout_height="300dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_below="@id/barChartRevenue"/>
 
             <com.github.mikephil.charting.charts.PieChart
                 android:id="@+id/chartPie"
@@ -60,7 +76,7 @@
                 android:layout_height="300dp"
                 android:layout_marginBottom="50dp"
                 android:layout_marginTop="50dp"
-                android:layout_below="@id/chartBar"/>
+                android:layout_below="@id/barChartExpense"/>
 
             <com.github.mikephil.charting.charts.LineChart
                 android:id="@+id/chartLine"

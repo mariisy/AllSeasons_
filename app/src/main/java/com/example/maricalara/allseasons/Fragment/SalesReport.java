@@ -16,6 +16,8 @@ import com.example.maricalara.allseasons.Controller.TransactionDAO;
 import com.example.maricalara.allseasons.Controller.TransactionDAOImpl;
 import com.example.maricalara.allseasons.Model.Crops;
 import com.example.maricalara.allseasons.Model.DBHelper;
+import com.example.maricalara.allseasons.Model.Transaction;
+import com.example.maricalara.allseasons.R;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
@@ -28,8 +30,6 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
-
-import com.example.maricalara.allseasons.R;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
 import java.util.ArrayList;
@@ -44,6 +44,7 @@ public class SalesReport extends Fragment {
 
     //data variables
     ArrayList<Crops> arrCrops = new ArrayList<>();
+    ArrayList<Transaction> arrExp = new ArrayList<>();
     Crops crop;
 
     //variables for spinner
@@ -52,19 +53,18 @@ public class SalesReport extends Fragment {
     Spinner spinnerCrops;
     Button button;
     //variables for bar chart
-    BarChart barChart;
-    ArrayList<BarEntry> BARENTRY ;
-    ArrayList<String> BarEntryLabels ;
-    BarDataSet Bardataset ;
-    BarData BARDATA ;
-
+    BarChart barChart, barChart2;
+    ArrayList<BarEntry> BARENTRY;
+    ArrayList<String> BarEntryLabels;
+    BarDataSet Bardataset;
+    BarData BARDATA;
 
 
     //variables for pie chart
-    PieChart pieChart ;
-    ArrayList<Entry> PIEENTRY ;
-    ArrayList<String> PieEntryLabels ;
-    PieDataSet pieDataSet ;
+    PieChart pieChart;
+    ArrayList<Entry> PIEENTRY;
+    ArrayList<String> PieEntryLabels;
+    PieDataSet pieDataSet;
     PieData PIEDATA;
 
 
@@ -96,8 +96,6 @@ public class SalesReport extends Fragment {
         dbHelper = new DBHelper(getActivity());
 
 
-
-
         //layout for spinnerCrop
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this.getActivity(),
                 android.R.layout.simple_dropdown_item_1line, SPINNERLIST);
@@ -105,23 +103,35 @@ public class SalesReport extends Fragment {
                 rootView.findViewById(R.id.spinnerView);
         materialDesignSpinner.setAdapter(arrayAdapter);
 
-        button = (Button)rootView.findViewById(R.id.button);
+        button = (Button) rootView.findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent =new Intent(getActivity(), SfpActivity.class);
+                Intent intent = new Intent(getActivity(), SfpActivity.class);
                 startActivity(intent);
             }
         });
 
 
         //for bar graph
-        barChart = (BarChart) rootView.findViewById(R.id.chartBar);
+        barChart = (BarChart) rootView.findViewById(R.id.barChartRevenue);
         BARENTRY = new ArrayList<>();
         BarEntryLabels = new ArrayList<>();
         AddValuesToBARENTRY();
         AddValuesToBarEntryLabels();
-        Bardataset = new BarDataSet(BARENTRY, "Projects");
+        Bardataset = new BarDataSet(BARENTRY, "Crops");
+        BARDATA = new BarData(BarEntryLabels, Bardataset);
+        Bardataset.setColors(ColorTemplate.COLORFUL_COLORS);
+        barChart.setData(BARDATA);
+        barChart.animateY(3000);
+
+
+        barChart = (BarChart) rootView.findViewById(R.id.barChartExpense);
+        BARENTRY = new ArrayList<>();
+        BarEntryLabels = new ArrayList<>();
+        AddValuesToBARENTRY2();
+        AddValuesToBarEntryLabels2();
+        Bardataset = new BarDataSet(BARENTRY, "Crops");
         BARDATA = new BarData(BarEntryLabels, Bardataset);
         Bardataset.setColors(ColorTemplate.COLORFUL_COLORS);
         barChart.setData(BARDATA);
@@ -154,58 +164,81 @@ public class SalesReport extends Fragment {
         lineChart.animateY(3000);
 
 
-
         // Inflate the layout for this fragment
         return rootView;
     }
 
-    public void AddValuesToBARENTRY(){
-
-        arrCrops  = tDAO.retrieveSum(dbHelper);
-        for (Crops crops : arrCrops){
+    public void AddValuesToBARENTRY() {
+        arrCrops = tDAO.retrieveSum(dbHelper);
+        for (Crops crops : arrCrops) {
             int index = arrCrops.indexOf(crops);
 
             BARENTRY.add(new BarEntry((int) crops.getTotalCostHarvested(), index));
         }
-
     }
 
-    public void AddValuesToBarEntryLabels(){
-
-        arrCrops  = tDAO.retrieveSum(dbHelper);
-        for (Crops cro : arrCrops){
+    public void AddValuesToBarEntryLabels() {
+        arrCrops = tDAO.retrieveSum(dbHelper);
+        for (Crops cro : arrCrops) {
 
             BarEntryLabels.add(cro.getName());
         }
+    }
 
 
+    public void AddValuesToBARENTRY2(){
 
+        arrExp  = tDAO.retrieveExpense(dbHelper);
+        for (Transaction trans : arrExp){
+            int index = arrExp.indexOf(trans);
+
+            BARENTRY.add(new BarEntry((int) trans.getTotalCost(), index));
+        }
 
     }
 
-    public void AddValuesToPIEENTRY(){
+    public void AddValuesToBarEntryLabels2(){
 
-        PIEENTRY.add(new BarEntry(2f, 0));
-        PIEENTRY.add(new BarEntry(4f, 1));
-        PIEENTRY.add(new BarEntry(6f, 2));
-        PIEENTRY.add(new BarEntry(8f, 3));
-        PIEENTRY.add(new BarEntry(7f, 4));
-        PIEENTRY.add(new BarEntry(3f, 5));
+        arrExp  = tDAO.retrieveExpense(dbHelper);
+        for (Transaction trans : arrExp){
 
-    }
-
-    public void AddValuesToPieEntryLabels(){
-
-        PieEntryLabels.add("January");
-        PieEntryLabels.add("February");
-        PieEntryLabels.add("March");
-        PieEntryLabels.add("April");
-        PieEntryLabels.add("May");
-        PieEntryLabels.add("June");
+            BarEntryLabels.add(trans.getItemType());
+        }
 
     }
 
-    public void AddValuesToLINEENTRY(){
+
+
+
+
+
+
+
+
+
+
+    public void AddValuesToPIEENTRY() {
+
+        arrExp = tDAO.retrieveExpense(dbHelper);
+        for (Transaction trans : arrExp) {
+            int index = arrExp.indexOf(trans);
+
+            BARENTRY.add(new BarEntry((int) trans.getTotalCost(), index));
+        }
+
+    }
+
+    public void AddValuesToPieEntryLabels() {
+
+        arrExp = tDAO.retrieveExpense(dbHelper);
+        for (Transaction trans : arrExp) {
+
+            BarEntryLabels.add(trans.getItemType());
+        }
+
+    }
+
+    public void AddValuesToLINEENTRY() {
         LINEENTRY.add(new Entry(4f, 0));
         LINEENTRY.add(new Entry(8f, 1));
         LINEENTRY.add(new Entry(6f, 2));
@@ -214,7 +247,7 @@ public class SalesReport extends Fragment {
         LINEENTRY.add(new Entry(9f, 5));
     }
 
-    public void ADdValuesToLineENtryLabels(){
+    public void ADdValuesToLineENtryLabels() {
         LineEntryLabels.add("January");
         LineEntryLabels.add("February");
         LineEntryLabels.add("March");

@@ -169,7 +169,7 @@ public class WiFiDirectActivity extends AppCompatActivity implements ChannelList
 
             case R.id.atn_direct_discover:
                 if (!isWifiP2pEnabled) {
-                    Toast.makeText(WiFiDirectActivity.this, "Enable P2P from action bar button above or system settings",
+                    Toast.makeText(WiFiDirectActivity.this, R.string.p2p_off_warning,
                             Toast.LENGTH_SHORT).show();
                     return true;
                 }
@@ -298,9 +298,9 @@ public class WiFiDirectActivity extends AppCompatActivity implements ChannelList
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         List<Fragment> listOfFragments = getSupportFragmentManager().getFragments();
 
-        if(listOfFragments.size()>=1){
+        if (listOfFragments.size() >= 1) {
             for (Fragment fragment : listOfFragments) {
-                if(fragment instanceof DeviceDetailFragment){
+                if (fragment instanceof DeviceDetailFragment) {
                     fragment.onActivityResult(requestCode, resultCode, data);
                 }
             }

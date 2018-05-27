@@ -29,10 +29,10 @@ import java.net.Socket;
  */
 public class FileTransferService extends IntentService {
 
-	Handler mHandler;
-	
+    Handler mHandler;
+
     public static final int SOCKET_TIMEOUT = 5000;
-    public static final String ACTION_SEND_FILE = "com.example.android.wifidirect.SEND_FILE";
+    public static final String ACTION_SEND_FILE = "com.example.maricalara.allseasons.SEND_FILE";
     public static final String EXTRAS_FILE_PATH = "file_url";
     public static final String EXTRAS_GROUP_OWNER_ADDRESS = "go_host";
     public static final String EXTRAS_GROUP_OWNER_PORT = "go_port";
@@ -52,9 +52,9 @@ public class FileTransferService extends IntentService {
 
     @Override
     public void onCreate() {
-    	// TODO Auto-generated method stub
-    	super.onCreate();
-    	mHandler = new Handler();
+        // TODO Auto-generated method stub
+        super.onCreate();
+        mHandler = new Handler();
     }
     /*
      * (non-Javadoc)
@@ -64,7 +64,7 @@ public class FileTransferService extends IntentService {
     protected void onHandleIntent(Intent intent) {
 
         Context context = getApplicationContext();
-        if (intent.getAction().equals(ACTION_SEND_FILE)) {
+        if (intent.getAction().equals(intent.ACTION_SEND)) {
             String fileUri = intent.getExtras().getString(EXTRAS_FILE_PATH);
             String host = intent.getExtras().getString(EXTRAS_GROUP_OWNER_ADDRESS);
             Socket socket = new Socket();
@@ -81,19 +81,19 @@ public class FileTransferService extends IntentService {
                 OutputStream stream = socket.getOutputStream();
                 ContentResolver cr = context.getContentResolver();
                 InputStream is = null;
-                
+
                 /*
                  * Object that is used to send file name with extension and recieved on other side.
                  */
-                 Long FileLength = Long.parseLong(filelength);
+                Long FileLength = Long.parseLong(filelength);
                 WiFiTransferModal transObj = null;
-                 ObjectOutputStream oos = new ObjectOutputStream(stream);
-                 if(transObj == null) transObj = new WiFiTransferModal();
-                 
-                 
-                 transObj = new WiFiTransferModal(extension,FileLength);
-                 oos.writeObject(transObj);
-                 
+                ObjectOutputStream oos = new ObjectOutputStream(stream);
+                if(transObj == null) transObj = new WiFiTransferModal();
+
+
+                transObj = new WiFiTransferModal(extension,FileLength);
+                oos.writeObject(transObj);
+
                 try {
                     is = cr.openInputStream(Uri.parse(fileUri));
                 } catch (FileNotFoundException e) {
@@ -106,14 +106,14 @@ public class FileTransferService extends IntentService {
                 Log.e(WiFiDirectActivity.TAG, e.getMessage());
                 e.printStackTrace();
                 CommonMethods.e("Unable to connect host", "service socket error in wififiletransferservice class");
-           	 mHandler.post(new Runnable() {
-					
-					public void run() {
-						// TODO Auto-generated method stub
-						Toast.makeText(FileTransferService.this, "Paired Device is not Ready to receive the file", Toast.LENGTH_LONG).show();
-					}
-           	 });
-           	 DeviceDetailFragment.DismissProgressDialog();
+                mHandler.post(new Runnable() {
+
+                    public void run() {
+                        // TODO Auto-generated method stub
+                        Toast.makeText(FileTransferService.this, "Paired Device is not Ready to receive the file", Toast.LENGTH_LONG).show();
+                    }
+                });
+                DeviceDetailFragment.DismissProgressDialog();
             } finally {
                 if (socket != null) {
                     if (socket.isConnected()) {

@@ -17,19 +17,20 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 
 
-public class WiFiClientIPTransferService extends IntentService{
+public class WiFiClientIPTransferService extends IntentService {
 
-public WiFiClientIPTransferService(String name) {
-		super(name);
-		// TODO Auto-generated constructor stub
-	}
-public WiFiClientIPTransferService() {
-    super("WiFiClientIPTransferService");
-}
+    public WiFiClientIPTransferService(String name) {
+        super(name);
+        // TODO Auto-generated constructor stub
+    }
+
+    public WiFiClientIPTransferService() {
+        super("WiFiClientIPTransferService");
+    }
 
 
-Handler mHandler;
-	
+    Handler mHandler;
+
 
     /*
      * (non-Javadoc)
@@ -40,14 +41,14 @@ Handler mHandler;
         Context context = GlobalActivity.getGlobalContext();
         if (intent.getAction().equals(FileTransferService.ACTION_SEND_FILE)) {
             String host = intent.getExtras().getString(FileTransferService.EXTRAS_GROUP_OWNER_ADDRESS);
-            String InetAddress =  intent.getExtras().getString(FileTransferService.inetaddress);
-            CommonMethods.e("LocalIp Received while first connect","host address"+ host);
+            String InetAddress = intent.getExtras().getString(FileTransferService.inetaddress);
+            CommonMethods.e("LocalIp Received while first connect", "host address" + host);
 
             Socket socket = new Socket();
             int port = intent.getExtras().getInt(FileTransferService.EXTRAS_GROUP_OWNER_PORT);
 
             try {
-            	
+
                 Log.d(WiFiDirectActivity.TAG, "Opening client socket for First tiime- ");
                 socket.bind(null);
                 socket.connect((new InetSocketAddress(host, port)), FileTransferService.SOCKET_TIMEOUT);
@@ -55,17 +56,17 @@ Handler mHandler;
                 OutputStream stream = socket.getOutputStream();
                 ContentResolver cr = context.getContentResolver();
                 InputStream is = null;
-                
-               /*
-                * Object that is used to send file name with extension and recieved on other side.
-                */
+
+                /*
+                 * Object that is used to send file name with extension and recieved on other side.
+                 */
                 ObjectOutputStream oos = new ObjectOutputStream(stream);
                 WiFiTransferModal transObj = new WiFiTransferModal(InetAddress);
-                
+
                 oos.writeObject(transObj);
                 System.out.println("Sending request to Socket Server");
-                
-                oos.close();	//close the ObjectOutputStream after sending data.
+
+                oos.close();    //close the ObjectOutputStream after sending data.
             } catch (IOException e) {
                 Log.e(WiFiDirectActivity.TAG, e.getMessage());
                 e.printStackTrace();
@@ -73,7 +74,7 @@ Handler mHandler;
                 if (socket != null) {
                     if (socket.isConnected()) {
                         try {
-                        	CommonMethods.e("WiFiClientIP Service", "First Connection service socket closed");
+                            CommonMethods.e("WiFiClientIP Service", "First Connection service socket closed");
                             socket.close();
                         } catch (Exception e) {
                             // Give up
@@ -82,8 +83,6 @@ Handler mHandler;
                     }
                 }
             }
-
         }
     }
-
 }

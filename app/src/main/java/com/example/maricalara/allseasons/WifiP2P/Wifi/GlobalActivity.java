@@ -2,6 +2,7 @@ package com.example.maricalara.allseasons.WifiP2P.Wifi;
 
 import android.app.Application;
 import android.content.Context;
+import android.support.multidex.MultiDex;
 
 public class GlobalActivity extends Application {
     private static Context context;
@@ -22,6 +23,6 @@ public class GlobalActivity extends Application {
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
-        //MultiDex.install(this);
+        MultiDex.install(this);
     }
 }

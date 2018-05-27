@@ -30,6 +30,7 @@ import com.example.maricalara.allseasons.WifiP2P.Wifi.WiFiDirectActivity;
 import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class SyncSettingsActivity extends AppCompatActivity  {
@@ -71,6 +72,7 @@ public class SyncSettingsActivity extends AppCompatActivity  {
             @Override
             public void onClick(View v) {
 
+                exportDB();
             }
         });
 
@@ -87,12 +89,35 @@ public class SyncSettingsActivity extends AppCompatActivity  {
 
     }
 
+
+
+
     private void exportDB() {
+        ArrayList<String> dbList = new ArrayList<>();
+        dbList.add("RAW_MATERIALS");
+        dbList.add("INDIRECT_MATERIALS");
+        dbList.add("UTILIZE_WPI");
+        dbList.add("WPI");
+        dbList.add("UTILIZE_FGI");
+        dbList.add("FGI");
+        dbList.add("UTILIZE_CGS");
+        dbList.add("CGS");
+        dbList.add("SALES_REVENUE");
+        dbList.add("CASH");
+        dbList.add("WAREHOUSE_EQUIPMENT");
+        dbList.add("CUSTOMER");
+        dbList.add("EMPLOYEE");
+        dbList.add("TRANSACTIONS");
+        dbList.add("RESOURCE_PLANNING_TABLE");
+
+
+
+
         directory_path = Environment.DIRECTORY_DOCUMENTS;
         //  Environment.getRootDirectory().getPath();
         //   .getExternalStorageDirectory().getPath() + "/DBBackup/";
         SQLiteToExcel sqliteToExcel = new SQLiteToExcel(getApplicationContext(), DBHelper.DATABASE_NAME);
-        sqliteToExcel.exportAllTables("FarmDB.xls", new SQLiteToExcel.ExportListener() {
+        sqliteToExcel.exportSpecificTables(dbList,"FarmDB.xls", new SQLiteToExcel.ExportListener() {
             @Override
             public void onStart() {
                 Toast.makeText(SyncSettingsActivity.this, "Database Exporting! \n" + directory_path, Toast.LENGTH_LONG).show();

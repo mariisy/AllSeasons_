@@ -74,7 +74,6 @@ import static com.example.maricalara.allseasons.WifiP2P.Utils.PermissionsAndroid
 public class DeviceDetailFragment extends android.support.v4.app.Fragment implements ConnectionInfoListener, FilePickerCallback {
 
 
-
     protected static final int CHOOSE_FILE_RESULT_CODE = 20;
     private View mContentView = null;
     private WifiP2pDevice device;
