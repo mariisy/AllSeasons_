@@ -12,6 +12,10 @@ import android.widget.Button;
 import android.widget.Spinner;
 
 import com.example.maricalara.allseasons.Activity.SfpActivity;
+import com.example.maricalara.allseasons.Controller.TransactionDAO;
+import com.example.maricalara.allseasons.Controller.TransactionDAOImpl;
+import com.example.maricalara.allseasons.Model.Crops;
+import com.example.maricalara.allseasons.Model.DBHelper;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
@@ -33,6 +37,14 @@ import java.util.List;
 
 
 public class SalesReport extends Fragment {
+
+    //DAO
+    TransactionDAO tDAO = new TransactionDAOImpl();
+    DBHelper dbHelper;
+
+    //data variables
+    ArrayList<Crops> arrCrops = new ArrayList<>();
+    Crops crop;
 
     //variables for spinner
     ArrayAdapter<String> adapterCrops;
@@ -81,6 +93,7 @@ public class SalesReport extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_sales_report, container, false);
 
+        dbHelper = new DBHelper(getActivity());
 
 
 
@@ -100,6 +113,8 @@ public class SalesReport extends Fragment {
                 startActivity(intent);
             }
         });
+
+
         //for bar graph
         barChart = (BarChart) rootView.findViewById(R.id.chartBar);
         BARENTRY = new ArrayList<>();
@@ -111,6 +126,7 @@ public class SalesReport extends Fragment {
         Bardataset.setColors(ColorTemplate.COLORFUL_COLORS);
         barChart.setData(BARDATA);
         barChart.animateY(3000);
+
 
         //for pie chart
         pieChart = (PieChart) rootView.findViewById(R.id.chartPie);
@@ -145,23 +161,25 @@ public class SalesReport extends Fragment {
 
     public void AddValuesToBARENTRY(){
 
-        BARENTRY.add(new BarEntry(2f, 0));
-        BARENTRY.add(new BarEntry(4f, 1));
-        BARENTRY.add(new BarEntry(6f, 2));
-        BARENTRY.add(new BarEntry(8f, 3));
-        BARENTRY.add(new BarEntry(7f, 4));
-        BARENTRY.add(new BarEntry(3f, 5));
+        arrCrops  = tDAO.retrieveSum(dbHelper);
+        for (Crops crops : arrCrops){
+            int index = arrCrops.indexOf(crops);
+
+            BARENTRY.add(new BarEntry((int) crops.getTotalCostHarvested(), index));
+        }
 
     }
 
     public void AddValuesToBarEntryLabels(){
 
-        BarEntryLabels.add("January");
-        BarEntryLabels.add("February");
-        BarEntryLabels.add("March");
-        BarEntryLabels.add("April");
-        BarEntryLabels.add("May");
-        BarEntryLabels.add("June");
+        arrCrops  = tDAO.retrieveSum(dbHelper);
+        for (Crops cro : arrCrops){
+
+            BarEntryLabels.add(cro.getName());
+        }
+
+
+
 
     }
 

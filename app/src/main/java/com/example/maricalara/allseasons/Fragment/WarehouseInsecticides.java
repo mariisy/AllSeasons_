@@ -52,46 +52,50 @@ public class WarehouseInsecticides extends Fragment {
 
         listView = (ListView) rootView.findViewById(R.id.list);
 
-        insecticidesAdapter.notifyDataSetChanged();
+        try {
+            insecticidesAdapter.notifyDataSetChanged();
 
-        DBHelper dbHelper = new DBHelper(getActivity());
-        arrList = imDAO.retrieveList(dbHelper, "Insecticides");
-        insecticides = (ArrayList<Insecticides>) arrList.get(0);
+            DBHelper dbHelper = new DBHelper(getActivity());
+            arrList = imDAO.retrieveList(dbHelper, "Insecticides");
+            insecticides = (ArrayList<Insecticides>) arrList.get(0);
 
-        insecticidesAdapter = new InsecticidesAdapter(insecticides, getActivity().getApplicationContext());
+            insecticidesAdapter = new InsecticidesAdapter(insecticides, getActivity().getApplicationContext());
 
-        listView.setAdapter(insecticidesAdapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            listView.setAdapter(insecticidesAdapter);
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                final Insecticides insecticide = insecticides.get(position);
-                Snackbar snackbar =
-                        Snackbar.make(view, "Type: " + insecticide.getType(), Snackbar.LENGTH_LONG)
-                                .setAction("View", new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
+                    final Insecticides insecticide = insecticides.get(position);
+                    Snackbar snackbar =
+                            Snackbar.make(view, "Type: " + insecticide.getType(), Snackbar.LENGTH_LONG)
+                                    .setAction("View", new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
 
-                                        Intent intent = new Intent(getActivity(), WarehouseDetailActivity.class);
-                                        String strName = insecticide.getName().toString();
-                                        String strType = insecticide.getType().toString();
-                                        intent.putExtra("itemType", strType);
-                                        intent.putExtra("itemName", strName);
-                                        startActivity(intent);
-                                    }
-                                });
+                                            Intent intent = new Intent(getActivity(), WarehouseDetailActivity.class);
+                                            String strName = insecticide.getName().toString();
+                                            String strType = insecticide.getType().toString();
+                                            intent.putExtra("itemType", strType);
+                                            intent.putExtra("itemName", strName);
+                                            startActivity(intent);
+                                        }
+                                    });
 
-                // Changing message text color
-                snackbar.setActionTextColor(Color.RED);
+                    // Changing message text color
+                    snackbar.setActionTextColor(Color.RED);
 
-                // Changing action button text color
-                View sbView = snackbar.getView();
-                TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
-                textView.setTextColor(Color.YELLOW);
+                    // Changing action button text color
+                    View sbView = snackbar.getView();
+                    TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+                    textView.setTextColor(Color.YELLOW);
 
-                snackbar.show();
-            }
-        });
+                    snackbar.show();
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
 
         // Inflate the layout for this fragment

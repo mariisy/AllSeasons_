@@ -290,11 +290,8 @@ public class TransactionDAOImpl implements TransactionDAO {
         String queryForDate = "SELECT DATE FROM TRANSACTIONS GROUP BY DATE ";
 
 
-
-
         Cursor cursor = dbRead.rawQuery(queryForDate, null);
         Cursor cursor2 = dbRead.rawQuery(queryForDeliveryDate, null);
-
 
 
         if (cursor2.moveToFirst()) {
@@ -309,7 +306,7 @@ public class TransactionDAOImpl implements TransactionDAO {
             } while (cursor.moveToNext());
         }
 
-        String dates=null;
+        String dates = null;
         for (String date : dateList) {
             dates = date;
             String queryID = "SELECT TRANSACTION_FULL_ID FROM " + "TRANSACTIONS" + " WHERE DATE = '" + date + "' AND TRANSACTION_TYPE = '" + type + "'";
@@ -330,6 +327,7 @@ public class TransactionDAOImpl implements TransactionDAO {
                         do {
                             transactionIDList2.add(cursor3.getString(cursor3.getColumnIndex("TRANSACTION_FULL_ID")));
                         } while (cursor3.moveToNext());
+                        expenseList.put(dates, transactionIDList2);
                     }
 
                     break;
@@ -358,7 +356,6 @@ public class TransactionDAOImpl implements TransactionDAO {
         }
 
 
-
         for (String date : deliveryDateList) {
             String queryID2 = "SELECT TRANSACTION_FULL_ID FROM " + "TRANSACTIONS" + " WHERE DELIVERY_DATE = '" + date + "'";
             Cursor cursor4 = dbWrite.rawQuery(queryID2, null);
@@ -372,7 +369,7 @@ public class TransactionDAOImpl implements TransactionDAO {
         }
 
 
-        expenseList.put(dates, transactionIDList2);
+
         //expenseList.put("date", transactionIDList2);
 
         allTransactionsList.add(revenueList);
@@ -636,7 +633,6 @@ public class TransactionDAOImpl implements TransactionDAO {
         }
     }
 
-
     @Override
     public boolean checkExistingWarehouse(DBHelper dbHelper, String type, String name) {
         dbWrite = dbHelper.getWritableDatabase();
@@ -660,7 +656,6 @@ public class TransactionDAOImpl implements TransactionDAO {
         dbRead.update("WAREHOUSE_EQUIPMENT", values, selections, selectionArgs);
 
 
-
     }
 
     @Override
@@ -682,7 +677,6 @@ public class TransactionDAOImpl implements TransactionDAO {
             do {
                 listHolder.add(cursor.getString(cursor.getColumnIndex("SUPPLIER_NAME")));
             } while (cursor.moveToNext());
-            ;
         }
         return listHolder;
     }
@@ -701,4 +695,43 @@ public class TransactionDAOImpl implements TransactionDAO {
         }
         return listHolder;
     }
+
+    @Override
+    public ArrayList<Crops> retrieveSum(DBHelper dbHelper) {
+        dbRead = dbHelper.getReadableDatabase();
+        dbWrite = dbHelper.getWritableDatabase();
+
+        String queryForName = "SELECT NAME FROM UTILIZE_CGS";
+        Cursor cursor2 = dbRead.rawQuery(queryForName, null);
+        Crops cro = new Crops(null,null,0,0,0,null,0,0,0);
+
+        float sum = 0;
+        ArrayList<String> arrName = new ArrayList<>();
+        ArrayList<Crops> arrCrops = new ArrayList<>();
+
+        if (cursor2.moveToFirst()) {
+            do {
+                arrName.add(cursor2.getString(cursor2.getColumnIndex("NAME")));
+            } while (cursor2.moveToNext());
+        }
+
+        //arrName.indexOf(name);
+
+        for (String cropName : arrName){
+            String queryForSum = "SELECT SUM(TOTAL_COST_SOLD)" + "as Total FROM UTILIZE_CGS WHERE TYPE = '" + cropName + "' ";
+            Cursor cursor = dbWrite.rawQuery(queryForSum, null);
+            if (cursor.moveToFirst()) {
+                do {
+                    cro.setName(cropName);
+                    double total = cursor.getInt(cursor.getColumnIndex("Total"));
+                    cro.setTotalCostSold(total);
+                } while (cursor.moveToNext());
+                arrCrops.add(cro);
+            }
+        }
+
+        return arrCrops;
+    }
+
+
 }

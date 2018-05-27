@@ -2,6 +2,7 @@ package com.example.maricalara.allseasons.Controller;
 
 import android.database.Cursor;
 
+import com.example.maricalara.allseasons.Model.Crops;
 import com.example.maricalara.allseasons.Model.Customer;
 import com.example.maricalara.allseasons.Model.DBHelper;
 import com.example.maricalara.allseasons.Model.Employees;
@@ -50,7 +51,9 @@ public interface TransactionDAO {
 
     ArrayList<String> retrieveListSpinner(DBHelper dbHelper);
 
-    public ArrayList<String> retrieveListSpinnerColumn(DBHelper dbHelper, String spinnerCategory, String columnName, String value);
+    ArrayList<String> retrieveListSpinnerColumn(DBHelper dbHelper, String spinnerCategory, String columnName, String value);
+
+    ArrayList<Crops> retrieveSum(DBHelper dbHelper);
 
 
 }

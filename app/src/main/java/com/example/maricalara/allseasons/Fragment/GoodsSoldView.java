@@ -53,50 +53,52 @@ public class GoodsSoldView extends Fragment {
 
         dbHelper = new DBHelper(getActivity());
 
-        arrayList = tDAO.retrieveTransactionList(dbHelper, "Revenue");
-        expandableListDetail = (HashMap<String, List<String>>) arrayList.get(0);
-        //expandableListDetail = PGAddData.getData();
-        expandableListTitle = new ArrayList<String>(expandableListDetail.keySet());
-        expandableListViewAdapter = new ExpandableListViewAdapter(getActivity(), expandableListTitle, expandableListDetail);
+        try {
+            arrayList = tDAO.retrieveTransactionList(dbHelper, "Revenue");
+            expandableListDetail = (HashMap<String, List<String>>) arrayList.get(0);
+            //expandableListDetail = PGAddData.getData();
+            expandableListTitle = new ArrayList<String>(expandableListDetail.keySet());
+            expandableListViewAdapter = new ExpandableListViewAdapter(getActivity(), expandableListTitle, expandableListDetail);
 
-        expandableListView.setAdapter(expandableListViewAdapter);
+            expandableListView.setAdapter(expandableListViewAdapter);
+
+            //On click per item
+            expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+
+                @Override
+                public void onGroupExpand(int groupPosition) {
+                    Toast.makeText(getActivity().getApplicationContext(),
+                            expandableListTitle.get(groupPosition) + " List Expanded.",
+                            Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            expandableListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
+
+                @Override
+                public void onGroupCollapse(int groupPosition) {
+                    Toast.makeText(getActivity().getApplicationContext(),
+                            expandableListTitle.get(groupPosition) + " List Collapsed.",
+                            Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+                @Override
+                public boolean onChildClick(ExpandableListView parent, View v,
+                                            int groupPosition, int childPosition, long id) {
+                    Toast.makeText(getActivity().getApplicationContext(), expandableListTitle.get(groupPosition) + " -> "
+                            + expandableListDetail.get(expandableListTitle.get(groupPosition)).get(childPosition), Toast.LENGTH_SHORT).show();
+                    //showViewTransactDialog();
+                    return false;
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
 
-        //On click per item
-        expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
 
-            @Override
-            public void onGroupExpand(int groupPosition) {
-                Toast.makeText(getActivity().getApplicationContext(),
-                        expandableListTitle.get(groupPosition) + " List Expanded.",
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        expandableListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
-
-            @Override
-            public void onGroupCollapse(int groupPosition) {
-                Toast.makeText(getActivity().getApplicationContext(),
-                        expandableListTitle.get(groupPosition) + " List Collapsed.",
-                        Toast.LENGTH_SHORT).show();
-
-            }
-        });
-
-        expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-            @Override
-            public boolean onChildClick(ExpandableListView parent, View v,
-                                        int groupPosition, int childPosition, long id) {
-                Toast.makeText(getActivity().getApplicationContext(), expandableListTitle.get(groupPosition) + " -> "
-                                + expandableListDetail.get(expandableListTitle.get(groupPosition)).get(childPosition), Toast.LENGTH_SHORT).show();
-
-                //showViewTransactDialog();
-
-
-                return false;
-            }
-        });
 
 
 

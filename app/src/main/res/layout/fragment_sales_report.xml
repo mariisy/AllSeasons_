@@ -11,23 +11,30 @@
         android:layout_height="match_parent"
         android:fillViewport="true">
 
-        <RelativeLayout
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:paddingTop="56dp"
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp">
 
-            <Button
+            <android.support.v7.widget.AppCompatButton
+                style="@style/Widget.AppCompat.Button.Colored"
                 android:id="@+id/button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Button" />
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="5dp"
+                android:padding="12dp"
+                android:text="View Accounting Books" />
 
             <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
                 android:id="@+id/spinnerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="View"
+                android:hint="Graph View"
                 android:textColorHint="#bdbdbd"
                 app:met_floatingLabel="normal" />
 
@@ -56,7 +63,7 @@
 
             <!-- everything you already have -->
 
-        </RelativeLayout>
+        </LinearLayout>
     </ScrollView>
 
 

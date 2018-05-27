@@ -54,45 +54,49 @@ public class WarehouseEquipment extends Fragment {
 
         listView = (ListView) rootView.findViewById(R.id.list);
 
-        equipmentAdapter.notifyDataSetChanged();
+        try {
+            equipmentAdapter.notifyDataSetChanged();
 
-        DBHelper dbHelper = new DBHelper(getActivity());
-        equipment = equipmentDAO.retrieveEquipmentList(dbHelper);
+            DBHelper dbHelper = new DBHelper(getActivity());
+            equipment = equipmentDAO.retrieveEquipmentList(dbHelper);
 
-        equipmentAdapter = new EquipmentAdapter(equipment, getActivity().getApplicationContext());
+            equipmentAdapter = new EquipmentAdapter(equipment, getActivity().getApplicationContext());
 
-        listView.setAdapter(equipmentAdapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            listView.setAdapter(equipmentAdapter);
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                final Equipment equipments = equipment.get(position);
-                Snackbar snackbar =
-                        Snackbar.make(view, "Type: " + equipments.getType(), Snackbar.LENGTH_LONG)
-                                .setAction("View", new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        Intent intent = new Intent(getActivity(), WarehouseDetailActivity.class);
-                                        String strName = equipments.getName().toString();
-                                        String strType = equipments.getType().toString();
-                                        intent.putExtra("itemType", strType);
-                                        intent.putExtra("itemName", strName);
-                                        startActivity(intent);
+                    final Equipment equipments = equipment.get(position);
+                    Snackbar snackbar =
+                            Snackbar.make(view, "Type: " + equipments.getType(), Snackbar.LENGTH_LONG)
+                                    .setAction("View", new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            Intent intent = new Intent(getActivity(), WarehouseDetailActivity.class);
+                                            String strName = equipments.getName().toString();
+                                            String strType = equipments.getType().toString();
+                                            intent.putExtra("itemType", strType);
+                                            intent.putExtra("itemName", strName);
+                                            startActivity(intent);
 
-                                    }
-                                });
+                                        }
+                                    });
 
-                // Changing message text color
-                snackbar.setActionTextColor(Color.RED);
+                    // Changing message text color
+                    snackbar.setActionTextColor(Color.RED);
 
-                // Changing action button text color
-                View sbView = snackbar.getView();
-                TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
-                textView.setTextColor(Color.YELLOW);
+                    // Changing action button text color
+                    View sbView = snackbar.getView();
+                    TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+                    textView.setTextColor(Color.YELLOW);
 
-                snackbar.show();
-            }
-        });
+                    snackbar.show();
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
 
         // Inflate the layout for this fragment

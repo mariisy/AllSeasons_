@@ -49,47 +49,51 @@ public class WarehousePackaging extends Fragment {
 
         listView = (ListView) rootView.findViewById(R.id.list);
 
-        packagingAdapter.notifyDataSetChanged();
+        try {
+            packagingAdapter.notifyDataSetChanged();
 
-        DBHelper dbHelper = new DBHelper(getActivity());
-        arrList = imDAO.retrieveList(dbHelper, "Packaging");
-        packaging = (ArrayList<Packaging>) arrList.get(0);
+            DBHelper dbHelper = new DBHelper(getActivity());
+            arrList = imDAO.retrieveList(dbHelper, "Packaging");
+            packaging = (ArrayList<Packaging>) arrList.get(0);
 
 
-        packagingAdapter = new PackagingAdapter(packaging, getActivity().getApplicationContext());
+            packagingAdapter = new PackagingAdapter(packaging, getActivity().getApplicationContext());
 
-        listView.setAdapter(packagingAdapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            listView.setAdapter(packagingAdapter);
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                final Packaging packagings = packaging.get(position);
-                Snackbar snackbar =
-                        Snackbar.make(view, "Type: "+ packagings.getType(), Snackbar.LENGTH_LONG)
-                                .setAction("View", new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        Intent intent = new Intent(getActivity(), WarehouseDetailActivity.class);
-                                        String strName = packagings.getName().toString();
-                                        String strType = packagings.getType().toString();
-                                        intent.putExtra("itemType", strType);
-                                        intent.putExtra("itemName", strName);
-                                        startActivity(intent);
+                    final Packaging packagings = packaging.get(position);
+                    Snackbar snackbar =
+                            Snackbar.make(view, "Type: "+ packagings.getType(), Snackbar.LENGTH_LONG)
+                                    .setAction("View", new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            Intent intent = new Intent(getActivity(), WarehouseDetailActivity.class);
+                                            String strName = packagings.getName().toString();
+                                            String strType = packagings.getType().toString();
+                                            intent.putExtra("itemType", strType);
+                                            intent.putExtra("itemName", strName);
+                                            startActivity(intent);
 
-                                    }
-                                });
+                                        }
+                                    });
 
-                // Changing message text color
-                snackbar.setActionTextColor(Color.RED);
+                    // Changing message text color
+                    snackbar.setActionTextColor(Color.RED);
 
-                // Changing action button text color
-                View sbView = snackbar.getView();
-                TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
-                textView.setTextColor(Color.YELLOW);
+                    // Changing action button text color
+                    View sbView = snackbar.getView();
+                    TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+                    textView.setTextColor(Color.YELLOW);
 
-                snackbar.show();
-            }
-        });
+                    snackbar.show();
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
 
         // Inflate the layout for this fragment

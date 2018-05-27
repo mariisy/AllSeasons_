@@ -56,42 +56,49 @@ public class    WarehouseCrops extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_warehouse_crops, container, false);
 
 
+        try {
+            cropsAdapter.notifyDataSetChanged();
 
-        cropsAdapter.notifyDataSetChanged();
+            DBHelper dbHelper = new DBHelper(getActivity());
+            crops = aDAO.retrieveCropsList(dbHelper);
 
-        DBHelper dbHelper = new DBHelper(getActivity());
-        crops = aDAO.retrieveCropsList(dbHelper);
 
-        cropsAdapter = new CropsAdapter(crops, getActivity().getApplicationContext());
+            cropsAdapter = new CropsAdapter(crops, getActivity().getApplicationContext());
 
-        listView.setAdapter(cropsAdapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            listView.setAdapter(cropsAdapter);
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                Crops crop= crops.get(position);
-                Snackbar snackbar =
-                Snackbar.make(view, "Type: "+ crop.getType(), Snackbar.LENGTH_LONG)
-                        .setAction("View", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
+                    Crops crop= crops.get(position);
+                    Snackbar snackbar =
+                            Snackbar.make(view, "Type: "+ crop.getType(), Snackbar.LENGTH_LONG)
+                                    .setAction("View", new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
 
-                                Intent intent = new Intent(getActivity(), WarehouseDetailActivity.class);
-                                startActivity(intent);
-                            }
-                        });
+                                            Intent intent = new Intent(getActivity(), WarehouseDetailActivity.class);
+                                            startActivity(intent);
+                                        }
+                                    });
 
-                // Changing message text color
-                snackbar.setActionTextColor(Color.GREEN);
+                    // Changing message text color
+                    snackbar.setActionTextColor(Color.GREEN);
 
-                // Changing action button text color
-                View sbView = snackbar.getView();
-                TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
-                textView.setTextColor(Color.YELLOW);
+                    // Changing action button text color
+                    View sbView = snackbar.getView();
+                    TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+                    textView.setTextColor(Color.YELLOW);
 
-                snackbar.show();
-            }
-        });
+                    snackbar.show();
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+
 
 
 
