@@ -62,42 +62,40 @@
                 android:layout_marginTop="10dp"
                 android:layout_below="@id/barChartRevenue"/>
 
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:gravity="center"
-                android:text="Monthly Item Usage"
+                android:text="Yearly Revenue"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="#555555" />
 
-            <com.github.mikephil.charting.charts.BarChart
-                android:id="@+id/barChartStorage"
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/chartLineRevenue"
                 android:layout_width="fill_parent"
                 android:layout_height="400dp"
-                android:layout_marginBottom="20dp"
-                android:layout_marginTop="10dp"
-                android:layout_below="@id/barChartRevenue"/>
-
-
-
-            <com.github.mikephil.charting.charts.PieChart
-                android:id="@+id/chartPie"
-                android:layout_width="fill_parent"
-                android:layout_height="300dp"
-                android:layout_marginBottom="50dp"
-                android:layout_marginTop="50dp"
-                android:layout_below="@id/barChartExpense"/>
-
-            <com.github.mikephil.charting.charts.LineChart
-                android:id="@+id/chartLine"
-                android:layout_width="fill_parent"
-                android:layout_height="300dp"
                 android:layout_marginBottom="50dp"
                 android:layout_marginTop="50dp"
                 android:layout_below="@id/chartPie"/>
 
-            <!-- everything you already have -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:text="Yearly Revenue"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="#555555" />
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/chartLineExpense"
+                android:layout_width="fill_parent"
+                android:layout_height="400dp"
+                android:layout_marginBottom="50dp"
+                android:layout_marginTop="50dp"
+                android:layout_below="@id/chartPie"/>
 
         </LinearLayout>
     </ScrollView>

@@ -206,6 +206,7 @@ public class AccountingDAOImpl implements AccountingDAO {
         return listHolder;
     }
 
+
     @Override
     public void addSCI(DBHelper dbHelper) {
         dbWrite = dbHelper.getWritableDatabase();
@@ -378,7 +379,8 @@ public class AccountingDAOImpl implements AccountingDAO {
 
     @Override
     public Crops retrieveOne2(DBHelper dbHelper, String type, String name) {
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
+         SQLiteDatabase db = dbHelper.getReadableDatabase();
+
         String queryForRetrievalOne = "SELECT * FROM " + "WAREHOUSE_EQUIPMENT WHERE NAME = '" + name + "'  AND TYPE = '" + type + "' ";
         Cursor cursor = db.rawQuery(queryForRetrievalOne, null);
         Crops crops = new Crops(null, null, 0, 0, 0, null,0,0,0);
@@ -1104,6 +1106,77 @@ public class AccountingDAOImpl implements AccountingDAO {
 
             }
         }
+    }
+
+    @Override
+    public void updateSalary(DBHelper dbHelper, String date) {
+        dbRead = dbHelper.getReadableDatabase();
+        dbWrite = dbHelper.getWritableDatabase();
+        String addIL = "SELECT SUM(SALARY) Total FROM EMPLOYEE ";
+        Cursor cursor = dbRead.rawQuery(addIL, null);
+        ContentValues val = new ContentValues();
+        double total =0;
+        if (cursor.moveToFirst()) {
+            do {
+                total = cursor.getDouble(cursor.getColumnIndex("Total"));
+            } while (cursor.moveToNext());
+        }
+        val.put("DATE",date);
+        val.put("SALARY", total);
+        dbWrite.insert("SALARIES_EXPENSE", null, val);
+
+        //Update WPI
+        String queryUpdate3 = "SELECT TOTAL_COST FROM WPI ";
+        Cursor cursor3 = dbRead.rawQuery(queryUpdate3, null);
+        ContentValues val3 = new ContentValues();
+        double costTotal3 = 0;
+        if (cursor3.moveToFirst()) {
+            do {
+                costTotal3 = cursor3.getDouble(cursor3.getColumnIndex("TOTAL_COST"));
+            } while (cursor3.moveToNext());
+        }
+        val3.put("TOTAL_COST", costTotal3 +total );
+        dbRead.update("WPI", val3, "WPIID=" + 1, null);
+
+        //Update CGS
+        String queryUpdate4 = "SELECT TOTAL_COST FROM CGS ";
+        Cursor cursor4 = dbRead.rawQuery(queryUpdate4, null);
+        ContentValues val4 = new ContentValues();
+        double costTotal4 = 0;
+        if (cursor4.moveToFirst()) {
+            do {
+                costTotal4 = cursor4.getDouble(cursor4.getColumnIndex("TOTAL_COST"));
+            } while (cursor4.moveToNext());
+        }
+        val4.put("TOTAL_COST", costTotal4 + total);
+        dbRead.update("CGS", val4, "CGSID=" + 1, null);
+
+
+        //Update FGI
+        String queryUpdate5 = "SELECT TOTAL_COST FROM FGI ";
+        Cursor cursor5 = dbRead.rawQuery(queryUpdate5, null);
+        ContentValues val5 = new ContentValues();
+        double costTotal5 = 0;
+        if (cursor5.moveToFirst()) {
+            do {
+                costTotal5 = cursor5.getDouble(cursor5.getColumnIndex("TOTAL_COST"));
+            } while (cursor5.moveToNext());
+        }
+        val5.put("TOTAL_COST", costTotal5 + total);
+        dbRead.update("FGI", val5, "FGIID=" + 1, null);
+
+    }
+
+    @Override
+    public boolean checkExistingSalary(DBHelper dbHelper, String date) {
+        dbWrite = dbHelper.getWritableDatabase();
+        String queryForLogin = "SELECT * FROM " + "SALARIES_EXPENSE" + " WHERE DATE = '" + date + "' ";
+
+        Cursor res = dbWrite.rawQuery(queryForLogin, null);
+        if (res.getCount() == 0) {
+            return false;//not existing. NULL
+        }
+        return true;//existing. NOT NULL
     }
 
 }

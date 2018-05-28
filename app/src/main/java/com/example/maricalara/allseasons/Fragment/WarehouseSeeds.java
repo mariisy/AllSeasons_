@@ -58,7 +58,7 @@ public class WarehouseSeeds extends Fragment {
 
 
         try {
-            seedsAdapter.notifyDataSetChanged();
+
             arrList = rmDAO.retrieveList(dbHelper, "Seeds");
 
             seeds = (ArrayList<Seeds>) arrList.get(1);
@@ -98,6 +98,7 @@ public class WarehouseSeeds extends Fragment {
                     snackbar.show();
                 }
             });
+            seedsAdapter.notifyDataSetChanged();
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -50,7 +50,7 @@ public class WarehousePackaging extends Fragment {
         listView = (ListView) rootView.findViewById(R.id.list);
 
         try {
-            packagingAdapter.notifyDataSetChanged();
+
 
             DBHelper dbHelper = new DBHelper(getActivity());
             arrList = imDAO.retrieveList(dbHelper, "Packaging");
@@ -91,6 +91,7 @@ public class WarehousePackaging extends Fragment {
                     snackbar.show();
                 }
             });
+            packagingAdapter.notifyDataSetChanged();
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -53,7 +53,7 @@ public class WarehouseInsecticides extends Fragment {
         listView = (ListView) rootView.findViewById(R.id.list);
 
         try {
-            insecticidesAdapter.notifyDataSetChanged();
+
 
             DBHelper dbHelper = new DBHelper(getActivity());
             arrList = imDAO.retrieveList(dbHelper, "Insecticides");
@@ -93,6 +93,8 @@ public class WarehouseInsecticides extends Fragment {
                     snackbar.show();
                 }
             });
+
+            insecticidesAdapter.notifyDataSetChanged();
         } catch (Exception e) {
             e.printStackTrace();
         }

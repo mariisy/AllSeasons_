@@ -130,7 +130,7 @@ public class TransactionDAOImpl implements TransactionDAO {
     @Override
     public boolean checkExistCustomer(DBHelper dbHelper, String name, String address) {
         dbWrite = dbHelper.getWritableDatabase();
-        String queryForCheck = "SELECT NAME FROM " + "CUSTOMER" + " WHERE NAME = '" + name + "' AND ADRESS = '" + address + "'";
+        String queryForCheck = "SELECT NAME FROM " + "CUSTOMER" + " WHERE NAME = '" + name + "' AND ADDRESS = '" + address + "'";
 
         Cursor result = dbWrite.rawQuery(queryForCheck, null);
 
@@ -771,7 +771,43 @@ public class TransactionDAOImpl implements TransactionDAO {
 
     @Override
     public ArrayList<Transaction> retrieveYearlySum(DBHelper dbHelper) {
-        return null;
+        dbRead = dbHelper.getReadableDatabase();
+        dbWrite = dbHelper.getWritableDatabase();
+
+        ArrayList<String> arrMonth = new ArrayList<>();
+        arrMonth.add("January");
+        arrMonth.add("February");
+        arrMonth.add("March");
+        arrMonth.add("April");
+        arrMonth.add("May");
+        arrMonth.add("June");
+        arrMonth.add("July");
+        arrMonth.add("August");
+        arrMonth.add("September");
+        arrMonth.add("October");
+        arrMonth.add("November");
+        arrMonth.add("December");
+
+        ArrayList<Transaction> arrRev = new ArrayList<>();
+
+
+        for(String month : arrMonth){
+            String queryForName = "SELECT TYPE,  SUM(TOTAL_COST) as Total FROM TRANSACTIONS WHERE TRANSACTION_TYPE = 'Revenue' AND DATE = '" + month +"' GROUP BY TYPE";
+            Cursor cursor = dbRead.rawQuery(queryForName, null);
+
+            Transaction transactions = new Transaction(0, null, null, null, "", null,
+                    0, 0, 0, null, 0);
+            if (cursor.moveToFirst()) {
+                do {
+                    transactions.setItemType(cursor.getString(cursor.getColumnIndex("TYPE")));
+                    transactions.setPrice(cursor.getDouble(cursor.getColumnIndex("Total")));
+                    arrRev.add(transactions);
+                } while (cursor.moveToNext());
+            }
+        }
+
+
+        return arrRev;
     }
 
     @Override

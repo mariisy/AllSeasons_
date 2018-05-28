@@ -97,12 +97,6 @@ public class SalesReport extends Fragment {
         dbHelper = new DBHelper(getActivity());
 
 
-        //layout for spinnerCrop
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this.getActivity(),
-                android.R.layout.simple_dropdown_item_1line, SPINNERLIST);
-        MaterialBetterSpinner materialDesignSpinner = (MaterialBetterSpinner)
-                rootView.findViewById(R.id.spinnerView);
-        materialDesignSpinner.setAdapter(arrayAdapter);
 
         button = (Button) rootView.findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {
@@ -144,14 +138,13 @@ public class SalesReport extends Fragment {
 
 
         //for line chart
-        lineChart = (LineChart) rootView.findViewById(R.id.chartLine);
+        lineChart = (LineChart) rootView.findViewById(R.id.chartLineRevenue);
         LINEENTRY = new ArrayList<>();
         LineEntryLabels = new ArrayList<>();
         AddValuesToLINEENTRY();
         ADdValuesToLineENtryLabels();
         lineDataSet = new LineDataSet(LINEENTRY, "");
         LINEDATA = new LineData(LineEntryLabels, lineDataSet);
-        pieDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
         lineChart.setData(LINEDATA);
         lineChart.animateY(3000);
 
@@ -227,6 +220,7 @@ public class SalesReport extends Fragment {
         LineEntryLabels.add("September");
         LineEntryLabels.add("October");
         LineEntryLabels.add("November");
+        LineEntryLabels.add("December");
     }
 
     @Override

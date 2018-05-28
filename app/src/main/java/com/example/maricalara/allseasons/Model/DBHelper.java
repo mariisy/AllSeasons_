@@ -193,9 +193,8 @@ public class DBHelper extends SQLiteOpenHelper {
             "FOREIGN KEY (dbColumnEmployeeID) REFERENCES " + dbTableEmployee + "(" + dbColumnEmployeeID + "));";
 
     private String dbBuildQuery14 = "CREATE TABLE " + dbTableSE + " ( " +
-            dbColumnSalary + " REAL, " +
             dBColumnDate + " TEXT, " +
-            "FOREIGN KEY (dbColumnEmployeeID) REFERENCES " + dbTableEmployee + "(" + dbColumnEmployeeID + "));";
+            dbColumnSalary + " TEXT )";
 
     private String dbBuildQuery15 = "CREATE TABLE " + dbTableWarehouseEquip + " ( " +
             dBColumnSupplierName + " TEXT, " +
@@ -347,7 +346,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(dbBuildQuery11);
         db.execSQL(dbBuildQuery20);
         db.execSQL(dbBuildQuery21);
-
+        db.execSQL(dbBuildQuery14);
     }
 
     @Override

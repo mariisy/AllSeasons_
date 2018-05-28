@@ -55,7 +55,7 @@ public class WarehouseSeedlings extends Fragment {
         listView = (ListView) rootView.findViewById(R.id.list);
 
         try {
-            seedlingsAdapter.notifyDataSetChanged();
+
             DBHelper dbHelper = new DBHelper(getActivity());
             arrList = rmDAO.retrieveList(dbHelper, "Seedlings");
             seedlings = (ArrayList<Seedlings>) arrList.get(0);
@@ -95,6 +95,7 @@ public class WarehouseSeedlings extends Fragment {
                     snackbar.show();
                 }
             });
+            seedlingsAdapter.notifyDataSetChanged();
         } catch (Exception e) {
             e.printStackTrace();
         }

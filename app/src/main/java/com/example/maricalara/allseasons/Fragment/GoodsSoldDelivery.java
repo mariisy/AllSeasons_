@@ -46,7 +46,7 @@ public class GoodsSoldDelivery extends Fragment {
 
         try {
             //List
-            expandableListView = (ExpandableListView) rootView.findViewById(R.id.expandableListViewPGAdd);
+            expandableListView = (ExpandableListView) rootView.findViewById(R.id.expandableListViewGPDel);
 
             dbHelper = new DBHelper(getActivity());
 

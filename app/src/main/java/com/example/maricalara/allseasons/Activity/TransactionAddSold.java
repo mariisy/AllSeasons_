@@ -65,7 +65,7 @@ public class TransactionAddSold extends AppCompatActivity {
 
 
     //bundle extra
-    String empID, name;
+    String empID, name,name2;
     private AccountingDAO aDAO = new AccountingDAOImpl();
     private TransactionDAO tDAO = new TransactionDAOImpl();
     private IndirectMaterialsDAO imDao = new IndirectMaterialsDAOImpl();
@@ -112,7 +112,7 @@ public class TransactionAddSold extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             empID = extras.getString("EmployeeID");
-            name = extras.getString("EmployeeName");
+            name2 = extras.getString("EmployeeName");
         }
 
         txtTransactionID = (TextView) findViewById(R.id.txtTransactionID);
@@ -317,11 +317,116 @@ public class TransactionAddSold extends AppCompatActivity {
 
         if (tDAO.checkExistingWarehouse(dbHelper, "Crops", itemName)) {
             try {
-                object = aDAO.retrieveOne2(dbHelper, "Crops", itemName);
-                crops = (Crops) object;
+                crops = aDAO.retrieveOne2(dbHelper, "Crops", itemName);
+                //crops = (Crops) object;
                 price = crops.getUnitPrice();
                 totalCostSold = price * weight;
                 arrTransact.add(new Crops("Crops", itemName, price, weight, 0, strDate, 0, 0, totalCostSold));
+
+
+                custName = txtCustomerName.getText().toString();
+                custNum = txtContactNum.getText().toString();
+                custAddress = txtAddress.getText().toString();
+
+                int custID = 0;
+
+
+                if (!tDAO.checkExistCustomer(dbHelper, custName, custAddress)) {
+                    tDAO.addEntry(dbHelper, new Customer(0, custName, custNum, custAddress), "Customer", null, null);
+                } else {
+                    customer = tDAO.retrieveOneCustomer(dbHelper, custName, custAddress);
+                    custID = customer.getCustomerID();
+                    tDAO.updateCustomer(dbHelper, String.valueOf(custID), custNum);
+                }
+
+                boolean delivery;
+                delivery = ((chckDelivery.isChecked()) ? true : false);
+
+                calendar.setTime(date);
+                String datePlusOne = null;
+                if (strDate.toLowerCase().contains("monday")) {
+                    calendar.setTime(date);
+                    calendar.add(Calendar.YEAR, 2);
+                    calendar.add(Calendar.MONTH, 2);
+                    calendar.add(Calendar.DATE, 2);
+
+                    Date currentDatePlusOne = calendar.getTime();
+                    datePlusOne = DateFormat.getDateInstance().format(currentDatePlusOne);
+
+
+                } else if (strDate.toLowerCase().contains("tuesday")) {
+                    calendar.setTime(date);
+                    calendar.add(Calendar.YEAR, 1);
+                    calendar.add(Calendar.MONTH, 1);
+                    calendar.add(Calendar.DATE, 1);
+
+                    Date currentDatePlusOne = calendar.getTime();
+                    datePlusOne = DateFormat.getDateInstance().format(currentDatePlusOne);
+
+                } else if (strDate.toLowerCase().contains("wednesday")) {
+
+                    calendar.setTime(date);
+                    calendar.add(Calendar.YEAR, 7);
+                    calendar.add(Calendar.MONTH, 7);
+                    calendar.add(Calendar.DATE, 7);
+
+                    Date currentDatePlusOne = calendar.getTime();
+                    datePlusOne = DateFormat.getDateInstance().format(currentDatePlusOne);
+
+
+                } else if (strDate.toLowerCase().contains("thursday")) {
+                    calendar.setTime(date);
+                    calendar.add(Calendar.YEAR, 6);
+                    calendar.add(Calendar.MONTH, 6);
+                    calendar.add(Calendar.DATE, 6);
+
+                    Date currentDatePlusOne = calendar.getTime();
+                    datePlusOne = DateFormat.getDateInstance().format(currentDatePlusOne);
+
+
+                } else if (strDate.toLowerCase().contains("friday")) {
+                    calendar.setTime(date);
+                    calendar.add(Calendar.YEAR, 5);
+                    calendar.add(Calendar.MONTH, 5);
+                    calendar.add(Calendar.DATE, 5);
+
+                    Date currentDatePlusOne = calendar.getTime();
+                    datePlusOne = DateFormat.getDateInstance().format(currentDatePlusOne);
+
+
+                } else if (strDate.toLowerCase().contains("saturday")) {
+                    calendar.setTime(date);
+                    calendar.add(Calendar.YEAR, 4);
+                    calendar.add(Calendar.MONTH, 4);
+                    calendar.add(Calendar.DATE, 4);
+
+                    Date currentDatePlusOne = calendar.getTime();
+                    datePlusOne = DateFormat.getDateInstance().format(currentDatePlusOne);
+
+
+                } else if (strDate.toLowerCase().contains("sunday")) {
+                    calendar.setTime(date);
+                    calendar.add(Calendar.YEAR, 3);
+                    calendar.add(Calendar.MONTH, 3);
+                    calendar.add(Calendar.DATE, 3);
+
+                    Date currentDatePlusOne = calendar.getTime();
+                    datePlusOne = DateFormat.getDateInstance().format(currentDatePlusOne);
+                } else {
+
+                }
+
+                if (delivery) {
+                    arrTransaction.add(new Transaction(0, null, strDate, datePlusOne, "Revenue", itemName,
+                            weight, totalCostSold, 0, empID, custID));
+                } else {
+
+                    arrTransaction.add(new Transaction(0, null, strDate, null, "Revenue", itemName,
+                            weight, totalCostSold, 0, empID, custID));
+                }
+
+
+
 
                 object = imDao.retrieveOne(dbHelper, "Packaging", "Plastic Wrapper");
                 packaging = (Packaging) object;
@@ -539,10 +644,11 @@ public class TransactionAddSold extends AppCompatActivity {
         }
 
 
-        tDAO.addTransactionList(dbHelper, arrTransaction);
+
     }
 
     public void updateCGS() {
         aDAO.updateCGS(dbHelper, arrTransact);
+        tDAO.addTransactionList(dbHelper, arrTransaction);
     }
 }

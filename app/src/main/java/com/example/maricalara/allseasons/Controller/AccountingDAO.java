@@ -33,4 +33,8 @@ public interface AccountingDAO {
     void updateWPI(DBHelper dbHelper, ArrayList<Object> objArray);
     void updateFGI(DBHelper dbHelper, ArrayList<Object> objArray);
     void updateCGS(DBHelper dbHelper, ArrayList<Object> objArray);
+    void updateSalary(DBHelper dbHelper, String date);
+
+    boolean checkExistingSalary(DBHelper dbHelper, String date);
+
 }

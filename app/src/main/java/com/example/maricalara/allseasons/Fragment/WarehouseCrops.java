@@ -57,7 +57,7 @@ public class    WarehouseCrops extends Fragment {
 
 
         try {
-            cropsAdapter.notifyDataSetChanged();
+
 
             DBHelper dbHelper = new DBHelper(getActivity());
             crops = aDAO.retrieveCropsList(dbHelper);
@@ -93,6 +93,8 @@ public class    WarehouseCrops extends Fragment {
                     snackbar.show();
                 }
             });
+
+            cropsAdapter.notifyDataSetChanged();
         } catch (Exception e) {
             e.printStackTrace();
         }

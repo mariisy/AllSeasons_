@@ -55,7 +55,7 @@ public class WarehouseEquipment extends Fragment {
         listView = (ListView) rootView.findViewById(R.id.list);
 
         try {
-            equipmentAdapter.notifyDataSetChanged();
+
 
             DBHelper dbHelper = new DBHelper(getActivity());
             equipment = equipmentDAO.retrieveEquipmentList(dbHelper);
@@ -94,6 +94,8 @@ public class WarehouseEquipment extends Fragment {
                     snackbar.show();
                 }
             });
+
+            equipmentAdapter.notifyDataSetChanged();
         } catch (Exception e) {
             e.printStackTrace();
         }
