@@ -29,7 +29,6 @@ public class WarehouseDetailActivity extends AppCompatActivity {
 
 
     //DAO variables
-    private EquipmentDAO equipmentDAO = new EquipmentDAOImpl();
     private IndirectMaterialsDAO imDao = new IndirectMaterialsDAOImpl();
     private RawMaterialsDAO rmDAO = new RawMaterialsDAOImpl();
     private DBHelper dbHelper = new DBHelper(WarehouseDetailActivity.this);

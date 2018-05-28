@@ -61,5 +61,6 @@ public interface TransactionDAO {
 
     ArrayList<Transaction> retrieveYearlyExpense(DBHelper dbHelper);
 
+    Transaction retrieveOneTrans(DBHelper dbHelper, String transID);
 
 }

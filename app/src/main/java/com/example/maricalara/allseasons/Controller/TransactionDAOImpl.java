@@ -815,5 +815,30 @@ public class TransactionDAOImpl implements TransactionDAO {
         return null;
     }
 
+    @Override
+    public Transaction retrieveOneTrans(DBHelper dbHelper, String transID) {
+        dbRead = dbHelper.getReadableDatabase();
+
+        String queryForRetrievalOne = "SELECT * FROM " + "TRANSACTIONS WHERE TRANSACTION_FULL_ID = '" + transID + "' ";
+        Cursor cursor = dbRead.rawQuery(queryForRetrievalOne, null);
+        Transaction transactions = new Transaction(0, null, null, null, "", null,
+                0, 0, 0, null, 0);
+
+        if (cursor.moveToFirst()) {
+            do {
+                transactions.setTransactionType(cursor.getString(cursor.getColumnIndex("TRANSACTION_TYPE")));
+                transactions.setItemType(cursor.getString(cursor.getColumnIndex("TYPE")));
+                transactions.setQuantity(cursor.getInt(cursor.getColumnIndex("QUANTITY")));
+                transactions.setPrice(cursor.getDouble(cursor.getColumnIndex("PRICE")));
+                transactions.setTotalCost(cursor.getDouble(cursor.getColumnIndex("TOTAL_COST")));
+                transactions.setDate(cursor.getString(cursor.getColumnIndex("DATE")));
+                transactions.setDeliveryDate(cursor.getString(cursor.getColumnIndex("DELIVERY_DATE")));
+                transactions.setCustomerID(cursor.getInt(cursor.getColumnIndex("CUSTOMER_ID")));
+            } while (cursor.moveToNext());
+        }
+
+        return transactions;
+    }
+
 
 }

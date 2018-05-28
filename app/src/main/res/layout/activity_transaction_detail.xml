@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.maricalara.allseasons.Activity.WarehouseDetailActivity">
+    tools:context=".Activity.TransactionDetailActivity">
 
     <include
         layout="@layout/app_bar_main" />
@@ -71,17 +71,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/table_border"
-            android:layout_marginTop="2dp">
+            android:layout_marginTop="2dp"><![CDATA[
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.3"
-                android:padding="15dp"
-                android:gravity="right"
-                android:text="Unit Price:" />
-
-            <TextView
+            extView
                 android:id="@+id/txtPrice"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -90,7 +82,7 @@
                 android:gravity="center"
                 android:text="Row 1" />
 
-        </TableRow>
+        ]]></TableRow>
 
         <TableRow
             android:id="@+id/row_4"
@@ -125,16 +117,25 @@
             android:background="@drawable/table_border"
             android:layout_marginTop="2dp">
 
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/row_9"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/table_border"
+            android:layout_marginTop="2dp">
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.3"
                 android:padding="15dp"
                 android:gravity="right"
-                android:text="Total Price:" />
+                android:text="Total Cost:" />
 
             <TextView
-                android:id="@+id/txtPriceTotal"
+                android:id="@+id/txtCostTotal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -157,10 +158,35 @@
                 android:layout_weight="0.3"
                 android:padding="15dp"
                 android:gravity="right"
-                android:text="Date Restock:" />
+                android:text="Date Transaction:" />
 
             <TextView
                 android:id="@+id/txtDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="15dp"
+                android:gravity="center"
+                android:text="Row 1" />
+        </TableRow>>
+
+        <TableRow
+            android:id="@+id/row_8"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/table_border"
+            android:layout_marginTop="2dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.3"
+                android:padding="15dp"
+                android:gravity="right"
+                android:text="Date Delivery:" />
+
+            <TextView
+                android:id="@+id/txtDateDel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -174,22 +200,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/table_border"
-            android:layout_marginTop="2dp"><![CDATA[
+            android:layout_marginTop="2dp">
 
-            TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.3"
-                android:padding="15dp"
-                android:gravity="right"
-                android:text="Customer:" />
-
-            ]]></TableRow>>
+        </TableRow>>
 
     </TableLayout>
-
-
-
-
 
 </android.support.constraint.ConstraintLayout>

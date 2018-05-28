@@ -78,7 +78,7 @@ public class TransactionAddSold extends AppCompatActivity {
     Date d = new Date();
     String dayOfTheWeek = sdf.format(d);
     String dateForTheDay = DateFormat.getDateInstance().format(date);
-    String strDate = "Date: " + dayOfTheWeek + ", " + dateForTheDay;
+    String strDate = dayOfTheWeek + ", " + dateForTheDay;
 
     Calendar calendar = Calendar.getInstance();
 

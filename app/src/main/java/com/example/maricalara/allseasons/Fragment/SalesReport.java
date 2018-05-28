@@ -157,9 +157,12 @@ public class SalesReport extends Fragment {
         arrCrops = tDAO.retrieveSum(dbHelper);
         int index = 0;
         for (Crops crops : arrCrops) {
-            BARENTRY.add(new BarEntry((int) crops.getTotalCostHarvested(),index));
+            BARENTRY.add(new BarEntry((int) crops.getTotalCostSold(),index));
             index++;
         }
+
+
+
     }
 
     public void AddValuesToBarEntryLabels() {
@@ -172,7 +175,6 @@ public class SalesReport extends Fragment {
         }
 
     }
-
 
     public void AddValuesToBARENTRY2() {
         int index = 0;

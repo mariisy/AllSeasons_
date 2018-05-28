@@ -1,6 +1,7 @@
 package com.example.maricalara.allseasons.Fragment;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.Toast;
 
+import com.example.maricalara.allseasons.Activity.TransactionDetailActivity;
 import com.example.maricalara.allseasons.Adapter.ExpandableListViewAdapter;
 import com.example.maricalara.allseasons.Controller.GSoldAddData;
 import com.example.maricalara.allseasons.Controller.TransactionDAO;
@@ -95,6 +97,16 @@ public class GoodsSoldView extends Fragment {
                                 expandableListTitle.get(groupPosition)).get(
                                 childPosition), Toast.LENGTH_SHORT
                 ).show();
+
+                Intent intent = new Intent(getActivity(), TransactionDetailActivity.class);
+                String ID = expandableListDetail.get(
+                        expandableListTitle.get(groupPosition)).get(
+                        childPosition);
+
+                boolean flag = true;
+                intent.putExtra("transID", ID);
+                intent.putExtra("Flag", flag);
+                getActivity().startActivity(intent);
                 return false;
             }
         });

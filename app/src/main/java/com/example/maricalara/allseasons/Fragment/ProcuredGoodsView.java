@@ -1,6 +1,7 @@
 package com.example.maricalara.allseasons.Fragment;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.Toast;
 
+import com.example.maricalara.allseasons.Activity.TransactionDetailActivity;
 import com.example.maricalara.allseasons.Adapter.ExpandableListViewAdapter;
 import com.example.maricalara.allseasons.Controller.PGAddData;
 import com.example.maricalara.allseasons.Controller.TransactionDAO;
@@ -92,7 +94,19 @@ public class ProcuredGoodsView extends Fragment {
                                 + expandableListDetail.get(
                                 expandableListTitle.get(groupPosition)).get(
                                 childPosition), Toast.LENGTH_SHORT
+
+
                 ).show();
+
+                Intent intent = new Intent(getActivity(), TransactionDetailActivity.class);
+                String ID = expandableListDetail.get(
+                        expandableListTitle.get(groupPosition)).get(
+                        childPosition);
+
+                intent.putExtra("transID", ID);
+                getActivity().startActivity(intent);
+
+
                 return false;
             }
         });
