@@ -369,7 +369,6 @@ public class TransactionDAOImpl implements TransactionDAO {
         }
 
 
-
         //expenseList.put("date", transactionIDList2);
 
         allTransactionsList.add(revenueList);
@@ -701,9 +700,8 @@ public class TransactionDAOImpl implements TransactionDAO {
         dbRead = dbHelper.getReadableDatabase();
         dbWrite = dbHelper.getWritableDatabase();
 
-        String queryForName = "SELECT NAME FROM UTILIZE_CGS";
+        String queryForName = "SELECT TYPE FROM TRANSACTIONS WHERE TRANSACTION_TYPE = 'Revenue' GROUP BY TYPE";
         Cursor cursor2 = dbRead.rawQuery(queryForName, null);
-        Crops cro = new Crops(null,null,0,0,0,null,0,0,0);
 
         float sum = 0;
         ArrayList<String> arrName = new ArrayList<>();
@@ -711,22 +709,25 @@ public class TransactionDAOImpl implements TransactionDAO {
 
         if (cursor2.moveToFirst()) {
             do {
-                arrName.add(cursor2.getString(cursor2.getColumnIndex("NAME")));
+                arrName.add(cursor2.getString(cursor2.getColumnIndex("TYPE")));
             } while (cursor2.moveToNext());
         }
 
         //arrName.indexOf(name);
 
-        for (String cropName : arrName){
-            String queryForSum = "SELECT SUM(TOTAL_COST_SOLD)" + "as Total FROM UTILIZE_CGS WHERE TYPE = '" + cropName + "' ";
+        for (String cropName : arrName) {
+            String queryForSum = "SELECT SUM(TOTAL_COST) as Total FROM TRANSACTIONS WHERE TYPE = '" + cropName + "' GROUP BY TYPE";
             Cursor cursor = dbWrite.rawQuery(queryForSum, null);
+            Crops cro = new Crops(null, null, 0, 0, 0, null, 0, 0, 0);
+
             if (cursor.moveToFirst()) {
                 do {
                     cro.setName(cropName);
                     double total = cursor.getInt(cursor.getColumnIndex("Total"));
                     cro.setTotalCostSold(total);
+                    arrCrops.add(cro);
                 } while (cursor.moveToNext());
-                arrCrops.add(cro);
+
             }
         }
 
@@ -737,32 +738,44 @@ public class TransactionDAOImpl implements TransactionDAO {
     public ArrayList<Transaction> retrieveExpense(DBHelper dbHelper) {
         dbRead = dbHelper.getReadableDatabase();
         dbWrite = dbHelper.getWritableDatabase();
-        Transaction transactions = new Transaction(0, null, null, null, "", null,
-                0, 0, 0, null, 0);
+
         ArrayList<Transaction> arrExp = new ArrayList<>();
-        String queryForName = "SELECT TYPE FROM TRANSACTIONS WHERE TYPE = 'Expense'";
+        String queryForName = "SELECT TYPE FROM TRANSACTIONS WHERE TRANSACTION_TYPE = 'Expense' GROUP BY TYPE";
         Cursor cursor2 = dbRead.rawQuery(queryForName, null);
         ArrayList<String> arrName = new ArrayList<>();
 
         if (cursor2.moveToFirst()) {
             do {
-                arrName.add(cursor2.getString(cursor2.getColumnIndex("NAME")));
+                arrName.add(cursor2.getString(cursor2.getColumnIndex("TYPE")));
             } while (cursor2.moveToNext());
         }
 
-        for (String expName : arrName){
-            String queryForSum = "SELECT SUM(TOTAL_COST)" + "as Total FROM TRANSACTIONS WHERE NAME = '" + expName + "' ";
+        for (String expName : arrName) {
+            String queryForSum = "SELECT SUM(TOTAL_COST)" + "as Total FROM TRANSACTIONS WHERE TYPE = '" + expName + "' GROUP BY TYPE";
             Cursor cursor = dbWrite.rawQuery(queryForSum, null);
+            Transaction transactions = new Transaction(0, null, null, null, "", null,
+                    0, 0, 0, null, 0);
             if (cursor.moveToFirst()) {
                 do {
                     transactions.setItemType(expName);
-                    double total = cursor.getInt(cursor.getColumnIndex("Total"));
+                    double total = cursor.getDouble(cursor.getColumnIndex("Total"));
                     transactions.setTotalCost(total);
+                    arrExp.add(transactions);
                 } while (cursor.moveToNext());
-                arrExp.add(transactions);
+
             }
         }
 
+        return arrExp;
+    }
+
+    @Override
+    public ArrayList<Transaction> retrieveYearlySum(DBHelper dbHelper) {
+        return null;
+    }
+
+    @Override
+    public ArrayList<Transaction> retrieveYearlyExpense(DBHelper dbHelper) {
         return null;
     }
 

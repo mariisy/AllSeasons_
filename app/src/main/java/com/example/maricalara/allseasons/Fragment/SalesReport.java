@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.maricalara.allseasons.Activity.SfpActivity;
 import com.example.maricalara.allseasons.Controller.TransactionDAO;
@@ -54,10 +55,10 @@ public class SalesReport extends Fragment {
     Button button;
     //variables for bar chart
     BarChart barChart, barChart2;
-    ArrayList<BarEntry> BARENTRY;
-    ArrayList<String> BarEntryLabels;
-    BarDataSet Bardataset;
-    BarData BARDATA;
+    ArrayList<BarEntry> BARENTRY, BARENTRY2;
+    ArrayList<String> BarEntryLabels, BarEntryLabels2;
+    BarDataSet Bardataset, Bardataset2;
+    BarData BARDATA, BARDATA2;
 
 
     //variables for pie chart
@@ -109,6 +110,7 @@ public class SalesReport extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), SfpActivity.class);
                 startActivity(intent);
+
             }
         });
 
@@ -119,36 +121,26 @@ public class SalesReport extends Fragment {
         BarEntryLabels = new ArrayList<>();
         AddValuesToBARENTRY();
         AddValuesToBarEntryLabels();
-        Bardataset = new BarDataSet(BARENTRY, "Crops");
+
+        Bardataset = new BarDataSet(BARENTRY, "Cells");
         BARDATA = new BarData(BarEntryLabels, Bardataset);
         Bardataset.setColors(ColorTemplate.COLORFUL_COLORS);
         barChart.setData(BARDATA);
         barChart.animateY(3000);
 
 
-        barChart = (BarChart) rootView.findViewById(R.id.barChartExpense);
-        BARENTRY = new ArrayList<>();
-        BarEntryLabels = new ArrayList<>();
+        barChart2 = (BarChart) rootView.findViewById(R.id.barChartExpense);
+        BARENTRY2 = new ArrayList<>();
+        BarEntryLabels2 = new ArrayList<>();
         AddValuesToBARENTRY2();
         AddValuesToBarEntryLabels2();
-        Bardataset = new BarDataSet(BARENTRY, "Crops");
-        BARDATA = new BarData(BarEntryLabels, Bardataset);
-        Bardataset.setColors(ColorTemplate.COLORFUL_COLORS);
-        barChart.setData(BARDATA);
-        barChart.animateY(3000);
+        Bardataset2 = new BarDataSet(BARENTRY2, "Cells");
 
+        BARDATA2 = new BarData(BarEntryLabels2, Bardataset2);
+        Bardataset2.setColors(ColorTemplate.COLORFUL_COLORS);
+        barChart2.setData(BARDATA2);
+        barChart2.animateY(3000);
 
-        //for pie chart
-        pieChart = (PieChart) rootView.findViewById(R.id.chartPie);
-        PIEENTRY = new ArrayList<>();
-        PieEntryLabels = new ArrayList<String>();
-        AddValuesToPIEENTRY();
-        AddValuesToPieEntryLabels();
-        pieDataSet = new PieDataSet(PIEENTRY, "");
-        PIEDATA = new PieData(PieEntryLabels, pieDataSet);
-        pieDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
-        pieChart.setData(PIEDATA);
-        pieChart.animateY(2000);
 
 
         //for line chart
@@ -170,73 +162,49 @@ public class SalesReport extends Fragment {
 
     public void AddValuesToBARENTRY() {
         arrCrops = tDAO.retrieveSum(dbHelper);
+        int index = 0;
         for (Crops crops : arrCrops) {
-            int index = arrCrops.indexOf(crops);
-
-            BARENTRY.add(new BarEntry((int) crops.getTotalCostHarvested(), index));
+            BARENTRY.add(new BarEntry((int) crops.getTotalCostHarvested(),index));
+            index++;
         }
     }
 
     public void AddValuesToBarEntryLabels() {
         arrCrops = tDAO.retrieveSum(dbHelper);
+        Toast.makeText(getActivity(), arrCrops.toString(), Toast.LENGTH_SHORT).show();
+        int index = 0;
         for (Crops cro : arrCrops) {
-
-            BarEntryLabels.add(cro.getName());
-        }
-    }
-
-
-    public void AddValuesToBARENTRY2(){
-
-        arrExp  = tDAO.retrieveExpense(dbHelper);
-        for (Transaction trans : arrExp){
-            int index = arrExp.indexOf(trans);
-
-            BARENTRY.add(new BarEntry((int) trans.getTotalCost(), index));
-        }
-
-    }
-
-    public void AddValuesToBarEntryLabels2(){
-
-        arrExp  = tDAO.retrieveExpense(dbHelper);
-        for (Transaction trans : arrExp){
-
-            BarEntryLabels.add(trans.getItemType());
+            BarEntryLabels.add(index, cro.getName());
+            index++;
         }
 
     }
 
 
-
-
-
-
-
-
-
-
-
-    public void AddValuesToPIEENTRY() {
-
+    public void AddValuesToBARENTRY2() {
+        int index = 0;
         arrExp = tDAO.retrieveExpense(dbHelper);
         for (Transaction trans : arrExp) {
-            int index = arrExp.indexOf(trans);
-
-            BARENTRY.add(new BarEntry((int) trans.getTotalCost(), index));
+            BARENTRY2.add(new BarEntry((int) trans.getTotalCost(),index));
+            index++;
         }
 
     }
 
-    public void AddValuesToPieEntryLabels() {
+    public void AddValuesToBarEntryLabels2() {
 
         arrExp = tDAO.retrieveExpense(dbHelper);
+
+        int index = 0;
         for (Transaction trans : arrExp) {
 
-            BarEntryLabels.add(trans.getItemType());
+            BarEntryLabels2.add(index, trans.getItemType());
+            index++;
         }
 
     }
+
+
 
     public void AddValuesToLINEENTRY() {
         LINEENTRY.add(new Entry(4f, 0));
@@ -254,6 +222,11 @@ public class SalesReport extends Fragment {
         LineEntryLabels.add("April");
         LineEntryLabels.add("May");
         LineEntryLabels.add("June");
+        LineEntryLabels.add("July");
+        LineEntryLabels.add("August");
+        LineEntryLabels.add("September");
+        LineEntryLabels.add("October");
+        LineEntryLabels.add("November");
     }
 
     @Override

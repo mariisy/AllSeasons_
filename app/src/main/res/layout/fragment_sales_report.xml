@@ -29,27 +29,19 @@
                 android:padding="10dp"
                 android:text="View Accounting Books" />
 
-            <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
-                android:id="@+id/spinnerView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Graph View"
-                android:textColorHint="#bdbdbd"
-                app:met_floatingLabel="normal" />
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:gravity="center"
-                android:text="Revenue"
+                android:text="Monthly Revenue"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="#555555" />
 
             <com.github.mikephil.charting.charts.BarChart
                 android:id="@+id/barChartRevenue"
                 android:layout_width="fill_parent"
-                android:layout_height="300dp"
+                android:layout_height="400dp"
                 android:layout_marginBottom="20dp"
                 android:layout_marginTop="10dp"/>
 
@@ -58,17 +50,36 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:gravity="center"
-                android:text="Expenses"
+                android:text="Monthly Expenses"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="#555555" />
 
             <com.github.mikephil.charting.charts.BarChart
                 android:id="@+id/barChartExpense"
                 android:layout_width="fill_parent"
-                android:layout_height="300dp"
+                android:layout_height="400dp"
                 android:layout_marginBottom="20dp"
                 android:layout_marginTop="10dp"
                 android:layout_below="@id/barChartRevenue"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:text="Monthly Item Usage"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="#555555" />
+
+            <com.github.mikephil.charting.charts.BarChart
+                android:id="@+id/barChartStorage"
+                android:layout_width="fill_parent"
+                android:layout_height="400dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_below="@id/barChartRevenue"/>
+
+
 
             <com.github.mikephil.charting.charts.PieChart
                 android:id="@+id/chartPie"

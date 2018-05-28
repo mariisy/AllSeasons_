@@ -57,5 +57,9 @@ public interface TransactionDAO {
 
     ArrayList<Transaction> retrieveExpense(DBHelper dbHelper);
 
+    ArrayList<Transaction> retrieveYearlySum(DBHelper dbHelper);
+
+    ArrayList<Transaction> retrieveYearlyExpense(DBHelper dbHelper);
+
 
 }
