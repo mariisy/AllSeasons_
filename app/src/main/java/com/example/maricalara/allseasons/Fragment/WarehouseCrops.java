@@ -56,10 +56,10 @@ public class    WarehouseCrops extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_warehouse_crops, container, false);
 
 
-        try {
 
 
             DBHelper dbHelper = new DBHelper(getActivity());
+        try {
             crops = aDAO.retrieveCropsList(dbHelper);
 
 
@@ -98,11 +98,6 @@ public class    WarehouseCrops extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
-
-
-
 
 
         // Inflate the layout for this fragment

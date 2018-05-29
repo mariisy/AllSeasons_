@@ -117,7 +117,7 @@ public class FarmingSeason extends Fragment {
 
     private void setupViewPager(ViewPager viewPager) {
         adapter = new ViewPagerAdapter(getChildFragmentManager());
-        adapter.addFragment(new FarmingProgress(), "Farming Season Progress");
+      //  adapter.addFragment(new FarmingProgress(), "Farming Season Progress");
         adapter.addFragment(new FarmingUtilizedRecord(), "Used Materials Record");
         adapter.addFragment(new FarmingHarvestRecords(), "Harvest Records");
 
