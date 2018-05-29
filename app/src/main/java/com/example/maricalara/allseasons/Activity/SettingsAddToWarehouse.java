@@ -193,7 +193,8 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
                         tDAO.addEntry(dbHelper, equip, type, supplierName, supplierContact);
                         //tDAO.addBoughtList(dbHelper, equip, type);
                         equipmentDAO.addTransaction(dbHelper, equip);
-
+                        arrTransaction.add(new Transaction(0, "", strDate, "", "Expense", itemName,
+                                qty, 0, totalPrice, "", 0));
                         new AlertDialog.Builder(SettingsAddToWarehouse.this)
                                 .setTitle("Adding Entry")
                                 .setMessage(itemName + " Added! \n Would you like to add another entry?")
@@ -248,7 +249,8 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
                         tDAO.addEntry(dbHelper, ins, type, supplierName, supplierContact);
                         // tDAO.addBoughtList(dbHelper, ins, type);
                         imDao.addTransaction(dbHelper, ins, type);
-
+                        arrTransaction.add(new Transaction(0, "", strDate, "", "Expense", itemName,
+                                qty, 0, totalPrice, "", 0));
                         new AlertDialog.Builder(SettingsAddToWarehouse.this)
                                 .setTitle("Adding Entry")
                                 .setMessage(itemName + " Added! \n Would you like to add another entry?")
@@ -302,7 +304,8 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
                         tDAO.addEntry(dbHelper, fer, type, supplierName, supplierContact);
                         //  tDAO.addBoughtList(dbHelper, fer, type);
                         imDao.addTransaction(dbHelper, fer, type);
-
+                        arrTransaction.add(new Transaction(0, "", strDate, "", "Expense", itemName,
+                                qty, 0, totalPrice, "", 0));
                         new AlertDialog.Builder(SettingsAddToWarehouse.this)
                                 .setTitle("Adding Entry")
                                 .setMessage(itemName + " Added! \n Would you like to add another entry?")
@@ -356,7 +359,8 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
                         tDAO.addEntry(dbHelper, packaging, type, supplierName, supplierContact);
                         //tDAO.addBoughtList(dbHelper, packaging, type);
                         imDao.addTransaction(dbHelper, packaging, type);
-
+                        arrTransaction.add(new Transaction(0, "", strDate, "", "Expense", itemName,
+                                qty, 0, totalPrice, "", 0));
                         new AlertDialog.Builder(SettingsAddToWarehouse.this)
                                 .setTitle("Adding Entry")
                                 .setMessage(itemName + " Added! \n Would you like to add another entry?")
@@ -411,7 +415,8 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
                         tDAO.addEntry(dbHelper, seeds, type, supplierName, supplierContact);
                         tDAO.addEntry(dbHelper, crop, "Crops", "", "");
                         rmDAO.addTransaction(dbHelper, seeds, type);
-
+                        arrTransaction.add(new Transaction(0, "", strDate, "", "Expense", itemName,
+                                qty, 0, totalPrice, "", 0));
                         new AlertDialog.Builder(SettingsAddToWarehouse.this)
                                 .setTitle("Adding Entry")
                                 .setMessage(itemName + " Added! \n Would you like to add another entry?")
@@ -635,10 +640,7 @@ public class SettingsAddToWarehouse extends AppCompatActivity {
     }
 
     public void addTransaction() {
-
-        arrTransaction.add(new Transaction(0, "", strDate, "", "Expense", itemName,
-                qty, 0, totalPrice, "", 0));
-
         tDAO.addTransactionList(dbHelper, arrTransaction);
+        arrTransaction = new ArrayList<>();
     }
 }

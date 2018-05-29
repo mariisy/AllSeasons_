@@ -12,7 +12,8 @@
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="90dp">
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="90dp">
 
 
         <TableRow
@@ -26,8 +27,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.3"
-                android:padding="15dp"
                 android:gravity="right"
+                android:padding="15dp"
                 android:text="Type:" />
 
             <TextView
@@ -35,8 +36,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:padding="15dp"
                 android:gravity="center"
+                android:padding="15dp"
                 android:text="Row 1" />
         </TableRow>
 
@@ -44,15 +45,15 @@
             android:id="@+id/row_2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/table_border"
-            android:layout_marginTop="2dp">
+            android:layout_marginTop="2dp"
+            android:background="@drawable/table_border">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.3"
-                android:padding="15dp"
                 android:gravity="right"
+                android:padding="15dp"
                 android:text="Item Name:" />
 
             <TextView
@@ -60,8 +61,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:padding="15dp"
                 android:gravity="center"
+                android:padding="15dp"
                 android:text="Row 1" />
 
         </TableRow>
@@ -70,8 +71,8 @@
             android:id="@+id/row_3"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/table_border"
-            android:layout_marginTop="2dp"><![CDATA[
+            android:layout_marginTop="2dp"
+            android:background="@drawable/table_border"><![CDATA[
 
             extView
                 android:id="@+id/txtPrice"
@@ -88,15 +89,15 @@
             android:id="@+id/row_4"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/table_border"
-            android:layout_marginTop="2dp">
+            android:layout_marginTop="2dp"
+            android:background="@drawable/table_border">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.3"
-                android:padding="15dp"
                 android:gravity="right"
+                android:padding="15dp"
                 android:text="Quantity:" />
 
             <TextView
@@ -104,8 +105,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:padding="15dp"
                 android:gravity="center"
+                android:padding="15dp"
                 android:text="Row 1" />
 
         </TableRow>
@@ -114,8 +115,8 @@
             android:id="@+id/row_5"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/table_border"
-            android:layout_marginTop="2dp">
+            android:layout_marginTop="2dp"
+            android:background="@drawable/table_border">
 
         </TableRow>
 
@@ -123,15 +124,15 @@
             android:id="@+id/row_9"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/table_border"
-            android:layout_marginTop="2dp">
+            android:layout_marginTop="2dp"
+            android:background="@drawable/table_border">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.3"
-                android:padding="15dp"
                 android:gravity="right"
+                android:padding="15dp"
                 android:text="Total Cost:" />
 
             <TextView
@@ -139,8 +140,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:padding="15dp"
                 android:gravity="center"
+                android:padding="15dp"
                 android:text="Row 1" />
 
         </TableRow>
@@ -149,15 +150,15 @@
             android:id="@+id/row_6"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/table_border"
-            android:layout_marginTop="2dp">
+            android:layout_marginTop="2dp"
+            android:background="@drawable/table_border">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.3"
-                android:padding="15dp"
                 android:gravity="right"
+                android:padding="15dp"
                 android:text="Date Transaction:" />
 
             <TextView
@@ -165,24 +166,25 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:padding="15dp"
                 android:gravity="center"
+                android:padding="15dp"
                 android:text="Row 1" />
-        </TableRow>>
+        </TableRow>
+        >
 
         <TableRow
             android:id="@+id/row_8"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/table_border"
-            android:layout_marginTop="2dp">
+            android:layout_marginTop="2dp"
+            android:background="@drawable/table_border">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.3"
-                android:padding="15dp"
                 android:gravity="right"
+                android:padding="15dp"
                 android:text="Date Delivery:" />
 
             <TextView
@@ -190,17 +192,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:padding="15dp"
                 android:gravity="center"
+                android:padding="15dp"
                 android:text="Row 1" />
-        </TableRow>>
+        </TableRow>
+        >
 
         <TableRow
             android:id="@+id/row_7"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/table_border"
-            android:layout_marginTop="2dp">
+            android:layout_marginTop="2dp"
+            android:background="@drawable/table_border">
 
         </TableRow>>
 

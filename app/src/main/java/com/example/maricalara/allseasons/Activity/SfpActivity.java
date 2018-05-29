@@ -63,6 +63,7 @@ public class SfpActivity extends AppCompatActivity {
         }
         textviewDebit.setText(builder.toString());
     }
+
     public  void  viewType(){
         textviewAccountType.setText("");
         list = aDao.viewSFP(dbHelper,"ACCOUNT_TYPE");
