@@ -445,7 +445,7 @@ public class TransactionDAOImpl implements TransactionDAO {
                     dbWrite.insert("WAREHOUSE_EQUIPMENT", null, values);
 
                     ContentValues val = new ContentValues();
-                    val.put("TYPE", crop.getType());
+                    val.put("TYPE", "Crops");
                     val.put("NAME", crop.getName());
                     val.put("WEIGHT", 0);
                     val.put("DATE", crop.getDate());
@@ -455,7 +455,7 @@ public class TransactionDAOImpl implements TransactionDAO {
                     dbWrite.insert("UTILIZE_FGI", null, val);
 
                     ContentValues val1 = new ContentValues();
-                    val1.put("TYPE", crop.getType());
+                    val1.put("TYPE", "Crops");
                     val1.put("NAME", crop.getName());
                     val1.put("WEIGHT", 0);
                     val1.put("DATE", crop.getDate());
@@ -789,10 +789,8 @@ public class TransactionDAOImpl implements TransactionDAO {
         arrMonth.add("December");
 
         ArrayList<Transaction> arrRev = new ArrayList<>();
-
-
         for(String month : arrMonth){
-            String queryForName = "SELECT TYPE,  SUM(TOTAL_COST) as Total FROM TRANSACTIONS WHERE TRANSACTION_TYPE = 'Revenue' AND DATE = '" + month +"' GROUP BY TYPE";
+            String queryForName = "SELECT TYPE,  SUM(PRICE) as Total FROM TRANSACTIONS WHERE TRANSACTION_TYPE = 'Revenue' AND DATE LIKE '" + month +"' GROUP BY TYPE";
             Cursor cursor = dbRead.rawQuery(queryForName, null);
 
             Transaction transactions = new Transaction(0, null, null, null, "", null,

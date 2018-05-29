@@ -70,7 +70,7 @@ public class    WarehouseCrops extends Fragment {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                    Crops crop= crops.get(position);
+                  final  Crops crop= crops.get(position);
                     Snackbar snackbar =
                             Snackbar.make(view, "Type: "+ crop.getType(), Snackbar.LENGTH_LONG)
                                     .setAction("View", new View.OnClickListener() {

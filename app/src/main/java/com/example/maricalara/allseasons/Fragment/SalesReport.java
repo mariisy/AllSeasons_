@@ -46,6 +46,7 @@ public class SalesReport extends Fragment {
     //data variables
     ArrayList<Crops> arrCrops = new ArrayList<>();
     ArrayList<Transaction> arrExp = new ArrayList<>();
+    ArrayList<Transaction> arrSum = new ArrayList<>();
     Crops crop;
 
     //variables for spinner
@@ -167,7 +168,6 @@ public class SalesReport extends Fragment {
 
     public void AddValuesToBarEntryLabels() {
         arrCrops = tDAO.retrieveSum(dbHelper);
-        Toast.makeText(getActivity(), arrCrops.toString(), Toast.LENGTH_SHORT).show();
         int index = 0;
         for (Crops cro : arrCrops) {
             BarEntryLabels.add(index, cro.getName());
@@ -202,12 +202,12 @@ public class SalesReport extends Fragment {
 
 
     public void AddValuesToLINEENTRY() {
-        LINEENTRY.add(new Entry(4f, 0));
-        LINEENTRY.add(new Entry(8f, 1));
-        LINEENTRY.add(new Entry(6f, 2));
-        LINEENTRY.add(new Entry(2f, 3));
-        LINEENTRY.add(new Entry(18f, 4));
-        LINEENTRY.add(new Entry(9f, 5));
+        int i = 0;
+        arrSum = tDAO.retrieveYearlySum(dbHelper);
+        for(Transaction trans : arrSum) {
+            LINEENTRY.add(new Entry((float) trans.getPrice(), i));
+            i++;
+        }
     }
 
     public void ADdValuesToLineENtryLabels() {
